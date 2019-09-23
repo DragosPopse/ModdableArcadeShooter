@@ -32,7 +32,8 @@ project "ArcadeAirship"
         "sfml-system-d",
         "sfml-window-d",
         "sfml-graphics-d",
-        "sfml-audio-d"
+        "sfml-audio-d",
+        "lua535"
     }
     libdirs
     {
