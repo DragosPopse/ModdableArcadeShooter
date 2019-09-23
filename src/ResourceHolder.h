@@ -5,14 +5,14 @@
 #include <string>
 #include <memory>
 
-template <class K, class V>
+template <class Key, class Resource>
 class ResourceHolder
 {
-	std::map<K, std::unique_ptr<V>> _resources;
+	std::map<K, std::unique_ptr<Resource>> _resources;
 public:
-	bool Load(const K& key, const std::string& file)
+	bool Load(const Key& key, const std::string& file)
 	{
-		std::unique_ptr<V> resource(new V());
+		std::unique_ptr<Resource> resource(new Resource());
 		bool success = resource.loadFromFile(file);
 		if (success)
 		{
@@ -22,20 +22,20 @@ public:
 	}
 
 	
-	void Release(const K& key)
+	void Release(const Key& key)
 	{
 		_resources.erase(key);
 	}
 
 
-	V& operator[](const K& key)
+	Resource& operator[](const Key& key)
 	{
 		auto it = _resources.find(key);
 		return *it->second;
 	}
 
 
-	const V& operator[](const K& key)
+	const Resource& operator[](const Key& key)
 	{
 		auto it = _resources.find(key);
 		return *it->second;
