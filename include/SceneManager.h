@@ -3,14 +3,22 @@
 #include <memory>
 #include <list>
 #include "Context.h"
+#include "Scene.h"
 
-class Scene;
 
 class SceneManager
 {
 	std::list<std::unique_ptr<Scene>> _stack;
-	//Context _context;
+	Context _context;
 
 public:
-	SceneManager();
+	SceneManager(Context context);
+
+	void PushScene(Scene* scene);
+
+	Context GetContext() const;
+
+	void Update(float dt);
+	void FixedUpdate(float dt);
+	void Render();
 };

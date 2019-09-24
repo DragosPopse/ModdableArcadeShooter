@@ -1,18 +1,28 @@
 #include "Scene.h"
-#include "SceneManager.h"
-#include "Context.h"
 #include "GameObject.h"
 
 
-Scene::Scene(Context& context) :
+Scene::Scene(Context context) :
 	_context(context)
 {
-
 }
 
 
 Scene::~Scene()
 {
+}
+
+
+void Scene::SetRoot(std::unique_ptr<GameObject> root)
+{
+	_root.reset();
+	_root = std::move(root);
+}
+
+
+GameObject* Scene::GetRoot()
+{
+	return _root.get();
 }
 
 
@@ -30,5 +40,5 @@ void Scene::FixedUpdate(float dt)
 
 void Scene::Render()
 {
-	_context.window.draw(*_root);
+	_root->Draw(_context.window, sf::RenderStates::Default);
 }

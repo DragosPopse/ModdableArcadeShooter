@@ -4,7 +4,18 @@
 #include <memory>
 #include <array>
 #include <algorithm>
+#include <SFML/Graphics/RenderStates.hpp>
 
+namespace sf
+{
+	class RenderTarget;
+	class RenderStates;
+}
+
+namespace sf
+{
+	class RenderTarget;
+}
 class Component;
 class GameObject;
 
@@ -33,11 +44,11 @@ class Component
 public:
 	GameObject* _gameObject;
 
-	virtual ~Component() {}
+	virtual ~Component() { }
 
 	virtual void Init() {}
 	virtual void Start() {}
 	virtual void Update(float dt) {}
 	virtual void FixedUpdate(float dt) {}
-	virtual void Draw() const {}
+	virtual void Draw(sf::RenderTarget& target, sf::RenderStates states) const {}
 };

@@ -74,16 +74,18 @@ void GameObject::FixedUpdate(float dt)
 }
 
 
-void GameObject::Draw() const
+void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
+
 	for (auto component : _drawComponents)
 	{
-		component->Draw();
+		component->Draw(target, states);
 	}
 
 	for (auto& child : _children)
 	{
-		child->Draw();
+		child->Draw(target, states);
 	}
 }
 
@@ -92,7 +94,10 @@ void GameObject::Start()
 {
 	for (auto& component : _componentArray)
 	{
-		component->Start();
+		if (component.get())
+		{
+			component->Start();
+		}
 	}
 
 	for (auto& child : _children)

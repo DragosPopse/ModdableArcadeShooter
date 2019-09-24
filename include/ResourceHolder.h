@@ -8,15 +8,15 @@
 template <class Key, class Resource>
 class ResourceHolder
 {
-	std::map<K, std::unique_ptr<Resource>> _resources;
+	std::map<Key, std::unique_ptr<Resource>> _resources;
 public:
 	bool Load(const Key& key, const std::string& file)
 	{
 		std::unique_ptr<Resource> resource(new Resource());
-		bool success = resource.loadFromFile(file);
+		bool success = resource->loadFromFile(file);
 		if (success)
 		{
-			_resources.insert(key, std::move(resource));
+			_resources.insert(std::make_pair(key, std::move(resource)));
 		}
 		return success;
 	}
@@ -27,15 +27,7 @@ public:
 		_resources.erase(key);
 	}
 
-
 	Resource& operator[](const Key& key)
-	{
-		auto it = _resources.find(key);
-		return *it->second;
-	}
-
-
-	const Resource& operator[](const Key& key)
 	{
 		auto it = _resources.find(key);
 		return *it->second;

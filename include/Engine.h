@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
 #include "SceneManager.h"
+#include "ResourceHolder.h"
 
 class Engine
 {
@@ -12,6 +13,7 @@ class Engine
 	float _deltaTime;
 	float _fixedDeltaTime;
 	SceneManager _sceneManager;
+	TextureHolder _textures;
 
 public:
 	Engine();

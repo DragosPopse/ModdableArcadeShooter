@@ -24,11 +24,12 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
+	//This should be called when all components are added
 	void Start();
 	
 	void Update(float dt);
 	void FixedUpdate(float dt);
-	void Draw() const;
+	void Draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void AddChild(std::unique_ptr<GameObject> obj);
 	std::unique_ptr<GameObject> RemoveChild(const GameObject& obj);
@@ -80,7 +81,7 @@ public:
 	template <class T> 
 	T& GetComponent() const
 	{
-		auto ptr(_componentArray[GetComponentTypeID<T>()]);
-		return *static_cast<T*>(ptr);
+		auto& ptr = _componentArray[GetComponentTypeID<T>()];
+		return *static_cast<T*>(ptr.get());
 	}
 };
