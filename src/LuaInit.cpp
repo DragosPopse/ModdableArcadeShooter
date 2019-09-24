@@ -4,7 +4,7 @@
 
 void LuaInit_Base(sol::state& lua)
 {
-	lua.open_libraries(sol::lib::base | sol::lib::math);
+	lua.open_libraries(sol::lib::base, sol::lib::math);
 }
 
 

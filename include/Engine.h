@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
+#include "SceneManager.h"
 
 class Engine
 {
@@ -10,6 +11,7 @@ class Engine
 	sf::Clock _clock;
 	float _deltaTime;
 	float _fixedDeltaTime;
+	SceneManager _sceneManager;
 
 public:
 	Engine();

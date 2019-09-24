@@ -1,9 +1,11 @@
 #include "Engine.h"
 #include "LuaInit.h"
+#include "Context.h"
 
 
 Engine::Engine() : 
-	_fixedDeltaTime(1.f / 60.f)
+	_fixedDeltaTime(1.f / 60.f),
+	_deltaTime(0.f)
 {
 	LuaInit_Base(_lua);
 }
