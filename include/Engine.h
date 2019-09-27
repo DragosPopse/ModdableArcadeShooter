@@ -14,6 +14,8 @@ class Engine
 	float _fixedDeltaTime;
 	SceneManager _sceneManager;
 	TextureHolder _textures;
+	
+	Context _context;
 
 public:
 	Engine();

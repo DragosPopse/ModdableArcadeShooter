@@ -4,35 +4,33 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "Context.h"
-#include "Component.h"
+
+class Scene;
 
 
-class GameObject : 
+class GameObject :
 	public sf::Transformable
 {
 	bool _active;
+	bool _markedForDestroy;
 	std::vector<std::unique_ptr<GameObject>> _children;
 	GameObject* _parent;
-
-	std::vector<Component*> _updateComponents;
-	std::vector<Component*> _fixedUpdateComponents;
-	std::vector<Component*> _drawComponents;
-	ComponentBitSet _componentBitSet;
-	ComponentArray _componentArray;
 	
 public:
 	GameObject();
 	virtual ~GameObject();
 
-	//This should be called when all components are added
-	void Start();
-	
-	void Update(float dt);
-	void FixedUpdate(float dt);
-	void Draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	//this should be called when the scene is set
+	virtual void Start(Scene* scene);
+
+	virtual void Update(float dt);
+	virtual void FixedUpdate(float dt);
+	virtual void Draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void AddChild(std::unique_ptr<GameObject> obj);
 	std::unique_ptr<GameObject> RemoveChild(const GameObject& obj);
+	
+	void RemoveDestroyedChilldren();
 
 	bool IsActive() const;
 
@@ -42,46 +40,7 @@ public:
 
 	sf::Vector2f GetWorldPosition() const;
 
-	template <class T, bool hasUpdate, bool hasFixedUpdate, bool hasDraw, class... Args>
-	T& AddComponent(Args&& ... args)
-	{
-		T* comp = new T(std::forward<Args>(args)...);
-		comp->_gameObject = this;
-		std::unique_ptr<Component> ptr(comp);
+	void MarkForDestroy();
 
-		_componentArray[GetComponentTypeID<T>()] = std::move(ptr);
-		_componentBitSet[GetComponentTypeID<T>()] = true;
-
-		if (hasUpdate)
-		{
-			_updateComponents.push_back(comp);
-		}
-		if (hasFixedUpdate)
-		{
-			_fixedUpdateComponents.push_back(comp);
-		}
-		if (hasDraw)
-		{
-			_drawComponents.push_back(comp);
-		}
-
-		comp->Init();
-
-		return *comp;
-	}
-
-
-	template <class T>
-	bool HasComponent() const
-	{
-		return _componentBitSet[GetComponentTypeID<T>()];
-	}
-
-
-	template <class T> 
-	T& GetComponent() const
-	{
-		auto& ptr = _componentArray[GetComponentTypeID<T>()];
-		return *static_cast<T*>(ptr.get());
-	}
+	bool IsDestroyed() const;
 };

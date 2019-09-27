@@ -6,17 +6,17 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-#include "Components/MoveComponent.h"
-#include "Components/SpriteComponent.h"
+#include "Scenes/Level.h"
 
 
 Engine::Engine() : 
 	_fixedDeltaTime(1.f / 60.f),
 	_deltaTime(0.f),
-	_sceneManager(Context(
-		_window, 
-		_lua)
-	)
+	_context(
+		&_window,
+		&_lua
+	),
+	_sceneManager(&_context)
 {
 	LuaInit_Base(_lua);
 	_window.create(sf::VideoMode(600, 600), "Test");
@@ -27,17 +27,10 @@ void Engine::Run()
 {
 	float timeSinceLastFrame = 0.f;
 
-	_textures.Load("Eagle", "media/textures/Eagle.png");
+	_textures.Load("Eagle", "assets/textures/Eagle.png");
 
-	Scene* scene = new Scene(_sceneManager.GetContext());
-	std::unique_ptr<GameObject> obj(new GameObject());
-	auto& sprite = obj->AddComponent<SpriteComponent, false, false, true>();
-	auto& move = obj->AddComponent<MoveComponent, false, true, false>();
-	sprite.SetTexture(_textures["Eagle"]);
-	move.SetSpeed(100);
-	obj->Start();
-	scene->SetRoot(std::move(obj));
-	_sceneManager.PushScene(scene);
+
+	_sceneManager.PushScene(new Level(_sceneManager.GetContext(), "Level1.lua"));
 
 	_clock.restart();
 	while (_window.isOpen())

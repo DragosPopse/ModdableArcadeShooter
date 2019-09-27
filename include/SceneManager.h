@@ -9,14 +9,14 @@
 class SceneManager
 {
 	std::list<std::unique_ptr<Scene>> _stack;
-	Context _context;
+	Context* _context;
 
 public:
-	SceneManager(Context context);
+	SceneManager(Context* context);
 
 	void PushScene(Scene* scene);
 
-	Context GetContext() const;
+	Context* GetContext() const;
 
 	void Update(float dt);
 	void FixedUpdate(float dt);

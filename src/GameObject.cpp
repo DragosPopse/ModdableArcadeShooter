@@ -1,10 +1,15 @@
 #include "GameObject.h"
 #include <cassert>
+#include "Scene.h"
+#include <algorithm>
+#include <cmath>
+#include <functional>
 
 
 GameObject::GameObject() :
 	_parent(nullptr),
-	_active(true)
+	_active(true),
+	_markedForDestroy(false)
 {
 }
 
@@ -48,11 +53,6 @@ void GameObject::SetActive(bool active)
 
 void GameObject::Update(float dt)
 {
-	for (auto component : _updateComponents)
-	{
-		component->Update(dt);
-	}
-
 	for (auto& child : _children)
 	{
 		child->Update(dt);
@@ -62,11 +62,6 @@ void GameObject::Update(float dt)
 
 void GameObject::FixedUpdate(float dt)
 {
-	for (auto component : _fixedUpdateComponents)
-	{
-		component->FixedUpdate(dt);
-	}
-
 	for (auto& child : _children)
 	{
 		child->FixedUpdate(dt);
@@ -77,12 +72,6 @@ void GameObject::FixedUpdate(float dt)
 void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-
-	for (auto component : _drawComponents)
-	{
-		component->Draw(target, states);
-	}
-
 	for (auto& child : _children)
 	{
 		child->Draw(target, states);
@@ -90,19 +79,11 @@ void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
-void GameObject::Start()
+void GameObject::Start(Scene* scene)
 {
-	for (auto& component : _componentArray)
-	{
-		if (component.get())
-		{
-			component->Start();
-		}
-	}
-
 	for (auto& child : _children)
 	{
-		child->Start();
+		child->Start(scene);
 	}
 }
 
@@ -129,4 +110,29 @@ std::unique_ptr<GameObject> GameObject::RemoveChild(const GameObject& obj)
 	_children.erase(found);
 
 	return result;
+}
+
+
+void GameObject::MarkForDestroy()
+{
+	_markedForDestroy = true;
+}
+
+
+bool GameObject::IsDestroyed() const
+{
+	return _markedForDestroy;
+}
+
+
+void GameObject::RemoveDestroyedChilldren()
+{
+	auto removedBegin = std::remove_if(_children.begin(), _children.end(),
+		[](std::unique_ptr<GameObject>& ptr)
+		{
+			return ptr->IsDestroyed();
+		});
+
+	std::for_each(_children.begin(), _children.end(), 
+		std::mem_fn(&GameObject::RemoveDestroyedChilldren));
 }

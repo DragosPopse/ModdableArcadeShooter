@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 
 
-SceneManager::SceneManager(Context context) :
+SceneManager::SceneManager(Context* context) :
 	_context(context)
 {
 
@@ -16,7 +16,7 @@ void SceneManager::PushScene(Scene* scene)
 }
 
 
-Context SceneManager::GetContext() const
+Context* SceneManager::GetContext() const
 {
 	return _context;
 }

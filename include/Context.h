@@ -12,11 +12,11 @@ namespace sf
 
 struct Context
 {
-	sf::RenderWindow& window;
-	sol::state& lua;
+	sf::RenderWindow* window;
+	sol::state* lua;
 
 	Context(
-		sf::RenderWindow& w,
-		sol::state& l
+		sf::RenderWindow* w,
+		sol::state* l
 	);
 };

@@ -2,8 +2,8 @@
 
 
 Context::Context(
-	sf::RenderWindow& w,
-	sol::state& l
+	sf::RenderWindow* w,
+	sol::state* l
 ) :
 	window(w),
 	lua(l)
