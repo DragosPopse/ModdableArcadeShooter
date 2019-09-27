@@ -28,6 +28,7 @@ class Projectile :
 	Level* _currentScene;
 	sf::Sprite _sprite;
 	ProjectileData* _data;
+	sf::Vector2f _velocity;
 
 public:
 	Projectile(ProjectileData* data);
@@ -43,4 +44,8 @@ public:
 
 	float GetSpeed() const;
 	float GetDamage() const;
+
+	sf::Vector2f GetVelocity() const;
+	void SetVelocity(const sf::Vector2f& velocity);
+	void SetRotation(float rotation);
 };

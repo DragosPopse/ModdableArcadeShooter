@@ -73,3 +73,21 @@ float Projectile::GetDamage() const
 {
 	return _data->damage;
 }
+
+
+sf::Vector2f Projectile::GetVelocity() const
+{
+	return _velocity;
+}
+
+
+void Projectile::SetVelocity(const sf::Vector2f& velocity)
+{
+	_velocity = velocity;
+}
+
+
+void Projectile::SetRotation(float rotation)
+{
+	_sprite.setRotation(rotation);
+}

@@ -10,10 +10,10 @@ local HomingMissile = {
     speed = 100,
 
     fixedUpdate = function (this, context)
-        print(this:getSpeed())
+        local approachRate = 200
         local TODO_targetPosition = 1
-        newVelocity = sf.Vector2f.normmalize(this:getSpeed() * context.deltaTime * TODO_targetPosition + this:getVelocity())
-        newVelocity = newVelocity * this:getMaxSpeed()
+        newVelocity = sf.Vector2f.normmalize(approachRate * context.deltaTime * TODO_targetPosition + this:getVelocity())
+        newVelocity = newVelocity * this:getSpeed()
         local angle = math.atan2(newVelocity.y, newVelocity.x)
         this:setRotation(engine.toDegree(angle) + 90)
         this:setVelocity(newVelocity)

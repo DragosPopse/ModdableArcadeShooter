@@ -31,19 +31,22 @@ void LuaInit_SFML(sol::state& lua)
 		sol::meta_function::multiplication, v2fMultiplicationRev,
 		sol::meta_function::addition, v2fAddition
 		);
-	//sfTable["Vector2f"].set_function("normalize", &Normalize);
-	//sfTable["Vector2f"].set_function("magnitude", &Magnitude);
+	sfTable.get<sol::table>("Vector2f").set_function("normalize", &Normalize);
+	sfTable.get<sol::table>("Vector2f").set_function("magnitude", &Magnitude);
 }
 
 
 void LuaInit_Game(sol::state& lua)
 {
-	/*sol::table engineTable = lua.create_named_table("engine");
+	sol::table engineTable = lua.create_named_table("engine");
 	
 	engineTable.new_usertype<Projectile>("Projectile",
 		"getSpeed", &Projectile::GetSpeed,
-		"getDamage", &Projectile::GetDamage);
+		"getDamage", &Projectile::GetDamage,
+		"setVelocity", &Projectile::SetVelocity,
+		"getVelocity", &Projectile::GetVelocity
+		);
 
 	engineTable.set_function("toDegree", &ToDegree);
-	engineTable.set_function("toRadian", &ToRadian);*/
+	engineTable.set_function("toRadian", &ToRadian);
 }
