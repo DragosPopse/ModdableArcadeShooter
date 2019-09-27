@@ -10,6 +10,8 @@
 *.sln
 *.vcxproj
 *.vcxproj.filters
+bin-int/
+bin/
 
 # User-specific files
 *.rsuser
