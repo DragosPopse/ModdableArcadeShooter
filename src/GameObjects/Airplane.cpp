@@ -4,17 +4,23 @@
 #include <SFML/Graphics.hpp>
 
 
-Airplane::Airplane() :
+Airplane::Airplane(AirplaneData* data) :
 	_currentScene(nullptr),
-	_hitpoints(1)
+	_data(data),
+	_hitpoints(_data->hitpoints)
 {
+	
 }
 
 
 void Airplane::Start(Scene* scene)
 {
 	_currentScene = static_cast<Level*>(scene);
-
+	auto& textures = _currentScene->GetTextures();
+	
+	_sprite.setTexture(textures[_data->texture]);
+	_sprite.setTextureRect(_data->idleRect);
+	
 	GameObject::Start(scene);
 }
 

@@ -4,6 +4,11 @@
 #include <string>
 #include <sstream>
 
+#define SCRIPTS_PATH "assets/scripts/"
+#define TEXTURES_PATH "assets/textures/"
+#define AIRPLANES_PATH "assets/scripts/airplanes/"
+#define LEVELS_PATH "assets/scripts/levels/"
+#define PROJECTILES_PATH "assets/scripts/projectiles/"
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);

@@ -9,6 +9,14 @@
 #include "Scenes/Level.h"
 
 
+namespace
+{
+	void TestLua(sol::state& lua)
+	{
+		lua.do_file("assets/scripts/test.lua");
+	}
+}
+
 Engine::Engine() : 
 	_fixedDeltaTime(1.f / 60.f),
 	_deltaTime(0.f),
@@ -19,6 +27,9 @@ Engine::Engine() :
 	_sceneManager(&_context)
 {
 	LuaInit_Base(_lua);
+	LuaInit_SFML(_lua);
+	LuaInit_Game(_lua);
+	TestLua(_lua);
 	_window.create(sf::VideoMode(600, 600), "Test");
 }
 

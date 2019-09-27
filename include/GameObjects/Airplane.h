@@ -1,9 +1,29 @@
 #pragma once
 
 #include "GameObject.h"
+#include <string>
+#include <vector>
+#include <SFML/Graphics.hpp>
 
 class Level;
 
+struct AiDirection
+{
+	float angle;
+	float distance;
+};
+
+struct AirplaneData
+{
+	int hitpoints;
+	std::string texture;
+	sf::IntRect idleRect;
+	sf::IntRect leftRect;
+	sf::IntRect rightRect;
+	std::vector<AiDirection> directions;
+};
+
+class ProjectileData;
 
 class Airplane :
 	public GameObject
@@ -11,9 +31,12 @@ class Airplane :
 	Level* _currentScene;
 	sf::Sprite _sprite;
 	int _hitpoints;
+	AirplaneData* _data;
+	std::vector<ProjectileData*> _weapons;
+	std::vector<int> _ammo;
 
 public:
-	Airplane();
+	Airplane(AirplaneData* data);
 
 	void Start(Scene* scene);
 
