@@ -71,7 +71,6 @@ void GameObject::FixedUpdate(float dt)
 
 void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform *= getTransform();
 	for (auto& child : _children)
 	{
 		child->Draw(target, states);

@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 class Level;
+class ProjectileData;
 
 struct AiDirection
 {
@@ -16,14 +17,16 @@ struct AiDirection
 struct AirplaneData
 {
 	int hitpoints;
+	float speed;
 	std::string texture;
 	sf::IntRect idleRect;
 	sf::IntRect leftRect;
 	sf::IntRect rightRect;
 	std::vector<AiDirection> directions;
+	std::vector<ProjectileData*> weapons;
+	std::vector<int> ammo;
 };
 
-class ProjectileData;
 
 class Airplane :
 	public GameObject
@@ -32,8 +35,12 @@ class Airplane :
 	sf::Sprite _sprite;
 	int _hitpoints;
 	AirplaneData* _data;
-	std::vector<ProjectileData*> _weapons;
 	std::vector<int> _ammo;
+	int _currentWeaponIndex;
+	bool _playerControlled;
+	
+	bool _leftPressed;
+	bool _rightPressed;
 
 public:
 	Airplane(AirplaneData* data);
@@ -46,6 +53,8 @@ public:
 
 	void Damage(int hp);
 	void Repair(int hp);
+
+	void SetPlayerControlled(bool b);
 
 	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);

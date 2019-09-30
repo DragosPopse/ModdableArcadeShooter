@@ -4,6 +4,7 @@ local Eagle = {
     idleRect = {0, 0, 50, 50},
     leftRect = {50, 0, 50, 50},
     rightRect = {100, 0, 50, 50},
+    speed = 1000,
 
     onDestroy = function (this)
         this:playAnimation('Explode')

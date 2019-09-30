@@ -11,15 +11,19 @@
 #include <sol/sol.hpp>
 #include "Utility.h"
 #include <vector>
+#include <memory>
 
-sf::IntRect TableToRect(const sol::table& table)
+namespace
 {
-	sf::IntRect result;
-	result.left = table[1];
-	result.top = table[2];
-	result.width = table[3];
-	result.height = table[4];
-	return result;
+	sf::IntRect TableToRect(const sol::table& table)
+	{
+		sf::IntRect result;
+		result.left = table[1];
+		result.top = table[2];
+		result.width = table[3];
+		result.height = table[4];
+		return result;
+	}
 }
 
 Level::Level(Context* context, const std::string& fileName) :
@@ -51,12 +55,13 @@ Level::Level(Context* context, const std::string& fileName) :
 
 		sol::table plane = _context->lua->do_file(path);
 
-		AirplaneData data;
-		data.hitpoints = plane["hitpoints"];
-		data.idleRect = TableToRect(plane["idleRect"]);
-		data.rightRect = TableToRect(plane["rightRect"]);
-		data.leftRect = TableToRect(plane["leftRect"]);
-		data.texture = plane["texture"];
+		AirplaneData apdata;
+		apdata.hitpoints = plane["hitpoints"];
+		apdata.idleRect = TableToRect(plane["idleRect"]);
+		apdata.rightRect = TableToRect(plane["rightRect"]);
+		apdata.leftRect = TableToRect(plane["leftRect"]);
+		apdata.texture = plane["texture"];
+		apdata.speed = plane["speed"];
 
 		sol::table directions = plane["aiPattern"];
 		for (int i = 1; i <= directions.size(); i++)
@@ -64,11 +69,11 @@ Level::Level(Context* context, const std::string& fileName) :
 			AiDirection d;
 			d.angle = directions[i][1];
 			d.distance = directions[i][2];
-			data.directions.push_back(d);
+			apdata.directions.push_back(d);
 		}
 
+		//Load weapons for airplane
 		sol::table weapons = plane["weapons"];
-
 		for (int i = 1; i < weapons.size(); i++)
 		{
 			sol::table weapon = weapons[i];
@@ -79,53 +84,69 @@ Level::Level(Context* context, const std::string& fileName) :
 
 			std::cout << projectilePath << '\n';
 			sol::table projectile = _context->lua->do_file(projectilePath);
-			ProjectileData data;
-			data.texture = projectile["texture"];
-			data.rect = TableToRect(projectile["rect"]);
-			data.speed = projectile["speed"];
-			data.damage = projectile["damage"];
-			data.fireRate = projectile["fireRate"];
-			data.onCollision = projectile["onCollision"];
+			ProjectileData projdata;
+			projdata.texture = projectile["texture"];
+			projdata.rect = TableToRect(projectile["rect"]);
+			projdata.speed = projectile["speed"];
+			projdata.damage = projectile["damage"];
+			projdata.fireRate = projectile["fireRate"];
+			projdata.onCollision = projectile["onCollision"];
 			sol::function fixedUpdate = projectile["fixedUpdate"];
 			sol::function update = projectile["update"];
 			sol::function onDestroy = projectile["onDestroy"];
 			if (fixedUpdate)
 			{
-				data.fixedUpdate = fixedUpdate;
+				projdata.fixedUpdate = fixedUpdate;
 			}
 			if (update)
 			{
-				data.update = update;
+				projdata.update = update;
 			}
 			if (onDestroy)
 			{
-				data.onDestroy = onDestroy;
+				projdata.onDestroy = onDestroy;
 			}
 
 			_projectileDataDict.insert(std::make_pair(projectileName,
-				data));
+				projdata));
+			apdata.weapons.push_back(&_projectileDataDict[projectileName]);
+			apdata.ammo.push_back(ammo);
 		}
 
 		_airplaneDataDict.insert(std::make_pair(name,
-			data));
+			apdata));
 	}
+
+	for (auto pair : _airplaneDataDict)
+	{
+		std::cout << "FIRST: " << pair.first << ' ' << _airplaneDataDict["Eagle"].hitpoints << '\n';
+	}
+	auto& airplaneData = _airplaneDataDict["Eagle"];
+	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
+	airplane->SetPlayerControlled(true);
+	_root->AddChild(std::move(airplane));
+
+	_root->Start(this);
 }
 
 
 bool Level::FixedUpdate(float dt)
 {
 	_root->RemoveDestroyedChilldren();
+	_root->FixedUpdate(dt);
 	return false;
 }
 
 
 bool Level::Update(float dt)
 {
+	_root->Update(dt);
 	return false;
 }
 
 
 bool Level::Render()
 {
+	_root->Draw(*_context->window, sf::RenderStates::Default);
 	return false;
 }

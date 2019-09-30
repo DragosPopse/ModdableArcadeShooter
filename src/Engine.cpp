@@ -29,8 +29,9 @@ Engine::Engine() :
 	LuaInit_Base(_lua);
 	LuaInit_SFML(_lua);
 	LuaInit_Game(_lua);
-	TestLua(_lua);
 	_window.create(sf::VideoMode(600, 600), "Test");
+
+	TestLua(_lua);
 }
 
 

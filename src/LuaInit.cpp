@@ -39,6 +39,9 @@ void LuaInit_SFML(sol::state& lua)
 void LuaInit_Game(sol::state& lua)
 {
 	sol::table engineTable = lua.create_named_table("engine");
+
+	engineTable.set_function("toDegree", &ToDegree);
+	engineTable.set_function("toRadian", &ToRadian);
 	
 	engineTable.new_usertype<Projectile>("Projectile",
 		"getSpeed", &Projectile::GetSpeed,
@@ -47,6 +50,7 @@ void LuaInit_Game(sol::state& lua)
 		"getVelocity", &Projectile::GetVelocity
 		);
 
-	engineTable.set_function("toDegree", &ToDegree);
-	engineTable.set_function("toRadian", &ToRadian);
+	engineTable.new_usertype<Airplane>("Airplane",
+		"damage", &Airplane::Damage,
+		"repair", &Airplane::Repair);
 }

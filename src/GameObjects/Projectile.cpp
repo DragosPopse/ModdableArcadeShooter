@@ -45,6 +45,8 @@ void Projectile::FixedUpdate(float dt)
 
 void Projectile::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
+
 	target.draw(_sprite, states);
 
 	GameObject::Draw(target, states);
