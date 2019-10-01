@@ -4,23 +4,39 @@
 #include "GameObject.h"
 #include "GameObjects/Airplane.h"
 #include <functional>
+#include <iostream>
 
 
-struct AircraftMover
+struct AircraftMoverX
 {
-	float dirX;
-	float dirY;
+	int dirX;
 
-	AircraftMover(float x, float y) :
-		dirX(x),
+	AircraftMoverX(float x) :
+		dirX(x)
+	{
+	}
+
+
+	void operator()(Airplane& airplane, float dt) const
+	{
+		airplane.MoveX(dirX);
+	}
+};
+
+
+struct AircraftMoverY
+{
+	int dirY;
+
+	AircraftMoverY(float y) :
 		dirY(y)
 	{
 	}
 
 
-	void operator()(Airplane& airplane, float dt)
+	void operator()(Airplane& airplane, float dt) const
 	{
-		airplane.MoveInDirection(dirX, dirY, dt);
+		airplane.MoveY(dirY);
 	}
 };
 
@@ -55,7 +71,13 @@ void Player::HandleEvent(const sf::Event& ev, CommandQueue& commands)
 
 void Player::HandleRealtimeInput(CommandQueue& commands)
 {
-
+	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); it++)
+	{
+		if (IsRealtime(it->second) && sf::Keyboard::isKeyPressed(it->first))
+		{
+			commands.Push(_actionBinding[it->second]);
+		}
+	}
 }
 
 
@@ -71,23 +93,23 @@ Player::Player()
 
 	Command moveLeft;
 	moveLeft.category = GameObject::PlayerAirplane;
-	moveLeft.action = DeriveAction<Airplane>(AircraftMover(-1, 0));
+	moveLeft.action = DeriveAction<Airplane>(AircraftMoverX(-1));
 	_actionBinding[MoveLeft] = moveLeft;
 
 	Command moveRight;
 	moveRight.category = GameObject::PlayerAirplane;
-	moveRight.action = DeriveAction<Airplane>(AircraftMover(1, 0));
-	_actionBinding[MoveLeft] = moveRight;
+	moveRight.action = DeriveAction<Airplane>(AircraftMoverX(1));
+	_actionBinding[MoveRight] = moveRight;
 
 	Command moveUp;
 	moveUp.category = GameObject::PlayerAirplane;
-	moveUp.action = DeriveAction<Airplane>(AircraftMover(0, -1));
-	_actionBinding[MoveLeft] = moveUp;
+	moveUp.action = DeriveAction<Airplane>(AircraftMoverY(-1));
+	_actionBinding[MoveUp] = moveUp;
 
 	Command moveDown;
 	moveDown.category = GameObject::PlayerAirplane;
-	moveDown.action = DeriveAction<Airplane>(AircraftMover(0, 1));
-	_actionBinding[MoveLeft] = moveDown;
+	moveDown.action = DeriveAction<Airplane>(AircraftMoverY(1));
+	_actionBinding[MoveDown] = moveDown;
 
 	Command fire;
 	fire.category = GameObject::PlayerAirplane;
@@ -97,12 +119,12 @@ Player::Player()
 	Command nextWeapon;
 	nextWeapon.category = GameObject::PlayerAirplane;
 	nextWeapon.action = DeriveAction<Airplane>(AirplaneNextWeapon);
-	_actionBinding[Fire] = nextWeapon;
+	_actionBinding[NextWeapon] = nextWeapon;
 
 	Command previousWeapon;
 	previousWeapon.category = GameObject::PlayerAirplane;
 	previousWeapon.action = DeriveAction<Airplane>(AirplanePreviousWeapon);
-	_actionBinding[Fire] = previousWeapon;
+	_actionBinding[PreviousWeapon] = previousWeapon;
 }
 
 
@@ -116,4 +138,35 @@ bool Player::IsRealtime(Player::ActionType action) const
 	default:
 		return true;
 	}
+}
+
+
+void Player::AssignKey(ActionType action, sf::Keyboard::Key key)
+{
+	//remove current binding for the action
+	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); )
+	{
+		if (it->second == action)
+		{
+			_keyBinding.erase(it++);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	_keyBinding[key] = action;
+}
+
+
+void Player::LoadSettings(const std::string& jsonFile)
+{
+
+}
+
+
+void Player::SaveSettings(const std::string& jsonFile)
+{
+
 }

@@ -11,7 +11,10 @@ Airplane::Airplane(AirplaneData* data) :
 	_hitpoints(data->hitpoints),
 	_currentWeaponIndex(0),
 	_playerControlled(false),
-	_cooldown(0.f)
+	_cooldown(0.f),
+	_moveX(0),
+	_moveY(0),
+	_moved(false)
 {
 	for (int i = 0; i < _data->ammo.size(); i++)
 	{
@@ -40,6 +43,26 @@ void Airplane::Update(float dt)
 
 void Airplane::FixedUpdate(float dt)
 {
+	if (_moveX == 0)
+	{
+		SetTextureRect(_data->idleRect);
+	}
+	else if (_moveX > 0)
+	{
+		SetTextureRect(_data->rightRect);
+	}
+	else
+	{
+		SetTextureRect(_data->leftRect);
+	}
+
+	if (_moved)
+	{
+		move(Normalize(sf::Vector2f(_moveX, _moveY)) * _data->speed * dt);
+	}
+	_moveX = 0;
+	_moveY = 0;
+	_moved = false;
 	GameObject::FixedUpdate(dt);
 }
 
@@ -53,7 +76,7 @@ void Airplane::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	GameObject::Draw(target, states);
 }
 
-
+ 
 void Airplane::Damage(int hp)
 {
 	_hitpoints -= hp;
@@ -100,14 +123,9 @@ unsigned int Airplane::GetCategory() const
 }
 
 
-void Airplane::MoveInDirection(float dirX, float dirY, float dt)
-{
-	move(Normalize(sf::Vector2f(dirX, dirY)) * _data->speed * dt);
-}
-
-
 void Airplane::NextWeapon()
 {
+	std::cout << "next\n";
 	_currentWeaponIndex++;
 	if (_currentWeaponIndex >= _ammo.size())
 	{
@@ -123,4 +141,24 @@ void Airplane::PreviousWeapon()
 	{
 		_currentWeaponIndex = _ammo.size() - 1;
 	}
+}
+
+
+void Airplane::Fire()
+{
+
+}
+
+
+void Airplane::MoveX(int x)
+{
+	_moveX = x;
+	_moved = true;
+}
+
+
+void Airplane::MoveY(int y)
+{
+	_moveY = y;
+	_moved = true;
 }

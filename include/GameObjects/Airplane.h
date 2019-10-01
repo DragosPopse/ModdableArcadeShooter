@@ -39,6 +39,10 @@ class Airplane :
 	int _currentWeaponIndex;
 	bool _playerControlled;
 	float _cooldown;
+	
+	int _moveX;
+	int _moveY;
+	bool _moved;
 
 public:
 	Airplane(AirplaneData* data);
@@ -52,7 +56,8 @@ public:
 	void Damage(int hp);
 	void Repair(int hp);
 
-	void MoveInDirection(float dirX, float dirY, float dt);
+	void MoveX(int x);
+	void MoveY(int y);
 
 	void Fire();
 	void NextWeapon();

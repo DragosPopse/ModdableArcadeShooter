@@ -19,5 +19,5 @@ std::function<void(GameObject&, float)> DeriveAction(Function func)
 	{
 		assert(dynamic_cast<Derived*>(&obj) != nullptr);
 		func(static_cast<Derived&>(obj), dt);
-	}
+	};
 }

@@ -35,6 +35,7 @@ public:
 	void AssignKey(ActionType action, sf::Keyboard::Key key);
 
 	void LoadSettings(const std::string& jsonFile);
+	void SaveSettings(const std::string& jsonFile);
 
 	void HandleEvent(const sf::Event& ev, CommandQueue& commands);
 	void HandleRealtimeInput(CommandQueue& commands);

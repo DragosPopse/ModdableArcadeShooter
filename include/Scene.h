@@ -20,6 +20,7 @@ public:
 
 	virtual ~Scene();
 
+	virtual bool HandleEvent(const sf::Event& ev) { return false; }
 	virtual bool Update(float dt) { return false; }
 	virtual bool FixedUpdate(float dt) { return false; }
 	virtual bool Render() { return false; }

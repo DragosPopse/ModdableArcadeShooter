@@ -24,17 +24,47 @@ Context* SceneManager::GetContext() const
 
 void SceneManager::Update(float dt)
 {
-	_stack.back()->Update(dt);
+	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	{
+		if (!(*it)->Update(dt))
+		{
+			return;
+		}
+	}
 }
 
 
 void SceneManager::FixedUpdate(float dt)
 {
-	_stack.back()->FixedUpdate(dt);
+	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	{
+		if (!(*it)->FixedUpdate(dt))
+		{
+			return;
+		}
+	}
 }
 
 
 void SceneManager::Render()
 {
-	_stack.back()->Render();
+	for (auto it = _stack.begin(); it != _stack.end(); ++it)
+	{
+		if (!(*it)->Render())
+		{
+			return;
+		}
+	}
+}
+
+
+void SceneManager::HandleEvent(const sf::Event& ev)
+{
+	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	{
+		if (!(*it)->HandleEvent(ev))
+		{
+			return;
+		}
+	}
 }

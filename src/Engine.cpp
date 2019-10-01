@@ -66,12 +66,7 @@ void Engine::HandleEvents()
 	sf::Event ev;
 	while (_window.pollEvent(ev))
 	{
-		switch (ev.type)
-		{
-			case sf::Event::Closed:
-			_window.close();
-			break;
-		}
+		_sceneManager.HandleEvent(ev);
 	}
 }
 

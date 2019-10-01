@@ -117,10 +117,6 @@ Level::Level(Context* context, const std::string& fileName) :
 			apdata));
 	}
 
-	for (auto pair : _airplaneDataDict)
-	{
-		std::cout << "FIRST: " << pair.first << ' ' << _airplaneDataDict["Eagle"].hitpoints << '\n';
-	}
 	auto& airplaneData = _airplaneDataDict["Eagle"];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
 	airplane->SetPlayerControlled(true);
@@ -133,6 +129,11 @@ Level::Level(Context* context, const std::string& fileName) :
 
 bool Level::FixedUpdate(float dt)
 {
+	_player.HandleRealtimeInput(_commands);
+	while (!_commands.IsEmpty())
+	{
+		_root->OnCommand(_commands.Pop(), dt);
+	}
 	_root->RemoveDestroyedChilldren();
 	_root->FixedUpdate(dt);
 	return false;
@@ -149,5 +150,22 @@ bool Level::Update(float dt)
 bool Level::Render()
 {
 	_root->Draw(*_context->window, sf::RenderStates::Default);
+	return true;
+}
+
+
+bool Level::HandleEvent(const sf::Event& ev)
+{
+	switch (ev.type)
+	{
+	case sf::Event::Closed:
+		_context->window->close();
+		break;
+
+	case sf::Event::KeyPressed:
+		_player.HandleEvent(ev, _commands);
+		break;
+	}
+
 	return false;
 }
