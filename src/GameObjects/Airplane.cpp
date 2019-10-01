@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Scenes/Level.h"
 #include <SFML/Graphics.hpp>
+#include "Utility.h"
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -9,7 +10,8 @@ Airplane::Airplane(AirplaneData* data) :
 	_data(data),
 	_hitpoints(data->hitpoints),
 	_currentWeaponIndex(0),
-	_playerControlled(false)
+	_playerControlled(false),
+	_cooldown(0.f)
 {
 	for (int i = 0; i < _data->ammo.size(); i++)
 	{
@@ -23,8 +25,8 @@ void Airplane::Start(Scene* scene)
 	_currentScene = static_cast<Level*>(scene);
 	auto& textures = _currentScene->GetTextures();
 	
-	_sprite.setTexture(textures[_data->texture]);
-	_sprite.setTextureRect(_data->idleRect);
+	SetTexture(textures[_data->texture]);
+	SetTextureRect(_data->idleRect);
 	
 	GameObject::Start(scene);
 }
@@ -32,32 +34,12 @@ void Airplane::Start(Scene* scene)
 
 void Airplane::Update(float dt)
 {
-	if (_playerControlled)
-	{
-		_leftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-		_rightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-	}
 	GameObject::Update(dt);
 }
 
 
 void Airplane::FixedUpdate(float dt)
 {
-	if (_playerControlled)
-	{
-		int direction = 0;
-		if (_leftPressed)
-		{
-			direction = -1;
-		}
-		else if (_rightPressed)
-		{
-			direction = 1;
-		}
-		std::cout << _leftPressed << ' ' << _rightPressed << ' ' << dt << '\n';
-
-		move(direction * _data->speed * dt, 0);
-	}
 	GameObject::FixedUpdate(dt);
 }
 
@@ -91,16 +73,54 @@ void Airplane::Repair(int hp)
 void Airplane::SetTexture(const sf::Texture& texture)
 {
 	_sprite.setTexture(texture);
+	CenterOrigin(_sprite);
 }
 
 
 void Airplane::SetTextureRect(const sf::IntRect& rect)
 {
 	_sprite.setTextureRect(rect);
+	CenterOrigin(_sprite);
 }
 
 
 void Airplane::SetPlayerControlled(bool b)
 {
 	_playerControlled = b;
+}
+
+
+unsigned int Airplane::GetCategory() const
+{
+	if (_playerControlled)
+	{
+		return Type::PlayerAirplane;
+	}
+	return Type::EnemyAirplane;
+}
+
+
+void Airplane::MoveInDirection(float dirX, float dirY, float dt)
+{
+	move(Normalize(sf::Vector2f(dirX, dirY)) * _data->speed * dt);
+}
+
+
+void Airplane::NextWeapon()
+{
+	_currentWeaponIndex++;
+	if (_currentWeaponIndex >= _ammo.size())
+	{
+		_currentWeaponIndex = 0;
+	}
+}
+
+
+void Airplane::PreviousWeapon()
+{
+	_currentWeaponIndex--;
+	if (_currentWeaponIndex < 0)
+	{
+		_currentWeaponIndex = _ammo.size() - 1;
+	}
 }

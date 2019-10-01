@@ -38,9 +38,7 @@ class Airplane :
 	std::vector<int> _ammo;
 	int _currentWeaponIndex;
 	bool _playerControlled;
-	
-	bool _leftPressed;
-	bool _rightPressed;
+	float _cooldown;
 
 public:
 	Airplane(AirplaneData* data);
@@ -54,8 +52,16 @@ public:
 	void Damage(int hp);
 	void Repair(int hp);
 
+	void MoveInDirection(float dirX, float dirY, float dt);
+
+	void Fire();
+	void NextWeapon();
+	void PreviousWeapon();
+
 	void SetPlayerControlled(bool b);
 
 	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);
+
+	unsigned int GetCategory() const override;
 };

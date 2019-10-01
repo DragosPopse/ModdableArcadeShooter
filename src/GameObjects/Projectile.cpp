@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Scenes/Level.h"
 #include <SFML/Graphics.hpp>
+#include "Utility.h"
 
 
 Projectile::Projectile(ProjectileData* data) :
@@ -56,12 +57,14 @@ void Projectile::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Projectile::SetTexture(const sf::Texture& texture)
 {
 	_sprite.setTexture(texture);
+	CenterOrigin(_sprite);
 }
 
 
 void Projectile::SetTextureRect(const sf::IntRect& rect)
 {
 	_sprite.setTextureRect(rect);
+	CenterOrigin(_sprite);
 }
 
 

@@ -6,7 +6,7 @@
 #include "Context.h"
 
 class Scene;
-
+class Command;
 
 class GameObject :
 	public sf::Transformable
@@ -17,6 +17,14 @@ class GameObject :
 	GameObject* _parent;
 	
 public:
+	enum Type
+	{
+		None = 0,
+		PlayerAirplane = 1 << 0,
+		EnemyAirplane = 1 << 1,
+		Projectile = 1 << 2
+	};
+
 	GameObject();
 	virtual ~GameObject();
 
@@ -26,6 +34,8 @@ public:
 	virtual void Update(float dt);
 	virtual void FixedUpdate(float dt);
 	virtual void Draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	void OnCommand(const Command& command, float dt);
 
 	void AddChild(std::unique_ptr<GameObject> obj);
 	std::unique_ptr<GameObject> RemoveChild(const GameObject& obj);
@@ -43,4 +53,6 @@ public:
 	void MarkForDestroy();
 
 	bool IsDestroyed() const;
+
+	virtual unsigned int GetCategory() const { return None; }
 };

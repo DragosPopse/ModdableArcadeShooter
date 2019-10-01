@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include "Command.h"
 
 
 GameObject::GameObject() :
@@ -134,4 +135,18 @@ void GameObject::RemoveDestroyedChilldren()
 
 	std::for_each(_children.begin(), _children.end(), 
 		std::mem_fn(&GameObject::RemoveDestroyedChilldren));
+}
+
+
+void GameObject::OnCommand(const Command& command, float dt)
+{
+	if (command.category & GetCategory())
+	{
+		command.action(*this, dt);
+	}
+
+	for (int i = 0; i < _children.size(); i++)
+	{
+		_children[i]->OnCommand(command, dt);
+	}
 }

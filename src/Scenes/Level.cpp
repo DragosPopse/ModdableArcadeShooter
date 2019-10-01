@@ -124,6 +124,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	auto& airplaneData = _airplaneDataDict["Eagle"];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
 	airplane->SetPlayerControlled(true);
+	airplane->setPosition(50, 50);
 	_root->AddChild(std::move(airplane));
 
 	_root->Start(this);

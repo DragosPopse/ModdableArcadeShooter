@@ -48,4 +48,6 @@ public:
 	sf::Vector2f GetVelocity() const;
 	void SetVelocity(const sf::Vector2f& velocity);
 	void SetRotation(float rotation);
+
+	unsigned int GetCategory() const override { return Type::Projectile; }
 };
