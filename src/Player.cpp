@@ -6,53 +6,70 @@
 #include <functional>
 #include <iostream>
 
+#include "Utility.h"
 
-struct AircraftMoverX
+#include <fstream>
+#include <rapidjson/writer.h>
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
+
+namespace rjs = rapidjson;
+
+
+namespace
 {
-	int dirX;
-
-	AircraftMoverX(float x) :
-		dirX(x)
+	struct AircraftMoverX
 	{
+		int dirX;
+
+		AircraftMoverX(float x) :
+			dirX(x)
+		{
+		}
+
+
+		void operator()(Airplane& airplane, float dt) const
+		{
+			airplane.MoveX(dirX);
+		}
+	};
+
+
+	struct AircraftMoverY
+	{
+		int dirY;
+
+		AircraftMoverY(float y) :
+			dirY(y)
+		{
+		}
+
+
+		void operator()(Airplane& airplane, float dt) const
+		{
+			airplane.MoveY(dirY);
+		}
+	};
+
+	void AirplaneFire(Airplane& airplane, float dt)
+	{
+		airplane.Fire();
 	}
 
-
-	void operator()(Airplane& airplane, float dt) const
+	void AirplaneNextWeapon(Airplane& airplane, float dt)
 	{
-		airplane.MoveX(dirX);
-	}
-};
-
-
-struct AircraftMoverY
-{
-	int dirY;
-
-	AircraftMoverY(float y) :
-		dirY(y)
-	{
+		airplane.NextWeapon();
 	}
 
-
-	void operator()(Airplane& airplane, float dt) const
+	void AirplanePreviousWeapon(Airplane& airplane, float dt)
 	{
-		airplane.MoveY(dirY);
+		airplane.PreviousWeapon();
 	}
-};
-
-void AirplaneFire(Airplane& airplane, float dt)
-{
-	airplane.Fire();
-}
-
-void AirplaneNextWeapon(Airplane& airplane, float dt)
-{
-	airplane.NextWeapon();
-}
-
-void AirplanePreviousWeapon(Airplane& airplane, float dt)
-{
-	airplane.PreviousWeapon();
 }
 
 
@@ -160,13 +177,77 @@ void Player::AssignKey(ActionType action, sf::Keyboard::Key key)
 }
 
 
-void Player::LoadSettings(const std::string& jsonFile)
+void Player::LoadSettings()
 {
+	std::string fileName = BuildString(CONFIG_PATH, "KeyBindings.json");
+	std::ifstream stream(fileName);
+	rjs::IStreamWrapper wrapper(stream);
 
+	rjs::Document document;
+	document.ParseStream(wrapper);
+
+	_keyBinding[(sf::Keyboard::Key)document["MoveLeft"].GetInt()] = MoveLeft;
+	_keyBinding[(sf::Keyboard::Key)document["MoveRight"].GetInt()] = MoveRight;
+	_keyBinding[(sf::Keyboard::Key)document["MoveUp"].GetInt()] = MoveUp;
+	_keyBinding[(sf::Keyboard::Key)document["MoveDown"].GetInt()] = MoveDown;
+	_keyBinding[(sf::Keyboard::Key)document["Fire"].GetInt()] = Fire;
+	_keyBinding[(sf::Keyboard::Key)document["NextWeapon"].GetInt()] = NextWeapon;
+	_keyBinding[(sf::Keyboard::Key)document["PreviousWeapon"].GetInt()] = PreviousWeapon;
 }
 
 
-void Player::SaveSettings(const std::string& jsonFile)
+void Player::SaveSettings()
 {
+	std::string fileName = BuildString(CONFIG_PATH, "KeyBindings.json");
+	
+	rjs::Document document;
+	document.SetObject();
+	auto& allocator = document.GetAllocator();
+	
+	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); ++it)
+	{
+		switch (it->second)
+		{
+		case MoveLeft:
+			
+			document.AddMember("MoveLeft", it->first, allocator);
+			break;
 
+		case MoveRight:		
+			document.AddMember("MoveRight", it->first, allocator);
+			break;
+
+		case MoveUp:	
+			document.AddMember("MoveUp", it->first, allocator);
+			break;
+
+		case MoveDown:			
+			document.AddMember("MoveDown", it->first, allocator);
+			break;
+
+		case Fire:
+			document.AddMember("Fire", it->first, allocator);
+			break;
+
+		case NextWeapon:
+			document.AddMember("NextWeapon", it->first, allocator);
+			break;
+
+		case PreviousWeapon:
+			document.AddMember("PreviousWeapon", it->first, allocator);
+			break;
+		}
+	}
+
+	std::ofstream stream(fileName);
+	rjs::OStreamWrapper wrapper(stream);
+	rjs::PrettyWriter writer(wrapper);
+	document.Accept(writer);
+}
+
+
+bool Player::HasSettings() const
+{
+	std::ifstream file(BuildString(CONFIG_PATH, "KeyBindings.json"));
+	return file.good();
 }

@@ -1,0 +1,9 @@
+{
+    "MoveLeft": 0,
+    "MoveRight": 3,
+    "NextWeapon": 4,
+    "PreviousWeapon": 16,
+    "MoveDown": 18,
+    "MoveUp": 22,
+    "Fire": 57
+}

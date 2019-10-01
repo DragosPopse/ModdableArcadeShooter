@@ -124,6 +124,8 @@ Level::Level(Context* context, const std::string& fileName) :
 	_root->AddChild(std::move(airplane));
 
 	_root->Start(this);
+
+	_player.LoadSettings();
 }
 
 
@@ -166,6 +168,6 @@ bool Level::HandleEvent(const sf::Event& ev)
 		_player.HandleEvent(ev, _commands);
 		break;
 	}
-
+	
 	return false;
 }

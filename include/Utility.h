@@ -9,6 +9,7 @@
 #define AIRPLANES_PATH "assets/scripts/airplanes/"
 #define LEVELS_PATH "assets/scripts/levels/"
 #define PROJECTILES_PATH "assets/scripts/projectiles/"
+#define CONFIG_PATH "assets/config/"
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);
