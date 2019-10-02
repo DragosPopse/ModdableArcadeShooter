@@ -20,12 +20,22 @@ class Level :
 	std::vector<Projectile*> _projectiles;
 
 	std::unique_ptr<GameObject> _root;
+	GameObject* _enemyProjectilesRoot;
+	GameObject* _playerProjectilesRoot;
+	GameObject* _enemyAirplanesRoot;
+	Airplane* _playerAirplane;
 
 	std::map<std::string, AirplaneData> _airplaneDataDict;
 	std::map<std::string, ProjectileData> _projectileDataDict;
 
 	Player _player;
 	CommandQueue _commands;
+
+	sf::View _worldView;
+	sf::FloatRect _worldBounds;
+	sf::Vector2f _playerSpawn;
+	float _scrollSpeed;
+	float _worldHeight;
 
 public:
 	Level(Context* context, const std::string& fileName);
@@ -35,6 +45,9 @@ public:
 	bool Update(float dt) override;
 	bool Render() override;
 
+private:
 	void SpawnEnemies();
 	void RemoveOffScreenObjects();
+
+	void HandleCollisions(float dt);
 };

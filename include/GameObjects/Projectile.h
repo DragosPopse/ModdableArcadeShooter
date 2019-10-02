@@ -6,6 +6,7 @@
 #include <optional>
 
 class Level;
+class Airplane;
 
 
 struct ProjectileData
@@ -29,6 +30,7 @@ class Projectile :
 	sf::Sprite _sprite;
 	ProjectileData* _data;
 	sf::Vector2f _velocity;
+	bool _playerControlled;
 
 public:
 	Projectile(ProjectileData* data);
@@ -49,5 +51,12 @@ public:
 	void SetVelocity(const sf::Vector2f& velocity);
 	void SetRotation(float rotation);
 
-	unsigned int GetCategory() const override { return Type::Projectile; }
+	bool IsPlayerControlled() const { return _playerControlled; }
+	void SetPlayerControlled(bool b) { _playerControlled = b; }
+
+	sf::FloatRect GetBoundingRect() const override;
+
+	unsigned int GetCategory() const override;
+
+	void OnCollision(Airplane* airplane);
 };

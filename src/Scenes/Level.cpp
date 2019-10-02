@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
 #include "GameObjects/Airplane.h"
+#include "GameObjects/SpriteObject.h"
 #include "GameObjects/Projectile.h"
 #include <sol/sol.hpp>
 #include "Utility.h"
@@ -24,12 +25,31 @@ namespace
 		result.height = table[4];
 		return result;
 	}
+
+
+	bool CheckCollision(const GameObject& lhs, const GameObject& rhs)
+	{
+		return lhs.GetBoundingRect().intersects(rhs.GetBoundingRect());
+	}
 }
 
 Level::Level(Context* context, const std::string& fileName) :
 	Scene(context),
 	_root(new GameObject())
 {
+	_worldView = _context->window->getDefaultView();
+
+	if (_player.HasSettings())
+	{
+		_player.LoadSettings();
+	}
+	else
+	{
+		_player.SaveSettings();
+	}
+
+
+
 	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
 
 	//Load needed textures
@@ -44,6 +64,15 @@ Level::Level(Context* context, const std::string& fileName) :
 		_textures.Load(id, path);
 		std::cout << id << " :: " << path << '\n';
 	}
+
+	std::string backgroundTexture = level["backgroundTexture"];
+	bool repeatBackground = level["repeatBackground"];
+	_textures[backgroundTexture].setRepeated(repeatBackground);
+	std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
+	backgroundPtr->SetTexture(_textures[backgroundTexture]);
+
+	_scrollSpeed = level["scrollSpeed"];
+	_worldHeight = level["height"];
 
 	//Load AirplaneData
 	sol::table planes = level["usedAirplanes"];
@@ -117,27 +146,54 @@ Level::Level(Context* context, const std::string& fileName) :
 			apdata));
 	}
 
-	auto& airplaneData = _airplaneDataDict["Eagle"];
+	//Create player
+	sol::table playerTable = level["player"];
+	_playerSpawn.x = playerTable["spawnPoint"][1];
+	_playerSpawn.y = playerTable["spawnPoint"][2];
+	std::string playerPlane = playerTable["airplane"];
+
+	_worldView.setCenter(_playerSpawn);
+
+	auto& airplaneData = _airplaneDataDict[playerPlane];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
 	airplane->SetPlayerControlled(true);
-	airplane->setPosition(50, 50);
+	airplane->setPosition(_playerSpawn);
+	_playerAirplane = airplane.get();
+
+	_enemyProjectilesRoot = new GameObject();
+	_playerProjectilesRoot = new GameObject();
+	_enemyAirplanesRoot = new GameObject();
+
+	std::unique_ptr<GameObject> uptr1(_enemyProjectilesRoot);
+	std::unique_ptr<GameObject> uptr2(_playerProjectilesRoot);
+	std::unique_ptr<GameObject> uptr3(_enemyAirplanesRoot);
+
+	_root->AddChild(std::move(backgroundPtr));
+	_root->AddChild(std::move(uptr1));
+	_root->AddChild(std::move(uptr2));
+	_root->AddChild(std::move(uptr3));
+
 	_root->AddChild(std::move(airplane));
+	
 
 	_root->Start(this);
-
-	_player.LoadSettings();
 }
 
 
 bool Level::FixedUpdate(float dt)
 {
+	_root->RemoveDestroyedChilldren();
+	RemoveOffScreenObjects();
+	HandleCollisions(dt);
+	SpawnEnemies();
 	_player.HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
 	{
 		_root->OnCommand(_commands.Pop(), dt);
 	}
-	_root->RemoveDestroyedChilldren();
 	_root->FixedUpdate(dt);
+	_playerAirplane->move(0, -_scrollSpeed * dt);
+	_worldView.move(0, -_scrollSpeed * dt);
 	return false;
 }
 
@@ -148,9 +204,10 @@ bool Level::Update(float dt)
 	return false;
 }
 
-
+ 
 bool Level::Render()
 {
+	_context->window->setView(_worldView);
 	_root->Draw(*_context->window, sf::RenderStates::Default);
 	return true;
 }
@@ -170,4 +227,63 @@ bool Level::HandleEvent(const sf::Event& ev)
 	}
 	
 	return false;
+}
+
+
+void Level::SpawnEnemies()
+{
+
+}
+
+
+void Level::RemoveOffScreenObjects() 
+{
+
+}
+
+
+void Level::HandleCollisions(float dt)
+{
+	sf::FloatRect playerRect = _playerAirplane->GetBoundingRect();
+	Command enemyProjectileCollector;
+	enemyProjectileCollector.category = GameObject::EnemyProjectile;
+	enemyProjectileCollector.action = DeriveAction<Projectile>([this, playerRect](Projectile& proj, float dt)
+	{
+		if (proj.GetBoundingRect().intersects(playerRect))
+		{
+			proj.OnCollision(_playerAirplane);
+		}
+	});
+	_enemyProjectilesRoot->OnCommand(enemyProjectileCollector, dt);
+
+	Command enemyCollector;
+	enemyCollector.category = GameObject::EnemyAirplane;
+	enemyCollector.action = DeriveAction<Airplane>(
+		[this, playerRect](Airplane& obj, float dt)
+		{
+			sf::FloatRect enemyRect = obj.GetBoundingRect();
+			if (enemyRect.intersects(playerRect))
+			{
+				obj.MarkForDestroy();
+				_playerAirplane->Damage(100);
+			}
+			else
+			{
+				Command playerProjectileCollector;
+				playerProjectileCollector.category = GameObject::PlayerProjectile;
+				playerProjectileCollector.action = DeriveAction<Projectile>(
+					[this, enemyRect, &obj](Projectile& proj, float dt)
+					{
+						if (proj.GetBoundingRect().intersects(enemyRect))
+						{
+							proj.OnCollision(&obj);
+						}
+					}
+				);
+
+				_playerProjectilesRoot->OnCommand(playerProjectileCollector, dt);
+			}
+		}
+	);
+	_enemyAirplanesRoot->OnCommand(enemyCollector, dt);
 }

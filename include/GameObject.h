@@ -22,7 +22,8 @@ public:
 		None = 0,
 		PlayerAirplane = 1 << 0,
 		EnemyAirplane = 1 << 1,
-		Projectile = 1 << 2
+		PlayerProjectile = 1 << 2,
+		EnemyProjectile = 1 << 3
 	};
 
 	GameObject();
@@ -55,4 +56,6 @@ public:
 	bool IsDestroyed() const;
 
 	virtual unsigned int GetCategory() const { return None; }
+
+	virtual sf::FloatRect GetBoundingRect() const { return sf::FloatRect(0, 0, 0, 0); }
 };

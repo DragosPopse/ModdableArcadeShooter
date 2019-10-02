@@ -20,7 +20,7 @@ local HomingMissile = {
     end,
 
     collision = function (this, airplane)
-        airplane:dealDamage(this:getDamage())
+        airplane:damage(this:getDamage())
         this:destroy()
     end,
 

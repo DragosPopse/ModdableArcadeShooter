@@ -162,3 +162,9 @@ void Airplane::MoveY(int y)
 	_moveY = y;
 	_moved = true;
 }
+
+
+sf::FloatRect Airplane::GetBoundingRect() const
+{
+	return GetWorldTransform().transformRect(_sprite.getGlobalBounds());
+}

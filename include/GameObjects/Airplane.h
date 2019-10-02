@@ -68,5 +68,7 @@ public:
 	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);
 
+	sf::FloatRect GetBoundingRect() const override;
+
 	unsigned int GetCategory() const override;
 };

@@ -3,6 +3,7 @@
 #include "Scenes/Level.h"
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
+#include "GameObjects/Airplane.h"
 
 
 Projectile::Projectile(ProjectileData* data) :
@@ -95,4 +96,26 @@ void Projectile::SetVelocity(const sf::Vector2f& velocity)
 void Projectile::SetRotation(float rotation)
 {
 	_sprite.setRotation(rotation);
+}
+
+
+unsigned int Projectile::GetCategory() const
+{
+	if (_playerControlled)
+	{
+		return Type::PlayerProjectile;
+	}
+	return Type::EnemyProjectile;
+}
+
+
+sf::FloatRect Projectile::GetBoundingRect() const
+{
+	return GetWorldTransform().transformRect(_sprite.getGlobalBounds());
+}
+
+
+void Projectile::OnCollision(Airplane* airplane)
+{
+	_data->onCollision(this, airplane);
 }
