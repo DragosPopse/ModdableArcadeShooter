@@ -35,7 +35,10 @@ namespace
 
 Level::Level(Context* context, const std::string& fileName) :
 	Scene(context),
-	_root(new GameObject())
+	_root(new GameObject()),
+	_fpsUpdateInterval(0.5f),
+	_lastFpsUpdate(0.f)
+
 {
 	_worldView = _context->window->getDefaultView();
 
@@ -200,6 +203,13 @@ bool Level::FixedUpdate(float dt)
 
 bool Level::Update(float dt)
 {
+	_lastFpsUpdate += dt;
+	if (_lastFpsUpdate > _fpsUpdateInterval)
+	{
+		int fps = (int)(1.f / dt);
+		_context->window->setTitle(BuildString(fps));
+		_lastFpsUpdate = 0.f;
+	}
 	_root->Update(dt);
 	return false;
 }

@@ -37,6 +37,9 @@ class Level :
 	float _scrollSpeed;
 	float _worldHeight;
 
+	float _fpsUpdateInterval;
+	float _lastFpsUpdate;
+
 public:
 	Level(Context* context, const std::string& fileName);
 
