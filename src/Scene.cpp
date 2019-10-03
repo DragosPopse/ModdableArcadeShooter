@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "SceneManager.h"
 
 
 Scene::Scene(Context* context) :
@@ -10,4 +11,22 @@ Scene::Scene(Context* context) :
 
 Scene::~Scene()
 {
+}
+
+
+void Scene::RequestPush(Scene* scene)
+{
+	_manager->PushScene(scene);
+}
+
+
+void Scene::RequestPop()
+{
+	_manager->PopScene();
+}
+
+
+void Scene::RequestClear()
+{
+	_manager->Clear();
 }

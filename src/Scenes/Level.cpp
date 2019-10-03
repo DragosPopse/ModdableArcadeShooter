@@ -52,7 +52,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	}
 
 
-
+	std::cout << BuildString(LEVELS_PATH, fileName) << '\n';
 	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
 
 	//Load needed textures

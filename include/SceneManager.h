@@ -4,11 +4,12 @@
 #include <list>
 #include "Context.h"
 #include "Scene.h"
+#include <queue>
 
 
 class SceneManager
 {
-	enum ChangeType
+	enum class ChangeType
 	{
 		Push,
 		Pop,
@@ -28,12 +29,14 @@ class SceneManager
 
 	std::list<std::unique_ptr<Scene>> _stack;
 	Context* _context;
+	std::queue<PendingChange> _pendingChanges;
 
 public:
 	SceneManager(Context* context);
 
 	void PushScene(Scene* scene);
 	void PopScene();
+	void Clear();
 
 	Context* GetContext() const;
 

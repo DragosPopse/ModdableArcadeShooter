@@ -7,6 +7,7 @@
 #include "GameObject.h"
 
 #include "Scenes/Level.h"
+#include "Scenes/LevelLoader.h"
 
 
 namespace
@@ -42,7 +43,7 @@ void Engine::Run()
 	_textures.Load("Eagle", "assets/textures/Eagle.png");
 
 
-	_sceneManager.PushScene(new Level(_sceneManager.GetContext(), "Level1.lua"));
+	_sceneManager.PushScene(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
 
 	_clock.restart();
 	while (_window.isOpen())

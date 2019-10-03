@@ -10,9 +10,20 @@ SceneManager::SceneManager(Context* context) :
 
 void SceneManager::PushScene(Scene* scene)
 {
-	std::unique_ptr<Scene> ptr(scene);
+	scene->_manager = this;
+	_pendingChanges.push(PendingChange(ChangeType::Push, scene));
+}
 
-	_stack.push_back(std::move(ptr));
+
+void SceneManager::PopScene()
+{
+	_pendingChanges.push(PendingChange(ChangeType::Pop));
+}
+
+
+void SceneManager::Clear()
+{
+	_pendingChanges.push(PendingChange(ChangeType::Clear));
 }
 
 
@@ -60,11 +71,42 @@ void SceneManager::Render()
 
 void SceneManager::HandleEvent(const sf::Event& ev)
 {
+	ApplyChanges();
 	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
 	{
 		if (!(*it)->HandleEvent(ev))
 		{
 			return;
+		}
+	}
+}
+
+
+void SceneManager::ApplyChanges()
+{
+	while (!_pendingChanges.empty())
+	{
+		PendingChange change = _pendingChanges.front();
+		_pendingChanges.pop();
+		switch (change.type)
+		{
+		case ChangeType::Push:
+			{
+				std::unique_ptr<Scene> ptr(change.scene);
+				_stack.push_back(std::move(ptr));
+			}
+			break;
+
+		case ChangeType::Pop:
+			if (!_stack.empty())
+			{
+				_stack.pop_back();
+			}
+			break;
+
+		case ChangeType::Clear:
+			_stack.clear();
+			break;
 		}
 	}
 }
