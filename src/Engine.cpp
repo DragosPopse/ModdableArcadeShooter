@@ -8,13 +8,23 @@
 
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
+#include "GameObjects/Airplane.h"
+#include "GameObjects/Projectile.h"
 
 
 namespace
 {
 	void TestLua(sol::state& lua)
 	{
+		std::cout << "=====LUA TEST=====\n";
 		lua.do_file("assets/scripts/test.lua");
+		AirplaneData data;
+		data.hitpoints = 200;
+		Airplane *plane = new Airplane(&data);
+		lua["ptrTest"](plane);
+		std::cout << plane->GetHealth();
+		delete plane;
+		std::cout << "=====TEST END=====\n";
 	}
 }
 

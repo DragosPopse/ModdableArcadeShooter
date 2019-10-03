@@ -27,6 +27,7 @@ bool LevelLoader::Update(float dt)
 {
 	if (IsFinished())
 	{
+		std::cout << "$";
 		RequestClear();
 		RequestPush(_result);
 	}

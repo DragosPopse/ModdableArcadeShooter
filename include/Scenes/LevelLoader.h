@@ -21,7 +21,7 @@ class LevelLoader :
 public:
 	LevelLoader(Context* context, const std::string& fileName);
 
-	 
+	
 	bool Update(float dt) override;
 	bool Render() override;
 

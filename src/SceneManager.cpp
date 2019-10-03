@@ -1,4 +1,6 @@
 #include "SceneManager.h"
+#include "Scenes/Level.h"
+#include "Scenes/LevelLoader.h"
 
 
 SceneManager::SceneManager(Context* context) :
@@ -35,6 +37,7 @@ Context* SceneManager::GetContext() const
 
 void SceneManager::Update(float dt)
 {
+	ApplyChanges();
 	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
 	{
 		if (!(*it)->Update(dt))
@@ -71,7 +74,6 @@ void SceneManager::Render()
 
 void SceneManager::HandleEvent(const sf::Event& ev)
 {
-	ApplyChanges();
 	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
 	{
 		if (!(*it)->HandleEvent(ev))
@@ -84,8 +86,15 @@ void SceneManager::HandleEvent(const sf::Event& ev)
 
 void SceneManager::ApplyChanges()
 {
+	if (!_pendingChanges.empty())
+	{
+		std::cout << "WHATAFAC: " << _pendingChanges.size() << "\n";
+	}
+	bool c = false;
 	while (!_pendingChanges.empty())
 	{
+		c = true;
+		std::cout << (int)_pendingChanges.front().type << " ";
 		PendingChange change = _pendingChanges.front();
 		_pendingChanges.pop();
 		switch (change.type)
@@ -93,20 +102,29 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Push:
 			{
 				std::unique_ptr<Scene> ptr(change.scene);
-				_stack.push_back(std::move(ptr));
+				_stack.emplace_back(std::move(ptr));
 			}
 			break;
 
 		case ChangeType::Pop:
 			if (!_stack.empty())
 			{
+				std::cout << "#" << " ";
 				_stack.pop_back();
 			}
 			break;
 
 		case ChangeType::Clear:
-			_stack.clear();
+			if (!_stack.empty())
+			{
+				std::cout << "#" << " ";
+				_stack.clear();
+			}
 			break;
 		}
+	}
+	if (c)
+	{
+		std::cout << '\n';
 	}
 }

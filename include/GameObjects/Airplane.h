@@ -63,6 +63,8 @@ public:
 	void NextWeapon();
 	void PreviousWeapon();
 
+	int GetHealth() const { return _hitpoints; }
+
 	void SetPlayerControlled(bool b);
 
 	void SetTexture(const sf::Texture& texture);
