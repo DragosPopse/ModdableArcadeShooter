@@ -50,6 +50,7 @@ void SceneManager::Update(float dt)
 
 void SceneManager::FixedUpdate(float dt)
 {
+	ApplyChanges();
 	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
 	{
 		if (!(*it)->FixedUpdate(dt))
@@ -74,6 +75,7 @@ void SceneManager::Render()
 
 void SceneManager::HandleEvent(const sf::Event& ev)
 {
+	ApplyChanges();
 	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
 	{
 		if (!(*it)->HandleEvent(ev))
