@@ -11,6 +11,8 @@
 #include "GameObjects/Airplane.h"
 #include "GameObjects/Projectile.h"
 
+#include <ctime>
+
 
 namespace
 {
@@ -37,6 +39,7 @@ Engine::Engine() :
 	),
 	_sceneManager(&_context)
 {
+	srand(time(0));
 	LuaInit_Base(_lua);
 	LuaInit_SFML(_lua);
 	LuaInit_Game(_lua);

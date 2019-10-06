@@ -37,6 +37,7 @@ void Airplane::Start(Scene* scene)
 
 void Airplane::Update(float dt)
 {
+	_cooldown += dt;
 	GameObject::Update(dt);
 }
 
@@ -125,7 +126,7 @@ unsigned int Airplane::GetCategory() const
 
 void Airplane::NextWeapon()
 {
-	std::cout << "next\n";
+	_cooldown = 0;
 	_currentWeaponIndex++;
 	if (_currentWeaponIndex >= _ammo.size())
 	{
@@ -136,6 +137,7 @@ void Airplane::NextWeapon()
 
 void Airplane::PreviousWeapon()
 {
+	_cooldown = 0;
 	_currentWeaponIndex--;
 	if (_currentWeaponIndex < 0)
 	{
@@ -146,7 +148,29 @@ void Airplane::PreviousWeapon()
 
 void Airplane::Fire()
 {
+	if (_ammo[_currentWeaponIndex] > 0 && _cooldown > _data->weapons[_currentWeaponIndex]->fireRate)
+	{
+		_cooldown = 0;
+		_ammo[_currentWeaponIndex]--;
 
+		ProjectileData* projectileData = _data->weapons[_currentWeaponIndex];
+		Projectile* proj = new Projectile(projectileData);
+		proj->setPosition(GetWorldPosition());
+
+		if (_playerControlled)
+		{
+			proj->SetPlayerControlled(true);
+			_currentScene->AddPlayerProjectile(proj);
+			proj->move(0, -GetBoundingRect().height / 2);
+		}
+		else
+		{
+			proj->SetRotation(180);
+			_currentScene->AddEnemyProjectile(proj);
+			proj->move(0, GetBoundingRect().height / 2);
+		}
+
+	}
 }
 
 

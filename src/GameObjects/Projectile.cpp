@@ -4,30 +4,63 @@
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
 #include "GameObjects/Airplane.h"
+#include <sol/sol.hpp>
 
 
 Projectile::Projectile(ProjectileData* data) :
 	_currentScene(nullptr),
-	_data(data)
+	_data(data),
+	_playerControlled(false),
+	_firstFrame(true),
+	_rectChanged(false)
 {
+	
 }
 
 
 void Projectile::Start(Scene* scene)
 {
 	_currentScene = static_cast<Level*>(scene);
-
+	SetTexture(_currentScene->GetTextures()[_data->texture]);
+	SetTextureRect(_data->muzzleRect);
+	_clock.restart();
+	if (_playerControlled)
+	{
+		_direction = -1;
+	}
+	else
+	{
+		_direction = 1;
+	}
 	GameObject::Start(scene);
 }
 
 
 void Projectile::Update(float dt)
 {
-	if (_data->update)
+	/*if (_firstFrame)
 	{
-		sol::table table;
-		table["deltaTime"] = dt;
-		_data->update.value().call(this, table);
+		_rectChanged = false;
+		_firstFrame = false;
+	}
+	else if (!_rectChanged)
+	{
+		_rectChanged = true;
+		SetTextureRect(_data->rect);
+		std::cout << "C\n";
+	}*/
+
+	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.05f)
+	{
+		_rectChanged = true;
+		SetTextureRect(_data->rect);
+	}
+
+	if (_data->update.has_value())
+	{
+		Projectile::Context pContext;
+		pContext.deltaTime = dt;
+		_data->update.value().call(this, pContext);
 	}
 	GameObject::Update(dt);
 }
@@ -35,11 +68,16 @@ void Projectile::Update(float dt)
 
 void Projectile::FixedUpdate(float dt)
 {
-	if (_data->fixedUpdate)
+
+	if (_data->fixedUpdate.has_value())
 	{
-		sol::table table;
-		table["deltaTime"] = dt;
-		_data->fixedUpdate.value().call(this, table);
+		Projectile::Context pContext;
+		pContext.deltaTime = dt;
+		_data->fixedUpdate.value().call(this, pContext);
+	}
+	else
+	{
+		move(0, _direction * _data->speed * dt);
 	}
 	GameObject::FixedUpdate(dt);
 }

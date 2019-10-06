@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <iostream>
 #include "Command.h"
 
 
@@ -127,14 +128,19 @@ bool GameObject::IsDestroyed() const
 
 void GameObject::RemoveDestroyedChilldren()
 {
-	auto removedBegin = std::remove_if(_children.begin(), _children.end(),
-		[](std::unique_ptr<GameObject>& ptr)
+	for (auto& it = _children.begin(); it != _children.end(); )
+	{
+		if ((*it)->IsDestroyed())
 		{
-			return ptr->IsDestroyed();
-		});
-
-	std::for_each(_children.begin(), _children.end(), 
-		std::mem_fn(&GameObject::RemoveDestroyedChilldren));
+			it = _children.erase(it);
+			std::cout << '.';
+		}
+		else
+		{
+			(*it)->RemoveDestroyedChilldren();
+			++it;
+		}
+	}
 }
 
 

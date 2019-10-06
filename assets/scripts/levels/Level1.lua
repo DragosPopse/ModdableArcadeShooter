@@ -11,13 +11,17 @@ level.usedAirplanes = {
     'Eagle'
 }
 
-level.spawnpoints = {
-    
+level.spawnPoints = {
+    {'Eagle', 1024 / 2, 3700},
+    {'Eagle', 1024 / 2, 3720},
+    {'Eagle', 1024 / 2, 3600},
+    {'Eagle', 1024 / 2, 3400}
 }
 
 level.usedTextures = {
     {'Eagle',  'Eagle.png'},
-    {'Jungle', 'Jungle.png'}
+    {'Jungle', 'Jungle.png'},
+    {'Projectiles', 'Projectiles.png'}
 }
 
 level.player = {

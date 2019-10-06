@@ -7,11 +7,19 @@
 #include "GameObjects/Projectile.h"
 #include <vector>
 #include <map>
+#include <deque>
 #include "Player.h"
 #include "CommandQueue.h"
 
 class Airplane;
 class Projectile;
+
+struct AirplaneSpawnPosition
+{
+	AirplaneData* data;
+	float x;
+	float y;
+};
 
 class Level :
 	public Scene
@@ -40,6 +48,8 @@ class Level :
 	float _fpsUpdateInterval;
 	float _lastFpsUpdate;
 
+	std::deque<AirplaneSpawnPosition> _enemySpawns;
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -48,9 +58,13 @@ public:
 	bool Update(float dt) override;
 	bool Render() override;
 
+	void AddPlayerProjectile(Projectile* proj);
+	void AddEnemyProjectile(Projectile* proj);
+	void AddEnemyAirplane(Airplane* plane);
+
 private:
 	void SpawnEnemies();
-	void RemoveOffScreenObjects();
+	void RemoveOffScreenObjects(float dt);
 
 	void HandleCollisions(float dt);
 };

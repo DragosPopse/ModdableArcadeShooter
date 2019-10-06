@@ -13,6 +13,8 @@
 #include "Utility.h"
 #include <vector>
 #include <memory>
+#include <algorithm>
+
 
 namespace
 {
@@ -119,6 +121,7 @@ Level::Level(Context* context, const std::string& fileName) :
 			ProjectileData projdata;
 			projdata.texture = projectile["texture"];
 			projdata.rect = TableToRect(projectile["rect"]);
+			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
 			projdata.speed = projectile["speed"];
 			projdata.damage = projectile["damage"];
 			projdata.fireRate = projectile["fireRate"];
@@ -180,13 +183,40 @@ Level::Level(Context* context, const std::string& fileName) :
 	
 
 	_root->Start(this);
+
+	//Add Spawn Positions
+	std::cout << "1\n";
+	sol::table spawnPoints = level["spawnPoints"];
+	for (int i = 1; i <= spawnPoints.size(); i++)
+	{
+		AirplaneSpawnPosition spawn;
+		std::string id = spawnPoints[i][1];
+		spawn.x = spawnPoints[i][2];
+		spawn.y = spawnPoints[i][3];
+		spawn.data = &_airplaneDataDict[id];
+		std::cout << spawn.x << ' ' << spawn.y << '\n';
+		_enemySpawns.push_back(spawn);
+	}
+	
+	std::sort(_enemySpawns.begin(), _enemySpawns.end(), 
+		[](const AirplaneSpawnPosition& lhs,
+			const AirplaneSpawnPosition& rhs)
+		{
+			return lhs.y > rhs.y;
+		});
+
+	std::cout << "ORDER\n";
+	for (auto it = _enemySpawns.begin(); it != _enemySpawns.end(); ++it)
+	{
+		std::cout << it->y << '\n';
+	}
 }
 
 
 bool Level::FixedUpdate(float dt)
 {
 	_root->RemoveDestroyedChilldren();
-	RemoveOffScreenObjects();
+	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
 	SpawnEnemies();
 	_player.HandleRealtimeInput(_commands);
@@ -197,6 +227,7 @@ bool Level::FixedUpdate(float dt)
 	_root->FixedUpdate(dt);
 	_playerAirplane->move(0, -_scrollSpeed * dt);
 	_worldView.move(0, -_scrollSpeed * dt);
+	_root->RemoveDestroyedChilldren();
 	return false;
 }
 
@@ -242,13 +273,51 @@ bool Level::HandleEvent(const sf::Event& ev)
 
 void Level::SpawnEnemies()
 {
+	bool change = true;
+	while (!_enemySpawns.empty() && change)
+	{
+		change = false;
+		if (_enemySpawns[0].y > _worldView.getCenter().y - _worldView.getSize().y / 2 - 100)
+		{
+			std::unique_ptr<Airplane> airplanePtr(new Airplane(_enemySpawns[0].data));
+			airplanePtr->setPosition(_enemySpawns[0].x, _enemySpawns[0].y);
+			airplanePtr->SetPlayerControlled(false);
+			airplanePtr->setRotation(180);
+			airplanePtr->Start(this);
+			_enemyAirplanesRoot->AddChild(std::move(airplanePtr));
 
+			_enemySpawns.pop_front();
+			change = true;
+		}
+	}
 }
 
 
-void Level::RemoveOffScreenObjects() 
+void Level::RemoveOffScreenObjects(float dt) 
 {
+	Command remover;
+	remover.category = GameObject::EnemyAirplane | GameObject::EnemyProjectile |
+		GameObject::PlayerProjectile;
+	remover.action = [this](GameObject& obj, float dt)
+	{
+		if (obj.GetCategory() == GameObject::PlayerProjectile)
+		{
+			if (obj.GetWorldPosition().y < _worldView.getCenter().y - _worldView.getSize().y - 100)
+			{
+				std::cout << "Removed\n";
+				obj.MarkForDestroy();
+			}
+		}
+		else
+		{
+			if (obj.GetWorldPosition().y > _worldView.getCenter().y + _worldView.getSize().y + 100)
+			{
+				obj.MarkForDestroy();
+			}
+		}
+	};
 
+	_root->OnCommand(remover, dt);
 }
 
 
@@ -296,4 +365,27 @@ void Level::HandleCollisions(float dt)
 		}
 	);
 	_enemyAirplanesRoot->OnCommand(enemyCollector, dt);
+}
+
+
+void Level::AddPlayerProjectile(Projectile* proj)
+{
+	proj->Start(this);
+	std::unique_ptr<Projectile> ptr(proj);
+	_playerProjectilesRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddEnemyProjectile(Projectile* proj)
+{
+	proj->Start(this);
+	std::unique_ptr<Projectile> ptr(proj);
+	_enemyProjectilesRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddEnemyAirplane(Airplane* plane)
+{
+	plane->Start(this);
+	std::unique_ptr<Airplane> ptr(plane);
 }

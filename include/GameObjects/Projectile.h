@@ -13,9 +13,11 @@ struct ProjectileData
 {
 	std::string texture;
 	sf::IntRect rect;
+	sf::IntRect muzzleRect;
 	float speed;
 	int damage;
 	float fireRate;
+	float spreadAngle;
 	sol::optional<sol::function> fixedUpdate;
 	sol::optional<sol::function> update;
 	sol::function onCollision;
@@ -31,8 +33,19 @@ class Projectile :
 	ProjectileData* _data;
 	sf::Vector2f _velocity;
 	bool _playerControlled;
+	int _direction;
+
+	bool _firstFrame;
+	bool _rectChanged;
+
+	sf::Clock _clock;
 
 public:
+	struct Context
+	{
+		float deltaTime;
+	};
+
 	Projectile(ProjectileData* data);
 
 	void Start(Scene* scene);
@@ -53,6 +66,7 @@ public:
 
 	bool IsPlayerControlled() const { return _playerControlled; }
 	void SetPlayerControlled(bool b) { _playerControlled = b; }
+	int GetDirection() const { return _direction; }
 
 	sf::FloatRect GetBoundingRect() const override;
 

@@ -53,4 +53,7 @@ void LuaInit_Game(sol::state& lua)
 	engineTable.new_usertype<Airplane>("Airplane",
 		"damage", &Airplane::Damage,
 		"repair", &Airplane::Repair);
+
+	engineTable.new_usertype<Projectile::Context>("ProjectileContext",
+		"deltaTime", &Projectile::Context::deltaTime);
 }

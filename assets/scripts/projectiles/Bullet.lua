@@ -1,22 +1,16 @@
 local Bullet = {
     texture = 'Projectiles',
-    rect = {0, 0, 20, 20},
+    muzzleRect = {0, 56, 48, 40},
+    rect = {49, 56, 20, 40},
     damage = 20,
-    fireRate = 1,
-    speed = 100,
-
-    fixedUpdate = function (this, context)
-        local approachRate = 200
-        newVelocity = sf.Vector2f.normmalize(this:getSpeed() * context.deltaTime * TODO_targetPosition + this:getVelocity())
-        newVelocity = newVelocity * this:getMaxSpeed()
-        local angle = math.atan2(newVelocity.y, newVelocity.x)
-        this:setRotation(engine.toDegree(angle) + 90)
-        this:setVelocity(newVelocity)
-    end,
+    fireRate = 0.2,
+    speed = 500,
+    spreadAngle = 30,
 
     collision = function (this, airplane)
         airplane:dealDamage(this:getDamage())
-        this:destroy()
+        --this:destroy()
+        print('Collision!!!!!!!!@$@!$!@$!@$!@')
     end,
 
     onDestroy = function (this, reason) 
