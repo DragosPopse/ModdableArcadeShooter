@@ -125,6 +125,10 @@ Level::Level(Context* context, const std::string& fileName) :
 			projdata.speed = projectile["speed"];
 			projdata.damage = projectile["damage"];
 			projdata.fireRate = projectile["fireRate"];
+
+			projdata.spreadAngle = projectile["spreadAngle"];
+			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
+
 			projdata.onCollision = projectile["onCollision"];
 			sol::function fixedUpdate = projectile["fixedUpdate"];
 			sol::function update = projectile["update"];
@@ -211,7 +215,7 @@ Level::Level(Context* context, const std::string& fileName) :
 		std::cout << it->y << '\n';
 	}
 }
-
+ 
 
 bool Level::FixedUpdate(float dt)
 {

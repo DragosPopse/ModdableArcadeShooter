@@ -1,16 +1,17 @@
 local Bullet = {
     texture = 'Projectiles',
-    muzzleRect = {0, 56, 48, 40},
-    rect = {49, 56, 20, 40},
+    muzzleRect = {0, 57, 13, 19},
+    rect = {14, 57, 9, 22},
+    scale = {1, 1},
+    muzzleScale = {2, 2},
     damage = 20,
-    fireRate = 0.2,
-    speed = 500,
-    spreadAngle = 30,
+    fireRate = 0.05,
+    speed = 1000,
+    spreadAngle = 5,
 
-    collision = function (this, airplane)
-        airplane:dealDamage(this:getDamage())
-        --this:destroy()
-        print('Collision!!!!!!!!@$@!$!@$!@$!@')
+    onCollision = function (this, airplane)
+        airplane:damage(this:getDamage())
+        this:destroy()
     end,
 
     onDestroy = function (this, reason) 

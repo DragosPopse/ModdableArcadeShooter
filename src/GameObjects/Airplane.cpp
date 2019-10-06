@@ -169,7 +169,6 @@ void Airplane::Fire()
 			_currentScene->AddEnemyProjectile(proj);
 			proj->move(0, GetBoundingRect().height / 2);
 		}
-
 	}
 }
 

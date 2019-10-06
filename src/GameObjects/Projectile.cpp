@@ -5,6 +5,9 @@
 #include "Utility.h"
 #include "GameObjects/Airplane.h"
 #include <sol/sol.hpp>
+#include <random>
+#include "Utility.h"
+#include <cmath>
 
 
 Projectile::Projectile(ProjectileData* data) :
@@ -14,7 +17,6 @@ Projectile::Projectile(ProjectileData* data) :
 	_firstFrame(true),
 	_rectChanged(false)
 {
-	
 }
 
 
@@ -23,15 +25,29 @@ void Projectile::Start(Scene* scene)
 	_currentScene = static_cast<Level*>(scene);
 	SetTexture(_currentScene->GetTextures()[_data->texture]);
 	SetTextureRect(_data->muzzleRect);
+	setScale(2, 2);
 	_clock.restart();
+
+	float randomAngle = _data->generator(_data->rng);
 	if (_playerControlled)
 	{
-		_direction = -1;
+		randomAngle -= 90;
 	}
 	else
 	{
-		_direction = 1;
+		randomAngle += 90;
 	}
+	
+	float speed = _data->speed;
+	float radian = ToRadian(randomAngle);
+	float x = speed * cos(radian);
+	float y = speed * sin(radian);
+	_direction.x = x;
+	_direction.y = y;
+	_direction = Normalize(_direction);
+
+	setRotation(randomAngle + 90);
+	std::cout << "ANGLE: " << randomAngle << '\n';
 	GameObject::Start(scene);
 }
 
@@ -50,10 +66,11 @@ void Projectile::Update(float dt)
 		std::cout << "C\n";
 	}*/
 
-	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.05f)
+	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.02f)
 	{
 		_rectChanged = true;
 		SetTextureRect(_data->rect);
+		setScale(1, 1);
 	}
 
 	if (_data->update.has_value())
@@ -77,7 +94,7 @@ void Projectile::FixedUpdate(float dt)
 	}
 	else
 	{
-		move(0, _direction * _data->speed * dt);
+		move(_direction * _data->speed * dt);
 	}
 	GameObject::FixedUpdate(dt);
 }

@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
 #include <optional>
+#include <random>
 
 class Level;
 class Airplane;
@@ -22,6 +23,9 @@ struct ProjectileData
 	sol::optional<sol::function> update;
 	sol::function onCollision;
 	sol::optional<sol::function> onDestroy;
+
+	std::mt19937 rng;
+	std::uniform_real_distribution<float> generator;
 };
 
 
@@ -33,12 +37,14 @@ class Projectile :
 	ProjectileData* _data;
 	sf::Vector2f _velocity;
 	bool _playerControlled;
-	int _direction;
 
 	bool _firstFrame;
 	bool _rectChanged;
 
 	sf::Clock _clock;
+	
+
+	sf::Vector2f _direction;
 
 public:
 	struct Context
@@ -66,7 +72,6 @@ public:
 
 	bool IsPlayerControlled() const { return _playerControlled; }
 	void SetPlayerControlled(bool b) { _playerControlled = b; }
-	int GetDirection() const { return _direction; }
 
 	sf::FloatRect GetBoundingRect() const override;
 

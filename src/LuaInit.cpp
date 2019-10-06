@@ -1,4 +1,4 @@
-#include "LuaInit.h"
+	#include "LuaInit.h"
 #include <sol/sol.hpp>
 #include <SFML/Graphics.hpp>
 
@@ -47,7 +47,8 @@ void LuaInit_Game(sol::state& lua)
 		"getSpeed", &Projectile::GetSpeed,
 		"getDamage", &Projectile::GetDamage,
 		"setVelocity", &Projectile::SetVelocity,
-		"getVelocity", &Projectile::GetVelocity
+		"getVelocity", &Projectile::GetVelocity,
+		"destroy", &Projectile::MarkForDestroy
 		);
 
 	engineTable.new_usertype<Airplane>("Airplane",
