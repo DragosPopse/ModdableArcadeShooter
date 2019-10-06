@@ -13,8 +13,8 @@ local Eagle = {
     
     aiPattern = { --{angle, distance} 
         {45, 80},
-        {-45, 160},
-        {45, 80}
+        {-45, 80},
+        {0, 80}
     },
 
     weapons = {

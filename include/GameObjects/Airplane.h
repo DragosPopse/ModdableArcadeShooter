@@ -44,6 +44,11 @@ class Airplane :
 	int _moveY;
 	bool _moved;
 
+	float _currentPatternAngle;
+	float _currentPatternDistance;
+	float _distanceMoved;
+	int _currentPatternIndex;
+
 public:
 	Airplane(AirplaneData* data);
 

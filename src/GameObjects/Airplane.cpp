@@ -14,7 +14,9 @@ Airplane::Airplane(AirplaneData* data) :
 	_cooldown(0.f),
 	_moveX(0),
 	_moveY(0),
-	_moved(false)
+	_moved(false),
+	_distanceMoved(0),
+	_currentPatternIndex(0)
 {
 	for (int i = 0; i < _data->ammo.size(); i++)
 	{
@@ -44,26 +46,53 @@ void Airplane::Update(float dt)
 
 void Airplane::FixedUpdate(float dt)
 {
-	if (_moveX == 0)
+	if (!_playerControlled)
 	{
-		SetTextureRect(_data->idleRect);
-	}
-	else if (_moveX > 0)
-	{
-		SetTextureRect(_data->rightRect);
+		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
+		{
+			_distanceMoved = 0;
+			_currentWeaponIndex++;
+			if (_currentWeaponIndex >= _data->directions.size())
+			{
+				_currentWeaponIndex = 0;
+			}
+		}
+		float angle = _data->directions[_currentWeaponIndex].angle;
+		float radian = ToRadian(angle + 90);
+		float x = _data->speed * cos(radian);
+		float y = _data->speed * sin(radian);
+		sf::Vector2f direction(x, y);
+		direction = Normalize(direction);
+		sf::Vector2f velocity = direction * _data->speed * dt;
+		_distanceMoved += Magnitude(velocity);
+		move(velocity);
+		//std::cout << Magnitude(velocity) << ' ' << _data->directions[_currentWeaponIndex].distance << '\n';
 	}
 	else
 	{
-		SetTextureRect(_data->leftRect);
-	}
+		if (_moveX == 0)
+		{
+			SetTextureRect(_data->idleRect);
+		}
+		else if (_moveX > 0)
+		{
+			SetTextureRect(_data->rightRect);
+		}
+		else
+		{
+			SetTextureRect(_data->leftRect);
+		}
 
-	if (_moved)
-	{
-		move(Normalize(sf::Vector2f(_moveX, _moveY)) * _data->speed * dt);
+		if (_moved)
+		{
+			sf::Vector2f velocity = Normalize(sf::Vector2f(_moveX, _moveY)) * _data->speed * dt;
+			move(velocity);
+			std::cout << Magnitude(velocity) << '\n';
+		}
+		_moveX = 0;
+		_moveY = 0;
+		_moved = false;
 	}
-	_moveX = 0;
-	_moveY = 0;
-	_moved = false;
 	GameObject::FixedUpdate(dt);
 }
 
