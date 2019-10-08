@@ -2,7 +2,7 @@ local level = { }
 local spawn = dofile('assets/scripts/utility/Spawn.lua')
 
 level.name = "Jungle Ride"
-level.backgroundTexture = 'Jungle'
+level.backgroundTexture = 'Island'
 level.repeatBackground = false
 level.scrollSpeed = 70
 level.height = 5000
@@ -28,13 +28,13 @@ level.spawnPoints = {
 
 level.usedTextures = {
     {'Eagle',  'Eagle.png'},
-    {'Jungle', 'Jungle.png'},
+    {'Island', 'Island.png'},
     {'Projectiles', 'Projectiles.png'}
 }
 
 level.player = {
     airplane = 'Eagle',
-    spawnPoint = {1024 / 2, 4023}
+    spawnPoint = {400, 2700}
 }
 
 return level

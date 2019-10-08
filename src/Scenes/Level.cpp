@@ -26,7 +26,7 @@ namespace
 		result.width = table[3];
 		result.height = table[4];
 		return result;
-	}
+	} 
 
 
 	bool CheckCollision(const GameObject& lhs, const GameObject& rhs)
@@ -75,6 +75,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	_textures[backgroundTexture].setRepeated(repeatBackground);
 	std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
 	backgroundPtr->SetTexture(_textures[backgroundTexture]);
+	std::cout << "POSITION: " << backgroundPtr->getPosition().x << '\n';
 
 	_scrollSpeed = level["scrollSpeed"];
 	_worldHeight = level["height"];
@@ -162,7 +163,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	_playerSpawn.y = playerTable["spawnPoint"][2];
 	std::string playerPlane = playerTable["airplane"];
 
-	_worldView.setCenter(_playerSpawn);
+	_worldView.setCenter(400, _playerSpawn.y);
 
 	auto& airplaneData = _airplaneDataDict[playerPlane];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
