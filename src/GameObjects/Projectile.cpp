@@ -47,7 +47,6 @@ void Projectile::Start(Scene* scene)
 	_direction = Normalize(_direction);
 
 	setRotation(randomAngle + 90);
-	std::cout << "ANGLE: " << randomAngle << '\n';
 	GameObject::Start(scene);
 }
 

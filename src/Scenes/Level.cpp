@@ -219,9 +219,12 @@ Level::Level(Context* context, const std::string& fileName) :
 
 bool Level::FixedUpdate(float dt)
 {
-	_root->RemoveDestroyedChilldren();
 	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
+	if (_playerAirplane && _playerAirplane->IsDestroyed())
+	{
+		_playerAirplane = nullptr;
+	}
 	SpawnEnemies();
 	_player.HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
@@ -229,8 +232,12 @@ bool Level::FixedUpdate(float dt)
 		_root->OnCommand(_commands.Pop(), dt);
 	}
 	_root->FixedUpdate(dt);
-	_playerAirplane->move(0, -_scrollSpeed * dt);
+	if (_playerAirplane)
+	{
+		_playerAirplane->move(0, -_scrollSpeed * dt);
+	}
 	_worldView.move(0, -_scrollSpeed * dt);
+
 	_root->RemoveDestroyedChilldren();
 	return false;
 }
@@ -327,6 +334,10 @@ void Level::RemoveOffScreenObjects(float dt)
 
 void Level::HandleCollisions(float dt)
 {
+	if (!_playerAirplane)
+	{
+		return;
+	}
 	sf::FloatRect playerRect = _playerAirplane->GetBoundingRect();
 	Command enemyProjectileCollector;
 	enemyProjectileCollector.category = GameObject::EnemyProjectile;
