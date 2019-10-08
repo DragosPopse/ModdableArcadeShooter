@@ -19,14 +19,17 @@ struct AirplaneData
 	int hitpoints;
 	float speed;
 	std::string texture;
+	std::string healthFont;
 	sf::IntRect idleRect;
 	sf::IntRect leftRect;
 	sf::IntRect rightRect;
 	std::vector<AiDirection> directions;
 	std::vector<ProjectileData*> weapons;
 	std::vector<int> ammo;
+	int healthTextCharSize;
 };
 
+class TextObject;
 
 class Airplane :
 	public GameObject
@@ -48,6 +51,8 @@ class Airplane :
 	float _currentPatternDistance;
 	float _distanceMoved;
 	int _currentPatternIndex;
+
+	TextObject* _healthText;
 
 public:
 	Airplane(AirplaneData* data);
@@ -78,4 +83,7 @@ public:
 	sf::FloatRect GetBoundingRect() const override;
 
 	unsigned int GetCategory() const override;
+
+private:
+	void UpdateHealthDisplay();
 };

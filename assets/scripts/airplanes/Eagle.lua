@@ -6,6 +6,8 @@ local Eagle = {
     rightRect = {54 * 2, 0, 54, 62},
     scale = {1, 1},
     speed = 200,
+    healthFont = 'Mont',
+    healthCharSize = 24,
 
     onDestroy = function (this)
         this:playAnimation('Explode')

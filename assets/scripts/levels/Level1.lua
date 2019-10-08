@@ -32,6 +32,10 @@ level.usedTextures = {
     {'Projectiles', 'Projectiles.png'}
 }
 
+level.usedFonts = {
+    {'Mont', 'Montserrat-Regular.otf'}
+}
+
 level.player = {
     airplane = 'Eagle',
     spawnPoint = {400, 2700}

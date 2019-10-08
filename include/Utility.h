@@ -10,6 +10,7 @@
 #define LEVELS_PATH "assets/scripts/levels/"
 #define PROJECTILES_PATH "assets/scripts/projectiles/"
 #define CONFIG_PATH "assets/config/"
+#define FONTS_PATH "assets/fonts/"
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);
@@ -17,6 +18,8 @@ void CenterOrigin(sf::Text& text);
 float Magnitude(const sf::Vector2f vector);
 sf::Vector2f Normalize(const sf::Vector2f& vector);
 
+
+///from https://stackoverflow.com/questions/21806561/concatenating-strings-and-numbers-in-variadic-template-function
 template <class... Args>
 std::string BuildString(const Args& ... args)
 {

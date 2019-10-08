@@ -17,6 +17,7 @@ class Scene
 protected:
 	Context* _context;
 	TextureHolder _textures;
+	FontHolder _fonts;
 	
 
 public:
@@ -35,4 +36,5 @@ public:
 
 	Context* GetContext() const { return _context; }
 	TextureHolder& GetTextures() { return _textures; }
+	FontHolder& GetFonts() { return _fonts; }
 };

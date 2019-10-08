@@ -3,6 +3,7 @@
 #include "Scenes/Level.h"
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
+#include "GameObjects/TextObject.h"
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -32,6 +33,22 @@ void Airplane::Start(Scene* scene)
 	
 	SetTexture(textures[_data->texture]);
 	SetTextureRect(_data->idleRect);
+
+	_healthText = new TextObject();
+	_healthText->SetFont(_currentScene->GetFonts()[_data->healthFont]);
+	_healthText->SetCharSize(_data->healthTextCharSize);
+
+	auto bounds = GetBoundingRect();
+	_healthText->setPosition(0, bounds.height / 2 + _data->healthTextCharSize / 2);
+	if (!_playerControlled)
+	{
+		_healthText->setRotation(180);
+
+	}
+
+	std::unique_ptr<TextObject> textPtr(_healthText);
+	AddChild(std::move(textPtr));
+	UpdateHealthDisplay();
 	
 	GameObject::Start(scene);
 }
@@ -114,12 +131,14 @@ void Airplane::Damage(int hp)
 	{
 		MarkForDestroy();
 	}
+	UpdateHealthDisplay();
 }
 
 
 void Airplane::Repair(int hp)
 {
 	_hitpoints += hp;
+	UpdateHealthDisplay();
 }
 
 
@@ -219,4 +238,11 @@ void Airplane::MoveY(int y)
 sf::FloatRect Airplane::GetBoundingRect() const
 {
 	return GetWorldTransform().transformRect(_sprite.getGlobalBounds());
+}
+
+
+void Airplane::UpdateHealthDisplay()
+{
+	std::string str = BuildString(_hitpoints);
+	_healthText->SetString(str);
 }

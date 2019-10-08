@@ -57,7 +57,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	std::cout << BuildString(LEVELS_PATH, fileName) << '\n';
 	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
 
-	//Load needed textures
+	//Load required textures
 	sol::table usedTextures = level["usedTextures"];
 	for (int i = 1; i <= usedTextures.size(); i++)
 	{
@@ -67,6 +67,18 @@ Level::Level(Context* context, const std::string& fileName) :
 		std::string file = texture[2];
 		std::string path = BuildString(TEXTURES_PATH, file);
 		_textures.Load(id, path);
+		std::cout << id << " :: " << path << '\n';
+	}
+
+	//Load required fonts
+	sol::table usedFonts = level["usedFonts"];
+	for (int i = 1; i <= usedFonts.size(); i++)
+	{
+		sol::table font = usedFonts[i];
+		std::string id = font[1];
+		std::string file = font[2];
+		std::string path = BuildString(FONTS_PATH, file);
+		_fonts.Load(id, path);
 		std::cout << id << " :: " << path << '\n';
 	}
 
@@ -97,6 +109,8 @@ Level::Level(Context* context, const std::string& fileName) :
 		apdata.leftRect = TableToRect(plane["leftRect"]);
 		apdata.texture = plane["texture"];
 		apdata.speed = plane["speed"];
+		apdata.healthFont = plane["healthFont"];
+		apdata.healthTextCharSize = plane["healthCharSize"];
 
 		sol::table directions = plane["aiPattern"];
 		for (int i = 1; i <= directions.size(); i++)
