@@ -10,6 +10,7 @@
 #include <deque>
 #include "Player.h"
 #include "CommandQueue.h"
+#include "GameObjects/Animation.h"
 
 class Airplane;
 class Projectile;
@@ -31,6 +32,7 @@ class Level :
 	GameObject* _enemyProjectilesRoot;
 	GameObject* _playerProjectilesRoot;
 	GameObject* _enemyAirplanesRoot;
+	GameObject* _explosionsRoot;
 	Airplane* _playerAirplane;
 
 	std::map<std::string, AirplaneData> _airplaneDataDict;
@@ -61,6 +63,7 @@ public:
 	void AddPlayerProjectile(Projectile* proj);
 	void AddEnemyProjectile(Projectile* proj);
 	void AddEnemyAirplane(Airplane* plane);
+	void AddExplosion(Animation* expl);
 
 private:
 	void SpawnEnemies();

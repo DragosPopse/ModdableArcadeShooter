@@ -112,6 +112,17 @@ Level::Level(Context* context, const std::string& fileName) :
 		apdata.healthFont = plane["healthFont"];
 		apdata.healthTextCharSize = plane["healthCharSize"];
 
+		sol::table explosionData = plane["explosionData"];
+		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
+		apdata.framesPerExplosion = explosionData["framesPerAnimation"];
+		apdata.numberOfExplosions = explosionData["numberOfAnimations"];
+		apdata.explosionFrameDuration = explosionData["frameDuration"];
+		apdata.explosionsTexture = explosionData["texture"];
+		apdata.explosionMaxScale = explosionData["maxScale"];
+		apdata.explosionMinScale = explosionData["minScale"];
+		apdata.generator = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
+
+
 		sol::table directions = plane["aiPattern"];
 		for (int i = 1; i <= directions.size(); i++)
 		{
@@ -188,15 +199,18 @@ Level::Level(Context* context, const std::string& fileName) :
 	_enemyProjectilesRoot = new GameObject();
 	_playerProjectilesRoot = new GameObject();
 	_enemyAirplanesRoot = new GameObject();
+	_explosionsRoot = new GameObject();
 
 	std::unique_ptr<GameObject> uptr1(_enemyProjectilesRoot);
 	std::unique_ptr<GameObject> uptr2(_playerProjectilesRoot);
 	std::unique_ptr<GameObject> uptr3(_enemyAirplanesRoot);
+	std::unique_ptr<GameObject> uptr4(_explosionsRoot);
 
 	_root->AddChild(std::move(backgroundPtr));
 	_root->AddChild(std::move(uptr1));
 	_root->AddChild(std::move(uptr2));
 	_root->AddChild(std::move(uptr3));
+	_root->AddChild(std::move(uptr4));
 
 	_root->AddChild(std::move(airplane));
 	
@@ -330,7 +344,6 @@ void Level::RemoveOffScreenObjects(float dt)
 		{
 			if (obj.GetWorldPosition().y < _worldView.getCenter().y - _worldView.getSize().y - 100)
 			{
-				std::cout << "Removed\n";
 				obj.MarkForDestroy();
 			}
 		}
@@ -373,7 +386,7 @@ void Level::HandleCollisions(float dt)
 			sf::FloatRect enemyRect = obj.GetBoundingRect();
 			if (enemyRect.intersects(playerRect))
 			{
-				obj.MarkForDestroy();
+				obj.Damage(99999);
 				_playerAirplane->Damage(100);
 			}
 			else
@@ -418,4 +431,13 @@ void Level::AddEnemyAirplane(Airplane* plane)
 {
 	plane->Start(this);
 	std::unique_ptr<Airplane> ptr(plane);
+	_enemyAirplanesRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddExplosion(Animation* explosion)
+{
+	explosion->Start(this);
+	std::unique_ptr<Animation> ptr(explosion);
+	_explosionsRoot->AddChild(std::move(ptr));
 }

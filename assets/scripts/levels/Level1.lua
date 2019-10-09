@@ -20,16 +20,14 @@ level.spawnPoints = {
     {'Eagle', 1024 / 2, 2700},
     {'Eagle', 1024 / 2, 2400},
     {'Eagle', 1024 / 2, 2000},
-    {'Eagle', 1024 / 2, 1900},
-    {'Eagle', 1024 / 2, 1900},
-    {'Eagle', 1024 / 2, 1900},
     {'Eagle', 1024 / 2, 1900}
 }
 
 level.usedTextures = {
     {'Eagle',  'Eagle.png'},
     {'Island', 'Island.png'},
-    {'Projectiles', 'Projectiles.png'}
+    {'Projectiles', 'Projectiles.png'},
+    {'Explosions', 'Explosions.png'}
 }
 
 level.usedFonts = {

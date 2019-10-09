@@ -9,6 +9,16 @@ local Eagle = {
     healthFont = 'Mont',
     healthCharSize = 24,
 
+    explosionData = {
+        texture = 'Explosions',
+        framesPerAnimation = 10,
+        numberOfAnimations = 3,
+        frameSize = {64, 64},
+        frameDuration = 0.1,
+        minScale = 1,
+        maxScale = 3
+    },
+
     onDestroy = function (this)
         this:playAnimation('Explode')
     end,

@@ -104,7 +104,7 @@ void Airplane::FixedUpdate(float dt)
 		{
 			sf::Vector2f velocity = Normalize(sf::Vector2f(_moveX, _moveY)) * _data->speed * dt;
 			move(velocity);
-			std::cout << Magnitude(velocity) << '\n';
+
 		}
 		_moveX = 0;
 		_moveY = 0;
@@ -130,6 +130,24 @@ void Airplane::Damage(int hp)
 	if (_hitpoints <= 0)
 	{
 		MarkForDestroy();
+		Animation* explosion = new Animation();
+		explosion->setPosition(GetWorldPosition());
+		explosion->SetTexture(_currentScene->GetTextures()[_data->explosionsTexture]);
+		sf::IntRect firstRect;
+		firstRect.width = _data->explosionSize.x;
+		firstRect.height = _data->explosionSize.y;
+		firstRect.left = 0;
+		int randN = rand() % _data->numberOfExplosions;
+		firstRect.top = firstRect.height * randN;
+		std::cout << "TOP: " << randN  << ' ' << firstRect.top << '\n';
+		explosion->SetFirstRect(firstRect);
+		explosion->SetDestroyOnFinish(true);
+		explosion->SetLoopable(false);
+		explosion->SetNumberOfFrames(_data->framesPerExplosion);
+		explosion->SetTimePerFrame(_data->explosionFrameDuration);
+		float randomScale = _data->generator(_data->rng);
+		explosion->setScale(randomScale, randomScale);
+		_currentScene->AddExplosion(explosion);
 	}
 	UpdateHealthDisplay();
 }

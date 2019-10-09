@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <random>
 
 class Level;
 class ProjectileData;
@@ -27,6 +28,17 @@ struct AirplaneData
 	std::vector<ProjectileData*> weapons;
 	std::vector<int> ammo;
 	int healthTextCharSize;
+
+	sf::Vector2i explosionSize;
+	int framesPerExplosion;
+	int numberOfExplosions;
+	std::string explosionsTexture;
+	float explosionFrameDuration;
+	float explosionMinScale;
+	float explosionMaxScale;
+
+	std::mt19937 rng;
+	std::uniform_real_distribution<float> generator;
 };
 
 class TextObject;
