@@ -192,7 +192,7 @@ void Projectile::OnCollision(Airplane* airplane)
 	//std::cout << _direction.x << ' ' << _direction.y << '\n';
 	//em.setParticleVelocity(thor::Distributions::deflect(_direction * 120.f, 10));
 	em.setParticleVelocity(thor::Distributions::circle(sf::Vector2f(0, 0), 20));
-	em.setParticleLifetime(sf::seconds(0.3));
+	em.setParticleLifetime(sf::seconds(0.1));
 	em.setParticleRotation(thor::Distributions::uniform(0, 360));
 	em.setParticleTextureIndex(thor::Distributions::uniform(0, 3));
 	em.setParticleScale(UniformVector2fDistribution(1, 2));

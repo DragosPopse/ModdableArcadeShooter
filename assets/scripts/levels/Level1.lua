@@ -11,17 +11,16 @@ level.usedAirplanes = {
     'Eagle'
 }
 
-level.spawnPoints = {
-    {'Eagle', 1024 / 2 + 10, 3700},
-    {'Eagle', 1024 / 2 - 20, 3600},
-    {'Eagle', 1024 / 2 - 30, 3400},
-    {'Eagle', 1024 / 2, 3000},
-    {'Eagle', 1024 / 2, 2900},
-    {'Eagle', 1024 / 2, 2700},
-    {'Eagle', 1024 / 2, 2400},
-    {'Eagle', 1024 / 2, 2000},
-    {'Eagle', 1024 / 2, 1900}
-}
+level.spawnPoints = { }
+
+for i, v in ipairs(spawn.wall('Eagle', 5, {0, 2000}, 0, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 6, {100, 1100}, 45, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+  
 
 level.usedTextures = {
     {'Eagle',  'Eagle.png'},
