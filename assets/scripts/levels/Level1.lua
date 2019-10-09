@@ -27,7 +27,8 @@ level.usedTextures = {
     {'Eagle',  'Eagle.png'},
     {'Island', 'Island.png'},
     {'Projectiles', 'Projectiles.png'},
-    {'Explosions', 'Explosions.png'}
+    {'Explosions', 'Explosions.png'},
+    {'Fragments', 'Fragments.png'}
 }
 
 level.usedFonts = {

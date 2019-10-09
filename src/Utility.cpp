@@ -154,3 +154,16 @@ std::string ToString(sf::Keyboard::Key key)
 
 	return "";
 }
+
+
+UniformVector2fDistribution::UniformVector2fDistribution(float min, float max) :
+	_distr(min, max)
+{
+}
+
+
+sf::Vector2f UniformVector2fDistribution::operator()()
+{
+	float n = _distr(_generator);
+	return sf::Vector2f(n, n);
+}

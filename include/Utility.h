@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <Thor/Math.hpp>
 #include <string>
 #include <sstream>
+#include <random>
 
 #define SCRIPTS_PATH "assets/scripts/"
 #define TEXTURES_PATH "assets/textures/"
@@ -35,3 +37,15 @@ std::string BuildString(const Args& ... args)
 
 float ToRadian(float degree);
 float ToDegree(float radian);
+
+
+//This converts to a thor::Distribution 
+class UniformVector2fDistribution
+{
+	std::mt19937 _generator;
+	std::uniform_real_distribution<float> _distr;
+public:
+	UniformVector2fDistribution(float min, float max);
+
+	sf::Vector2f operator()();
+};

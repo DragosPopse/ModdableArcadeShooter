@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "CommandQueue.h"
 #include "GameObjects/Animation.h"
+#include "GameObjects/ParticleSystemObject.h"
 
 class Airplane;
 class Projectile;
@@ -33,6 +34,7 @@ class Level :
 	GameObject* _playerProjectilesRoot;
 	GameObject* _enemyAirplanesRoot;
 	GameObject* _explosionsRoot;
+	GameObject* _particlesRoot;
 	Airplane* _playerAirplane;
 
 	std::map<std::string, AirplaneData> _airplaneDataDict;
@@ -64,6 +66,7 @@ public:
 	void AddEnemyProjectile(Projectile* proj);
 	void AddEnemyAirplane(Airplane* plane);
 	void AddExplosion(Animation* expl);
+	void AddParticles(ParticleSystemObject* p);
 
 private:
 	void SpawnEnemies();

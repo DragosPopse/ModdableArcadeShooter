@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
 #include "GameObjects/TextObject.h"
+#include "GameObjects/ParticleSystemObject.h"
+#include <Thor/Math.hpp>
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -45,6 +47,30 @@ void Airplane::Start(Scene* scene)
 		_healthText->setRotation(180);
 
 	}
+	//else
+	//{
+	//	//TEST
+	//	ParticleSystemObject* ps = new ParticleSystemObject();
+	//	auto& system = ps->system;
+	//	system.setTexture(_currentScene->GetTextures()["Fragments"]);
+	//	for (int i = 0; i < 4; i++)
+	//	{
+	//		sf::IntRect rect;
+	//		rect.width = 5;
+	//		rect.height = 5;
+	//		rect.top = 0;
+	//		rect.left = i * 5;
+	//		system.addTextureRect(rect);
+	//	}
+	//	thor::UniversalEmitter em;
+	//	em.setParticleTextureIndex(thor::Distributions::uniform(0, 3));
+	//	em.setEmissionRate(30);
+	//	em.setParticleVelocity(thor::Distributions::circle(sf::Vector2f(0, 0), 100));
+	//	em.setParticleScale(UniformVector2fDistribution(1, 3));
+	//	system.addEmitter(em, sf::seconds(2));
+	//	std::unique_ptr<ParticleSystemObject> ptr(ps);
+	//	AddChild(std::move(ptr));
+	//}
 
 	std::unique_ptr<TextObject> textPtr(_healthText);
 	AddChild(std::move(textPtr));
@@ -139,7 +165,6 @@ void Airplane::Damage(int hp)
 		firstRect.left = 0;
 		int randN = rand() % _data->numberOfExplosions;
 		firstRect.top = firstRect.height * randN;
-		std::cout << "TOP: " << randN  << ' ' << firstRect.top << '\n';
 		explosion->SetFirstRect(firstRect);
 		explosion->SetDestroyOnFinish(true);
 		explosion->SetLoopable(false);

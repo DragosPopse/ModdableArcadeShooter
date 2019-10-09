@@ -87,7 +87,6 @@ Level::Level(Context* context, const std::string& fileName) :
 	_textures[backgroundTexture].setRepeated(repeatBackground);
 	std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
 	backgroundPtr->SetTexture(_textures[backgroundTexture]);
-	std::cout << "POSITION: " << backgroundPtr->getPosition().x << '\n';
 
 	_scrollSpeed = level["scrollSpeed"];
 	_worldHeight = level["height"];
@@ -200,17 +199,21 @@ Level::Level(Context* context, const std::string& fileName) :
 	_playerProjectilesRoot = new GameObject();
 	_enemyAirplanesRoot = new GameObject();
 	_explosionsRoot = new GameObject();
+	_particlesRoot = new GameObject();
 
 	std::unique_ptr<GameObject> uptr1(_enemyProjectilesRoot);
 	std::unique_ptr<GameObject> uptr2(_playerProjectilesRoot);
 	std::unique_ptr<GameObject> uptr3(_enemyAirplanesRoot);
 	std::unique_ptr<GameObject> uptr4(_explosionsRoot);
+	std::unique_ptr<GameObject> uptr5(_particlesRoot);
+
 
 	_root->AddChild(std::move(backgroundPtr));
 	_root->AddChild(std::move(uptr4));
 	_root->AddChild(std::move(uptr1));
 	_root->AddChild(std::move(uptr2));
 	_root->AddChild(std::move(uptr3));
+	_root->AddChild(std::move(uptr5));
 
 	_root->AddChild(std::move(airplane));
 	
@@ -440,4 +443,12 @@ void Level::AddExplosion(Animation* explosion)
 	explosion->Start(this);
 	std::unique_ptr<Animation> ptr(explosion);
 	_explosionsRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddParticles(ParticleSystemObject* p)
+{
+	p->Start(this);
+	std::unique_ptr<ParticleSystemObject> ptr(p);
+	_particlesRoot->AddChild(std::move(ptr));
 }
