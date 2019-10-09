@@ -42,8 +42,8 @@ void Animation::Update(float dt)
 			_currentFrame.left += _currentFrame.width;
 			_sprite.setTextureRect(_currentFrame);
 		}
-		
 	}
+	GameObject::Update(dt);
 }
 
 
