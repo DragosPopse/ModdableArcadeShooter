@@ -207,10 +207,10 @@ Level::Level(Context* context, const std::string& fileName) :
 	std::unique_ptr<GameObject> uptr4(_explosionsRoot);
 
 	_root->AddChild(std::move(backgroundPtr));
+	_root->AddChild(std::move(uptr4));
 	_root->AddChild(std::move(uptr1));
 	_root->AddChild(std::move(uptr2));
 	_root->AddChild(std::move(uptr3));
-	_root->AddChild(std::move(uptr4));
 
 	_root->AddChild(std::move(airplane));
 	

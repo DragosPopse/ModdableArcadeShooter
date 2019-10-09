@@ -15,8 +15,8 @@ local Eagle = {
         numberOfAnimations = 3,
         frameSize = {64, 64},
         frameDuration = 0.1,
-        minScale = 1,
-        maxScale = 3
+        minScale = 5,
+        maxScale = 10
     },
 
     onDestroy = function (this)

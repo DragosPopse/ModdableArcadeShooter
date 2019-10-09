@@ -69,7 +69,7 @@ class Airplane :
 public:
 	Airplane(AirplaneData* data);
 
-	void Start(Scene* scene);
+	void Start(Scene* scene) override;
 
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
