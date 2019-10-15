@@ -23,11 +23,14 @@ public:
 
 	ParticleSystemObject();
 
+	~ParticleSystemObject();
+
 	void Start(Scene* scene) override;
 
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
 	
 	void SetRemoveAfterLifetime(float time);
 };

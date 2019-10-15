@@ -32,7 +32,7 @@ void ParticleSystemObject::Update(float dt)
 
 void ParticleSystemObject::FixedUpdate(float dt)
 {
-	GameObject::FixedUpdate(dt);
+	//GameObject::FixedUpdate(dt);
 }
 
 
@@ -51,4 +51,10 @@ void ParticleSystemObject::SetRemoveAfterLifetime(float time)
 {
 	_removeAfterLifetime = true;
 	_lifetime = time;
+}
+
+
+ParticleSystemObject::~ParticleSystemObject()
+{
+	std::cout << "destroyed\n";
 }

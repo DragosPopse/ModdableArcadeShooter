@@ -50,4 +50,10 @@ public:
 	UniformVector2fDistribution(float min, float max);
 
 	sf::Vector2f operator()();
+
+	static thor::Distribution<sf::Vector2f> Create(float min, float max)
+	{
+		UniformVector2fDistribution distr(min, max);
+		return thor::Distribution<sf::Vector2f>(distr);
+	}
 };

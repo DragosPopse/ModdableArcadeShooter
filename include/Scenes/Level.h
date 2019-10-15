@@ -12,6 +12,7 @@
 #include "CommandQueue.h"
 #include "GameObjects/Animation.h"
 #include "GameObjects/ParticleSystemObject.h"
+#include <sol/sol.hpp>
 
 class Airplane;
 class Projectile;
@@ -71,12 +72,14 @@ public:
 	void AddExplosion(Animation* expl);
 	void AddParticles(ParticleSystemObject* p);
 	void AddUiElement(GameObject* ui);
+	void AddLuaParticle(sol::userdata p);
 
 	GameObject* GetEnemyProjectilesRoot() { return _enemyProjectilesRoot; }
 	GameObject* GetEnemyAirplanesRoot() { return _enemyAirplanesRoot; }
 	Airplane* GetPlayerAirplane() { return _playerAirplane; }
 	GameObject* GetPlayerProjectilesRoot() { return _playerProjectilesRoot; }
 	
+	sf::Texture& GetTexture(const std::string& id) { return _textures[id]; }
 
 private:
 	void SpawnEnemies();

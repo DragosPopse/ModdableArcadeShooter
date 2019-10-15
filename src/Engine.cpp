@@ -42,6 +42,7 @@ Engine::Engine() :
 	srand(time(0));
 	LuaInit_Base(_lua);
 	LuaInit_SFML(_lua);
+	LuaInit_Thor(_lua);
 	LuaInit_Game(_lua);
 	_window.create(sf::VideoMode(800, 800), "Test");
 	TestLua(_lua);

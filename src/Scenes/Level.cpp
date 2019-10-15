@@ -143,6 +143,10 @@ Level::Level(Context* context, const std::string& fileName) :
 		{
 			sol::table weapon = weapons[i];
 			std::string projectileName = weapon["projectile"];
+	/*		if (projectileName == "HomingMissile")
+			{
+				std::cout << "break\n";
+			}*/
 			int ammo = weapon["ammo"];
 
 			std::string projectilePath = BuildString(PROJECTILES_PATH, projectileName, ".lua");
@@ -488,9 +492,9 @@ void Level::AddExplosion(Animation* explosion)
 
 void Level::AddParticles(ParticleSystemObject* p)
 {
-	p->Start(this);
-	std::unique_ptr<ParticleSystemObject> ptr(p);
-	_particlesRoot->AddChild(std::move(ptr));
+	//p->Start(this);
+	//std::unique_ptr<ParticleSystemObject> ptr(p);
+	//_particlesRoot->AddUnownedChild(p);
 }
 
 
@@ -499,4 +503,11 @@ void Level::AddUiElement(GameObject* ui)
 	ui->Start(this);
 	std::unique_ptr<GameObject> ptr(ui);
 	_uiRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddLuaParticle(sol::userdata p)
+{
+	p.as<ParticleSystemObject>().Start(this);
+	_particlesRoot->AddUnownedChild(p);
 }

@@ -10,6 +10,8 @@
 #include "GameObjects/Airplane.h"
 #include "GameObjects/Projectile.h"
 
+#include <sol/sol.hpp>
+
 
 GameObject::GameObject() :
 	_parent(nullptr),
@@ -62,6 +64,10 @@ void GameObject::Update(float dt)
 	{
 		child->Update(dt);
 	}
+	for (auto& child : _unownedChildren)
+	{
+		child.as<GameObject>().Update(dt);
+	}
 }
 
 
@@ -69,7 +75,11 @@ void GameObject::FixedUpdate(float dt)
 {
 	for (auto& child : _children)
 	{
-		child->FixedUpdate(dt);
+  		child->FixedUpdate(dt);
+	}
+	for (auto& child : _unownedChildren)
+	{
+		child.as<GameObject>().FixedUpdate(dt);
 	}
 }
 
@@ -83,6 +93,11 @@ void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for (auto& child : _children)
 	{
 		child->Draw(target, states);
+	}
+
+	for (auto& child : _unownedChildren)
+	{
+		child.as<GameObject>().Draw(target, states);
 	}
 }
 
@@ -147,6 +162,19 @@ void GameObject::RemoveDestroyedChilldren()
 			++it;
 		}
 	}
+
+	for (auto& it = _unownedChildren.begin(); it != _unownedChildren.end(); )
+	{
+		if ((*it).as<GameObject>().IsDestroyed())
+		{
+			it = _unownedChildren.erase(it);
+		}
+		else
+		{
+			(*it).as<GameObject>().RemoveDestroyedChilldren();
+			++it;
+		}
+	}
 }
 
 
@@ -160,6 +188,10 @@ void GameObject::OnCommand(const Command& command, float dt)
 	for (int i = 0; i < _children.size(); i++)
 	{
 		_children[i]->OnCommand(command, dt);
+	}
+	for (int i = 0; i < _unownedChildren.size(); i++)
+	{
+		_unownedChildren[i].as<GameObject>().OnCommand(command, dt);
 	}
 }
 
@@ -186,4 +218,15 @@ void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
 	{
 		_children[i]->OnLuaCommand(command, dt);
 	}
+	for (int i = 0; i < _unownedChildren.size(); i++)
+	{
+		_unownedChildren[i].as<GameObject>().OnLuaCommand(command, dt);
+	}
+}
+
+
+void GameObject::AddUnownedChild(sol::userdata obj)
+{
+	
+	_unownedChildren.push_back(obj);
 }

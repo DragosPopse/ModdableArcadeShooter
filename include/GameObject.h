@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include <sol/sol.hpp>
 #include "Context.h"
 
 class Scene;
@@ -15,6 +16,7 @@ class GameObject :
 	bool _active;
 	bool _markedForDestroy;
 	std::vector<std::unique_ptr<GameObject>> _children;
+	std::vector<sol::userdata> _unownedChildren;
 	GameObject* _parent;
 	
 public:
@@ -41,6 +43,7 @@ public:
 	void OnLuaCommand(const LuaCommand& command, float dt);
 
 	void AddChild(std::unique_ptr<GameObject> obj);
+	void AddUnownedChild(sol::userdata obj);
 	std::unique_ptr<GameObject> RemoveChild(const GameObject& obj);
 	
 	void RemoveDestroyedChilldren();
