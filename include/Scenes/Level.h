@@ -36,6 +36,7 @@ class Level :
 	GameObject* _explosionsRoot;
 	GameObject* _environmentRoot;
 	GameObject* _particlesRoot;
+	std::unique_ptr<GameObject> _uiRoot;
 	Airplane* _playerAirplane;
 
 	std::map<std::string, AirplaneData> _airplaneDataDict;
@@ -69,6 +70,13 @@ public:
 	void AddEnemyAirplane(Airplane* plane);
 	void AddExplosion(Animation* expl);
 	void AddParticles(ParticleSystemObject* p);
+	void AddUiElement(GameObject* ui);
+
+	GameObject* GetEnemyProjectilesRoot() { return _enemyProjectilesRoot; }
+	GameObject* GetEnemyAirplanesRoot() { return _enemyAirplanesRoot; }
+	Airplane* GetPlayerAirplane() { return _playerAirplane; }
+	GameObject* GetPlayerProjectilesRoot() { return _playerProjectilesRoot; }
+	
 
 private:
 	void SpawnEnemies();

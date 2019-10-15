@@ -7,6 +7,9 @@
 #include <iostream>
 #include "Command.h"
 
+#include "GameObjects/Airplane.h"
+#include "GameObjects/Projectile.h"
+
 
 GameObject::GameObject() :
 	_parent(nullptr),
@@ -73,6 +76,10 @@ void GameObject::FixedUpdate(float dt)
 
 void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	if (GetCategory() == None)
+	{
+		states.transform *= getTransform();
+	}
 	for (auto& child : _children)
 	{
 		child->Draw(target, states);
@@ -153,5 +160,30 @@ void GameObject::OnCommand(const Command& command, float dt)
 	for (int i = 0; i < _children.size(); i++)
 	{
 		_children[i]->OnCommand(command, dt);
+	}
+}
+
+
+void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
+{
+	if (command.category & GetCategory())
+	{
+		if ((Type::PlayerAirplane | Type::EnemyAirplane) & GetCategory())
+		{
+			command.action(static_cast<Airplane*>(this), dt);
+		}
+		else if ((Type::EnemyProjectile | Type::PlayerProjectile) & GetCategory())
+		{
+			command.action(static_cast<Projectile*>(this), dt);
+		}
+		else
+		{
+			command.action(this, dt);
+		}
+	}
+
+	for (int i = 0; i < _children.size(); i++)
+	{
+		_children[i]->OnLuaCommand(command, dt);
 	}
 }

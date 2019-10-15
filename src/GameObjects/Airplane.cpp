@@ -33,6 +33,7 @@ void Airplane::Start(Scene* scene)
 	_currentScene = static_cast<Level*>(scene);
 	auto& textures = _currentScene->GetTextures();
 	
+	setScale(_data->scale, _data->scale);
 	SetTexture(textures[_data->texture]);
 	SetTextureRect(_data->idleRect);
 
@@ -47,30 +48,12 @@ void Airplane::Start(Scene* scene)
 		_healthText->setRotation(180);
 
 	}
-	//else
-	//{
-	//	//TEST
-	//	ParticleSystemObject* ps = new ParticleSystemObject();
-	//	auto& system = ps->system;
-	//	system.setTexture(_currentScene->GetTextures()["Fragments"]);
-	//	for (int i = 0; i < 4; i++)
-	//	{
-	//		sf::IntRect rect;
-	//		rect.width = 5;
-	//		rect.height = 5;
-	//		rect.top = 0;
-	//		rect.left = i * 5;
-	//		system.addTextureRect(rect);
-	//	}
-	//	thor::UniversalEmitter em;
-	//	em.setParticleTextureIndex(thor::Distributions::uniform(0, 3));
-	//	em.setEmissionRate(30);
-	//	em.setParticleVelocity(thor::Distributions::circle(sf::Vector2f(0, 0), 100));
-	//	em.setParticleScale(UniformVector2fDistribution(1, 3));
-	//	system.addEmitter(em, sf::seconds(2));
-	//	std::unique_ptr<ParticleSystemObject> ptr(ps);
-	//	AddChild(std::move(ptr));
-	//}
+	else
+	{
+		_weaponDisplay = new SpriteObject();
+		UpdateWeaponDisplay();
+		_currentScene->AddUiElement(_weaponDisplay);
+	}
 
 	std::unique_ptr<TextObject> textPtr(_healthText);
 	AddChild(std::move(textPtr));
@@ -223,6 +206,10 @@ void Airplane::NextWeapon()
 	{
 		_currentWeaponIndex = 0;
 	}
+	if (_playerControlled)
+	{
+		UpdateWeaponDisplay();
+	}
 }
 
 
@@ -233,6 +220,10 @@ void Airplane::PreviousWeapon()
 	if (_currentWeaponIndex < 0)
 	{
 		_currentWeaponIndex = _ammo.size() - 1;
+	}
+	if (_playerControlled)
+	{
+		UpdateWeaponDisplay();
 	}
 }
 
@@ -256,7 +247,7 @@ void Airplane::Fire()
 		}
 		else
 		{
-			proj->SetRotation(180);
+			proj->setRotation(180);
 			_currentScene->AddEnemyProjectile(proj);
 			proj->move(0, GetBoundingRect().height / 2);
 		}
@@ -288,4 +279,16 @@ void Airplane::UpdateHealthDisplay()
 {
 	std::string str = BuildString(_hitpoints);
 	_healthText->SetString(str);
+}
+
+
+void Airplane::UpdateWeaponDisplay()
+{
+	_weaponDisplay->SetTexture(_currentScene->GetTextures()[_data->weapons[_currentWeaponIndex]->iconTexture]);
+	_weaponDisplay->SetTextureRect(_data->weapons[_currentWeaponIndex]->iconRect);
+	sf::Vector2u ws = _currentScene->GetContext()->window->getSize();
+	float displayX = 0 - ((int)ws.x / 2);
+	float displayY = (int)ws.y / 2 - _data->weapons[_currentWeaponIndex]->iconRect.height * _data->weapons[_currentWeaponIndex]->iconScale;
+	_weaponDisplay->setPosition(displayX, displayY);
+	_weaponDisplay->setScale(_data->weapons[_currentWeaponIndex]->iconScale, _data->weapons[_currentWeaponIndex]->iconScale);
 }

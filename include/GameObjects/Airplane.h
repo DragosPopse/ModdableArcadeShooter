@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "GameObjects/SpriteObject.h"
 #include <random>
 
 class Level;
@@ -17,6 +18,7 @@ struct AiDirection
 
 struct AirplaneData
 {
+	float scale;
 	int hitpoints;
 	float speed;
 	std::string texture;
@@ -65,6 +67,7 @@ class Airplane :
 	int _currentPatternIndex;
 
 	TextObject* _healthText;
+	SpriteObject* _weaponDisplay;
 
 public:
 	Airplane(AirplaneData* data);
@@ -98,4 +101,5 @@ public:
 
 private:
 	void UpdateHealthDisplay();
+	void UpdateWeaponDisplay();
 };

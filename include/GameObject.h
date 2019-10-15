@@ -6,7 +6,8 @@
 #include "Context.h"
 
 class Scene;
-class Command;
+struct Command;
+struct LuaCommand;
 
 class GameObject :
 	public sf::Transformable
@@ -37,6 +38,7 @@ public:
 	virtual void Draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void OnCommand(const Command& command, float dt);
+	void OnLuaCommand(const LuaCommand& command, float dt);
 
 	void AddChild(std::unique_ptr<GameObject> obj);
 	std::unique_ptr<GameObject> RemoveChild(const GameObject& obj);

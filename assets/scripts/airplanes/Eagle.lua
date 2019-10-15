@@ -4,7 +4,7 @@ local Eagle = {
     leftRect = {54 * 0, 0, 54, 62},
     idleRect = {54 * 1, 0, 54, 62},
     rightRect = {54 * 2, 0, 54, 62},
-    scale = {1, 1},
+    scale = 1,
     speed = 200,
     healthFont = 'Mont',
     healthCharSize = 24,
@@ -35,10 +35,10 @@ local Eagle = {
             ammo = 9999
         },
 
-        --{
-            --projectile = 'HomingMissile',
-            --ammo = 3
-        --}
+        {
+            projectile = 'HomingMissile',
+            ammo = 9999
+        }
     }
 }
 

@@ -6,7 +6,9 @@
 #include "GameObjects/Projectile.h"
 #include "GameObjects/Airplane.h"
 #include "Utility.h"
-
+#include <functional>
+#include "Command.h"
+#include "Scenes/Level.h"
 
 
 void LuaInit_Base(sol::state& lua)
@@ -42,19 +44,44 @@ void LuaInit_Game(sol::state& lua)
 
 	engineTable.set_function("toDegree", &ToDegree);
 	engineTable.set_function("toRadian", &ToRadian);
+	engineTable.set_function("distance", &Distance);
+	engineTable.set_function("direction", &Direction);
 	
 	engineTable.new_usertype<Projectile>("Projectile",
 		"getSpeed", &Projectile::GetSpeed,
 		"getDamage", &Projectile::GetDamage,
 		"setVelocity", &Projectile::SetVelocity,
 		"getVelocity", &Projectile::GetVelocity,
-		"destroy", &Projectile::MarkForDestroy
+		"destroy", &Projectile::MarkForDestroy,
+		"setRotation", &Projectile::setRotation,
+		"getRotation", &Projectile::getRotation,
+		"isPlayerControlled", &Projectile::IsPlayerControlled,
+		"getWorldPosition", &Projectile::GetWorldPosition,
+		"getLevel", &Projectile::GetLevel
 		);
 
 	engineTable.new_usertype<Airplane>("Airplane",
 		"damage", &Airplane::Damage,
-		"repair", &Airplane::Repair);
+		"repair", &Airplane::Repair,
+		"getHealth", &Airplane::GetHealth,
+		"onCommand", &Airplane::OnLuaCommand,
+		"getPosition", &Airplane::getPosition,
+		"getWorldPosition", &Airplane::GetWorldPosition);
 
-	engineTable.new_usertype<Projectile::Context>("ProjectileContext",
-		"deltaTime", &Projectile::Context::deltaTime);
+	engineTable.new_usertype<LuaCommand>("Command",
+		"action", &LuaCommand::action,
+		"category", &LuaCommand::category);
+
+	engineTable.new_usertype<GameObject>("GameObject",
+		"onCommand", &GameObject::OnLuaCommand);
+	engineTable.get<sol::table>("GameObject").set("PLAYER_AIRPLANE", GameObject::PlayerAirplane);
+	engineTable.get<sol::table>("GameObject").set("ENEMY_AIRPLANE", GameObject::EnemyAirplane);
+	engineTable.get<sol::table>("GameObject").set("PLAYER_PROJECTILE", GameObject::PlayerProjectile);
+	engineTable.get<sol::table>("GameObject").set("ENEMY_PROJECTILE", GameObject::EnemyProjectile);
+
+	engineTable.new_usertype<Level>("Level",
+		"getEnemyProjectilesRoot", &Level::GetEnemyProjectilesRoot,
+		"getPlayerProjectilesRoot", &Level::GetPlayerProjectilesRoot,
+		"getPlayerAirplane", &Level::GetPlayerAirplane,
+		"getEnemyAirplanesRoot", &Level::GetEnemyAirplanesRoot);
 }

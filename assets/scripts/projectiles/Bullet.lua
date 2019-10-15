@@ -1,9 +1,13 @@
 local Bullet = {
     texture = 'Projectiles',
+    iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
     rect = {14, 57, 9, 22},
-    scale = {1, 1},
-    muzzleScale = {2, 2},
+    iconRect = {150, 0, 50, 50},
+
+    scale = 1,
+    iconScale = 2,
+    muzzleScale = 2,
     damage = 20,
     fireRate = 0.05,
     speed = 1000,

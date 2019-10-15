@@ -25,9 +25,11 @@ Projectile::Projectile(ProjectileData* data) :
 void Projectile::Start(Scene* scene)
 {
 	_currentScene = static_cast<Level*>(scene);
+
 	SetTexture(_currentScene->GetTextures()[_data->texture]);
 	SetTextureRect(_data->muzzleRect);
-	setScale(2, 2);
+	setScale(_data->muzzleScale, _data->muzzleScale);
+
 	_clock.restart();
 
 	float randomAngle = _data->generator(_data->rng);
@@ -48,6 +50,7 @@ void Projectile::Start(Scene* scene)
 	_direction.y = y;
 	_direction = Normalize(_direction);
 
+	_velocity = _direction * _data->speed;
 	setRotation(randomAngle + 90);
 	GameObject::Start(scene);
 }
@@ -55,30 +58,16 @@ void Projectile::Start(Scene* scene)
 
 void Projectile::Update(float dt)
 {
-	/*if (_firstFrame)
-	{
-		_rectChanged = false;
-		_firstFrame = false;
-	}
-	else if (!_rectChanged)
-	{
-		_rectChanged = true;
-		SetTextureRect(_data->rect);
-		std::cout << "C\n";
-	}*/
-
 	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.02f)
 	{
 		_rectChanged = true;
 		SetTextureRect(_data->rect);
-		setScale(1, 1);
+		setScale(_data->scale, _data->scale);
 	}
 
 	if (_data->update.has_value())
 	{
-		Projectile::Context pContext;
-		pContext.deltaTime = dt;
-		_data->update.value().call(this, pContext);
+		_data->update.value().call(this, dt);
 	}
 	GameObject::Update(dt);
 }
@@ -89,14 +78,9 @@ void Projectile::FixedUpdate(float dt)
 
 	if (_data->fixedUpdate.has_value())
 	{
-		Projectile::Context pContext;
-		pContext.deltaTime = dt;
-		_data->fixedUpdate.value().call(this, pContext);
+		_data->fixedUpdate.value().call(this, dt);
 	}
-	else
-	{
-		move(_direction * _data->speed * dt);
-	}
+	move(_velocity * dt);
 	GameObject::FixedUpdate(dt);
 }
 
@@ -146,12 +130,6 @@ sf::Vector2f Projectile::GetVelocity() const
 void Projectile::SetVelocity(const sf::Vector2f& velocity)
 {
 	_velocity = velocity;
-}
-
-
-void Projectile::SetRotation(float rotation)
-{
-	_sprite.setRotation(rotation);
 }
 
 

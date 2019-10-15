@@ -40,7 +40,8 @@ Level::Level(Context* context, const std::string& fileName) :
 	Scene(context),
 	_root(new GameObject()),
 	_fpsUpdateInterval(0.5f),
-	_lastFpsUpdate(0.f)
+	_lastFpsUpdate(0.f),
+	_uiRoot(new GameObject)
 
 {
 	_worldView = _context->window->getDefaultView();
@@ -114,6 +115,7 @@ Level::Level(Context* context, const std::string& fileName) :
 		apdata.speed = plane["speed"];
 		apdata.healthFont = plane["healthFont"];
 		apdata.healthTextCharSize = plane["healthCharSize"];
+		apdata.scale = plane["scale"];
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -149,11 +151,16 @@ Level::Level(Context* context, const std::string& fileName) :
 			sol::table projectile = _context->lua->do_file(projectilePath);
 			ProjectileData projdata;
 			projdata.texture = projectile["texture"];
+			projdata.iconTexture = projectile["iconTexture"];
+			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
 			projdata.speed = projectile["speed"];
 			projdata.damage = projectile["damage"];
 			projdata.fireRate = projectile["fireRate"];
+			projdata.scale = projectile["scale"];
+			projdata.muzzleScale = projectile["muzzleScale"];
+			projdata.iconScale = projectile["iconScale"];
 
 			projdata.spreadAngle = projectile["spreadAngle"];
 			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
@@ -322,6 +329,10 @@ bool Level::Render()
 {
 	_context->window->setView(_worldView);
 	_root->Draw(*_context->window, sf::RenderStates::Default);
+	
+	sf::RenderStates uiStates = sf::RenderStates::Default;
+	_uiRoot->setPosition(_worldView.getCenter());
+	_uiRoot->Draw(*_context->window, uiStates);
 	return true;
 }
 
@@ -480,4 +491,12 @@ void Level::AddParticles(ParticleSystemObject* p)
 	p->Start(this);
 	std::unique_ptr<ParticleSystemObject> ptr(p);
 	_particlesRoot->AddChild(std::move(ptr));
+}
+
+
+void Level::AddUiElement(GameObject* ui)
+{
+	ui->Start(this);
+	std::unique_ptr<GameObject> ptr(ui);
+	_uiRoot->AddChild(std::move(ptr));
 }

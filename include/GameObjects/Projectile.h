@@ -9,10 +9,15 @@
 class Level;
 class Airplane;
 
-
 struct ProjectileData
 {
+	float scale;
+	float muzzleScale;
+	float iconScale;
+
 	std::string texture;
+	std::string iconTexture;
+	sf::IntRect iconRect;
 	sf::IntRect rect;
 	sf::IntRect muzzleRect;
 	float speed;
@@ -47,10 +52,6 @@ class Projectile :
 	sf::Vector2f _direction;
 
 public:
-	struct Context
-	{
-		float deltaTime;
-	};
 
 	Projectile(ProjectileData* data);
 
@@ -66,9 +67,10 @@ public:
 	float GetSpeed() const;
 	float GetDamage() const;
 
+	Level* GetLevel() { return _currentScene; }
+
 	sf::Vector2f GetVelocity() const;
 	void SetVelocity(const sf::Vector2f& velocity);
-	void SetRotation(float rotation);
 
 	bool IsPlayerControlled() const { return _playerControlled; }
 	void SetPlayerControlled(bool b) { _playerControlled = b; }

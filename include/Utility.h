@@ -19,6 +19,8 @@ void CenterOrigin(sf::Text& text);
 
 float Magnitude(const sf::Vector2f vector);
 sf::Vector2f Normalize(const sf::Vector2f& vector);
+sf::Vector2f Direction(const sf::Vector2f& from, const sf::Vector2f& to);
+float Distance(const sf::Vector2f& lhs, const sf::Vector2f& rhs);
 
 
 ///from https://stackoverflow.com/questions/21806561/concatenating-strings-and-numbers-in-variadic-template-function

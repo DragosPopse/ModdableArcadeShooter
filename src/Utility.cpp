@@ -167,3 +167,15 @@ sf::Vector2f UniformVector2fDistribution::operator()()
 	float n = _distr(_generator);
 	return sf::Vector2f(n, n);
 }
+
+
+sf::Vector2f Direction(const sf::Vector2f& from, const sf::Vector2f& to)
+{
+	return Normalize(from - to);
+}
+
+
+float Distance(const sf::Vector2f& rhs, const sf::Vector2f& lhs)
+{
+	return sqrt((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
+}

@@ -24,7 +24,7 @@ namespace
 		data.hitpoints = 200;
 		Airplane *plane = new Airplane(&data);
 		lua["ptrTest"](plane);
-		std::cout << plane->GetHealth();
+		//std::cout << plane->GetHealth();
 		delete plane;
 		std::cout << "=====TEST END=====\n";
 	}
@@ -44,7 +44,6 @@ Engine::Engine() :
 	LuaInit_SFML(_lua);
 	LuaInit_Game(_lua);
 	_window.create(sf::VideoMode(800, 800), "Test");
-
 	TestLua(_lua);
 }
 

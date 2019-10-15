@@ -37,7 +37,7 @@ for i, v in ipairs(spawn.wall('Eagle', 5, {0, 4500}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Eagle', 6, {100, 2000}, 45, 50)) do
+for i, v in ipairs(spawn.wall('Eagle', 6, {100, 2000 + 500}, 45, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
