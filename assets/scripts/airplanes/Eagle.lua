@@ -35,10 +35,10 @@ local Eagle = {
             ammo = 9999
         },
 
-        {
-            projectile = 'HomingMissile',
-            ammo = 3
-        }
+        --{
+            --projectile = 'HomingMissile',
+            --ammo = 3
+        --}
     }
 }
 

@@ -88,15 +88,10 @@ void SceneManager::HandleEvent(const sf::Event& ev)
 
 void SceneManager::ApplyChanges()
 {
-	if (!_pendingChanges.empty())
-	{
-		std::cout << "WHATAFAC: " << _pendingChanges.size() << "\n";
-	}
 	bool c = false;
 	while (!_pendingChanges.empty())
 	{
 		c = true;
-		std::cout << (int)_pendingChanges.front().type << " ";
 		PendingChange change = _pendingChanges.front();
 		_pendingChanges.pop();
 		switch (change.type)
@@ -111,7 +106,6 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Pop:
 			if (!_stack.empty())
 			{
-				std::cout << "#" << " ";
 				_stack.pop_back();
 			}
 			break;
@@ -119,14 +113,9 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Clear:
 			if (!_stack.empty())
 			{
-				std::cout << "#" << " ";
 				_stack.clear();
 			}
 			break;
 		}
-	}
-	if (c)
-	{
-		std::cout << '\n';
 	}
 }

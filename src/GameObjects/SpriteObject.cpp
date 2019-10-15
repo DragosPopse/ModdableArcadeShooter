@@ -20,3 +20,9 @@ void SpriteObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	GameObject::Draw(target, states);
 }
+
+
+void SpriteObject::SetTextureRect(const sf::IntRect& rect)
+{
+	_sprite.setTextureRect(rect);
+}

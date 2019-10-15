@@ -133,7 +133,6 @@ void GameObject::RemoveDestroyedChilldren()
 		if ((*it)->IsDestroyed())
 		{
 			it = _children.erase(it);
-			std::cout << '.';
 		}
 		else
 		{

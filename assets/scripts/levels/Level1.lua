@@ -3,31 +3,19 @@ local spawn = dofile('assets/scripts/utility/Spawn.lua')
 
 level.name = "Jungle Ride"
 level.backgroundTexture = 'Island'
-level.repeatBackground = false
+level.repeatBackground = true
 level.scrollSpeed = 70
-level.height = 5000
+level.scale = 3.125
+level.height = 400 * level.scale * 3
 
-level.usedAirplanes = {
-    'Eagle'
-}
-
-level.spawnPoints = { }
-
-for i, v in ipairs(spawn.wall('Eagle', 5, {0, 2000}, 0, 100)) do
-    level.spawnPoints[#level.spawnPoints + 1] = v
-end
-
-for i, v in ipairs(spawn.wall('Eagle', 6, {100, 1100}, 45, 50)) do
-    level.spawnPoints[#level.spawnPoints + 1] = v
-end
-  
 
 level.usedTextures = {
     {'Eagle',  'Eagle.png'},
     {'Island', 'Island.png'},
     {'Projectiles', 'Projectiles.png'},
     {'Explosions', 'Explosions.png'},
-    {'Fragments', 'Fragments.png'}
+    {'Fragments', 'Fragments.png'},
+    {'Vortex', 'Vortex.png'}
 }
 
 level.usedFonts = {
@@ -36,7 +24,32 @@ level.usedFonts = {
 
 level.player = {
     airplane = 'Eagle',
-    spawnPoint = {400, 2700}
+    spawnPoint = {400, 400 * level.scale * 3 - 100}
 }
+
+level.usedAirplanes = {
+    'Eagle'
+}
+
+level.spawnPoints = { }
+
+for i, v in ipairs(spawn.wall('Eagle', 5, {0, 4500}, 0, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 6, {100, 2000}, 45, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+level.animations = {
+    {
+        texture = 'Vortex',
+        frames = 8,
+        firstRect = {0, 0, 90, 90},
+        frameDuration = 0.1,
+        position = {78 * 3.125, 702 * level.scale}
+    }
+}
+
 
 return level

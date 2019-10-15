@@ -34,6 +34,7 @@ class Level :
 	GameObject* _playerProjectilesRoot;
 	GameObject* _enemyAirplanesRoot;
 	GameObject* _explosionsRoot;
+	GameObject* _environmentRoot;
 	GameObject* _particlesRoot;
 	Airplane* _playerAirplane;
 
@@ -48,6 +49,7 @@ class Level :
 	sf::Vector2f _playerSpawn;
 	float _scrollSpeed;
 	float _worldHeight;
+	float _scale;
 
 	float _fpsUpdateInterval;
 	float _lastFpsUpdate;

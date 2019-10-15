@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "GameObjects/Animation.h"
 #include "GameObjects/Airplane.h"
 #include "GameObjects/SpriteObject.h"
 #include "GameObjects/Projectile.h"
@@ -90,6 +91,9 @@ Level::Level(Context* context, const std::string& fileName) :
 
 	_scrollSpeed = level["scrollSpeed"];
 	_worldHeight = level["height"];
+	_scale = level["scale"];
+	backgroundPtr->setScale(_scale, _scale);
+	backgroundPtr->SetTextureRect(sf::IntRect(0, 0, _textures[backgroundTexture].getSize().x, _worldHeight));
 
 	//Load AirplaneData
 	sol::table planes = level["usedAirplanes"];
@@ -133,7 +137,7 @@ Level::Level(Context* context, const std::string& fileName) :
 
 		//Load weapons for airplane
 		sol::table weapons = plane["weapons"];
-		for (int i = 1; i < weapons.size(); i++)
+		for (int i = 1; i <= weapons.size(); i++)
 		{
 			sol::table weapon = weapons[i];
 			std::string projectileName = weapon["projectile"];
@@ -200,15 +204,18 @@ Level::Level(Context* context, const std::string& fileName) :
 	_enemyAirplanesRoot = new GameObject();
 	_explosionsRoot = new GameObject();
 	_particlesRoot = new GameObject();
+	_environmentRoot = new GameObject();
 
 	std::unique_ptr<GameObject> uptr1(_enemyProjectilesRoot);
 	std::unique_ptr<GameObject> uptr2(_playerProjectilesRoot);
 	std::unique_ptr<GameObject> uptr3(_enemyAirplanesRoot);
 	std::unique_ptr<GameObject> uptr4(_explosionsRoot);
 	std::unique_ptr<GameObject> uptr5(_particlesRoot);
+	std::unique_ptr<GameObject> uptr6(_environmentRoot);
 
 
 	_root->AddChild(std::move(backgroundPtr));
+	_root->AddChild(std::move(uptr6));
 	_root->AddChild(std::move(uptr4));
 	_root->AddChild(std::move(uptr1));
 	_root->AddChild(std::move(uptr2));
@@ -216,12 +223,37 @@ Level::Level(Context* context, const std::string& fileName) :
 	_root->AddChild(std::move(uptr5));
 
 	_root->AddChild(std::move(airplane));
-	
 
-	_root->Start(this);
+
+	//Add environment animations and sprites 
+	sol::table animations = level["animations"];
+	for (int i = 1; i <= animations.size(); i++)
+	{
+		sol::table animationData = animations[i];
+		std::string animationTexture = animationData["texture"];
+		int animationFrames = animationData["frames"];
+		sf::IntRect animationFirstRect = TableToRect(animationData["firstRect"]);
+		float animationFrameDuration = animationData["frameDuration"];
+		sf::Vector2f animationPosition;
+		animationPosition.x = animationData["position"][1];
+		animationPosition.y = animationData["position"][2];
+
+		Animation* animation = new Animation();
+		animation->SetTexture(_textures[animationTexture]);
+		animation->SetFirstRect(animationFirstRect);
+		animation->SetNumberOfFrames(animationFrames);
+		animation->SetLoopable(true);
+		animation->SetTimePerFrame(animationFrameDuration);
+		animation->SetDestroyOnFinish(false);
+		animation->setPosition(animationPosition);
+		animation->setScale(_scale, _scale);
+		animation->Start(this);
+		std::unique_ptr<Animation> animationPtr(animation);
+		_environmentRoot->AddChild(std::move(animationPtr));
+	}
+
 
 	//Add Spawn Positions
-	std::cout << "1\n";
 	sol::table spawnPoints = level["spawnPoints"];
 	for (int i = 1; i <= spawnPoints.size(); i++)
 	{
@@ -230,7 +262,6 @@ Level::Level(Context* context, const std::string& fileName) :
 		spawn.x = spawnPoints[i][2];
 		spawn.y = spawnPoints[i][3];
 		spawn.data = &_airplaneDataDict[id];
-		std::cout << spawn.x << ' ' << spawn.y << '\n';
 		_enemySpawns.push_back(spawn);
 	}
 	
@@ -241,11 +272,9 @@ Level::Level(Context* context, const std::string& fileName) :
 			return lhs.y > rhs.y;
 		});
 
-	std::cout << "ORDER\n";
-	for (auto it = _enemySpawns.begin(); it != _enemySpawns.end(); ++it)
-	{
-		std::cout << it->y << '\n';
-	}
+
+
+	_root->Start(this);
 }
  
 

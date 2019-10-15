@@ -3,13 +3,14 @@
 #include <iostream>
 
 
-Animation::Animation() : 
+Animation::Animation() :
 	_loop(false),
 	_destroyOnFinish(false),
 	_finished(false),
 	_currentIndex(0),
 	_elapsedTime(0)
 {
+
 }
 
 
