@@ -23,8 +23,6 @@ public:
 
 	ParticleSystemObject();
 
-	~ParticleSystemObject();
-
 	void Start(Scene* scene) override;
 
 	void Update(float dt) override;

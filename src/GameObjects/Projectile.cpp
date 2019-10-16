@@ -19,6 +19,7 @@ Projectile::Projectile(ProjectileData* data) :
 	_firstFrame(true),
 	_rectChanged(false)
 {
+	_luaObject = _data->create();
 }
 
 
@@ -52,6 +53,8 @@ void Projectile::Start(Scene* scene)
 
 	_velocity = _direction * _data->speed;
 	setRotation(randomAngle + 90);
+
+	_data->start(_luaObject, this);
 	GameObject::Start(scene);
 }
 
@@ -67,7 +70,7 @@ void Projectile::Update(float dt)
 
 	if (_data->update.has_value())
 	{
-		_data->update.value().call(this, dt);
+		_data->update.value().call(_luaObject, this, dt);
 	}
 	GameObject::Update(dt);
 }
@@ -78,7 +81,7 @@ void Projectile::FixedUpdate(float dt)
 
 	if (_data->fixedUpdate.has_value())
 	{
-		_data->fixedUpdate.value().call(this, dt);
+		_data->fixedUpdate.value().call(_luaObject, this, dt);
 	}
 	move(_velocity * dt);
 	GameObject::FixedUpdate(dt);
@@ -151,31 +154,5 @@ sf::FloatRect Projectile::GetBoundingRect() const
 
 void Projectile::OnCollision(Airplane* airplane)
 {
-	_data->onCollision(this, airplane);
-	//ParticleSystemObject* pso = new ParticleSystemObject();
-	//auto& ps = pso->system;
-	//pso->SetRemoveAfterLifetime(3);
-	//ps.setTexture(_currentScene->GetTextures()["Fragments"]);
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	sf::IntRect rect;
-	//	rect.width = 5;
-	//	rect.height = 5;
-	//	rect.top = 0;
-	//	rect.left = i * 5;
-	//	ps.addTextureRect(rect);
-	//}
-	//thor::UniversalEmitter em;
-	//em.setEmissionRate(20);
-	////std::cout << _direction.x << ' ' << _direction.y << '\n';
-	////em.setParticleVelocity(thor::Distributions::deflect(_direction * 120.f, 10));
-	//em.setParticleVelocity(thor::Distributions::circle(sf::Vector2f(0, 0), 20));
-	//em.setParticleLifetime(sf::seconds(0.1));
-	//em.setParticleRotation(thor::Distributions::uniform(0, 360));
-	//em.setParticleTextureIndex(thor::Distributions::uniform(0, 3));
-	//em.setParticleScale(UniformVector2fDistribution(1, 2));
-	//ps.addEmitter(em, sf::seconds(0.2));
-	//pso->setPosition(GetWorldPosition());
-
-	//_currentScene->AddParticles(pso);
+	_data->onCollision(_luaObject, this, airplane);
 }

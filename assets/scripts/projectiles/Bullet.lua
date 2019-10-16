@@ -13,7 +13,11 @@ local Bullet = {
     speed = 1000,
     spreadAngle = 5,
 
-    onCollision = function (this, airplane)
+    start = function (lthis, this)
+        
+    end,
+
+    onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
 
@@ -40,7 +44,7 @@ local Bullet = {
         this:getLevel():addParticles(pso)
     end,
 
-    onDestroy = function (this, reason) 
+    onDestroy = function (lthis, this, reason) 
         if (reason == DestroyReasons.CollidedWithEnemy) then
             this:playAnimation('Explode')
             return true --return true if you want to destroy after the animation finishes
@@ -51,6 +55,11 @@ local Bullet = {
 }
 
 
+local function create() 
+    return {
+        elapsedTime = 0
+    }
+end
 
 
-return Bullet
+return Bullet, create

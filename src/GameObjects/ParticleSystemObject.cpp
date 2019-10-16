@@ -52,9 +52,3 @@ void ParticleSystemObject::SetRemoveAfterLifetime(float time)
 	_removeAfterLifetime = true;
 	_lifetime = time;
 }
-
-
-ParticleSystemObject::~ParticleSystemObject()
-{
-	
-}

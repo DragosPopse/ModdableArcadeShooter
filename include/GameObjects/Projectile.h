@@ -28,6 +28,8 @@ struct ProjectileData
 	sol::optional<sol::function> update;
 	sol::function onCollision;
 	sol::optional<sol::function> onDestroy;
+	sol::function create;
+	sol::function start;
 
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
@@ -50,6 +52,8 @@ class Projectile :
 	
 
 	sf::Vector2f _direction;
+
+	sol::table _luaObject;
 
 public:
 

@@ -156,7 +156,9 @@ Level::Level(Context* context, const std::string& fileName) :
 			std::string projectilePath = BuildString(PROJECTILES_PATH, projectileName, ".lua");
 
 			std::cout << projectilePath << '\n';
-			sol::table projectile = _context->lua->do_file(projectilePath);
+			sol::table projectile;
+			sol::function createProjectile;
+			sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
 			ProjectileData projdata;
 			projdata.texture = projectile["texture"];
 			projdata.iconTexture = projectile["iconTexture"];
@@ -169,6 +171,8 @@ Level::Level(Context* context, const std::string& fileName) :
 			projdata.scale = projectile["scale"];
 			projdata.muzzleScale = projectile["muzzleScale"];
 			projdata.iconScale = projectile["iconScale"];
+			projdata.start = projectile["start"];
+			projdata.create = createProjectile;
 
 			projdata.spreadAngle = projectile["spreadAngle"];
 			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);

@@ -6,24 +6,24 @@ local HomingMissile = {
     iconRect = {100, 0, 50, 50},
 
     scale = 1,
-    iconScale = 2, --WIP
+    iconScale = 2, 
     muzzleScale = 1,
     damage = 1,
     fireRate = 0.05,
     speed = 1000,
     spreadAngle = 90,
 
-    start = function (this)
-        
+    start = function (lthis, this)
+        lthis.timer = 0
     end,
 
-    fixedUpdate = function (this, dt)
+    fixedUpdate = function (lthis, this, dt)
         local approachRate = 10000
         local thisPosition = this:getWorldPosition()
         local target = nil
         local closestDistance = 999999
         local planesRoot
-
+        
         local command = engine.Command.new()
         if this:isPlayerControlled() then
             command.category = engine.GameObject.ENEMY_AIRPLANE
@@ -55,7 +55,7 @@ local HomingMissile = {
         end
     end,
 
-    onCollision = function (this, airplane)
+    onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
 
@@ -83,7 +83,7 @@ local HomingMissile = {
         this:getLevel():addParticles(pso)
     end,
 
-    onDestroy = function (this, reason) 
+    onDestroy = function (lthis, this, reason) 
         if (reason == DestroyReasons.CollidedWithEnemy) then
             this:playAnimation('Explode')
             return true --return true if you want to destroy after the animation finishes
@@ -94,6 +94,8 @@ local HomingMissile = {
 }
 
 
+local function create()
+    return { }
+end
 
-
-return HomingMissile
+return HomingMissile, create
