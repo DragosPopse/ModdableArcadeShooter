@@ -143,6 +143,10 @@ Level::Level(Context* context, const std::string& fileName) :
 		{
 			sol::table weapon = weapons[i];
 			std::string projectileName = weapon["projectile"];
+			if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
+			{
+				continue; //Don't load projectiles multiple times 
+			}
 	/*		if (projectileName == "HomingMissile")
 			{
 				std::cout << "break\n";
