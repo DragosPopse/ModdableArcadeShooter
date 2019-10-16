@@ -11,7 +11,7 @@ local HomingMissile = {
     damage = 1,
     fireRate = 0.05,
     speed = 1000,
-    spreadAngle = 0,
+    spreadAngle = 90,
 
     start = function (this)
         

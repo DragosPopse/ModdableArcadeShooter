@@ -56,5 +56,5 @@ void ParticleSystemObject::SetRemoveAfterLifetime(float time)
 
 ParticleSystemObject::~ParticleSystemObject()
 {
-	std::cout << "destroyed\n";
+	
 }
