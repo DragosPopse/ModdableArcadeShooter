@@ -15,6 +15,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <SFML/Audio.hpp>
 
 
 namespace
@@ -28,8 +29,8 @@ namespace
 		result.height = table[4];
 		return result;
 	} 
-
-
+	
+	
 	bool CheckCollision(const GameObject& lhs, const GameObject& rhs)
 	{
 		return lhs.GetBoundingRect().intersects(rhs.GetBoundingRect());
@@ -42,7 +43,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	_fpsUpdateInterval(0.5f),
 	_lastFpsUpdate(0.f),
 	_uiRoot(new GameObject)
-
+	
 {
 	_worldView = _context->window->getDefaultView();
 

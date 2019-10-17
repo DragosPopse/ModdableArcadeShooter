@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 #include <random>
+#include <Thor/Animations.hpp>
+#include <Thor/Particles.hpp>
 
 #define SCRIPTS_PATH "assets/scripts/"
 #define TEXTURES_PATH "assets/textures/"
@@ -57,3 +59,13 @@ public:
 		return thor::Distribution<sf::Vector2f>(distr);
 	}
 };
+
+
+class ParticleFrameAnimation
+{
+public:
+	ParticleFrameAnimation(int firstIndex, int lastIndex);
+};
+
+
+typedef std::function<void(thor::Particle&, sf::Time)> ParticleAnimationFunction;

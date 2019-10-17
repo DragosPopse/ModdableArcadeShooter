@@ -13,6 +13,8 @@
 #include <Thor/Particles.hpp>
 #include <Thor/Math.hpp>
 #include <Thor/Input.hpp>
+#include <Thor/Graphics.hpp>
+#include <Thor/Animations.hpp>
 
 
 void LuaInit_Base(sol::state& lua)
@@ -33,8 +35,7 @@ void LuaInit_SFML(sol::state& lua)
 		sol::constructors<sf::Vector2f(), sf::Vector2f(float, float)>(),
 		"x", &sf::Vector2f::x,
 		"y", &sf::Vector2f::y,
-		sol::meta_function::multiplication, v2fMultiplication,
-		sol::meta_function::multiplication, v2fMultiplicationRev,
+		sol::meta_function::multiplication, sol::overload(v2fMultiplication, v2fMultiplicationRev),
 		sol::meta_function::addition, v2fAddition
 		);
 	sfTable.get<sol::table>("Vector2f").set_function("normalize", &Normalize);
@@ -60,6 +61,8 @@ void LuaInit_Thor(sol::state& lua)
 {
 	sol::table thorTable = lua.create_named_table("thor");
 
+	thorTable.new_usertype<ParticleAnimationFunction>("ParticleAnimationFunction");
+	thorTable.new_usertype<thor::Particle>("Particle");
 	thorTable.new_usertype<thor::Distribution<float>>("FloatDistribution");
 	thorTable.new_usertype<thor::Distribution<sf::Vector2f>>("Vector2fDistribution");
 	thorTable.new_usertype<thor::Distribution<int>>("IntDistribution");
@@ -73,14 +76,18 @@ void LuaInit_Thor(sol::state& lua)
 		"setParticleRotation", &thor::UniversalEmitter::setParticleRotation,
 		"setParticleTextureIndex", &thor::UniversalEmitter::setParticleTextureIndex,
 		"setParticleScale", &thor::UniversalEmitter::setParticleScale);
-	
+
 	thor::Connection(thor::ParticleSystem::*addEmitter2)(std::function<void(thor::EmissionInterface&, sf::Time)>) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addEmitter1)(std::function<void(thor::EmissionInterface&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addEmitter;
+	thor::Connection(thor::ParticleSystem::*addAffector1)(std::function<void(thor::Particle&, sf::Time)>) = &thor::ParticleSystem::addAffector;
+	thor::Connection(thor::ParticleSystem::*addAffector2)(std::function<void(thor::Particle&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addAffector;
+
 
 	thorTable.new_usertype<thor::ParticleSystem>("ParticleSystem",
 		"addEmitter", sol::overload(addEmitter1, addEmitter2),
 		"setTexture", &thor::ParticleSystem::setTexture,
-		"addTextureRect", &thor::ParticleSystem::addTextureRect);
+		"addTextureRect", &thor::ParticleSystem::addTextureRect,
+		"addAffector", sol::overload(addAffector1));
 
 	sol::table distTable = thorTable.create_named("Distributions");
 	
@@ -97,6 +104,20 @@ void LuaInit_Thor(sol::state& lua)
 	distTable.set_function("circle", &thor::Distributions::circle);
 	distTable.set_function("deflect", &thor::Distributions::deflect);
 	distTable.set_function("rect", &thor::Distributions::rect);
+
+	
+
+	thorTable.new_usertype<thor::FadeAnimation>("FadeAnimation",
+		sol::constructors<thor::FadeAnimation(float, float)>());
+
+	thorTable.new_usertype<thor::AnimationAffector>("AnimationAffector",
+		sol::constructors<thor::AnimationAffector(thor::FadeAnimation)>());
+
+	thorTable.new_usertype<thor::ScaleAffector>("ScaleAffector",
+		sol::constructors<thor::ScaleAffector(sf::Vector2f)>());
+
+	thorTable.new_usertype<thor::TorqueAffector>("TorqueAffector",
+		sol::constructors<thor::TorqueAffector(float)>());
 }
 
 
@@ -119,7 +140,8 @@ void LuaInit_Game(sol::state& lua)
 		"getRotation", &Projectile::getRotation,
 		"isPlayerControlled", &Projectile::IsPlayerControlled,
 		"getWorldPosition", &Projectile::GetWorldPosition,
-		"getLevel", &Projectile::GetLevel
+		"getLevel", &Projectile::GetLevel,
+		"addChild", &Projectile::AddUnownedChild
 		);
 
 	engineTable.new_usertype<Airplane>("Airplane",
@@ -128,7 +150,8 @@ void LuaInit_Game(sol::state& lua)
 		"getHealth", &Airplane::GetHealth,
 		"onCommand", &Airplane::OnLuaCommand,
 		"getPosition", &Airplane::getPosition,
-		"getWorldPosition", &Airplane::GetWorldPosition);
+		"getWorldPosition", &Airplane::GetWorldPosition,
+		"addChild", &Airplane::AddUnownedChild);
 
 	engineTable.new_usertype<LuaCommand>("Command",
 		"action", &LuaCommand::action,

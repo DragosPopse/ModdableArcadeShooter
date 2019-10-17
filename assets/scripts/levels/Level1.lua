@@ -15,7 +15,8 @@ level.usedTextures = {
     {'Projectiles', 'Projectiles.png'},
     {'Explosions', 'Explosions.png'},
     {'Fragments', 'Fragments.png'},
-    {'Vortex', 'Vortex.png'}
+    {'Vortex', 'Vortex.png'},
+    {'Smoke', 'Smoke.png'}
 }
 
 level.usedFonts = {

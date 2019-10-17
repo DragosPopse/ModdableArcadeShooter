@@ -15,6 +15,28 @@ local HomingMissile = {
 
     start = function (lthis, this)
         lthis.timer = 0
+        local smoke = engine.ParticleSystem.new()
+        --local fire = engine.ParticleSystem.new()
+        
+        smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
+        local smokeEmitter = thor.UniversalEmitter.new()
+        smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
+        smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
+        smokeEmitter:setEmissionRate(20)
+        smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(10)))
+
+        for i = 0, 4 do
+            smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
+        end
+
+        local fade = thor.FadeAnimation.new(0, 0.5)
+        local fadeAffector = thor.AnimationAffector.new(fade)
+        
+        smoke.system:addEmitter(smokeEmitter)
+        smoke.system:addAffector(fadeAffector)
+
+        this:addChild(smoke)
+        --this:addChild(fire)
     end,
 
     fixedUpdate = function (lthis, this, dt)
@@ -80,6 +102,9 @@ local HomingMissile = {
             rect.height = 5
             pso.system:addTextureRect(rect)
         end
+
+        local fade = thor.FadeAnimation.new(0.5, 0.5)
+
         this:getLevel():addParticles(pso)
     end,
 
