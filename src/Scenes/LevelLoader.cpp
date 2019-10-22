@@ -57,10 +57,10 @@ void LevelLoader::RunTask()
 	_result = new Level(_context, _fileName);
 	sf::Clock clock;
 	clock.restart();
-	while (clock.getElapsedTime().asSeconds() < 3.f)
-	{
-		//Dummy loop just for testing multithreading 
-	}
+	//while (clock.getElapsedTime().asSeconds() < 3.f)
+	//{
+	//	//Dummy loop just for testing multithreading 
+	//}
 	
 
 	{
