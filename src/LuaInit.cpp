@@ -44,7 +44,7 @@ void LuaInit_SFML(sol::state& lua)
 	sfTable.new_usertype<sf::Time>("Time",
 		"asSeconds", &sf::Time::asSeconds);
 
-	sfTable.new_usertype<sf::Texture>("Texture");
+	sfTable.new_usertype<sf::Texture>("Texure");
 
 	sfTable.set_function("seconds", &sf::seconds);
 
@@ -182,5 +182,6 @@ void LuaInit_Game(sol::state& lua)
 		"setPosition", sol::overload(setPosition1, setPosition2),
 		"setRotation", &ParticleSystemObject::setRotation,
 		"setRemoveAfterLifetime", &ParticleSystemObject::SetRemoveAfterLifetime,
-		"system", &ParticleSystemObject::system);
+		"system", &ParticleSystemObject::system,
+		"addEmitter", &ParticleSystemObject::AddEmitter);
 }

@@ -39,8 +39,9 @@ void ParticleSystemObject::FixedUpdate(float dt)
 void ParticleSystemObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-
-	target.draw(system, states);
+	
+	target.draw(system, sf::RenderStates::Default);
+	//target.draw(system, states);
 
 	GameObject::Draw(target, states);
 
@@ -51,4 +52,16 @@ void ParticleSystemObject::SetRemoveAfterLifetime(float time)
 {
 	_removeAfterLifetime = true;
 	_lifetime = time;
+}
+
+
+void ParticleSystemObject::AddEmitter(thor::UniversalEmitter& em, float x, float y)
+{
+	auto positionFunctor = [this, x, y]()
+	{
+		//std::cout << this->GetWorldPosition().x << ' ' << this->GetWorldPosition().y << '\n';
+		return this->GetWorldPosition() + sf::Vector2f(x, y);
+	};
+	em.setParticlePosition(positionFunctor);
+	system.addEmitter(em);
 }

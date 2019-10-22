@@ -55,6 +55,26 @@ void Projectile::Start(Scene* scene)
 	setRotation(randomAngle + 90);
 
 	_data->start(_luaObject, this);
+
+	//TEST
+	/*ParticleSystemObject* pso = new ParticleSystemObject;
+	pso->system.setTexture(_currentScene->GetTexture("Smoke"));
+	for (int i = 0; i < 5; i++)
+	{
+		pso->system.addTextureRect(sf::IntRect(10 * i, 0, 10, 10));
+	}
+
+	thor::UniversalEmitter em;
+	em.setEmissionRate(40);
+	em.setParticleTextureIndex(thor::Distributions::uniform(0u, 4u));
+	em.setParticleScale(sf::Vector2f(5, 5));
+
+	pso->AddEmitter(em);
+	std::unique_ptr<ParticleSystemObject> ptr(pso);
+	ptr->Start(_currentScene);
+	AddChild(std::move(ptr));
+	*/
+
 	GameObject::Start(scene);
 }
 

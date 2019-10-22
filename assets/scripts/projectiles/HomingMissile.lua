@@ -22,8 +22,8 @@ local HomingMissile = {
         local smokeEmitter = thor.UniversalEmitter.new()
         smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
         smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
-        smokeEmitter:setEmissionRate(20)
-        smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(10)))
+        smokeEmitter:setEmissionRate(40)
+        smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(.2)))
 
         for i = 0, 4 do
             smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
@@ -32,7 +32,7 @@ local HomingMissile = {
         local fade = thor.FadeAnimation.new(0, 0.5)
         local fadeAffector = thor.AnimationAffector.new(fade)
         
-        smoke.system:addEmitter(smokeEmitter)
+        smoke:addEmitter(smokeEmitter, 0, 0)
         smoke.system:addAffector(fadeAffector)
 
         this:addChild(smoke)

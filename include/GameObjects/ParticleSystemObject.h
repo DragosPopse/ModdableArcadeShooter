@@ -17,6 +17,7 @@ class ParticleSystemObject :
 	float _lifetime;
 	float _elapsedTime;
 	bool _removeAfterLifetime;
+	
 
 public:
 	thor::ParticleSystem system;
@@ -29,6 +30,7 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+	void AddEmitter(thor::UniversalEmitter& em, float x = 0, float y = 0);
 	
 	void SetRemoveAfterLifetime(float time);
 };

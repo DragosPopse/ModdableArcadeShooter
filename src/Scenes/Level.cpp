@@ -396,16 +396,23 @@ void Level::RemoveOffScreenObjects(float dt)
 		GameObject::PlayerProjectile;
 	remover.action = [this](GameObject& obj, float dt)
 	{
+		auto objPosition = obj.GetWorldPosition();
+		auto viewSize = _worldView.getSize();
+		auto viewCenter = _worldView.getCenter();
 		if (obj.GetCategory() == GameObject::PlayerProjectile)
 		{
-			if (obj.GetWorldPosition().y < _worldView.getCenter().y - _worldView.getSize().y - 100)
+			
+			if (objPosition.y < viewCenter.y - viewSize.y ||
+				objPosition.y > viewCenter.y + viewSize.y ||
+				objPosition.x > viewCenter.x + viewSize.x ||
+				objPosition.y < viewCenter.x - viewSize.x)
 			{
 				obj.MarkForDestroy();
 			}
 		}
 		else
 		{
-			if (obj.GetWorldPosition().y > _worldView.getCenter().y + _worldView.getSize().y + 100)
+			if (objPosition.y > viewCenter.y + viewSize.y + 100)
 			{
 				obj.MarkForDestroy();
 			}

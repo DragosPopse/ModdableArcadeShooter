@@ -227,6 +227,6 @@ void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
 
 void GameObject::AddUnownedChild(sol::userdata obj)
 {
-	
+	obj.as<GameObject>()._parent = this;
 	_unownedChildren.push_back(obj);
 }
