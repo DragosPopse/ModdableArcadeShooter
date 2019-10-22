@@ -52,5 +52,16 @@ level.animations = {
     }
 }
 
+level.texts = {
+    {
+        y = 4000,
+        text = 'Wave 1',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Mont'
+    }
+}
+
 
 return level

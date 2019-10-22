@@ -2,28 +2,27 @@ local HomingMissile = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
-    rect = {14, 57, 9, 22},
-    iconRect = {100, 0, 50, 50},
+    rect = {31, 56, 19, 43},
+    iconRect = {0 + 56 * 1, 0, 56, 56},
 
-    scale = 1,
+    scale = 1.5,
     iconScale = 2, 
-    muzzleScale = 1,
-    damage = 1,
+    muzzleScale = 5,
+    damage = 20,
     fireRate = 0.05,
     speed = 1000,
-    spreadAngle = 90,
+    spreadAngle = 90,   
 
     start = function (lthis, this)
         lthis.timer = 0
         local smoke = engine.ParticleSystem.new()
-        --local fire = engine.ParticleSystem.new()
         
         smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
         local smokeEmitter = thor.UniversalEmitter.new()
         smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
         smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
         smokeEmitter:setEmissionRate(40)
-        smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(.2)))
+        smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.2)))
 
         for i = 0, 4 do
             smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
@@ -31,12 +30,13 @@ local HomingMissile = {
 
         local fade = thor.FadeAnimation.new(0, 0.5)
         local fadeAffector = thor.AnimationAffector.new(fade)
+
         
-        smoke:addEmitter(smokeEmitter, 0, 0)
+        smoke:addEmitter(smokeEmitter, sf.seconds(0), 0, 22)
+
         smoke.system:addAffector(fadeAffector)
 
         this:addChild(smoke)
-        --this:addChild(fire)
     end,
 
     fixedUpdate = function (lthis, this, dt)
@@ -91,7 +91,7 @@ local HomingMissile = {
         em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
         em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 3))
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 3))
-        pso.system:addEmitter(em, sf.seconds(0.2))
+        pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
         pso.system:setTexture(this:getLevel():getTexture('Fragments'))
         for i = 1, 4 do 

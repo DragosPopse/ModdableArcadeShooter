@@ -55,13 +55,21 @@ void ParticleSystemObject::SetRemoveAfterLifetime(float time)
 }
 
 
-void ParticleSystemObject::AddEmitter(thor::UniversalEmitter& em, float x, float y)
+void ParticleSystemObject::AddEmitter(thor::UniversalEmitter& em, sf::Time time, float x, float y)
 {
 	auto positionFunctor = [this, x, y]()
-	{
+	{ 
 		//std::cout << this->GetWorldPosition().x << ' ' << this->GetWorldPosition().y << '\n';
-		return this->GetWorldPosition() + sf::Vector2f(x, y);
+		return this->GetWorldTransform() * sf::Vector2f(x, y);
 	};
 	em.setParticlePosition(positionFunctor);
-	system.addEmitter(em);
+	
+	if (time == sf::Time::Zero)
+	{
+		system.addEmitter(em);
+	}
+	else
+	{
+		system.addEmitter(em, time);
+	}
 }

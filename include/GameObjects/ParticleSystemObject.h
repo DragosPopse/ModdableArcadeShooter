@@ -30,7 +30,7 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	void AddEmitter(thor::UniversalEmitter& em, float x = 0, float y = 0);
+	void AddEmitter(thor::UniversalEmitter& em, sf::Time time = sf::Time::Zero, float x = 0, float y = 0);
 	
 	void SetRemoveAfterLifetime(float time);
 };

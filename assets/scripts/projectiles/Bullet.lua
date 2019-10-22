@@ -3,7 +3,7 @@ local Bullet = {
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
     rect = {14, 57, 9, 22},
-    iconRect = {150, 0, 50, 50},
+    iconRect = {0 + 56 * 2, 0, 56, 56},
 
     scale = 1,
     iconScale = 2,
@@ -30,7 +30,7 @@ local Bullet = {
         em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
         em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 3))
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 2))
-        pso.system:addEmitter(em, sf.seconds(0.2))
+        pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
         pso.system:setTexture(this:getLevel():getTexture('Fragments'))
         for i = 1, 4 do 

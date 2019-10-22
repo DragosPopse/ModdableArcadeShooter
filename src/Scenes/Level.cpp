@@ -42,7 +42,8 @@ Level::Level(Context* context, const std::string& fileName) :
 	_root(new GameObject()),
 	_fpsUpdateInterval(0.5f),
 	_lastFpsUpdate(0.f),
-	_uiRoot(new GameObject)
+	_uiRoot(new GameObject),
+	_currentText(nullptr)
 	
 {
 	_worldView = _context->window->getDefaultView();
@@ -284,6 +285,21 @@ Level::Level(Context* context, const std::string& fileName) :
 		spawn.data = &_airplaneDataDict[id];
 		_enemySpawns.push_back(spawn);
 	}
+
+	//Add texts
+	sol::table texts = level["texts"];
+	for (int i = 1; i <= texts.size(); i++)
+	{
+		TextAnimationData tdata;
+		sol::table text = texts[1];
+		tdata.str = text["text"];
+		tdata.y = text["y"];
+		tdata.timePerLetter = text["timePerLetter"];
+		tdata.timeBeforeDestroy = text["timeBeforeDestroy"];
+		tdata.charSize = text["charSize"];
+		tdata.font = text["font"];
+		_texts.push_back(tdata);
+	}
 	
 	std::sort(_enemySpawns.begin(), _enemySpawns.end(), 
 		[](const AirplaneSpawnPosition& lhs,
@@ -292,6 +308,12 @@ Level::Level(Context* context, const std::string& fileName) :
 			return lhs.y > rhs.y;
 		});
 
+	std::sort(_texts.begin(), _texts.end(),
+		[](const TextAnimationData& lhs,
+			const TextAnimationData& rhs)
+		{
+			return lhs.y > rhs.y;
+		});
 
 
 	_root->Start(this);
@@ -318,8 +340,9 @@ bool Level::FixedUpdate(float dt)
 		_playerAirplane->move(0, -_scrollSpeed * dt);
 	}
 	_worldView.move(0, -_scrollSpeed * dt);
-
+	DisplayText();
 	_root->RemoveDestroyedChilldren();
+	_uiRoot->RemoveDestroyedChilldren();
 	return false;
 }
 
@@ -334,6 +357,7 @@ bool Level::Update(float dt)
 		_lastFpsUpdate = 0.f;
 	}
 	_root->Update(dt);
+	_uiRoot->Update(dt);
 	return false;
 }
 
@@ -364,6 +388,39 @@ bool Level::HandleEvent(const sf::Event& ev)
 	}
 	
 	return false;
+}
+
+
+void Level::DisplayText()
+{
+	bool change = true;
+	if (_currentText && _currentText->IsDestroyed())
+	{
+		_currentText = nullptr;
+	}
+	while (!_texts.empty() && change)
+	{
+		change = false;
+		if (_texts[0].y > _worldView.getCenter().y)
+		{
+			if (_currentText != nullptr)
+			{
+				_currentText->MarkForDestroy();
+			}
+			std::cout << "NEWTEXT\n";
+			_currentText = new TextAnimation(_texts[0].str);
+			_currentText->SetCharSize(_texts[0].charSize);
+			_currentText->SetTimePerLetter(_texts[0].timePerLetter);
+			_currentText->SetDestroyOnFinish(_texts[0].timeBeforeDestroy);
+			_currentText->SetFont(_texts[0].font);
+			_currentText->Start(this);
+			std::unique_ptr<TextAnimation> ptr(_currentText);
+			//_currentText->setPosition(_worldView.getSize().x / 2, _worldView.getSize().y / 2);
+			_uiRoot->AddChild(std::move(ptr));
+			change = true;
+			_texts.pop_front();
+		}
+	}
 }
 
 

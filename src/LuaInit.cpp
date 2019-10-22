@@ -54,6 +54,9 @@ void LuaInit_SFML(sol::state& lua)
 		"top", &sf::IntRect::top,
 		"width", &sf::IntRect::width,
 		"height", &sf::IntRect::height);
+
+	sfTable.new_usertype<sf::Color>("Color",
+		sol::constructors< sf::Color(sf::Uint8, sf::Uint8, sf::Uint8, sf::Uint8)>());
 }
 
 
@@ -68,14 +71,17 @@ void LuaInit_Thor(sol::state& lua)
 	thorTable.new_usertype<thor::Distribution<int>>("IntDistribution");
 	thorTable.new_usertype<thor::Distribution<sf::Time>>("TimeDistribution",
 		sol::constructors<thor::Distribution<sf::Time>(sf::Time)>());
-
+	thorTable.new_usertype<thor::Distribution<sf::Color>>("ColorDistribution",
+		sol::constructors<thor::Distribution<sf::Color>(sf::Color)>());
+	
 	thorTable.new_usertype<thor::UniversalEmitter>("UniversalEmitter",
 		"setEmissionRate", &thor::UniversalEmitter::setEmissionRate,
 		"setParticleVelocity", &thor::UniversalEmitter::setParticleVelocity, 
 		"setParticleLifetime", &thor::UniversalEmitter::setParticleLifetime,
 		"setParticleRotation", &thor::UniversalEmitter::setParticleRotation,
 		"setParticleTextureIndex", &thor::UniversalEmitter::setParticleTextureIndex,
-		"setParticleScale", &thor::UniversalEmitter::setParticleScale);
+		"setParticleScale", &thor::UniversalEmitter::setParticleScale,
+		"setParticleColor", &thor::UniversalEmitter::setParticleColor);
 
 	thor::Connection(thor::ParticleSystem::*addEmitter2)(std::function<void(thor::EmissionInterface&, sf::Time)>) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addEmitter1)(std::function<void(thor::EmissionInterface&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addEmitter;

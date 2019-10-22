@@ -13,9 +13,20 @@
 #include "GameObjects/Animation.h"
 #include "GameObjects/ParticleSystemObject.h"
 #include <sol/sol.hpp>
+#include <GameObjects/TextAnimation.h>
 
 class Airplane;
 class Projectile;
+
+struct TextAnimationData
+{
+	float y;
+	float timePerLetter;
+	float timeBeforeDestroy;
+	unsigned int charSize;
+	std::string str;
+	std::string font;
+};
 
 struct AirplaneSpawnPosition
 {
@@ -56,7 +67,10 @@ class Level :
 	float _fpsUpdateInterval;
 	float _lastFpsUpdate;
 
+	TextAnimation* _currentText;
+
 	std::deque<AirplaneSpawnPosition> _enemySpawns;
+	std::deque<TextAnimationData> _texts;
 
 public:
 	Level(Context* context, const std::string& fileName);
@@ -73,6 +87,8 @@ public:
 	void AddParticles(ParticleSystemObject* p);
 	void AddUiElement(GameObject* ui);
 	void AddLuaParticle(sol::userdata p);
+
+	void DisplayText();
 
 	GameObject* GetEnemyProjectilesRoot() { return _enemyProjectilesRoot; }
 	GameObject* GetEnemyAirplanesRoot() { return _enemyAirplanesRoot; }
