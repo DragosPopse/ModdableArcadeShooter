@@ -20,7 +20,8 @@ level.usedTextures = {
 }
 
 level.usedFonts = {
-    {'Mont', 'Montserrat-Regular.otf'}
+    {'Mont', 'Montserrat-Regular.otf'},
+    {'Pixel', 'pcsenior.ttf'}
 }
 
 level.player = {
@@ -33,7 +34,7 @@ level.usedAirplanes = {
 }
 
 level.spawnPoints = { }
-
+ 
 for i, v in ipairs(spawn.wall('Eagle', 5, {0, 4500}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -59,7 +60,7 @@ level.texts = {
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
         charSize = 40,
-        font = 'Mont'
+        font = 'Pixel'
     }
 }
 
