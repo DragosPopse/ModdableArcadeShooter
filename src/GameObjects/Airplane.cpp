@@ -106,6 +106,18 @@ void Airplane::FixedUpdate(float dt)
 		float radian = ToRadian(angle + 90);
 		float x = _data->speed * cos(radian);
 		float y = _data->speed * sin(radian);
+		if (x > 0.01)
+		{
+			SetTextureRect(_data->leftRect);
+		}
+		else if (x < -0.01)
+		{
+			SetTextureRect(_data->rightRect);
+		}
+		else
+		{
+			SetTextureRect(_data->idleRect);
+		}
 		sf::Vector2f direction(x, y);
 		direction = Normalize(direction);
 		sf::Vector2f velocity = direction * _data->speed * dt;
