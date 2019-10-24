@@ -60,6 +60,10 @@ void TextAnimation::Update(float dt)
 			}
 			else
 			{
+				while (_finalStr[_currentLetter] == ' ')
+				{
+					_currentStr << _finalStr[_currentLetter++];
+				}
 				_currentStr << _finalStr[_currentLetter];
 				SetString(_currentStr.str());
 				_currentLetter++;
