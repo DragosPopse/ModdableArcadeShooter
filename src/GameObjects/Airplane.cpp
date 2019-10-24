@@ -330,6 +330,6 @@ void Airplane::SetShader(sf::Shader* shader)
 {
 	_shader = shader;
 	_shader->setUniform("texture", *_texture);
-	_shader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 0.5));
+	_shader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 0.7));
 	_shader = shader;
 }
