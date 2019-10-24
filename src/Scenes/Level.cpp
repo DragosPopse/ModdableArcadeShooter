@@ -46,6 +46,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	_currentText(nullptr)
 	
 {
+	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
 	_worldView = _context->window->getDefaultView();
 
 	if (_player.HasSettings())

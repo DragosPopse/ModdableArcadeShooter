@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameObjects/SpriteObject.h"
 #include <random>
+#include <Thor/Animations.hpp>
 
 class Level;
 class ProjectileData;
@@ -69,6 +70,12 @@ class Airplane :
 	TextObject* _healthText;
 	SpriteObject* _weaponDisplay;
 
+	float _elapsedTime;
+	bool _startDmgAnimation;
+	bool _dmgAnimationActive;
+	const sf::Texture* _texture;
+	sf::Shader* _shader;
+
 public:
 	Airplane(AirplaneData* data);
 
@@ -94,6 +101,7 @@ public:
 
 	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);
+	void SetShader(sf::Shader* shader);
 
 	sf::FloatRect GetBoundingRect() const override;
 

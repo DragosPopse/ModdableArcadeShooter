@@ -93,7 +93,7 @@ local HomingMissile = {
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 3))
         pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
-        pso.system:setTexture(this:getLevel():getTexture('Fragments'))
+        pso.system:setTexture(this:getLevel():getTexture('Smoke'))
         for i = 1, 4 do 
             local rect = sf.IntRect.new()
             rect.left = i * 5

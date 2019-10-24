@@ -6,6 +6,7 @@
 #include "GameObjects/TextObject.h"
 #include "GameObjects/ParticleSystemObject.h"
 #include <Thor/Math.hpp>
+#include <Thor/Animations.hpp>
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -19,7 +20,10 @@ Airplane::Airplane(AirplaneData* data) :
 	_moveY(0),
 	_moved(false),
 	_distanceMoved(0),
-	_currentPatternIndex(0)
+	_currentPatternIndex(0),
+	_startDmgAnimation(false),
+	_dmgAnimationActive(false),
+	_elapsedTime(0)
 {
 	for (int i = 0; i < _data->ammo.size(); i++)
 	{
@@ -59,6 +63,8 @@ void Airplane::Start(Scene* scene)
 	AddChild(std::move(textPtr));
 	UpdateHealthDisplay();
 	
+	SetShader(_currentScene->GetFlashShader());
+
 	GameObject::Start(scene);
 }
 
@@ -66,6 +72,19 @@ void Airplane::Start(Scene* scene)
 void Airplane::Update(float dt)
 {
 	_cooldown += dt;
+	if (_startDmgAnimation)
+	{
+		_dmgAnimationActive = true;
+		_startDmgAnimation = false;
+	}
+	if (_dmgAnimationActive)
+	{
+		_elapsedTime += dt;
+		if (_elapsedTime > 0.06)
+		{
+			_dmgAnimationActive = false;
+		}
+	}
 	GameObject::Update(dt);
 }
 
@@ -127,7 +146,13 @@ void Airplane::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 
+	const sf::Shader* last = states.shader;
+	if (_dmgAnimationActive)
+	{
+		states.shader = _shader;
+	}
 	target.draw(_sprite, states);
+	states.shader = last;
 
 	GameObject::Draw(target, states);
 }
@@ -157,6 +182,12 @@ void Airplane::Damage(int hp)
 		explosion->setScale(randomScale, randomScale);
 		_currentScene->AddExplosion(explosion);
 	}
+	else
+	{
+		_dmgAnimationActive = false;
+		_startDmgAnimation = true;
+		_elapsedTime = 0;
+	}
 	UpdateHealthDisplay();
 }
 
@@ -171,6 +202,7 @@ void Airplane::Repair(int hp)
 void Airplane::SetTexture(const sf::Texture& texture)
 {
 	_sprite.setTexture(texture);
+	_texture = &texture;
 	CenterOrigin(_sprite);
 }
 
@@ -291,4 +323,13 @@ void Airplane::UpdateWeaponDisplay()
 	float displayY = (int)ws.y / 2 - _data->weapons[_currentWeaponIndex]->iconRect.height * _data->weapons[_currentWeaponIndex]->iconScale;
 	_weaponDisplay->setPosition(displayX, displayY);
 	_weaponDisplay->setScale(_data->weapons[_currentWeaponIndex]->iconScale, _data->weapons[_currentWeaponIndex]->iconScale);
+}
+
+
+void Airplane::SetShader(sf::Shader* shader)
+{
+	_shader = shader;
+	_shader->setUniform("texture", *_texture);
+	_shader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 0.5));
+	_shader = shader;
 }

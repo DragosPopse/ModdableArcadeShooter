@@ -14,6 +14,7 @@
 #include "GameObjects/ParticleSystemObject.h"
 #include <sol/sol.hpp>
 #include <GameObjects/TextAnimation.h>
+#include <Thor/Animations.hpp>
 
 class Airplane;
 class Projectile;
@@ -72,6 +73,8 @@ class Level :
 	std::deque<AirplaneSpawnPosition> _enemySpawns;
 	std::deque<TextAnimationData> _texts;
 
+	sf::Shader _flashShader;
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -87,6 +90,8 @@ public:
 	void AddParticles(ParticleSystemObject* p);
 	void AddUiElement(GameObject* ui);
 	void AddLuaParticle(sol::userdata p);
+
+	sf::Shader* GetFlashShader() { return &_flashShader; }
 
 	void DisplayText();
 
