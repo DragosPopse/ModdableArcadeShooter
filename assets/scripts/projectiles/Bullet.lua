@@ -5,7 +5,7 @@ local Bullet = {
     rect = {14, 57, 9, 22},
     iconRect = {0 + 56 * 2, 0, 56, 56},
 
-    scale = 1,
+    scale = 1.1,
     iconScale = 2,
     muzzleScale = 2,
     damage = 20,

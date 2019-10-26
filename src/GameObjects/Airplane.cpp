@@ -55,8 +55,12 @@ void Airplane::Start(Scene* scene)
 	else
 	{
 		_weaponDisplay = new SpriteObject();
+		_cooldownDisplay = new CircleCooldown();
 		UpdateWeaponDisplay();
+		
 		_currentScene->AddUiElement(_weaponDisplay);
+		_currentScene->AddUiElement(_cooldownDisplay);
+		
 	}
 
 	std::unique_ptr<TextObject> textPtr(_healthText);
@@ -149,6 +153,7 @@ void Airplane::FixedUpdate(float dt)
 		_moveX = 0;
 		_moveY = 0;
 		_moved = false;
+		UpdateCooldownVertices();
 	}
 	GameObject::FixedUpdate(dt);
 }
@@ -253,6 +258,7 @@ void Airplane::NextWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
+		UpdateCooldownDisplay();
 	}
 }
 
@@ -268,6 +274,7 @@ void Airplane::PreviousWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
+		UpdateCooldownDisplay();
 	}
 }
 
@@ -288,6 +295,7 @@ void Airplane::Fire()
 			proj->SetPlayerControlled(true);
 			_currentScene->AddPlayerProjectile(proj);
 			proj->move(0, -GetBoundingRect().height / 2);
+			UpdateCooldownDisplay();
 		}
 		else
 		{
@@ -335,6 +343,21 @@ void Airplane::UpdateWeaponDisplay()
 	float displayY = (int)ws.y / 2 - _data->weapons[_currentWeaponIndex]->iconRect.height * _data->weapons[_currentWeaponIndex]->iconScale;
 	_weaponDisplay->setPosition(displayX, displayY);
 	_weaponDisplay->setScale(_data->weapons[_currentWeaponIndex]->iconScale, _data->weapons[_currentWeaponIndex]->iconScale);
+	
+	UpdateCooldownVertices();
+}
+
+
+void Airplane::UpdateCooldownVertices()
+{
+	sf::FloatRect rect = _weaponDisplay->GetBoundingRect();
+	//std::cout << "RECT: " << rect.left << ' ' << rect.top << ' ' << rect.width << ' ' << rect.height << '\n';
+	_cooldownDisplay->SetVertices(sf::Vector2f(rect.left, rect.top),
+		sf::Vector2f(rect.left + rect.width, rect.top),
+		sf::Vector2f(rect.left + rect.width, rect.top + rect.height),
+		sf::Vector2f(rect.left, rect.top + rect.height),
+		sf::Vector2f(rect.left + rect.width / 2, rect.top + rect.height / 2));
+
 }
 
 
@@ -344,4 +367,10 @@ void Airplane::SetShader(sf::Shader* shader)
 	_shader->setUniform("texture", *_texture);
 	_shader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 0.7));
 	_shader = shader;
+}
+
+
+void Airplane::UpdateCooldownDisplay()
+{
+	_cooldownDisplay->BeginAnimation(_data->weapons[_currentWeaponIndex]->fireRate);
 }

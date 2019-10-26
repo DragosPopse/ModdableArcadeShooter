@@ -408,7 +408,6 @@ void Level::DisplayText()
 			{
 				_currentText->MarkForDestroy();
 			}
-			std::cout << "NEWTEXT\n";
 			_currentText = new TextAnimation(_texts[0].str);
 			_currentText->SetCharSize(_texts[0].charSize);
 			_currentText->SetTimePerLetter(_texts[0].timePerLetter);

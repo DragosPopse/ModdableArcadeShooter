@@ -26,3 +26,9 @@ void SpriteObject::SetTextureRect(const sf::IntRect& rect)
 {
 	_sprite.setTextureRect(rect);
 }
+
+
+sf::FloatRect SpriteObject::GetBoundingRect() const
+{
+	return GetWorldTransform().transformRect(_sprite.getGlobalBounds());
+}

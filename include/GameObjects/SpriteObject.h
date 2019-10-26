@@ -16,4 +16,6 @@ public:
 	void SetTextureRect(const sf::IntRect& rect);
 
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	sf::FloatRect GetBoundingRect() const override;
 };

@@ -7,6 +7,7 @@
 #include "GameObjects/SpriteObject.h"
 #include <random>
 #include <Thor/Animations.hpp>
+#include "GameObjects/CircleCooldown.h"
 
 class Level;
 class ProjectileData;
@@ -69,6 +70,7 @@ class Airplane :
 
 	TextObject* _healthText;
 	SpriteObject* _weaponDisplay;
+	CircleCooldown* _cooldownDisplay;
 
 	float _elapsedTime;
 	bool _startDmgAnimation;
@@ -110,4 +112,6 @@ public:
 private:
 	void UpdateHealthDisplay();
 	void UpdateWeaponDisplay();
+	void UpdateCooldownDisplay();
+	void UpdateCooldownVertices();
 };

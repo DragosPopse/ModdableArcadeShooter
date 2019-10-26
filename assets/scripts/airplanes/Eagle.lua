@@ -5,7 +5,7 @@ local Eagle = {
     idleRect = {54 * 1, 0, 54, 62},
     rightRect = {54 * 2, 0, 54, 62},
     scale = 1,
-    speed = 200,
+    speed = 300,
     healthFont = 'Mont',
     healthCharSize = 24,
 

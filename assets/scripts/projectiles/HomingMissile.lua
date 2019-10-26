@@ -9,7 +9,7 @@ local HomingMissile = {
     iconScale = 2, 
     muzzleScale = 5,
     damage = 20,
-    fireRate = 0.05,
+    fireRate = 2,
     speed = 1000,
     spreadAngle = 90,   
 
