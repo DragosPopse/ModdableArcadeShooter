@@ -46,12 +46,17 @@ Level::Level(Context* context, const std::string& fileName) :
 	_currentText(nullptr)
 	
 {
+	std::cout << "BEGIN_LEVEL_LOAD\n";
+	std::cout << "LOAD_SHADER\n";
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
+	std::cout << "LOADED_SHADER\n";
 	_worldView = _context->window->getDefaultView();
 
 	if (_player.HasSettings())
 	{
+		std::cout << "LOAD_SETTINGS\n";
 		_player.LoadSettings();
+		std::cout << "LOADED_SETTINGS\n";
 	}
 	else
 	{
@@ -61,7 +66,7 @@ Level::Level(Context* context, const std::string& fileName) :
 
 	std::cout << BuildString(LEVELS_PATH, fileName) << '\n';
 	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
-
+	
 	//Load required textures
 	sol::table usedTextures = level["usedTextures"];
 	for (int i = 1; i <= usedTextures.size(); i++)

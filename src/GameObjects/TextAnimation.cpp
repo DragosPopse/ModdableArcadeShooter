@@ -19,7 +19,6 @@ TextAnimation::TextAnimation(const std::string& finalStr) :
 void TextAnimation::SetString(const std::string& str)
 {
 	_text.setString(str);
-	std::cout << str << '\n';
 	//std::cout << _text.getString().toAnsiString() << '\n';
 	CenterOrigin(_text);
 }

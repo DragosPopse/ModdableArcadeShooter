@@ -372,5 +372,12 @@ void Airplane::SetShader(sf::Shader* shader)
 
 void Airplane::UpdateCooldownDisplay()
 {
-	_cooldownDisplay->BeginAnimation(_data->weapons[_currentWeaponIndex]->fireRate);
+	if (_data->weapons[_currentWeaponIndex]->fireRate > 0.1)
+	{
+		_cooldownDisplay->BeginAnimation(_data->weapons[_currentWeaponIndex]->fireRate);
+	}
+	else
+	{
+		_cooldownDisplay->StopAnimation();
+	}
 }
