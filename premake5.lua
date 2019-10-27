@@ -34,7 +34,8 @@ project "ArcadeAirship"
         "sfml-graphics-d",
         "sfml-audio-d",
         "lua535",
-        "thor-d"
+        "thor-d",
+        "tgui-d"
     }
     libdirs
     {
