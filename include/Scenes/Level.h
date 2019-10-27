@@ -15,6 +15,8 @@
 #include <sol/sol.hpp>
 #include <GameObjects/TextAnimation.h>
 #include <Thor/Animations.hpp>
+#include <memory>
+#include "LocalMenu.h"
 
 class Airplane;
 class Projectile;
@@ -74,6 +76,8 @@ class Level :
 	std::deque<TextAnimationData> _texts;
 
 	sf::Shader _flashShader;
+
+	std::shared_ptr<LocalMenu> _localMenu;
 
 public:
 	Level(Context* context, const std::string& fileName);

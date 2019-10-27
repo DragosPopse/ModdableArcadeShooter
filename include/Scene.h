@@ -30,7 +30,7 @@ public:
 	virtual bool FixedUpdate(float dt) { return false; }
 	virtual bool Render() { return false; }
 
-	void RequestPush(Scene* scene);
+	void RequestPush(std::shared_ptr<Scene> scene);
 	void RequestPop();
 	void RequestClear();
 

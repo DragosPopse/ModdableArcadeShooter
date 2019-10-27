@@ -43,7 +43,8 @@ Level::Level(Context* context, const std::string& fileName) :
 	_fpsUpdateInterval(0.5f),
 	_lastFpsUpdate(0.f),
 	_uiRoot(new GameObject),
-	_currentText(nullptr)
+	_currentText(nullptr),
+	_localMenu(new LocalMenu(context))
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -52,9 +53,7 @@ Level::Level(Context* context, const std::string& fileName) :
 
 	if (_player.HasSettings())
 	{
-		std::cout << "LOAD_SETTINGS\n";
 		_player.LoadSettings();
-		std::cout << "LOADED_SETTINGS\n";
 	}
 	else
 	{
@@ -390,6 +389,10 @@ bool Level::HandleEvent(const sf::Event& ev)
 
 	case sf::Event::KeyPressed:
 		_player.HandleEvent(ev, _commands);
+		if (ev.key.code == sf::Keyboard::Escape)
+		{
+			RequestPush(_localMenu);
+		}
 		break;
 	}
 	

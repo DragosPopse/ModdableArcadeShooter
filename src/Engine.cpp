@@ -55,8 +55,8 @@ void Engine::Run()
 
 	_textures.Load("Eagle", "assets/textures/Eagle.png");
 
-
-	_sceneManager.PushScene(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
+	std::shared_ptr<LevelLoader> level(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
+	_sceneManager.PushScene(level);
 
 	_clock.restart();
 	while (_window.isOpen())

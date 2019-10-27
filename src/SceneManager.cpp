@@ -10,7 +10,7 @@ SceneManager::SceneManager(Context* context) :
 }
 
 
-void SceneManager::PushScene(Scene* scene)
+void SceneManager::PushScene(std::shared_ptr<Scene> scene)
 {
 	scene->_manager = this;
 	_pendingChanges.push(PendingChange(ChangeType::Push, scene));
@@ -98,7 +98,7 @@ void SceneManager::ApplyChanges()
 		{
 		case ChangeType::Push:
 			{
-				std::unique_ptr<Scene> ptr(change.scene);
+				std::shared_ptr<Scene> ptr(change.scene);
 				_stack.emplace_back(std::move(ptr));
 			}
 			break;

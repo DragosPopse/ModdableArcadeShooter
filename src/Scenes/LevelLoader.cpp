@@ -28,7 +28,8 @@ bool LevelLoader::Update(float dt)
 	if (IsFinished())
 	{
 		RequestClear();
-		RequestPush(_result);
+		std::shared_ptr<Scene> ptr(_result);
+		RequestPush(ptr);
 	}
 	else
 	{

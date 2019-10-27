@@ -1,4 +1,5 @@
 #include "Scenes/LocalMenu.h"
+#include <iostream>
 
 
 LocalMenu::LocalMenu(Context* context) :
@@ -8,6 +9,7 @@ LocalMenu::LocalMenu(Context* context) :
 	_background.setFillColor(sf::Color(0, 0, 0, 100));
 	_background.setPosition(0, 0);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	std::cout << "BG: " << _background.getSize().x << ' ' << _background.getSize().y << '\n';
 }
 
 
@@ -30,6 +32,7 @@ bool LocalMenu::Update(float dt)
 
 bool LocalMenu::Render()
 {
+	_context->window->setView(_context->window->getDefaultView());
 	_context->window->draw(_background);
 	_gui.draw();
 	return true;

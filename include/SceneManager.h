@@ -18,23 +18,23 @@ class SceneManager
 	struct PendingChange
 	{
 		ChangeType type;
-		Scene* scene;
+		std::shared_ptr<Scene> scene;
 
-		PendingChange(ChangeType t, Scene* s = nullptr) :
+		PendingChange(ChangeType t, std::shared_ptr<Scene> s = nullptr) :
 			type(t),
 			scene(s)
 		{
 		}
 	};
 
-	std::list<std::unique_ptr<Scene>> _stack;
+	std::list<std::shared_ptr<Scene>> _stack;
 	Context* _context;
 	std::queue<PendingChange> _pendingChanges;
 
 public:
 	SceneManager(Context* context);
 
-	void PushScene(Scene* scene);
+	void PushScene(std::shared_ptr<Scene> scene);
 	void PopScene();
 	void Clear();
 

@@ -14,7 +14,7 @@ Scene::~Scene()
 }
 
 
-void Scene::RequestPush(Scene* scene)
+void Scene::RequestPush(std::shared_ptr<Scene> scene)
 {
 	_manager->PushScene(scene);
 }
