@@ -40,6 +40,7 @@ struct AirplaneData
 	float explosionFrameDuration;
 	float explosionMinScale;
 	float explosionMaxScale;
+	float explosionMaxRotation;
 
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
@@ -77,6 +78,7 @@ class Airplane :
 	bool _dmgAnimationActive;
 	const sf::Texture* _texture;
 	sf::Shader* _shader;
+
 
 public:
 	Airplane(AirplaneData* data);

@@ -131,6 +131,7 @@ Level::Level(Context* context, const std::string& fileName) :
 		apdata.explosionsTexture = explosionData["texture"];
 		apdata.explosionMaxScale = explosionData["maxScale"];
 		apdata.explosionMinScale = explosionData["minScale"];
+		apdata.explosionMaxRotation = explosionData["maxRotation"];
 		apdata.generator = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
 
 

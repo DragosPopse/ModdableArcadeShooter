@@ -16,7 +16,8 @@ local Eagle = {
         frameSize = {64, 64},
         frameDuration = 0.1,
         minScale = 4,
-        maxScale = 7
+        maxScale = 7,
+        maxRotation = 360
     },
 
     onDestroy = function (this)

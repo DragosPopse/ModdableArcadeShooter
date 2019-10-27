@@ -9,6 +9,13 @@
 #include <Thor/Animations.hpp>
 
 
+namespace
+{
+	std::uniform_real_distribution<float> g_randomRotation(0, 1);
+	std::mt19937 g_rng;
+}
+
+
 Airplane::Airplane(AirplaneData* data) :
 	_currentScene(nullptr),
 	_data(data),
@@ -197,7 +204,12 @@ void Airplane::Damage(int hp)
 		explosion->SetTimePerFrame(_data->explosionFrameDuration);
 		float randomScale = _data->generator(_data->rng);
 		explosion->setScale(randomScale, randomScale);
+
+		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
+		explosion->setRotation(randomRotation);
+		std::cout << randomRotation << '\n';
 		_currentScene->AddExplosion(explosion);
+		
 	}
 	else
 	{
