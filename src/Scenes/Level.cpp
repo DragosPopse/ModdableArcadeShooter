@@ -320,9 +320,7 @@ Level::Level(Context* context, const std::string& fileName) :
 			return lhs.y > rhs.y;
 		});
 
-	std::cout << "LOAD_SHADER\n";
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
-	std::cout << "LOADED_SHADER\n";
 
 	_root->Start(this);
 }

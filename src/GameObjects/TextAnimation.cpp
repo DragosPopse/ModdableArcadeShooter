@@ -31,7 +31,7 @@ void TextAnimation::Start(Scene* scene)
 	_text.setFont(fonts[_font]);
 }
 
-
+ 
 void TextAnimation::SetFont(const std::string& font)
 {
 	_font = font;
