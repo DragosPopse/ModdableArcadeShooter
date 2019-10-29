@@ -44,7 +44,7 @@ project "ArcadeAirship"
 
     filter "system:windows"
         cppdialect "c++17"
-        staticruntime "On"
+        staticruntime "off"
         systemversion "latest"
 
         defines
