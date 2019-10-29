@@ -3,9 +3,11 @@
 
 Context::Context(
 	sf::RenderWindow* w,
-	sol::state* l
+	sol::state* l,
+	sf::Music* m
 ) :
 	window(w),
-	lua(l)
+	lua(l),
+	music(m)
 {
 }

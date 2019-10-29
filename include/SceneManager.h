@@ -38,6 +38,8 @@ public:
 	void PopScene();
 	void Clear();
 
+	bool IsEmpty() const { return _stack.empty(); }
+
 	Context* GetContext() const;
 
 	void HandleEvent(const sf::Event& ev);

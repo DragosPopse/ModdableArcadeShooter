@@ -4,6 +4,8 @@
 #include <sol/sol.hpp>
 #include "SceneManager.h"
 #include "ResourceHolder.h"
+#include <TGUI/TGUI.hpp>
+#include <SFML/Audio.hpp>
 
 class Engine
 {
@@ -16,6 +18,10 @@ class Engine
 	TextureHolder _textures;
 	
 	Context _context;
+
+	tgui::Theme _theme;
+
+	sf::Music _music;
 
 public:
 	Engine();

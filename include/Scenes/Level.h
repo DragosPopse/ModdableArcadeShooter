@@ -95,6 +95,8 @@ public:
 	void AddUiElement(GameObject* ui);
 	void AddLuaParticle(sol::userdata p);
 
+	const sf::Font& GetFont(const std::string& id) { return _fonts[id]; }
+
 	sf::Shader* GetFlashShader() { return &_flashShader; }
 
 	void DisplayText();

@@ -48,7 +48,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
-
+	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 
 	if (_player.HasSettings())

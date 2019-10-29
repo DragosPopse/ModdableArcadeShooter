@@ -1,5 +1,6 @@
 #include "Scenes/LocalMenu.h"
 #include <iostream>
+#include "Scenes/Level.h"
 
 
 LocalMenu::LocalMenu(Context* context) :
@@ -9,7 +10,36 @@ LocalMenu::LocalMenu(Context* context) :
 	_background.setFillColor(sf::Color(0, 0, 0, 100));
 	_background.setPosition(0, 0);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
-	std::cout << "BG: " << _background.getSize().x << ' ' << _background.getSize().y << '\n';
+
+	tgui::Button::Ptr resume = tgui::Button::create("Resume");
+	tgui::Button::Ptr exit = tgui::Button::create("Exit");
+
+	
+	resume->connect("pressed", 
+		[this]()
+		{
+			RequestPop();
+		});
+
+	exit->connect("pressed", 
+		[this]()
+		{
+			RequestClear();
+		});
+
+	resume->setSize("40%", "20%");
+	resume->setTextSize(30);
+	exit->setTextSize(30);
+	exit->setSize("40%", "20%");
+	tgui::VerticalLayout::Ptr layout = tgui::VerticalLayout::create();
+	layout->setPosition("(&.size - size) / 2", "&.size - size");
+	layout->add(resume);
+	layout->add(exit);
+	layout->setSize("30%");
+	
+	
+	_gui.add(layout);
+
 }
 
 

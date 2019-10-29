@@ -8,6 +8,7 @@
 
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
+#include "Scenes/SplashScreen.h"
 #include "GameObjects/Airplane.h"
 #include "GameObjects/Projectile.h"
 
@@ -35,7 +36,8 @@ Engine::Engine() :
 	_deltaTime(0.f),
 	_context(
 		&_window,
-		&_lua
+		&_lua,
+		&_music
 	),
 	_sceneManager(&_context)
 {
@@ -55,8 +57,13 @@ void Engine::Run()
 
 	_textures.Load("Eagle", "assets/textures/Eagle.png");
 
-	std::shared_ptr<LevelLoader> level(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
-	_sceneManager.PushScene(level);
+	_theme.load("assets/textures/DefaultTheme.txt");
+
+	tgui::Theme::setDefault(&_theme);
+
+	//std::shared_ptr<LevelLoader> level(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
+	std::shared_ptr<SplashScreen> splash(new SplashScreen(_sceneManager.GetContext()));
+	_sceneManager.PushScene(splash);
 
 	_clock.restart();
 	while (_window.isOpen())
@@ -71,6 +78,11 @@ void Engine::Run()
 			FixedUpdate();
 		}
 		Render();
+
+		if (_sceneManager.IsEmpty())
+		{
+			_window.close();
+		}
 	}
 }
 

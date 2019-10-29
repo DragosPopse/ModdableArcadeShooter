@@ -8,15 +8,18 @@ namespace sol
 namespace sf
 {
 	class RenderWindow;
+	class Music;
 }
 
 struct Context
 {
 	sf::RenderWindow* window;
 	sol::state* lua;
+	sf::Music* music;
 
 	Context(
 		sf::RenderWindow* w,
-		sol::state* l
+		sol::state* l,
+		sf::Music* m
 	);
 };
