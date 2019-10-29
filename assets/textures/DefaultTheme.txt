@@ -1,8 +1,8 @@
 Button {
-    Texture         = "Buttons.png" Part( 0, 0, 62, 62) Middle(31, 31, 30, 62);
-    TextureHover    = "Buttons.png" Part(124, 0, 62, 62) Middle(31, 31, 30, 62);
-    TextureDown     = "Buttons.png" Part(62, 0, 62, 62) Middle(31, 31, 30, 62);
-    TextureFocused  = "Buttons.png" Part(0, 0, 62, 62) Middle(31, 31, 30, 62);
+    Texture         = "Buttons.png" Part( 0, 0, 62, 62) Middle(31, 31, 0, 62);
+    TextureHover    = "Buttons.png" Part(124, 0, 62, 62) Middle(31, 31, 0, 62);
+    TextureDown     = "Buttons.png" Part(62, 0, 62, 62) Middle(31, 31, 0, 62);
+    TextureFocused  = "Buttons.png" Part(0, 0, 62, 62) Middle(31, 31, 0, 62);
     TextColor       = rgb(255, 255, 255);
     TextColorHover  = rgb(255, 255, 255);
 }

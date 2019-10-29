@@ -1,6 +1,7 @@
 #include "Scenes/MainMenu.h"
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include "Scenes/LevelLoader.h"
 
 
 MainMenu::MainMenu(Context* context) :
@@ -15,12 +16,56 @@ MainMenu::MainMenu(Context* context) :
 {
 	_view = _context->window->getDefaultView();
 	_textures.Load("Background", "assets/textures/MenuBackground.png");
+	_fonts.Load("Menu", "assets/fonts/pcsenior.ttf");
 	_parts[0].setTexture(_textures["Background"]);
 	_parts[1].setTexture(_textures["Background"]);
 	float scale = (float)_context->window->getSize().x / _textures["Background"].getSize().x;
 	_parts[0].setScale(scale, scale);
 	_parts[1].setScale(scale, scale);
 	_parts[1].setPosition(0, _parts[0].getPosition().y - _parts[0].getGlobalBounds().height);
+
+	tgui::VerticalLayout::Ptr layout = tgui::VerticalLayout::create();
+	_settingsButton = tgui::Button::create("Settings");
+	_playButton = tgui::Button::create("Play");
+	_creditsButton = tgui::Button::create("Credits");
+	_exitButton = tgui::Button::create("Exit");
+	
+	int textSize = 30;
+	_settingsButton->setTextSize(textSize);
+	_playButton->setTextSize(textSize);
+	_creditsButton->setTextSize(textSize);
+	_exitButton->setTextSize(textSize);
+
+	_playButton->setInheritedFont(_fonts["Menu"]);
+	_creditsButton->setInheritedFont(_fonts["Menu"]);
+	_exitButton->setInheritedFont(_fonts["Menu"]);
+	_settingsButton->setInheritedFont(_fonts["Menu"]);
+
+	layout->setSize("40%");
+	layout->setPosition("(&.size - size) / 2");
+	layout->add(_playButton);
+	layout->addSpace(0.1);
+	layout->add(_settingsButton);
+	layout->addSpace(0.1);
+	layout->add(_creditsButton);
+	layout->addSpace(0.1);
+	layout->add(_exitButton);
+
+	_exitButton->connect("pressed", 
+		[this]()
+		{
+			RequestClear();
+		});
+
+	_playButton->connect("pressed", 
+		[this]()
+		{
+			RequestClear();
+			std::shared_ptr<LevelLoader> level(new LevelLoader(_context, "Level1.lua"));
+			RequestPush(level);
+		});
+
+	_gui.add(layout);
 }
 
 

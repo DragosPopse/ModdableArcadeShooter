@@ -21,6 +21,11 @@ class MainMenu :
 	float _elapsedTime;
 	float _fadeDuration;
 
+	tgui::Button::Ptr _playButton;
+	tgui::Button::Ptr _settingsButton;
+	tgui::Button::Ptr _creditsButton;
+	tgui::Button::Ptr _exitButton;
+
 public:
 	MainMenu(Context* context);
 
