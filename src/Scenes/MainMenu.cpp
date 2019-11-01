@@ -158,8 +158,8 @@ void MainMenu::SetupCredits()
 
 void MainMenu::SetupSettings()
 {
-	_musicSlider = tgui::Slider::create();
-	_sfxSlider = tgui::Slider::create();
+	_musicSlider = tgui::Slider::create(0, 100);
+	_sfxSlider = tgui::Slider::create(0, 100);
 	_musicLabel = tgui::Label::create("Music");
 	_sfxLabel = tgui::Label::create("SFX");
 	_confirmSettingsButton = tgui::Button::create("Confirm");
@@ -168,7 +168,6 @@ void MainMenu::SetupSettings()
 	_confirmSettingsButton->connect("pressed", 
 		[this]()
 		{
-			std::cout << "PRESS\n";
 			EnableMain();
 			_context->player->SaveSettings();
 		});
@@ -179,16 +178,25 @@ void MainMenu::SetupSettings()
 			EnableKeyBindings();
 		});
 
-	_sfxSlider->setPosition("(&.size - size) / 2", 0);
-	_musicSlider->setPosition(100, 0);
+	_sfxSlider->setValue(_context->player->GetSfxVolume());
+	_musicSlider->setValue(_context->player->GetMusicVolume());
 
+	_sfxSlider->connect("ValueChanged", [this](float v)
+		{
+			_context->player->SetSfxVolume(v);
+		});
+	_musicSlider->connect("ValueChanged", [this](float v)
+		{
+			_context->player->SetMusicVolume(v);
+			_context->music->setVolume(v);
+		});
 
 	_settingsPanel->setSize("60%");
 	_settingsPanel->setPosition("(&.size - size) / 2");
 	_sfxLabel->getRenderer()->setTextColor(sf::Color::Black);
 	_musicLabel->getRenderer()->setTextColor(sf::Color::Black);
-	_sfxLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-	_musicLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+	//_sfxLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+	//_musicLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
 	_sfxLabel->getRenderer()->setFont(_fonts["Menu"]);
 	_musicLabel->getRenderer()->setFont(_fonts["Menu"]);
 	_sfxLabel->setTextSize(_settingsTextSize);

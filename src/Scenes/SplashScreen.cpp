@@ -17,6 +17,7 @@ SplashScreen::SplashScreen(Context* context) :
 	_context->music->openFromFile("assets/audio/music/MainMenu.wav");
 	_context->music->setLoop(true);
 	_context->music->play();
+	_context->music->setVolume(_context->player->GetMusicVolume());
 }
 
 

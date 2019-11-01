@@ -45,6 +45,11 @@ public:
 	void HandleEvent(const sf::Event& ev, CommandQueue& commands);
 	void HandleRealtimeInput(CommandQueue& commands);
 
+	float GetSfxVolume() const { return _sfxVolume; }
+	float GetMusicVolume() const { return _musicVolume; }
+	void SetSfxVolume(float v) { _sfxVolume = v; }
+	void SetMusicVolume(float v) { _musicVolume = v; }
+
 private:
 	bool IsRealtime(ActionType action) const;
 };

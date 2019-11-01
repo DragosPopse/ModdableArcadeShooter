@@ -98,7 +98,9 @@ void Player::HandleRealtimeInput(CommandQueue& commands)
 }
 
 
-Player::Player()
+Player::Player() :
+	_musicVolume(100),
+	_sfxVolume(100)
 {
 	_keyBinding[sf::Keyboard::A] = MoveLeft;
 	_keyBinding[sf::Keyboard::D] = MoveRight;
@@ -189,7 +191,7 @@ sf::Keyboard::Key Player::GetKey(ActionType action)
 
 void Player::LoadSettings()
 {
-	std::string fileName = BuildString(CONFIG_PATH, "KeyBindings.json");
+	std::string fileName = BuildString(CONFIG_PATH, "Player.json");
 	std::ifstream stream(fileName);
 	rjs::IStreamWrapper wrapper(stream);
 
@@ -203,17 +205,21 @@ void Player::LoadSettings()
 	_keyBinding[(sf::Keyboard::Key)document["Fire"].GetInt()] = Fire;
 	_keyBinding[(sf::Keyboard::Key)document["NextWeapon"].GetInt()] = NextWeapon;
 	_keyBinding[(sf::Keyboard::Key)document["PreviousWeapon"].GetInt()] = PreviousWeapon;
+
+	_sfxVolume = document["SfxVolume"].GetFloat();
+	_musicVolume = document["MusicVolume"].GetFloat();
 }
 
 
 void Player::SaveSettings()
 {
-	std::string fileName = BuildString(CONFIG_PATH, "KeyBindings.json");
+	std::string fileName = BuildString(CONFIG_PATH, "Player.json");
 	
 	rjs::Document document;
 	document.SetObject();
 	auto& allocator = document.GetAllocator();
-	
+	document.AddMember("SfxVolume", _sfxVolume, allocator);
+	document.AddMember("MusicVolume", _musicVolume, allocator);
 	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); ++it)
 	{
 		switch (it->second)
@@ -258,6 +264,6 @@ void Player::SaveSettings()
 
 bool Player::HasSettings() const
 {
-	std::ifstream file(BuildString(CONFIG_PATH, "KeyBindings.json"));
+	std::ifstream file(BuildString(CONFIG_PATH, "Player.json"));
 	return file.good();
 }
