@@ -12,6 +12,7 @@
 *.vcxproj.filters
 bin-int/
 bin/
+assets/config/Player.json
 
 # User-specific files
 *.rsuser
