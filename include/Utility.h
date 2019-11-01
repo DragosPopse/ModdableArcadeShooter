@@ -24,6 +24,7 @@ sf::Vector2f Normalize(const sf::Vector2f& vector);
 sf::Vector2f Direction(const sf::Vector2f& from, const sf::Vector2f& to);
 float Distance(const sf::Vector2f& lhs, const sf::Vector2f& rhs);
 
+std::string ToString(sf::Keyboard::Key key);
 
 ///from https://stackoverflow.com/questions/21806561/concatenating-strings-and-numbers-in-variadic-template-function
 template <class... Args>

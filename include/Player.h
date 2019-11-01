@@ -29,10 +29,14 @@ private:
 	std::map<sf::Keyboard::Key, ActionType> _keyBinding;
 	std::map<ActionType, Command> _actionBinding;
 
+	float _sfxVolume;
+	float _musicVolume;
+
 public:
 	Player();
 
 	void AssignKey(ActionType action, sf::Keyboard::Key key);
+	sf::Keyboard::Key GetKey(ActionType action);
 
 	void LoadSettings();
 	void SaveSettings();

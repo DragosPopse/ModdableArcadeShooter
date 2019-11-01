@@ -177,6 +177,16 @@ void Player::AssignKey(ActionType action, sf::Keyboard::Key key)
 }
 
 
+sf::Keyboard::Key Player::GetKey(ActionType action)
+{
+	auto found = std::find_if(_keyBinding.begin(), _keyBinding.end(), [action](auto& kv)
+		{
+			return kv.second == action;
+		});
+	return found->first;
+}
+
+
 void Player::LoadSettings()
 {
 	std::string fileName = BuildString(CONFIG_PATH, "KeyBindings.json");

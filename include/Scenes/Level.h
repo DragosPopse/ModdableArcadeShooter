@@ -57,7 +57,6 @@ class Level :
 	std::map<std::string, AirplaneData> _airplaneDataDict;
 	std::map<std::string, ProjectileData> _projectileDataDict;
 
-	Player _player;
 	CommandQueue _commands;
 
 	sf::View _worldView;

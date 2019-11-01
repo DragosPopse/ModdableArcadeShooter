@@ -37,7 +37,8 @@ Engine::Engine() :
 	_context(
 		&_window,
 		&_lua,
-		&_music
+		&_music,
+		&_player
 	),
 	_sceneManager(&_context)
 {

@@ -51,15 +51,6 @@ Level::Level(Context* context, const std::string& fileName) :
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 
-	if (_player.HasSettings())
-	{
-		_player.LoadSettings();
-	}
-	else
-	{
-		_player.SaveSettings();
-	}
-
 
 	std::cout << BuildString(LEVELS_PATH, fileName) << '\n';
 	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
@@ -334,7 +325,7 @@ bool Level::FixedUpdate(float dt)
 		_playerAirplane = nullptr;
 	}
 	SpawnEnemies();
-	_player.HandleRealtimeInput(_commands);
+	_context->player->HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
 	{
 		_root->OnCommand(_commands.Pop(), dt);
@@ -388,7 +379,7 @@ bool Level::HandleEvent(const sf::Event& ev)
 		break;
 
 	case sf::Event::KeyPressed:
-		_player.HandleEvent(ev, _commands);
+		_context->player->HandleEvent(ev, _commands);
 		if (ev.key.code == sf::Keyboard::Escape)
 		{
 			RequestPush(_localMenu);

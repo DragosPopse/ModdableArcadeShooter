@@ -4,6 +4,7 @@
 #include <sol/sol.hpp>
 #include "SceneManager.h"
 #include "ResourceHolder.h"
+#include "Player.h"
 #include <TGUI/TGUI.hpp>
 #include <SFML/Audio.hpp>
 
@@ -22,6 +23,8 @@ class Engine
 	tgui::Theme _theme;
 
 	sf::Music _music;
+
+	Player _player;
 
 public:
 	Engine();
