@@ -112,6 +112,8 @@ void MainMenu::SetupMain()
 		{
 			EnableSettings();
 		});
+
+	
 }
 
 
@@ -163,7 +165,7 @@ void MainMenu::SetupSettings()
 	_musicLabel = tgui::Label::create("Music");
 	_sfxLabel = tgui::Label::create("SFX");
 	_confirmSettingsButton = tgui::Button::create("Confirm");
-	_keyBindingsButton = tgui::Button::create("Key Bindings");
+	_keyBindingsButton = tgui::Button::create("Key Bindings"); 
 
 	_confirmSettingsButton->connect("pressed", 
 		[this]()
@@ -268,6 +270,7 @@ void MainMenu::SetupKeyBindings()
 	_previousWeaponButton->connect("pressed", [this, assignKey]() {assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
 	_nextWeaponButton->connect("pressed", [this, assignKey]() {assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
 	
+
 
 	_confirmBindingsButton->connect("pressed",
 		[this]()
