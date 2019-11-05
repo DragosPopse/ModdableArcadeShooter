@@ -37,7 +37,7 @@ namespace
 	}
 }
 
-Level::Level(Context* context, const std::string& fileName) :
+Level::Level(Context* context, const std::string& path) :
 	Scene(context),
 	_root(new GameObject()),
 	_fpsUpdateInterval(0.5f),
@@ -52,8 +52,7 @@ Level::Level(Context* context, const std::string& fileName) :
 	_worldView = _context->window->getDefaultView();
 
 
-	std::cout << BuildString(LEVELS_PATH, fileName) << '\n';
-	sol::table level = _context->lua->do_file(BuildString(LEVELS_PATH, fileName));
+	sol::table level = _context->lua->do_file(path);
 	
 	//Load required textures
 	sol::table usedTextures = level["usedTextures"];

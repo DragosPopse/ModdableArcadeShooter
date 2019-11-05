@@ -4,6 +4,8 @@
 #include "Scenes/LevelLoader.h"
 #include <string>
 #include "Utility.h"
+#include "Scenes/LevelSelector.h"
+#include "Context.h"
 
 
 MainMenu::MainMenu(Context* context, bool firstTime) :
@@ -47,6 +49,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_gui.add(_mainPanel);
 	_gui.add(_keyBindingsPanel);
 
+	_levelSelector.reset(new LevelSelector(_context, this));
 	if (!firstTime)
 	{
 		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
@@ -102,9 +105,11 @@ void MainMenu::SetupMain()
 	_playButton->connect("pressed",
 		[this]()
 		{
-			RequestClear();
-			std::shared_ptr<LevelLoader> level(new LevelLoader(_context, "Level1.lua"));
-			RequestPush(level);
+			//RequestClear();
+			//std::shared_ptr<LevelLoader> level(new LevelLoader(_context, "Level1.lua"));
+			//RequestPush(level);
+			DisableAll();
+			RequestPush(_levelSelector);
 		});
 
 	_settingsButton->connect("pressed",
@@ -313,6 +318,19 @@ bool MainMenu::HandleEvent(const sf::Event& ev)
 	{
 		RequestClear();
 	}
+
+	/*if (ev.type == sf::Event::KeyPressed)
+	{
+		if (ev.key.code == sf::Keyboard::A)
+		{
+			_context->music->setPitch(_context->music->getPitch() - 0.1);
+		}
+		else if (ev.key.code == sf::Keyboard::D)
+		{
+			_context->music->setPitch(_context->music->getPitch() + 0.1);
+		}
+		std::cout << _context->music->getPitch() << '\n';
+	}*/
 	return false;
 }
 
@@ -343,7 +361,7 @@ bool MainMenu::Render()
 	_context->window->setView(_context->window->getDefaultView());
 	_gui.draw();
 	
-	return false;
+	return true;
 }
 
 

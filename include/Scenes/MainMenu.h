@@ -5,12 +5,15 @@
 #include <TGUI/TGUI.hpp>
 #include "Player.h"
 #include <Thor/Animations.hpp>
+#include <memory>
 
+#include "Scenes/LevelSelector.h"
 
 class MainMenu :
 	public Scene
 {
 	friend class KeyBindingFunction;
+	friend class LevelSelector;
 
 	tgui::Gui _gui;
 	sf::View _view;
@@ -59,6 +62,8 @@ class MainMenu :
 	int _mainTextSize;
 	int _settingsTextSize;
 	int _keybindingTextSize;
+
+	std::shared_ptr<LevelSelector> _levelSelector;
 
 public:
 	MainMenu(Context* context, bool firstTime = false);

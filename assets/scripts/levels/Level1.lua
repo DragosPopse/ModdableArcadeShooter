@@ -7,7 +7,9 @@ level.repeatBackground = true
 level.scrollSpeed = 70
 level.scale = 3.125
 level.height = 400 * level.scale * 3
-level.previewImage = "assets/textures/levels/Level1.png"
+level.previewImage = 'assets/textures/levels/Level1.png'
+level.imageScale = 1
+level.soundtrack = 'assets/audio/music/Level1.wav'
 
 
 level.usedTextures = {
