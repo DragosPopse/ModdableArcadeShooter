@@ -38,6 +38,8 @@ struct AirplaneSpawnPosition
 	float y;
 };
 
+
+
 class Level :
 	public Scene
 {
@@ -72,6 +74,7 @@ class Level :
 	TextAnimation* _currentText;
 
 	std::deque<AirplaneSpawnPosition> _enemySpawns;
+	std::deque<Animation*> _environmentSpawns;
 	std::deque<TextAnimationData> _texts;
 
 	sf::Shader _flashShader;
@@ -80,6 +83,8 @@ class Level :
 
 public:
 	Level(Context* context, const std::string& fileName);
+
+	~Level();
 
 	bool HandleEvent(const sf::Event& ev) override;
 	bool FixedUpdate(float dt) override;
@@ -108,7 +113,7 @@ public:
 	sf::Texture& GetTexture(const std::string& id) { return _textures[id]; }
 
 private:
-	void SpawnEnemies();
+	void SpawnObjects();
 	void RemoveOffScreenObjects(float dt);
 
 	void HandleCollisions(float dt);

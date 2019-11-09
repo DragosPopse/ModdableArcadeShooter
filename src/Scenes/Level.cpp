@@ -262,9 +262,10 @@ Level::Level(Context* context, const std::string& path) :
 		animation->SetDestroyOnFinish(false);
 		animation->setPosition(animationPosition);
 		animation->setScale(_scale, _scale);
-		animation->Start(this);
-		std::unique_ptr<Animation> animationPtr(animation);
-		_environmentRoot->AddChild(std::move(animationPtr));
+		//animation->Start(this);
+		//std::unique_ptr<Animation> animationPtr(animation);
+		//_environmentRoot->AddChild(std::move(animationPtr));
+		_environmentSpawns.push_back(animation);
 	}
 
 
@@ -309,9 +310,25 @@ Level::Level(Context* context, const std::string& path) :
 			return lhs.y > rhs.y;
 		});
 
+	std::sort(_environmentSpawns.begin(), _environmentSpawns.end(),
+		[](const Animation* lhs, 
+			const Animation* rhs)
+		{
+			return lhs->GetWorldPosition().y > rhs->GetWorldPosition().y;
+		});
+
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
 
 	_root->Start(this);
+}
+
+
+Level::~Level()
+{
+	for (int i = 0; i < _environmentSpawns.size(); i++)
+	{
+		delete _environmentSpawns[i];
+	}
 }
  
 
@@ -323,7 +340,7 @@ bool Level::FixedUpdate(float dt)
 	{
 		_playerAirplane = nullptr;
 	}
-	SpawnEnemies();
+	SpawnObjects();
 	_context->player->HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
 	{
@@ -422,7 +439,7 @@ void Level::DisplayText()
 }
 
 
-void Level::SpawnEnemies()
+void Level::SpawnObjects()
 {
 	bool change = true;
 	while (!_enemySpawns.empty() && change)
@@ -438,6 +455,20 @@ void Level::SpawnEnemies()
 			_enemyAirplanesRoot->AddChild(std::move(airplanePtr));
 
 			_enemySpawns.pop_front();
+			change = true;
+		}
+	}
+
+	change = true;
+	while (!_environmentSpawns.empty() && change)
+	{
+		change = false;
+		if (_environmentSpawns[0]->getPosition().y > _worldView.getCenter().y - _worldView.getSize().y / 2 - 100)
+		{
+			std::unique_ptr<Animation> obj(_environmentSpawns[0]);
+			obj->Start(this);
+			_environmentRoot->AddChild(std::move(obj));
+			_environmentSpawns.pop_front();
 			change = true;
 		}
 	}
