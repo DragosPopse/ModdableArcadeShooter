@@ -1,6 +1,7 @@
 #include "Scenes/LocalMenu.h"
 #include <iostream>
 #include "Scenes/Level.h"
+#include "Scenes/MainMenu.h"
 
 
 LocalMenu::LocalMenu(Context* context) :
@@ -25,6 +26,8 @@ LocalMenu::LocalMenu(Context* context) :
 		[this]()
 		{
 			RequestClear();
+			std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
+			RequestPush(menu);
 		});
 
 	resume->setSize("40%", "20%");

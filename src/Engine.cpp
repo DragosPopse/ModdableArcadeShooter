@@ -62,8 +62,8 @@ void Engine::Run()
 
 	tgui::Theme::setDefault(&_theme);
 
-	std::shared_ptr<LevelLoader> entry(new LevelLoader(_sceneManager.GetContext(), "assets/scripts/levels/Level1.lua"));
-	//std::shared_ptr<SplashScreen> entry(new SplashScreen(_sceneManager.GetContext()));
+	//std::shared_ptr<LevelLoader> entry(new LevelLoader(_sceneManager.GetContext(), "assets/scripts/levels/Level1.lua"));
+	std::shared_ptr<SplashScreen> entry(new SplashScreen(_sceneManager.GetContext()));
 	_sceneManager.PushScene(entry);
 
 	_clock.restart();
