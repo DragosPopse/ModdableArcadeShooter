@@ -32,4 +32,8 @@ public:
 	void SetDestroyOnFinish(bool b);
 	bool IsFinished() const;
 	void SetLoopable(bool b);
+
+	void SetIndex(int n);
+
+	sf::FloatRect GetBoundingRect() const override { return GetWorldTransform().transformRect(_sprite.getGlobalBounds()); }
 };

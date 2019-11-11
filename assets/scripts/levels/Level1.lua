@@ -8,7 +8,6 @@ level.scrollSpeed = 70
 level.scale = 3.125
 level.height = 400 * level.scale * 3
 level.previewImage = 'assets/textures/levels/Level1.png'
-level.imageScale = 1
 level.soundtrack = 'assets/audio/music/Level1.wav'
 
 
@@ -19,7 +18,9 @@ level.usedTextures = {
     {'Explosions', 'Explosions.png'},
     {'Fragments', 'Fragments.png'},
     {'Vortex', 'Vortex.png'},
-    {'Smoke', 'Smoke.png'}
+    {'Smoke', 'Smoke.png'},
+    {'SmokeExplosion', 'SmokeExplosion.png'},
+    {'Health', 'Health.png'}
 }
 
 level.usedFonts = {
@@ -34,6 +35,11 @@ level.player = {
 
 level.usedAirplanes = {
     'Eagle'
+}
+
+level.usedPickups = {
+    'SmallHealth',
+    'HomingMissileAmmo'
 }
 
 level.spawnPoints = { }

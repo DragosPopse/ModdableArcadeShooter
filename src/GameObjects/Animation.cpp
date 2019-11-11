@@ -16,6 +16,7 @@ Animation::Animation() :
 
 void Animation::Update(float dt)
 {
+	//std::cout << GetWorldPosition().x << ' ' << GetWorldPosition().y << '\n';
 	_elapsedTime += dt;
 	if (_elapsedTime > _timePerFrame)
 	{
@@ -100,4 +101,11 @@ void Animation::SetTexture(const sf::Texture& texture)
 void Animation::SetNumberOfFrames(int n)
 {
 	_numberOfFrames = n;
+}
+
+
+void Animation::SetIndex(int n)
+{
+	_currentIndex = n;
+	_elapsedTime = 0;
 }

@@ -26,7 +26,8 @@ public:
 		PlayerAirplane = 1 << 0,
 		EnemyAirplane = 1 << 1,
 		PlayerProjectile = 1 << 2,
-		EnemyProjectile = 1 << 3
+		EnemyProjectile = 1 << 3,
+		PickupItem = 1 << 4
 	};
 
 	GameObject();

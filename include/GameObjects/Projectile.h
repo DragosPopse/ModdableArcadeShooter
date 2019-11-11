@@ -11,6 +11,8 @@ class Airplane;
 
 struct ProjectileData
 {
+	std::string name;
+
 	float scale;
 	float muzzleScale;
 	float iconScale;

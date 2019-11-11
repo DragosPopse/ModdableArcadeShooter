@@ -7,6 +7,7 @@
 #include "GameObjects/ParticleSystemObject.h"
 #include <Thor/Math.hpp>
 #include <Thor/Animations.hpp>
+#include "GameObjects/Pickup.h"
 
 
 namespace
@@ -188,6 +189,7 @@ void Airplane::Damage(int hp)
 	if (_hitpoints <= 0)
 	{
 		MarkForDestroy();
+		int randN;
 		Animation* explosion = new Animation();
 		explosion->setPosition(GetWorldPosition());
 		explosion->SetTexture(_currentScene->GetTextures()[_data->explosionsTexture]);
@@ -195,7 +197,7 @@ void Airplane::Damage(int hp)
 		firstRect.width = _data->explosionSize.x;
 		firstRect.height = _data->explosionSize.y;
 		firstRect.left = 0;
-		int randN = rand() % _data->numberOfExplosions;
+		randN = rand() % _data->numberOfExplosions;
 		firstRect.top = firstRect.height * randN;
 		explosion->SetFirstRect(firstRect);
 		explosion->SetDestroyOnFinish(true);
@@ -207,9 +209,21 @@ void Airplane::Damage(int hp)
 
 		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
 		explosion->setRotation(randomRotation);
-		std::cout << randomRotation << '\n';
 		_currentScene->AddExplosion(explosion);
-		
+
+
+		//Spawn pickup if RNG is in your favor
+		randN = _data->dropGenerator(_data->dropRng);
+		for (int i = 0; i < _data->drops.size(); i++)
+		{
+			if (randN <= _data->drops[i].dropRate)
+			{
+				Pickup* pickup = new Pickup(_data->drops[i].pickup);
+				pickup->setPosition(GetWorldPosition());
+				_currentScene->AddPickup(pickup);
+				break;
+			}
+		}
 	}
 	else
 	{
@@ -391,5 +405,25 @@ void Airplane::UpdateCooldownDisplay()
 	else
 	{
 		_cooldownDisplay->StopAnimation();
+	}
+}
+
+
+void Airplane::AddHealth(int n)
+{
+	_hitpoints += n;
+	UpdateHealthDisplay();
+}
+
+
+void Airplane::AddAmmo(const std::string& projectile, int n)
+{
+	for (int i = 0; i < _data->weapons.size(); i++)
+	{
+		if (projectile == _data->weapons[i]->name)
+		{
+			_ammo[i] += n;
+			break;
+		}
 	}
 }

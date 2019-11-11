@@ -157,7 +157,9 @@ void LuaInit_Game(sol::state& lua)
 		"onCommand", &Airplane::OnLuaCommand,
 		"getPosition", &Airplane::getPosition,
 		"getWorldPosition", &Airplane::GetWorldPosition,
-		"addChild", &Airplane::AddUnownedChild);
+		"addChild", &Airplane::AddUnownedChild,
+		"addHealth", &Airplane::AddHealth,
+		"addAmmo", &Airplane::AddAmmo);
 
 	engineTable.new_usertype<LuaCommand>("Command",
 		"action", &LuaCommand::action,

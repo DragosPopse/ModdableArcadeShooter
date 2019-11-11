@@ -17,6 +17,7 @@
 #include <Thor/Animations.hpp>
 #include <memory>
 #include "LocalMenu.h"
+#include "GameObjects/Pickup.h"
 
 class Airplane;
 class Projectile;
@@ -38,6 +39,13 @@ struct AirplaneSpawnPosition
 	float y;
 };
 
+struct PickupSpawnPosition //WIP
+{
+	PickupData* data;
+	float x;
+	float y;
+};
+
 
 
 class Level :
@@ -53,11 +61,13 @@ class Level :
 	GameObject* _explosionsRoot;
 	GameObject* _environmentRoot;
 	GameObject* _particlesRoot;
+	GameObject* _pickupsRoot;
 	std::unique_ptr<GameObject> _uiRoot;
 	Airplane* _playerAirplane;
 
 	std::map<std::string, AirplaneData> _airplaneDataDict;
 	std::map<std::string, ProjectileData> _projectileDataDict;
+	std::map<std::string, PickupData> _pickupDataDict;
 
 	CommandQueue _commands;
 
@@ -98,6 +108,7 @@ public:
 	void AddParticles(ParticleSystemObject* p);
 	void AddUiElement(GameObject* ui);
 	void AddLuaParticle(sol::userdata p);
+	void AddPickup(Pickup* pickup);
 
 	const sf::Font& GetFont(const std::string& id) { return _fonts[id]; }
 

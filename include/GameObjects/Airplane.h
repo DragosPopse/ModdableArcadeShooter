@@ -10,13 +10,22 @@
 #include "GameObjects/CircleCooldown.h"
 
 class Level;
-class ProjectileData;
+struct ProjectileData;
+class Pickup;
+struct PickupData;
 
 struct AiDirection
 {
 	float angle;
 	float distance;
 };
+
+struct DropData
+{
+	int dropRate;
+	PickupData* pickup;
+};
+
 
 struct AirplaneData
 {
@@ -42,9 +51,15 @@ struct AirplaneData
 	float explosionMaxScale;
 	float explosionMaxRotation;
 
+	std::vector<DropData> drops;
+
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
+
+	std::mt19937 dropRng;
+	std::uniform_int_distribution<int> dropGenerator;
 };
+
 
 class TextObject;
 
@@ -100,6 +115,7 @@ public:
 	void PreviousWeapon();
 
 	int GetHealth() const { return _hitpoints; }
+	void AddHealth(int n);
 
 	void SetPlayerControlled(bool b);
 
@@ -110,6 +126,9 @@ public:
 	sf::FloatRect GetBoundingRect() const override;
 
 	unsigned int GetCategory() const override;
+
+	void AddAmmo(const std::string& projectile, int n);
+
 
 private:
 	void UpdateHealthDisplay();

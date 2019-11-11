@@ -17,7 +17,7 @@ local Eagle = {
         frameDuration = 0.1,
         minScale = 4,
         maxScale = 7,
-        maxRotation = 360
+        maxRotation = 0
     },
 
     onDestroy = function (this)
@@ -39,6 +39,18 @@ local Eagle = {
         {
             projectile = 'HomingMissile',
             ammo = 9999
+        }
+    },
+
+    drops = {
+        {
+            pickup = 'SmallHealth',
+            dropRate = 50
+        },
+
+        {
+            pickup = 'HomingMissileAmmo',
+            dropRate = 50
         }
     }
 }

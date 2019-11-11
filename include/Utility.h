@@ -15,6 +15,7 @@
 #define PROJECTILES_PATH "assets/scripts/projectiles/"
 #define CONFIG_PATH "assets/config/"
 #define FONTS_PATH "assets/fonts/"
+#define PICKUPS_PATH "assets/scripts/pickups/"
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);

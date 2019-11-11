@@ -48,6 +48,7 @@ Level::Level(Context* context, const std::string& path) :
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
+	std::random_device randDevice;
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 
@@ -91,6 +92,29 @@ Level::Level(Context* context, const std::string& path) :
 	backgroundPtr->setScale(_scale, _scale);
 	backgroundPtr->SetTextureRect(sf::IntRect(0, 0, _textures[backgroundTexture].getSize().x, _worldHeight));
 
+	//Load Pickups
+	sol::table pickups = level["usedPickups"];
+	for (int i = 1; i <= pickups.size(); i++)
+	{
+		std::string pickupName = pickups[i];
+		std::string pickupPath = BuildString(PICKUPS_PATH, pickupName, ".lua");
+		sol::table pickup = _context->lua->do_file(pickupPath);
+		PickupData pickupData;
+		pickupData.texture = pickup["texture"];
+		pickupData.firstRect = TableToRect(pickup["firstRect"]);//pickup["firstRect"];
+		pickupData.frames = pickup["frames"];
+		pickupData.frameDuration = pickup["frameDuration"];
+		pickupData.scale = pickup["scale"];
+		pickupData.onPickup = pickup["onPickup"];
+		sol::table destroyPickup = pickup["destroyAnimation"];
+		pickupData.destroyTexture = destroyPickup["texture"];
+		pickupData.destroyFirstRect = TableToRect(destroyPickup["firstRect"]);
+		pickupData.destroyFrames = destroyPickup["frames"];
+		pickupData.destroyFrameDuration = destroyPickup["frameDuration"];
+		pickupData.destroyScale = destroyPickup["scale"];
+		_pickupDataDict.insert(std::make_pair(pickupName, pickupData));
+	}
+
 	//Load AirplaneData
 	sol::table planes = level["usedAirplanes"];
 	for (int i = 1; i <= planes.size(); i++)
@@ -111,6 +135,8 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthFont = plane["healthFont"];
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
+		apdata.rng = std::mt19937(randDevice());
+		apdata.dropRng = std::mt19937(randDevice());
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -156,6 +182,7 @@ Level::Level(Context* context, const std::string& path) :
 			sol::function createProjectile;
 			sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
 			ProjectileData projdata;
+			projdata.name = projectileName;
 			projdata.texture = projectile["texture"];
 			projdata.iconTexture = projectile["iconTexture"];
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
@@ -171,6 +198,7 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.create = createProjectile;
 
 			projdata.spreadAngle = projectile["spreadAngle"];
+			projdata.rng = std::mt19937(randDevice());
 			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
 
 			projdata.onCollision = projectile["onCollision"];
@@ -196,6 +224,34 @@ Level::Level(Context* context, const std::string& path) :
 			apdata.ammo.push_back(ammo);
 		}
 
+		//Load drops
+		sol::table drops = plane["drops"];
+		for (int i = 1; i <= drops.size(); i++)
+		{
+			sol::table drop = drops[i];
+			DropData dropData;
+			dropData.dropRate = drop["dropRate"];
+			std::string dropName = drop["pickup"];
+			dropData.pickup = &_pickupDataDict[dropName];
+
+			apdata.drops.push_back(dropData);
+		}
+		
+		std::sort(apdata.drops.begin(), apdata.drops.end(), 
+			[](const DropData& lhs, const DropData& rhs)
+			{
+				return lhs.dropRate < rhs.dropRate;
+			});
+
+		std::cout << "DROPCHANCE: " << apdata.drops[0].dropRate << '\n';
+		for (int i = 1; i < apdata.drops.size(); i++)
+		{
+			apdata.drops[i].dropRate += apdata.drops[i - 1].dropRate;
+			std::cout << "DROPCHANCE: " << apdata.drops[i].dropRate << '\n';
+		}
+
+		apdata.dropGenerator = std::uniform_int_distribution<int>(1, 100);
+
 		_airplaneDataDict.insert(std::make_pair(name,
 			apdata));
 	}
@@ -220,6 +276,7 @@ Level::Level(Context* context, const std::string& path) :
 	_explosionsRoot = new GameObject();
 	_particlesRoot = new GameObject();
 	_environmentRoot = new GameObject();
+	_pickupsRoot = new GameObject();
 
 	std::unique_ptr<GameObject> uptr1(_enemyProjectilesRoot);
 	std::unique_ptr<GameObject> uptr2(_playerProjectilesRoot);
@@ -227,11 +284,13 @@ Level::Level(Context* context, const std::string& path) :
 	std::unique_ptr<GameObject> uptr4(_explosionsRoot);
 	std::unique_ptr<GameObject> uptr5(_particlesRoot);
 	std::unique_ptr<GameObject> uptr6(_environmentRoot);
+	std::unique_ptr<GameObject> uptr7(_pickupsRoot);
 
 
 	_root->AddChild(std::move(backgroundPtr));
 	_root->AddChild(std::move(uptr6));
 	_root->AddChild(std::move(uptr4));
+	_root->AddChild(std::move(uptr7));
 	_root->AddChild(std::move(uptr1));
 	_root->AddChild(std::move(uptr2));
 	_root->AddChild(std::move(uptr3));
@@ -330,7 +389,7 @@ Level::~Level()
 		delete _environmentSpawns[i];
 	}
 }
- 
+
 
 bool Level::FixedUpdate(float dt)
 {
@@ -527,6 +586,21 @@ void Level::HandleCollisions(float dt)
 	});
 	_enemyProjectilesRoot->OnCommand(enemyProjectileCollector, dt);
 
+	Command pickupCollector;
+	pickupCollector.category = GameObject::PickupItem;
+	pickupCollector.action = DeriveAction<Pickup>(
+		[this, playerRect](Pickup& pickup, float dt)
+		{
+			if (pickup.GetBoundingRect().intersects(playerRect))
+			{
+				if (!pickup.WasUsed())
+				{
+					pickup.OnPickup(*_playerAirplane);
+				}
+			}
+		});
+	_pickupsRoot->OnCommand(pickupCollector, dt);
+
 	Command enemyCollector;
 	enemyCollector.category = GameObject::EnemyAirplane;
 	enemyCollector.action = DeriveAction<Airplane>(
@@ -612,4 +686,12 @@ void Level::AddLuaParticle(sol::userdata p)
 {
 	p.as<ParticleSystemObject>().Start(this);
 	_particlesRoot->AddUnownedChild(p);
+}
+
+
+void Level::AddPickup(Pickup* pickup)
+{
+	pickup->Start(this);
+	std::unique_ptr<Pickup> ptr(pickup);
+	_pickupsRoot->AddChild(std::move(ptr));  
 }
