@@ -36,4 +36,6 @@ public:
 	void SetIndex(int n);
 
 	sf::FloatRect GetBoundingRect() const override { return GetWorldTransform().transformRect(_sprite.getGlobalBounds()); }
+
+	unsigned int GetCategory() const override { return GameObject::AnimationType; }
 };

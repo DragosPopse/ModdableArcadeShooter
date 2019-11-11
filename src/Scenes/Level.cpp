@@ -537,13 +537,14 @@ void Level::SpawnObjects()
 void Level::RemoveOffScreenObjects(float dt) 
 {
 	Command remover;
+	auto viewSize = _worldView.getSize();
+	auto viewCenter = _worldView.getCenter();
 	remover.category = GameObject::EnemyAirplane | GameObject::EnemyProjectile |
-		GameObject::PlayerProjectile;
-	remover.action = [this](GameObject& obj, float dt)
+		GameObject::PlayerProjectile | GameObject::PickupItem;
+	remover.action = [this, viewSize, viewCenter](GameObject& obj, float dt)
 	{
 		auto objPosition = obj.GetWorldPosition();
-		auto viewSize = _worldView.getSize();
-		auto viewCenter = _worldView.getCenter();
+
 		if (obj.GetCategory() == GameObject::PlayerProjectile)
 		{
 			
@@ -565,6 +566,16 @@ void Level::RemoveOffScreenObjects(float dt)
 	};
 
 	_root->OnCommand(remover, dt);
+	Command envRemover;
+	envRemover.category = GameObject::AnimationType;
+	envRemover.action = [this, viewSize, viewCenter](GameObject& obj, float dt)
+	{
+		if (obj.GetWorldPosition().y > viewCenter.y + viewSize.y + 100)
+		{
+			obj.MarkForDestroy();
+		}
+	};
+	_environmentRoot->OnCommand(envRemover, dt);
 }
 
 

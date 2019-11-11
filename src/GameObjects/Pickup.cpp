@@ -24,7 +24,6 @@ void Pickup::Start(Scene* scene)
 	_animation->SetDestroyOnFinish(false);
 	_animation->SetLoopable(true);
 	_animation->setScale(_data->scale, _data->scale);
-	std::cout << "Spawned\n";
 	//_animation->Start(scene);
 
 	//std::cout << getPosition().x << ' ' << getPosition().y << '\n';
