@@ -88,6 +88,9 @@ class Level :
 	std::deque<TextAnimationData> _texts;
 
 	sf::Shader _flashShader;
+	sf::Shader _vignetteShader;
+
+	sf::RenderTexture _renderTexture;
 
 	std::shared_ptr<LocalMenu> _localMenu;
 

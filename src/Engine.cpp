@@ -57,14 +57,14 @@ void Engine::Run()
 	float timeSinceLastFrame = 0.f;
 
 	_textures.Load("Eagle", "assets/textures/Eagle.png");
-
+		
 	_theme.load("assets/textures/DefaultTheme.txt");
 
 	tgui::Theme::setDefault(&_theme);
 
-	//std::shared_ptr<LevelLoader> level(new LevelLoader(_sceneManager.GetContext(), "Level1.lua"));
-	std::shared_ptr<SplashScreen> splash(new SplashScreen(_sceneManager.GetContext()));
-	_sceneManager.PushScene(splash);
+	std::shared_ptr<LevelLoader> entry(new LevelLoader(_sceneManager.GetContext(), "assets/scripts/levels/Level1.lua"));
+	//std::shared_ptr<SplashScreen> entry(new SplashScreen(_sceneManager.GetContext()));
+	_sceneManager.PushScene(entry);
 
 	_clock.restart();
 	while (_window.isOpen())

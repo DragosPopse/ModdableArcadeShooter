@@ -377,7 +377,9 @@ Level::Level(Context* context, const std::string& path) :
 		});
 
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
-
+	_vignetteShader.loadFromFile("assets/shaders/vignette.frag", sf::Shader::Fragment);
+	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_renderTexture.create(_context->window->getSize().x, _context->window->getSize().y);
 	_root->Start(this);
 }
 
@@ -435,9 +437,19 @@ bool Level::Update(float dt)
  
 bool Level::Render()
 {
-	_context->window->setView(_worldView);
-	_root->Draw(*_context->window, sf::RenderStates::Default);
+	//_context->window->setView(_worldView);
+	_context->window->setView(_context->window->getDefaultView());
+	_renderTexture.clear();
+	_renderTexture.setView(_worldView);
+	_root->Draw(_renderTexture, sf::RenderStates::Default);
+	_renderTexture.display();
+
+	sf::Sprite sprite(_renderTexture.getTexture());
+	sf::RenderStates renderStates = sf::RenderStates::Default;
+	_vignetteShader.setUniform("u_texture", _renderTexture.getTexture());
+	_context->window->draw(sprite, &_vignetteShader);
 	
+	_context->window->setView(_worldView);
 	sf::RenderStates uiStates = sf::RenderStates::Default;
 	_uiRoot->setPosition(_worldView.getCenter());
 	_uiRoot->Draw(*_context->window, uiStates);

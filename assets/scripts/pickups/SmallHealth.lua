@@ -5,6 +5,7 @@ local pickup = {
     frameDuration = 0.1,
     scale = 2,
 
+
     destroyAnimation = {
         texture = 'SmokeExplosion',
         firstRect = {0, 0, 16, 16},
@@ -15,7 +16,8 @@ local pickup = {
 
 
     onPickup = function (player) 
-       player:addHealth(20) 
+       player:addHealth(20)
+       player:getLevel():playVignetteAnimation(sf.Color.new(0, 1, 0, 1), 0.2, 0.8, 0.5, 0.5, 0.5);
     end
 }
 
