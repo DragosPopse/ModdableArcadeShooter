@@ -44,7 +44,9 @@ Level::Level(Context* context, const std::string& path) :
 	_lastFpsUpdate(0.f),
 	_uiRoot(new GameObject),
 	_currentText(nullptr),
-	_localMenu(new LocalMenu(context))
+	_localMenu(new LocalMenu(context)),
+	_playingVignette(false),
+	_vignetteCurrentIntensity(0.f)
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -378,8 +380,8 @@ Level::Level(Context* context, const std::string& path) :
 
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
 	_vignetteShader.loadFromFile("assets/shaders/vignette.frag", sf::Shader::Fragment);
-	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_renderTexture.create(_context->window->getSize().x, _context->window->getSize().y);
+	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_root->Start(this);
 }
 
@@ -429,6 +431,26 @@ bool Level::Update(float dt)
 		_context->window->setTitle(BuildString(fps));
 		_lastFpsUpdate = 0.f;
 	}
+
+	if (_playingVignette)
+	{
+		_vignetteElapsedTime += dt;
+		float progress = _vignetteElapsedTime / _vignetteDuration;
+		if (_vignetteElapsedTime > _vignetteDuration)
+		{
+			_playingVignette = false;
+			_vignetteCurrentIntensity = 0.f;
+		}
+		else if (progress < _vignetteFadeInRatio)
+		{
+			_vignetteCurrentIntensity = _vignetteMaxIntensity * progress / _vignetteFadeInRatio;
+		}
+		else if (progress > 1.f - _vignetteFadeOutRatio)
+		{
+			_vignetteCurrentIntensity = _vignetteMaxIntensity * (1.f - progress) / _vignetteFadeOutRatio;
+		}
+	}
+
 	_root->Update(dt);
 	_uiRoot->Update(dt);
 	return false;
@@ -446,8 +468,11 @@ bool Level::Render()
 
 	sf::Sprite sprite(_renderTexture.getTexture());
 	sf::RenderStates renderStates = sf::RenderStates::Default;
+	
 	_vignetteShader.setUniform("u_texture", _renderTexture.getTexture());
+	_vignetteShader.setUniform("u_intensity", _vignetteCurrentIntensity);
 	_context->window->draw(sprite, &_vignetteShader);
+
 	
 	_context->window->setView(_worldView);
 	sf::RenderStates uiStates = sf::RenderStates::Default;
@@ -717,4 +742,24 @@ void Level::AddPickup(Pickup* pickup)
 	pickup->Start(this);
 	std::unique_ptr<Pickup> ptr(pickup);
 	_pickupsRoot->AddChild(std::move(ptr));  
+}
+
+
+void Level::PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, float outer, float intensity, float fadeInRatio, float fadeOutRatio, float duration)
+{
+	_vignetteCurrentIntensity = 0.f;
+	_vignetteMaxIntensity = intensity;
+	_vignetteElapsedTime = 0.f;
+	_vignetteFadeInRatio = fadeInRatio;
+	_vignetteFadeOutRatio = fadeOutRatio;
+	_vignetteColor = color;
+	_vignetteInnerRadius = inner;
+	_vignetteOuterRadius = outer;
+	_vignetteDuration = duration;
+	_playingVignette = true;
+
+	_vignetteShader.setUniform("u_vignetteColor", _vignetteColor);
+	_vignetteShader.setUniform("u_innerRadius", _vignetteInnerRadius);
+	_vignetteShader.setUniform("u_outerRadius", _vignetteOuterRadius);
+	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 }

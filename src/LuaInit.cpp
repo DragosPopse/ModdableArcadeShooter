@@ -57,6 +57,10 @@ void LuaInit_SFML(sol::state& lua)
 
 	sfTable.new_usertype<sf::Color>("Color",
 		sol::constructors< sf::Color(sf::Uint8, sf::Uint8, sf::Uint8, sf::Uint8)>());
+	
+	sol::table glTable = lua.create_named_table("gl");
+	glTable.new_usertype<sf::Glsl::Vec4>("Vec4",
+		sol::constructors<sf::Glsl::Vec4(float, float, float, float)>());
 }
 
 
@@ -159,7 +163,8 @@ void LuaInit_Game(sol::state& lua)
 		"getWorldPosition", &Airplane::GetWorldPosition,
 		"addChild", &Airplane::AddUnownedChild,
 		"addHealth", &Airplane::AddHealth,
-		"addAmmo", &Airplane::AddAmmo);
+		"addAmmo", &Airplane::AddAmmo,
+		"getLevel", &Airplane::GetLevel);
 
 	engineTable.new_usertype<LuaCommand>("Command",
 		"action", &LuaCommand::action,
@@ -178,7 +183,8 @@ void LuaInit_Game(sol::state& lua)
 		"getPlayerAirplane", &Level::GetPlayerAirplane,
 		"getEnemyAirplanesRoot", &Level::GetEnemyAirplanesRoot,
 		"getTexture", &Level::GetTexture,
-		"addParticles", &Level::AddLuaParticle);
+		"addParticles", &Level::AddLuaParticle,
+		"playVignetteAnimation", &Level::PlayVignetteAnimation);
 
 	engineTable.new_usertype<UniformVector2fDistribution>("UniformVector2fDistribution",
 		sol::constructors<UniformVector2fDistribution(float, float)>());

@@ -69,5 +69,4 @@ public:
 	ParticleFrameAnimation(int firstIndex, int lastIndex);
 };
 
-
 typedef std::function<void(thor::Particle&, sf::Time)> ParticleAnimationFunction;

@@ -15,6 +15,7 @@ local pickup = {
 
     onPickup = function (player)
         player:addAmmo('HomingMissile', 2)
+        player:getLevel():playVignetteAnimation(gl.Vec4.new(0.5, 0.3, 0, 1), 0.2, 0.8, 0.5, 0.5, 0.5, 0.5);
     end
 }
 

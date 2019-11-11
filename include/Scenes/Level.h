@@ -88,7 +88,18 @@ class Level :
 	std::deque<TextAnimationData> _texts;
 
 	sf::Shader _flashShader;
+
 	sf::Shader _vignetteShader;
+	float _vignetteElapsedTime;
+	float _vignetteDuration;
+	float _vignetteFadeInRatio;
+	float _vignetteFadeOutRatio;
+	float _vignetteMaxIntensity;
+	float _vignetteCurrentIntensity;
+	float _vignetteInnerRadius;
+	float _vignetteOuterRadius;
+	sf::Glsl::Vec4 _vignetteColor;
+	bool _playingVignette;
 
 	sf::RenderTexture _renderTexture;
 
@@ -125,6 +136,8 @@ public:
 	GameObject* GetPlayerProjectilesRoot() { return _playerProjectilesRoot; }
 	
 	sf::Texture& GetTexture(const std::string& id) { return _textures[id]; }
+
+	void PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, float outer, float intensity, float fadeInRatio, float fadeOutRatio, float duration);
 
 private:
 	void SpawnObjects();

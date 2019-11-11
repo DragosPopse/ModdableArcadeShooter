@@ -114,6 +114,8 @@ public:
 	void NextWeapon();
 	void PreviousWeapon();
 
+	Level* GetLevel() { return _currentScene; }
+
 	int GetHealth() const { return _hitpoints; }
 	void AddHealth(int n);
 
