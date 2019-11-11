@@ -91,6 +91,7 @@ Level::Level(Context* context, const std::string& path) :
 	_scrollSpeed = level["scrollSpeed"];
 	_worldHeight = level["height"];
 	_scale = level["scale"];
+	_borderSize = level["borderSize"];
 	backgroundPtr->setScale(_scale, _scale);
 	backgroundPtr->SetTextureRect(sf::IntRect(0, 0, _textures[backgroundTexture].getSize().x, _worldHeight));
 
@@ -399,6 +400,7 @@ bool Level::FixedUpdate(float dt)
 {
 	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
+	CapPlayerPosition();
 	if (_playerAirplane && _playerAirplane->IsDestroyed())
 	{
 		_playerAirplane = nullptr;
@@ -419,6 +421,34 @@ bool Level::FixedUpdate(float dt)
 	_root->RemoveDestroyedChilldren();
 	_uiRoot->RemoveDestroyedChilldren();
 	return false;
+}
+
+
+void Level::CapPlayerPosition()
+{
+	if (!_playerAirplane)
+	{
+		return;
+	}
+
+	auto viewBounds = GetViewBounds();
+	auto playerPosition = _playerAirplane->getPosition();
+	float leftBorder = viewBounds.left + _borderSize;
+	float rightBorder = viewBounds.left + viewBounds.width - _borderSize;
+	float topBorder = viewBounds.top + _borderSize;
+	float bottomBorder = viewBounds.top + viewBounds.height - _borderSize;
+
+	playerPosition.x = playerPosition.x < leftBorder ? leftBorder : playerPosition.x;
+	playerPosition.x = playerPosition.x > rightBorder ? rightBorder : playerPosition.x;
+	playerPosition.y = playerPosition.y < topBorder ? topBorder : playerPosition.y;
+	playerPosition.y = playerPosition.y > bottomBorder ? bottomBorder : playerPosition.y;
+	_playerAirplane->setPosition(playerPosition);
+}
+
+
+sf::FloatRect Level::GetViewBounds() const
+{
+	return sf::FloatRect(_worldView.getCenter() - _worldView.getSize() / 2.f, _worldView.getSize());
 }
 
 

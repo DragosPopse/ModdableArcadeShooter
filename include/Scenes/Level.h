@@ -77,6 +77,7 @@ class Level :
 	float _scrollSpeed;
 	float _worldHeight;
 	float _scale;
+	float _borderSize;
 
 	float _fpsUpdateInterval;
 	float _lastFpsUpdate;
@@ -142,6 +143,8 @@ public:
 private:
 	void SpawnObjects();
 	void RemoveOffScreenObjects(float dt);
-
 	void HandleCollisions(float dt);
+	void CapPlayerPosition();
+
+	sf::FloatRect GetViewBounds() const;
 };
