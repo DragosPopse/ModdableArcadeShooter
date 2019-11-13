@@ -15,7 +15,7 @@ public:
 
 	void SetFont(const sf::Font& font);
 
-	void SetString(const std::string& str);
+	void SetString(const sf::String& str);
 
 	void SetCharSize(unsigned int size);
 

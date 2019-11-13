@@ -54,7 +54,6 @@ void Pickup::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 }
 
-
 void Pickup::OnPickup(Airplane& player)
 {
 	_data->onPickup(player);

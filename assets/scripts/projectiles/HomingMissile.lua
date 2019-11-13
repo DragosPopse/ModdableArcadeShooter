@@ -13,6 +13,9 @@ local HomingMissile = {
     speed = 1000,
     spreadAngle = 90,   
 
+    ammoFont = 'Pixel',
+    ammoTextSize = 20,
+
     start = function (lthis, this)
         lthis.timer = 0
         local smoke = engine.ParticleSystem.new()

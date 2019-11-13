@@ -33,7 +33,7 @@ local Eagle = {
     weapons = {
         {
             projectile = 'Bullet',
-            ammo = 9999
+            ammo = -1
         },
 
         {

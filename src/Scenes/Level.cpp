@@ -1,4 +1,4 @@
-#include "Scenes/Level.h"
+﻿#include "Scenes/Level.h"
 #include <string>
 #include <iostream>
 #include "Context.h"
@@ -10,6 +10,7 @@
 #include "GameObjects/Airplane.h"
 #include "GameObjects/SpriteObject.h"
 #include "GameObjects/Projectile.h"
+#include "GameObjects/TextObject.h"
 #include <sol/sol.hpp>
 #include "Utility.h"
 #include <vector>
@@ -56,6 +57,7 @@ Level::Level(Context* context, const std::string& path) :
 
 
 	sol::table level = _context->lua->do_file(path);
+
 	
 	//Load required textures
 	sol::table usedTextures = level["usedTextures"];
@@ -195,6 +197,8 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.damage = projectile["damage"];
 			projdata.fireRate = projectile["fireRate"];
 			projdata.scale = projectile["scale"];
+			projdata.ammoFont = projectile["ammoFont"];
+			projdata.ammoTextSize = projectile["ammoTextSize"];
 			projdata.muzzleScale = projectile["muzzleScale"];
 			projdata.iconScale = projectile["iconScale"];
 			projdata.start = projectile["start"];
@@ -412,6 +416,7 @@ bool Level::FixedUpdate(float dt)
 		_root->OnCommand(_commands.Pop(), dt);
 	}
 	_root->FixedUpdate(dt);
+
 	if (_playerAirplane)
 	{
 		_playerAirplane->move(0, -_scrollSpeed * dt);

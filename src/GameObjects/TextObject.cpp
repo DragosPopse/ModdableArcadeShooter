@@ -14,7 +14,7 @@ void TextObject::SetFont(const sf::Font& font)
 }
 
 
-void TextObject::SetString(const std::string& str)
+void TextObject::SetString(const sf::String& str)
 {
 	_text.setString(str);
 	CenterOrigin(_text);

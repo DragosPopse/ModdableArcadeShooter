@@ -63,11 +63,13 @@ void Airplane::Start(Scene* scene)
 	else
 	{
 		_weaponDisplay = new SpriteObject();
+		_ammoDisplay = new TextObject();
 		_cooldownDisplay = new CircleCooldown();
 		UpdateWeaponDisplay();
 		
 		_currentScene->AddUiElement(_weaponDisplay);
 		_currentScene->AddUiElement(_cooldownDisplay);
+		_currentScene->AddUiElement(_ammoDisplay);
 		
 	}
 
@@ -307,7 +309,7 @@ void Airplane::PreviousWeapon()
 
 void Airplane::Fire()
 {
-	if (_ammo[_currentWeaponIndex] > 0 && _cooldown > _data->weapons[_currentWeaponIndex]->fireRate)
+	if ((_ammo[_currentWeaponIndex] > 0 || _ammo[_currentWeaponIndex] < 0) && _cooldown > _data->weapons[_currentWeaponIndex]->fireRate)
 	{
 		_cooldown = 0;
 		_ammo[_currentWeaponIndex]--;
@@ -322,6 +324,7 @@ void Airplane::Fire()
 			_currentScene->AddPlayerProjectile(proj);
 			proj->move(0, -GetBoundingRect().height / 2);
 			UpdateCooldownDisplay();
+			UpdateAmmoDisplay();
 		}
 		else
 		{
@@ -370,7 +373,43 @@ void Airplane::UpdateWeaponDisplay()
 	_weaponDisplay->setPosition(displayX, displayY);
 	_weaponDisplay->setScale(_data->weapons[_currentWeaponIndex]->iconScale, _data->weapons[_currentWeaponIndex]->iconScale);
 	
+	UpdateAmmoDisplay();
+
 	UpdateCooldownVertices();
+}
+
+
+void Airplane::UpdateAmmoDisplay()
+{
+	_ammoDisplay->SetFont(_currentScene->GetFont(_data->weapons[_currentWeaponIndex]->ammoFont));
+	_ammoDisplay->SetCharSize(_data->weapons[_currentWeaponIndex]->ammoTextSize);
+
+	if (_data->ammo[_currentWeaponIndex] < 0) //infinite ammo
+	{
+		std::string text("8");
+		_ammoDisplay->SetString(text);
+		int chars = text.size();
+		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
+
+		int ammoX = _weaponDisplay->getPosition().x + _weaponDisplay->GetBoundingRect().width / 2;
+		int ammoY = _weaponDisplay->getPosition().y - charSize / 2;
+
+		_ammoDisplay->setRotation(90);
+		_ammoDisplay->setPosition(ammoX, ammoY);
+
+	}
+	else
+	{
+		std::string text = std::to_string(_ammo[_currentWeaponIndex]);
+		_ammoDisplay->SetString(text);
+		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
+
+		int ammoX = _weaponDisplay->getPosition().x + _weaponDisplay->GetBoundingRect().width / 2;
+		int ammoY = _weaponDisplay->getPosition().y - charSize / 2;
+
+		_ammoDisplay->setRotation(0);
+		_ammoDisplay->setPosition(ammoX, ammoY);
+	}
 }
 
 

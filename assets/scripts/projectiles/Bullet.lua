@@ -12,6 +12,8 @@ local Bullet = {
     fireRate = 0.05,
     speed = 1000,
     spreadAngle = 5,
+    ammoFont = 'Pixel',
+    ammoTextSize = 30,
 
     start = function (lthis, this)
         

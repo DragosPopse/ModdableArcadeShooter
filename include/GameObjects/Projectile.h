@@ -33,6 +33,10 @@ struct ProjectileData
 	sol::function create;
 	sol::function start;
 
+
+	int ammoTextSize;
+	std::string ammoFont;
+
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 };
@@ -49,6 +53,7 @@ class Projectile :
 
 	bool _firstFrame;
 	bool _rectChanged;
+
 
 	sf::Clock _clock;
 	

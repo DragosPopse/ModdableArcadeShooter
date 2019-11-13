@@ -8,6 +8,7 @@
 #include <random>
 #include <Thor/Animations.hpp>
 #include "GameObjects/CircleCooldown.h"
+#include "GameObjects/TextObject.h"
 
 class Level;
 struct ProjectileData;
@@ -86,6 +87,7 @@ class Airplane :
 
 	TextObject* _healthText;
 	SpriteObject* _weaponDisplay;
+	TextObject* _ammoDisplay;
 	CircleCooldown* _cooldownDisplay;
 
 	float _elapsedTime;
@@ -93,7 +95,6 @@ class Airplane :
 	bool _dmgAnimationActive;
 	const sf::Texture* _texture;
 	sf::Shader* _shader;
-
 
 public:
 	Airplane(AirplaneData* data);
@@ -137,4 +138,5 @@ private:
 	void UpdateWeaponDisplay();
 	void UpdateCooldownDisplay();
 	void UpdateCooldownVertices();
+	void UpdateAmmoDisplay();
 };
