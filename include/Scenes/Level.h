@@ -106,6 +106,11 @@ class Level :
 
 	std::shared_ptr<LocalMenu> _localMenu;
 
+	std::vector<SpriteObject*> _background;
+	int _nextIndex;
+	int _firstIndex;
+	
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -145,6 +150,7 @@ private:
 	void RemoveOffScreenObjects(float dt);
 	void HandleCollisions(float dt);
 	void CapPlayerPosition();
+	void SwitchBackground();
 
 	sf::FloatRect GetViewBounds() const;
 };

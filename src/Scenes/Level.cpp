@@ -47,7 +47,9 @@ Level::Level(Context* context, const std::string& path) :
 	_currentText(nullptr),
 	_localMenu(new LocalMenu(context)),
 	_playingVignette(false),
-	_vignetteCurrentIntensity(0.f)
+	_vignetteCurrentIntensity(0.f),
+	_nextIndex(0),
+	_firstIndex(1)
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -85,17 +87,22 @@ Level::Level(Context* context, const std::string& path) :
 	}
 
 	std::string backgroundTexture = level["backgroundTexture"];
-	bool repeatBackground = level["repeatBackground"];
-	_textures[backgroundTexture].setRepeated(repeatBackground);
-	std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
-	backgroundPtr->SetTexture(_textures[backgroundTexture]);
-
+	//bool repeatBackground = level["repeatBackground"];
+	//_textures[backgroundTexture].setRepeated(repeatBackground);
+	//std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
+	_background.push_back(new SpriteObject());
+	_background.push_back(new SpriteObject());
+	//backgroundPtr->SetTexture(_textures[backgroundTexture]);
+	
 	_scrollSpeed = level["scrollSpeed"];
 	_worldHeight = level["height"];
 	_scale = level["scale"];
 	_borderSize = level["borderSize"];
-	backgroundPtr->setScale(_scale, _scale);
-	backgroundPtr->SetTextureRect(sf::IntRect(0, 0, _textures[backgroundTexture].getSize().x, _worldHeight));
+	//backgroundPtr->setScale(_scale, _scale);
+	_background[0]->setScale(_scale, _scale);
+	_background[1]->setScale(_scale, _scale);
+	_background[0]->SetTexture(_textures[backgroundTexture]);
+	_background[1]->SetTexture(_textures[backgroundTexture]);
 
 	//Load Pickups
 	sol::table pickups = level["usedPickups"];
@@ -269,7 +276,7 @@ Level::Level(Context* context, const std::string& path) :
 	_playerSpawn.y = playerTable["spawnPoint"][2];
 	std::string playerPlane = playerTable["airplane"];
 
-	_worldView.setCenter(400, _playerSpawn.y);
+	_worldView.setCenter(_context->window->getSize().x / 2, _playerSpawn.y);
 
 	auto& airplaneData = _airplaneDataDict[playerPlane];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
@@ -292,9 +299,12 @@ Level::Level(Context* context, const std::string& path) :
 	std::unique_ptr<GameObject> uptr5(_particlesRoot);
 	std::unique_ptr<GameObject> uptr6(_environmentRoot);
 	std::unique_ptr<GameObject> uptr7(_pickupsRoot);
+	std::unique_ptr<GameObject> uptr8(_background[1]);
+	std::unique_ptr<GameObject> uptr9(_background[0]);
 
 
-	_root->AddChild(std::move(backgroundPtr));
+	_root->AddChild(std::move(uptr8));
+	_root->AddChild(std::move(uptr9));
 	_root->AddChild(std::move(uptr6));
 	_root->AddChild(std::move(uptr4));
 	_root->AddChild(std::move(uptr7));
@@ -304,6 +314,9 @@ Level::Level(Context* context, const std::string& path) :
 	_root->AddChild(std::move(uptr5));
 
 	_root->AddChild(std::move(airplane));
+
+	_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
+	//_background[1]->setPosition(_playerSpawn);
 
 
 	//Add environment animations and sprites 
@@ -422,6 +435,10 @@ bool Level::FixedUpdate(float dt)
 		_playerAirplane->move(0, -_scrollSpeed * dt);
 	}
 	_worldView.move(0, -_scrollSpeed * dt);
+	if (_worldView.getCenter().y < _background[_firstIndex]->getPosition().y + _background[_firstIndex]->GetBoundingRect().height / 2)
+	{
+		SwitchBackground();
+	}
 	DisplayText();
 	_root->RemoveDestroyedChilldren();
 	_uiRoot->RemoveDestroyedChilldren();
@@ -797,4 +814,14 @@ void Level::PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, floa
 	_vignetteShader.setUniform("u_innerRadius", _vignetteInnerRadius);
 	_vignetteShader.setUniform("u_outerRadius", _vignetteOuterRadius);
 	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+}
+
+
+void Level::SwitchBackground()
+{
+	_background[_nextIndex]->setPosition(0, _background[_firstIndex]->getPosition().y - _background[_firstIndex]->GetBoundingRect().height);
+
+	int aux = _firstIndex;
+	_firstIndex = _nextIndex;
+	_nextIndex = aux;
 }
