@@ -75,7 +75,7 @@ class Level :
 	sf::FloatRect _worldBounds;
 	sf::Vector2f _playerSpawn;
 	float _scrollSpeed;
-	float _worldHeight;
+	float _levelLength;
 	float _scale;
 	float _borderSize;
 

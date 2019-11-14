@@ -95,7 +95,7 @@ Level::Level(Context* context, const std::string& path) :
 	//backgroundPtr->SetTexture(_textures[backgroundTexture]);
 	
 	_scrollSpeed = level["scrollSpeed"];
-	_worldHeight = level["height"];
+	_levelLength = level["length"];
 	_scale = level["scale"];
 	_borderSize = level["borderSize"];
 	//backgroundPtr->setScale(_scale, _scale);
@@ -272,17 +272,21 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Create player
 	sol::table playerTable = level["player"];
-	_playerSpawn.x = playerTable["spawnPoint"][1];
-	_playerSpawn.y = playerTable["spawnPoint"][2];
+	//_playerSpawn.x = playerTable["spawnPoint"][1];
+	//_playerSpawn.y = playerTable["spawnPoint"][2];
+	_playerSpawn.x = _context->window->getSize().x / 2;
+	_playerSpawn.y = _levelLength - _worldView.getSize().y / 2;
 	std::string playerPlane = playerTable["airplane"];
 
-	_worldView.setCenter(_context->window->getSize().x / 2, _playerSpawn.y);
+	_worldView.setCenter(_playerSpawn);
 
 	auto& airplaneData = _airplaneDataDict[playerPlane];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
 	airplane->SetPlayerControlled(true);
 	airplane->setPosition(_playerSpawn);
 	_playerAirplane = airplane.get();
+
+	_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
 
 	_enemyProjectilesRoot = new GameObject();
 	_playerProjectilesRoot = new GameObject();
@@ -315,7 +319,6 @@ Level::Level(Context* context, const std::string& path) :
 
 	_root->AddChild(std::move(airplane));
 
-	_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
 	//_background[1]->setPosition(_playerSpawn);
 
 

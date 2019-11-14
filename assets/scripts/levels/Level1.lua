@@ -4,10 +4,10 @@ local spawn = dofile('assets/scripts/utility/Spawn.lua')
 level.title = "Overseer"
 level.backgroundTexture = 'Island'
 level.repeatBackground = true
-level.scrollSpeed = 70
+level.scrollSpeed = 200
 level.scale = 3.125
 level.borderSize = 40
-level.height = 400 * level.scale * 3
+level.length = 400 * level.scale * 3
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
 
@@ -31,7 +31,7 @@ level.usedFonts = {
 
 level.player = {
     airplane = 'Eagle',
-    spawnPoint = {400, 400 * level.scale * 3 - 100}
+    --spawnPoint = {400, 400 * level.scale * 3 - 100}
 }
 
 level.usedAirplanes = {
