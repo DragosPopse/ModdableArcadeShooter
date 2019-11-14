@@ -53,6 +53,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	if (!firstTime)
 	{
 		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
+		_context->music->setVolume(_context->player->GetMusicVolume());
 		_context->music->play();
 	}
 }
