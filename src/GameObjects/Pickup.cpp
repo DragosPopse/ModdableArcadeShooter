@@ -28,7 +28,7 @@ void Pickup::Start(Scene* scene)
 
 	//std::cout << getPosition().x << ' ' << getPosition().y << '\n';
 	AddChild(std::move(animation));
-
+	
 	GameObject::Start(scene);
 }
 

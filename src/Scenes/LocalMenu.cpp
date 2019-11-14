@@ -9,7 +9,7 @@ LocalMenu::LocalMenu(Context* context) :
 	_gui(*context->window)
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 100));
-	_background.setPosition(0, 0);
+	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 
 	tgui::Button::Ptr resume = tgui::Button::create("Resume");

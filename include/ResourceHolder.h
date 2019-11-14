@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <map>
 #include <string>
 #include <memory>
@@ -35,5 +36,6 @@ public:
 };
 
 
-typedef ResourceHolder<std::string, sf::Texture> TextureHolder;
-typedef ResourceHolder<std::string, sf::Font> FontHolder;
+using TextureHolder = ResourceHolder<std::string, sf::Texture>;
+using FontHolder = ResourceHolder<std::string, sf::Font>;
+using SoundHolder = ResourceHolder<std::string, sf::SoundBuffer>;

@@ -8,6 +8,7 @@ local Eagle = {
     speed = 300,
     healthFont = 'Mont',
     healthCharSize = 24,
+    score = 20,
 
     explosionData = {
         texture = 'Explosions',

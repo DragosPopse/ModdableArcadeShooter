@@ -4,12 +4,14 @@ local spawn = dofile('assets/scripts/utility/Spawn.lua')
 level.title = "Overseer"
 level.backgroundTexture = 'Island'
 level.repeatBackground = true
-level.scrollSpeed = 200
+level.scrollSpeed = 60
 level.scale = 3.125
 level.borderSize = 40
 level.length = 400 * level.scale * 3
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
+level.saveFile = 'assets/config/saves/Level1.json'
+level.defaultFont = 'Pixel'
 
 
 level.usedTextures = {

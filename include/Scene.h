@@ -18,6 +18,7 @@ protected:
 	Context* _context;
 	TextureHolder _textures;
 	FontHolder _fonts;
+	SoundHolder _sounds;
 	
 
 public:

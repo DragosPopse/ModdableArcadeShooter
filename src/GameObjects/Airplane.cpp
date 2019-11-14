@@ -226,6 +226,11 @@ void Airplane::Damage(int hp)
 				break;
 			}
 		}
+
+		if (!_playerControlled)
+		{
+			_currentScene->AddDownedEnemy(_data->name);
+		}
 	}
 	else
 	{

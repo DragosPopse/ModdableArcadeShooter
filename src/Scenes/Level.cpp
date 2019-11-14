@@ -17,6 +17,8 @@
 #include <memory>
 #include <algorithm>
 #include <SFML/Audio.hpp>
+#include "Scenes/LoseState.h"
+#include "Scenes/WinState.h"
 
 
 namespace
@@ -60,6 +62,8 @@ Level::Level(Context* context, const std::string& path) :
 
 	sol::table level = _context->lua->do_file(path);
 
+	_saveFile = level["saveFile"];
+	_defaultFont = level["defaultFont"];
 	
 	//Load required textures
 	sol::table usedTextures = level["usedTextures"];
@@ -134,10 +138,13 @@ Level::Level(Context* context, const std::string& path) :
 		std::string name = planes[i];
 		std::string path = BuildString(AIRPLANES_PATH, name, ".lua");
 		std::cout << path << '\n';
+		_enemiesDowned[name] = 0;
 
 		sol::table plane = _context->lua->do_file(path);
 
 		AirplaneData apdata;
+		apdata.name = name;
+		apdata.score = plane["score"];
 		apdata.hitpoints = plane["hitpoints"];
 		apdata.idleRect = TableToRect(plane["idleRect"]);
 		apdata.rightRect = TableToRect(plane["rightRect"]);
@@ -429,6 +436,8 @@ bool Level::FixedUpdate(float dt)
 	if (_playerAirplane && _playerAirplane->IsDestroyed())
 	{
 		_playerAirplane = nullptr;
+		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
+		RequestPush(lose);
 	}
 	SpawnObjects();
 	_context->player->HandleRealtimeInput(_commands);

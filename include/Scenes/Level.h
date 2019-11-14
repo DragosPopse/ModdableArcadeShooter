@@ -47,10 +47,12 @@ struct PickupSpawnPosition //WIP
 };
 
 
-
 class Level :
 	public Scene
 {
+	friend class WinState;
+	friend class LoseState;
+
 	std::vector<Airplane*> _airplanes;
 	std::vector<Projectile*> _projectiles;
 
@@ -109,7 +111,11 @@ class Level :
 	std::vector<SpriteObject*> _background;
 	int _nextIndex;
 	int _firstIndex;
+
+	std::string _saveFile;
 	
+	std::map<std::string, int> _enemiesDowned;
+	std::string _defaultFont;
 
 public:
 	Level(Context* context, const std::string& fileName);
@@ -144,6 +150,10 @@ public:
 	sf::Texture& GetTexture(const std::string& id) { return _textures[id]; }
 
 	void PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, float outer, float intensity, float fadeInRatio, float fadeOutRatio, float duration);
+
+	void AddDownedEnemy(const std::string& name) { _enemiesDowned[name]++; }
+
+	sf::Font& GetDefaultFont() { return _fonts[_defaultFont]; }
 
 private:
 	void SpawnObjects();

@@ -179,3 +179,16 @@ float Distance(const sf::Vector2f& rhs, const sf::Vector2f& lhs)
 {
 	return sqrt((rhs.x - lhs.x) * (rhs.x - lhs.x) + (rhs.y - lhs.y) * (rhs.y - lhs.y));
 }
+
+
+AltFadeAnimation::AltFadeAnimation(float in, float out) :
+	_inRatio(in),
+	_outRatio(out)
+{
+}
+
+
+float Lerp(float start, float end, float progress)
+{
+	return start + progress * (end - start);
+}

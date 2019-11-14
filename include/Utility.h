@@ -67,6 +67,38 @@ class ParticleFrameAnimation
 {
 public:
 	ParticleFrameAnimation(int firstIndex, int lastIndex);
+
 };
+
+
+//This is the same as thor::FadeAnimation but it works for sf::RectangleShape
+//credits: https://github.com/Bromeon/Thor/blob/master/include/Thor/Animations/FadeAnimation.hpp
+class AltFadeAnimation
+{
+	float _inRatio;
+	float _outRatio;
+public:
+	AltFadeAnimation(float in, float out);
+
+	template <class Animated>
+	void operator()(Animated& target, float progress) const
+	{
+		sf::Color color = target.getFillColor();
+
+		if (progress < _inRatio)
+		{
+			color.a = 256 * progress / _inRatio;
+		}
+		else if (progress > 1.f - _outRatio)
+		{
+			color.a = 256 * (1.f - progress) / _outRatio;
+		}
+
+		target.setFillColor(color);
+	}
+};
+
+
+float Lerp(float start, float end, float progress);
 
 typedef std::function<void(thor::Particle&, sf::Time)> ParticleAnimationFunction;

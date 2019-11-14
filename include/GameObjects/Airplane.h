@@ -30,6 +30,8 @@ struct DropData
 
 struct AirplaneData
 {
+	std::string name;
+
 	float scale;
 	int hitpoints;
 	float speed;
@@ -59,6 +61,8 @@ struct AirplaneData
 
 	std::mt19937 dropRng;
 	std::uniform_int_distribution<int> dropGenerator;
+
+	int score;
 };
 
 

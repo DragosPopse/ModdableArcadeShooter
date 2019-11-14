@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include <SFML/Graphics.hpp>
+#include  <SFML/Audio.hpp>
 #include <sol/sol.hpp>
 #include <optional>
 #include <random>
@@ -39,6 +40,12 @@ struct ProjectileData
 
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
+
+	std::string launchSound;
+	float minVolumeFactor;
+	float maxVolumeFactor;
+	float minPitch;
+	float maxPitch;
 };
 
 
