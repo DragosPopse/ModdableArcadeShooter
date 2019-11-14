@@ -404,6 +404,11 @@ Level::Level(Context* context, const std::string& path) :
 	_renderTexture.create(_context->window->getSize().x, _context->window->getSize().y);
 	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_root->Start(this);
+
+	std::string soundtrack = level["soundtrack"];
+	_context->music->openFromFile(soundtrack);
+	_context->music->setVolume(_context->player->GetMusicVolume());
+	_context->music->play();
 }
 
 
@@ -445,6 +450,7 @@ bool Level::FixedUpdate(float dt)
 	DisplayText();
 	_root->RemoveDestroyedChilldren();
 	_uiRoot->RemoveDestroyedChilldren();
+
 	return false;
 }
 
@@ -639,11 +645,10 @@ void Level::RemoveOffScreenObjects(float dt)
 
 		if (obj.GetCategory() == GameObject::PlayerProjectile)
 		{
-			
 			if (objPosition.y < viewCenter.y - viewSize.y ||
 				objPosition.y > viewCenter.y + viewSize.y ||
 				objPosition.x > viewCenter.x + viewSize.x ||
-				objPosition.y < viewCenter.x - viewSize.x)
+				objPosition.x < viewCenter.x - viewSize.x)
 			{
 				obj.MarkForDestroy();
 			}
