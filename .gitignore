@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-#somebody forgot about this
+#Game specific
 *.tlog
 *.lastbuildstate
 *.idb
@@ -13,6 +13,8 @@
 bin-int/
 bin/
 assets/config/Player.json
+assets/config/saves/
+
 
 # User-specific files
 *.rsuser
