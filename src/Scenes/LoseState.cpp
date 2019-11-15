@@ -3,8 +3,19 @@
 #include "Context.h"
 #include "Utility.h"
 #include <iostream>
+#include "Scenes/MainMenu.h"
 
+#include <fstream>
+#include <rapidjson/writer.h>
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
 
+namespace rjs = rapidjson;
 
 LoseState::LoseState(Context* context, Level* level) :
 	Scene(context),
@@ -26,14 +37,20 @@ LoseState::LoseState(Context* context, Level* level) :
 	_yourScore.setFont(_level->GetDefaultFont());
 	_score.setFont(_level->GetDefaultFont());
 	_scoreInfo.setFont(_level->GetDefaultFont());
+	_highScoreText.setFont(_level->GetDefaultFont());
+	_highScore.setFont(_level->GetDefaultFont());
 	_yourScore.setCharacterSize(30);
 	_score.setCharacterSize(30);
 	_scoreInfo.setCharacterSize(30);
+	_highScoreText.setCharacterSize(30);
+	_highScore.setCharacterSize(30);
 	_yourScore.setString("Your Score: ");
+	_highScoreText.setString(BuildString("High Score: ", std::to_string(_level->GetHighScore())));
 	_score.setString("0");
 
 	_yourScore.setPosition(0, _context->window->getSize().y / 2 - _yourScore.getCharacterSize());
 	AdaptScorePosition();
+	_highScoreText.setPosition(0, _yourScore.getPosition().y + _highScoreText.getCharacterSize() * 2);
 
 	for (auto i = _level->_enemiesDowned.cbegin(); i != _level->_enemiesDowned.cend(); ++i)
 	{
@@ -144,6 +161,32 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 	{
 		RequestClear();
 	}
+	else if (ev.type == sf::Event::KeyPressed)
+	{
+		if (ev.key.code == sf::Keyboard::Space)
+		{
+			if (!_backgroundFading)
+			{
+				if (_currentIncrement == _increments.cend())
+				{
+					RequestClear();
+					std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
+					RequestPush(menu);
+					if (_currentScore)
+					{
+						std::ofstream out(_level->_saveFile);
+						rjs::OStreamWrapper wrapper(out);
+						rjs::Document document;
+						document.SetObject();
+						auto& allocator = document.GetAllocator();
+						document.AddMember("HighScore", _currentScore, allocator);
+						rjs::PrettyWriter writer(wrapper);
+						document.Accept(writer);  
+					}
+				}
+			}
+		}
+	}
 	return false;
 }
 
@@ -162,6 +205,7 @@ bool LoseState::Render()
 	_context->window->draw(_score);
 	_context->window->draw(_scoreInfo);
 	_context->window->draw(_skipInfo);
+	_context->window->draw(_highScoreText);
 	return false;
 }
 

@@ -1,6 +1,7 @@
 ﻿#include "Scenes/Level.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 #include "Context.h"
 #include <sol/sol.hpp>
 #include "Engine.h"
@@ -19,6 +20,17 @@
 #include <SFML/Audio.hpp>
 #include "Scenes/LoseState.h"
 #include "Scenes/WinState.h"
+
+#include <rapidjson/writer.h>
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
+
+namespace rjs = rapidjson;
 
 
 namespace
@@ -51,7 +63,8 @@ Level::Level(Context* context, const std::string& path) :
 	_playingVignette(false),
 	_vignetteCurrentIntensity(0.f),
 	_nextIndex(0),
-	_firstIndex(1)
+	_firstIndex(1),
+	_highScore(0)
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -63,6 +76,15 @@ Level::Level(Context* context, const std::string& path) :
 	sol::table level = _context->lua->do_file(path);
 
 	_saveFile = level["saveFile"];
+	std::ifstream save(_saveFile);
+	if (save.good())
+	{
+		rjs::IStreamWrapper wrapper(save);
+		rjs::Document document;
+		document.ParseStream(wrapper);
+		_highScore = document["HighScore"].GetInt();
+	}
+
 	_defaultFont = level["defaultFont"];
 	
 	//Load required textures

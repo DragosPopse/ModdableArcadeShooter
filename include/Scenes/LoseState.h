@@ -33,6 +33,8 @@ class LoseState :
 	bool _animationsFinished;
 
 	sf::Text _yourScore;
+	sf::Text _highScoreText;
+	sf::Text _highScore;
 	sf::Text _score;
 	sf::Text _scoreInfo;
 	sf::Text _skipInfo;

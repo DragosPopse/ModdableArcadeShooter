@@ -113,6 +113,7 @@ class Level :
 	int _firstIndex;
 
 	std::string _saveFile;
+	int _highScore;
 	
 	std::map<std::string, int> _enemiesDowned;
 	std::string _defaultFont;
@@ -154,6 +155,8 @@ public:
 	void AddDownedEnemy(const std::string& name) { _enemiesDowned[name]++; }
 
 	sf::Font& GetDefaultFont() { return _fonts[_defaultFont]; }
+
+	int GetHighScore() const { return _highScore; }
 
 private:
 	void SpawnObjects();
