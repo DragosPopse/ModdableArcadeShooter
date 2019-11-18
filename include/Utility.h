@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <random>
+#include <functional>
 #include <Thor/Animations.hpp>
 #include <Thor/Particles.hpp>
 
@@ -71,19 +72,33 @@ public:
 };
 
 
-//This is the same as thor::FadeAnimation but it works for sf::RectangleShape
+//This is the same as thor::FadeAnimation but it also generalizes the alpha changing function.
+//Use case: sf::RectangleShape uses getFillColor() and setFillColor() for alpha changing, TextObject uses SetColor and GetColor, sf::Sprite uses setColor and getColor
 //credits: https://github.com/Bromeon/Thor/blob/master/include/Thor/Animations/FadeAnimation.hpp
-class AltFadeAnimation
+template <class Animated>
+class GenericFadeAnimation
 {
 	float _inRatio;
 	float _outRatio;
-public:
-	AltFadeAnimation(float in, float out);
+	std::function<void(Animated&, const sf::Color&)> _setColor;
+	std::function<sf::Color(const Animated&)> _getColor;
 
-	template <class Animated>
+	
+public:
+	GenericFadeAnimation(float in, float out, 
+		std::function<void(Animated&, const sf::Color&)> setColor, 
+		std::function<sf::Color(const Animated&)> getColor) :
+		_inRatio(in),
+		_outRatio(out),
+		_setColor(setColor),
+		_getColor(getColor)
+	{
+	}
+	
+
 	void operator()(Animated& target, float progress) const
 	{
-		sf::Color color = target.getFillColor();
+		sf::Color color = _getColor(target);
 
 		if (progress < _inRatio)
 		{
@@ -94,7 +109,7 @@ public:
 			color.a = 256 * (1.f - progress) / _outRatio;
 		}
 
-		target.setFillColor(color);
+		_setColor(target, color);
 	}
 };
 

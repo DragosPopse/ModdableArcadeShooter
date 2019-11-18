@@ -6,6 +6,9 @@
 #include "Utility.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "GameObjects/NumberIncrementAnimation.h"
+#include "GameObjects/TextObject.h"
+#include <memory>
 
 class Level;
 
@@ -17,8 +20,8 @@ class LoseState :
 	Level* _level;
 
 	sf::RectangleShape _background;
-	AltFadeAnimation _backgroundAnimation;
-	AltFadeAnimation _textAnimation;
+	GenericFadeAnimation<sf::RectangleShape> _backgroundAnimation;
+	GenericFadeAnimation<TextObject> _textAnimation;
 
 	float _elapsedTime;
 	float _animationDuration;
@@ -27,17 +30,10 @@ class LoseState :
 	float _animationFinalScale;
 
 	bool _backgroundFading;
-	bool _playingIncrementAnimation;
-	bool _playingScaleAnimation;
-	bool _playingScaleAnimationReverse;
-	bool _animationsFinished;
 
-	sf::Text _yourScore;
-	sf::Text _highScoreText;
-	sf::Text _highScore;
-	sf::Text _score;
-	sf::Text _scoreInfo;
-	sf::Text _skipInfo;
+	std::unique_ptr<TextObject> _yourScore;
+	NumberIncrementAnimation* _score;
+
 
 	std::map<std::string, int> _increments;
 
@@ -55,5 +51,4 @@ public:
 	bool FixedUpdate(float dt) override;
 
 private:
-	void AdaptScorePosition();
 };
