@@ -28,7 +28,8 @@ public:
 		PlayerProjectile = 1 << 2,
 		EnemyProjectile = 1 << 3,
 		PickupItem = 1 << 4,
-		AnimationType = 1 << 5
+		AnimationType = 1 << 5,
+		TextType = 1 << 6
 	};
 
 	GameObject();

@@ -21,9 +21,16 @@ void TextObject::SetString(const sf::String& str)
 }
 
 
-void TextObject::SetCharSize(unsigned int size)
+void TextObject::SetCharSize(size_t size)
 {
 	_text.setCharacterSize(size);
+	CenterOrigin(_text);
+}
+
+
+size_t TextObject::GetCharSize() const
+{
+	return _text.getCharacterSize();
 }
 
 
@@ -35,4 +42,16 @@ void TextObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	GameObject::Draw(target, states);
 
+}
+
+
+void TextObject::SetColor(const sf::Color& color)
+{
+	_text.setFillColor(color);
+}
+
+
+sf::Color TextObject::GetColor() const
+{
+	return _text.getFillColor();
 }

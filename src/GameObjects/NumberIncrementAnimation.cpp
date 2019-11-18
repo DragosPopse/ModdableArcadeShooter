@@ -14,7 +14,8 @@ NumberIncrementAnimation::NumberIncrementAnimation() :
 void NumberIncrementAnimation::Start(Scene* scene) 
 {
 	_currentState = &_incrementState; 
-	_currentIncrement = _increments.begin();
+	_currentIncrement = _increments.cbegin();
+	_incrementState.Start();
 }
 
 
@@ -66,6 +67,8 @@ void NumberIncrementAnimation::IncrementState::Start()
 {
 	_elapsedTime = 0.f;
 	_targetNumber = *_animation->_currentIncrement;
+	_beginNumber = _currentNumber;
+	std::cout << "TARGET: " << _beginNumber << '\n';
 	++_animation->_currentIncrement;
 }
 
@@ -86,7 +89,6 @@ void NumberIncrementAnimation::IncrementState::Update(float dt)
 	if (progress <= 1.f)
 	{
 		_currentNumber = Lerp(_beginNumber, _targetNumber, progress);
-		
 	}
 	else
 	{
@@ -111,6 +113,8 @@ void NumberIncrementAnimation::ScaleState::Update(float dt)
 		else
 		{
 			_currentCharSize = _endCharSize;
+			_upscaling = false;
+			_elapsedTime = 0.f;
 		}
 	}
 	else

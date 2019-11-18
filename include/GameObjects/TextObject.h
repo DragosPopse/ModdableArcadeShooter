@@ -17,7 +17,14 @@ public:
 
 	void SetString(const sf::String& str);
 
-	void SetCharSize(unsigned int size);
+	void SetCharSize(size_t size);
+	size_t GetCharSize() const;
 
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	void SetColor(const sf::Color& color);
+
+	sf::Color GetColor() const;
+
+	unsigned int GetCategory() const override { return TextType; }
 };

@@ -21,135 +21,85 @@ LoseState::LoseState(Context* context, Level* level) :
 	Scene(context),
 	_level(level),
 	_elapsedTime(0.f),
-	_backgroundAnimation(1, 0),
+	_backgroundAnimation(1.f, 0.f, 
+		[](sf::RectangleShape& animated, const sf::Color& color)
+		{
+			animated.setFillColor(color);
+		},
+		[](const sf::RectangleShape& animated)
+		{
+			return animated.getFillColor();
+		}),
 	_backgroundFading(true),
 	_animationDuration(3.f),
-	_textAnimation(1.f, 0.f),
+	_textAnimation(1.f, 0.f, 
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		}),
 	_timePerIncrement(2.f),
 	_animationFinalScale(1.5f),
 	_scaleAnimationDuration(0.2f),
-	_currentScore(0)
+	_currentScore(0),
+	_yourScore(new TextObject()),
+	_score(new NumberIncrementAnimation())
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	
+	std::unique_ptr<NumberIncrementAnimation> scorePtr(_score);
+	_yourScore->AddChild(std::move(scorePtr));
 
-	_yourScore.setFont(_level->GetDefaultFont());
-	_score.setFont(_level->GetDefaultFont());
-	_scoreInfo.setFont(_level->GetDefaultFont());
-	_highScoreText.setFont(_level->GetDefaultFont());
-	_highScore.setFont(_level->GetDefaultFont());
-	_yourScore.setCharacterSize(30);
-	_score.setCharacterSize(30);
-	_scoreInfo.setCharacterSize(30);
-	_highScoreText.setCharacterSize(30);
-	_highScore.setCharacterSize(30);
-	_yourScore.setString("Your Score: ");
-	_highScoreText.setString(BuildString("High Score: ", std::to_string(_level->GetHighScore())));
-	_score.setString("0");
+	_yourScore->SetFont(_level->GetDefaultFont());
+	_score->SetFont(_level->GetDefaultFont());
+	_yourScore->SetCharSize(30u);
+	_score->SetCharSize(30u);
+	_yourScore->SetString("Your Score: ");
+	
+	_score->SetFinalCharSize(50u);
+	_score->SetIncrementDuration(2.5f);
+	_score->SetScaleDuration(0.2f);
+	_yourScore->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
+	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
+	
+	 
 
-	_yourScore.setPosition(0, _context->window->getSize().y / 2 - _yourScore.getCharacterSize());
-	AdaptScorePosition();
-	_highScoreText.setPosition(0, _yourScore.getPosition().y + _highScoreText.getCharacterSize() * 2);
-
-	for (auto i = _level->_enemiesDowned.cbegin(); i != _level->_enemiesDowned.cend(); ++i)
+	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
 	{
-		_increments[BuildString(i->first, " Downed")] = i->second * _level->_airplaneDataDict[i->first].score;
+		_score->AddIncrement(it->second * _level->_airplaneDataDict[it->first].score);
 	}
-
-	_currentIncrement = _increments.cbegin();
 }
 
-//Sorry about this awfully written code over here. Turns out I still don't know how to do pretty animations also look pretty in code
+
 bool LoseState::Update(float dt)
 {
-	if (_currentIncrement != _increments.cend())
+	if (_backgroundFading)
 	{
-		if (_backgroundFading)
-		{
-			_elapsedTime += dt;
-			float progress = _elapsedTime / _animationDuration;
+		_elapsedTime += dt;
+		float progress = _elapsedTime / _animationDuration;
 
-			if (progress <= 1.f)
-			{
-				_backgroundAnimation(_background, progress);
-				_textAnimation(_yourScore, progress);
-				_textAnimation(_score, progress);
-				_context->music->setVolume(Lerp(_context->player->GetMusicVolume(), 0.f, progress));
-			}
-			else
-			{
-				_elapsedTime = 0.f;
-				_backgroundFading = false;
-				_playingIncrementAnimation = true;
-				_nextIncrementScore = _currentIncrement->second;
-			}
-		}
-		else if (_playingIncrementAnimation)
+		if (progress <= 1.f)
 		{
-			_elapsedTime += dt;
-			float progress = _elapsedTime / _timePerIncrement;
-			if (progress <= 1.f)
-			{
-				int nextScore = Lerp(_currentScore, _nextIncrementScore, progress);
-				_score.setString(std::to_string(nextScore));
-			}
-			else
-			{
-				_elapsedTime = 0.f;
-				_currentScore = _nextIncrementScore;
-				_score.setString(std::to_string(_currentScore));
-				_playingIncrementAnimation = false;
-				_playingScaleAnimation = true;
-			}
+			_backgroundAnimation(_background, progress);
+			_textAnimation(*_yourScore, progress);
+			_textAnimation(*_score, progress);
+			_context->music->setVolume(Lerp(_context->player->GetMusicVolume(), 0.f, progress));
 		}
-		else if (_playingScaleAnimation)
+		else
 		{
-			_elapsedTime += dt;
-			float progress = _elapsedTime / _scaleAnimationDuration;
-			if (progress <= 1.f)
-			{
-				float scale = Lerp(1.f, _animationFinalScale, progress);
-				_score.setScale(scale, scale);
-				CenterOrigin(_score);
-			}
-			else
-			{
-				_elapsedTime = 0.f;
-				_score.setScale(_animationFinalScale, _animationFinalScale);
-				CenterOrigin(_score);
-				_playingScaleAnimation = false;
-				_playingScaleAnimationReverse = true;
-			}
-		}
-		else if (_playingScaleAnimationReverse)
-		{
-			_elapsedTime += dt;
-			float progress = _elapsedTime / _scaleAnimationDuration;
-			if (progress <= 1.f)
-			{
-				float scale = Lerp(_animationFinalScale, 1.f, progress);
-				_score.setScale(scale, scale);
-				CenterOrigin(_score);
-			}
-			else
-			{
-				_elapsedTime = 0.f;
-				_score.setScale(1.f, 1.f);
-				CenterOrigin(_score);
-				++_currentIncrement;
-				_playingScaleAnimationReverse = false;
-				_playingIncrementAnimation = true;
-			}
+			_score->Start(this);
+			_backgroundFading = false;
 		}
 	}
 	else
 	{
-		
+		_score->Update(dt);
 	}
-	
-
-	AdaptScorePosition();
 
 	return true;
 }
@@ -167,22 +117,19 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 		{
 			if (!_backgroundFading)
 			{
-				if (_currentIncrement == _increments.cend())
+				RequestClear();
+				std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
+				RequestPush(menu);
+				if (_currentScore)
 				{
-					RequestClear();
-					std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
-					RequestPush(menu);
-					if (_currentScore)
-					{
-						std::ofstream out(_level->_saveFile);
-						rjs::OStreamWrapper wrapper(out);
-						rjs::Document document;
-						document.SetObject();
-						auto& allocator = document.GetAllocator();
-						document.AddMember("HighScore", _currentScore, allocator);
-						rjs::PrettyWriter writer(wrapper);
-						document.Accept(writer);  
-					}
+					std::ofstream out(_level->_saveFile);
+					rjs::OStreamWrapper wrapper(out);
+					rjs::Document document;
+					document.SetObject();
+					auto& allocator = document.GetAllocator();
+					document.AddMember("HighScore", _currentScore, allocator);
+					rjs::PrettyWriter writer(wrapper);
+					document.Accept(writer);
 				}
 			}
 		}
@@ -201,18 +148,7 @@ bool LoseState::Render()
 {
 	_context->window->setView(_context->window->getDefaultView());
 	_context->window->draw(_background);
-	_context->window->draw(_yourScore);
-	_context->window->draw(_score);
-	_context->window->draw(_scoreInfo);
-	_context->window->draw(_skipInfo);
-	_context->window->draw(_highScoreText);
+	_yourScore->Draw(*_context->window, sf::RenderStates::Default);
+	//_score->Draw(*_context->window, sf::RenderStates::Default);
 	return false;
-}
-
-
-void LoseState::AdaptScorePosition()
-{
-	//_score.setPosition(_context->window->getSize().x - _score.getCharacterSize() * _score.getString().getSize(), _context->window->getSize().y / 2 - _score.getCharacterSize() / 2);
-	_score.setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2 - _score.getCharacterSize() / 2);
-	CenterOrigin(_score);
 }
