@@ -114,14 +114,17 @@ LoseState::LoseState(Context* context, Level* level) :
 
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
 	{
-		_score->AddIncrement(it->second * _level->_airplaneDataDict[it->first].score);
-		if (it->second == 1)
+		if (it->second != 0)
 		{
-			_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplane"));
-		}
-		else
-		{
-			_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplanes"));
+			_score->AddIncrement(it->second * _level->_airplaneDataDict[it->first].score);
+			if (it->second == 1)
+			{
+				_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplane"));
+			}
+			else
+			{
+				_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplanes"));
+			}
 		}
 	}
 }

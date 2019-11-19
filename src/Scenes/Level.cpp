@@ -64,7 +64,8 @@ Level::Level(Context* context, const std::string& path) :
 	_vignetteCurrentIntensity(0.f),
 	_nextIndex(0),
 	_firstIndex(1),
-	_highScore(0)
+	_highScore(0),
+	_win(false)
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -461,10 +462,11 @@ bool Level::FixedUpdate(float dt)
 		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
 		RequestPush(lose);
 	}
-	if (_worldView.getCenter().y < _playerSpawn.y - _levelLength)
+	else if (_playerAirplane && !_win && _worldView.getCenter().y < _playerSpawn.y - _levelLength)
 	{
-		std::cout << _worldView.getCenter().y << '\n';
-		
+		std::shared_ptr<WinState> lose(new WinState(_context, this));
+		RequestPush(lose);
+		_win = true;
 	}
 	SpawnObjects();
 	_context->player->HandleRealtimeInput(_commands);

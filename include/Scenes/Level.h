@@ -118,6 +118,8 @@ class Level :
 	std::map<std::string, int> _enemiesDowned;
 	std::string _defaultFont;
 
+	bool _win;
+
 public:
 	Level(Context* context, const std::string& fileName);
 

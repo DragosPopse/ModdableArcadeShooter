@@ -73,13 +73,20 @@ NumberIncrementAnimation::StateID NumberIncrementAnimation::ScaleState::GetState
 
 void NumberIncrementAnimation::IncrementState::Start()
 {
-	_elapsedTime = 0.f;
-	_targetNumber = *_animation->_currentIncrement;
-	_beginNumber = _currentNumber;
-	std::cout << "TARGET: " << _beginNumber << '\n';
-	++_animation->_currentIncrement;
-	++_animation->_nCurrentIncrement;
-	_skip = false;
+	if (_animation->_increments.size() != 0)
+	{
+		_elapsedTime = 0.f;
+		_targetNumber = *_animation->_currentIncrement;
+		_beginNumber = _currentNumber;
+		std::cout << "TARGET: " << _beginNumber << '\n';
+		++_animation->_currentIncrement;
+		++_animation->_nCurrentIncrement;
+		_skip = false;
+	}
+	else
+	{
+		_animation->_currentState = nullptr;
+	}
 }
 
 
@@ -94,19 +101,22 @@ void NumberIncrementAnimation::ScaleState::Start()
 
 void NumberIncrementAnimation::IncrementState::Update(float dt)
 {
-	_elapsedTime += dt;
-	float progress = _elapsedTime / _incrementDuration;
-	
-	if (progress <= 1.f && !_skip)
+	if (_animation->_increments.size() != 0)
 	{
-		_currentNumber = Lerp(_beginNumber, _targetNumber, progress);
+		_elapsedTime += dt;
+		float progress = _elapsedTime / _incrementDuration;
+
+		if (progress <= 1.f && !_skip)
+		{
+			_currentNumber = Lerp(_beginNumber, _targetNumber, progress);
+		}
+		else
+		{
+			_currentNumber = _targetNumber;
+			_animation->PushScaleState();
+		}
+		_animation->SetNumber(_currentNumber);
 	}
-	else
-	{
-		_currentNumber = _targetNumber;
-		_animation->PushScaleState();
-	}
-	_animation->SetNumber(_currentNumber);
 }
 
 
