@@ -41,10 +41,6 @@ LoseState::LoseState(Context* context, Level* level) :
 		{
 			return animated.GetColor();
 		}),
-	_timePerIncrement(2.f),
-	_animationFinalScale(1.5f),
-	_scaleAnimationDuration(0.2f),
-	_currentScore(0),
 	_yourScore(new TextObject()),
 	_score(new NumberIncrementAnimation())
 {
@@ -59,7 +55,7 @@ LoseState::LoseState(Context* context, Level* level) :
 	_score->SetFont(_level->GetDefaultFont());
 	_yourScore->SetCharSize(30u);
 	_score->SetCharSize(30u);
-	_yourScore->SetString("Your Score: ");
+	_yourScore->SetString("Your Score:");
 	
 	_score->SetFinalCharSize(50u);
 	_score->SetIncrementDuration(2.5f);
@@ -99,6 +95,7 @@ bool LoseState::Update(float dt)
 	else
 	{
 		_score->Update(dt);
+		
 	}
 
 	return true;
@@ -117,19 +114,26 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 		{
 			if (!_backgroundFading)
 			{
-				RequestClear();
-				std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
-				RequestPush(menu);
-				if (_currentScore)
+				if (_score->GetCurrentState() != NumberIncrementAnimation::StateID::None)
 				{
-					std::ofstream out(_level->_saveFile);
-					rjs::OStreamWrapper wrapper(out);
-					rjs::Document document;
-					document.SetObject();
-					auto& allocator = document.GetAllocator();
-					document.AddMember("HighScore", _currentScore, allocator);
-					rjs::PrettyWriter writer(wrapper);
-					document.Accept(writer);
+					_score->Skip();
+				}
+				else
+				{
+					RequestClear();
+					std::shared_ptr<MainMenu> menu(new MainMenu(_context, false));
+					RequestPush(menu);
+					if (_score->GetCurrentNumber() > _level->_highScore)
+					{
+						std::ofstream out(_level->_saveFile);
+						rjs::OStreamWrapper wrapper(out);
+						rjs::Document document;
+						document.SetObject();
+						auto& allocator = document.GetAllocator();
+						document.AddMember("HighScore", _score->GetCurrentNumber(), allocator);
+						rjs::PrettyWriter writer(wrapper);
+						document.Accept(writer);
+					}
 				}
 			}
 		}

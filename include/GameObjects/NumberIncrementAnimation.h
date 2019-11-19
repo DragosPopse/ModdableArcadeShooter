@@ -18,6 +18,7 @@ class NumberIncrementAnimation :
 public:
 	enum class StateID
 	{
+		None,
 		Increment,
 		Scale
 	};
@@ -32,6 +33,7 @@ private:
 	{
 	protected:
 		NumberIncrementAnimation* _animation;
+		bool _skip;
 
 	public:
 		AnimationState(NumberIncrementAnimation* animation);
@@ -41,6 +43,8 @@ private:
 		virtual void Update(float dt) = 0;
 
 		virtual StateID GetStateID() const = 0;
+
+		void Skip();
 	};
 
 
@@ -63,6 +67,8 @@ private:
 		StateID GetStateID() const override;
 
 		void SetIncrementDuration(float t);
+
+		int GetCurrentNumber() const;
 	};
 
 
@@ -111,7 +117,12 @@ public:
 	//Overrides from GameObject
 	void Start(Scene* scene) override;
 	void Update(float dt) override;
-	//void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	StateID GetCurrentState() const;
+
+	int GetCurrentNumber() const;
+
+	void Skip();
 
 private:
 	void SetNumber(int n);
