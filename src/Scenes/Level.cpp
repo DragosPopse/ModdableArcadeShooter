@@ -461,6 +461,11 @@ bool Level::FixedUpdate(float dt)
 		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
 		RequestPush(lose);
 	}
+	if (_worldView.getCenter().y < _playerSpawn.y - _levelLength)
+	{
+		std::cout << _worldView.getCenter().y << '\n';
+		
+	}
 	SpawnObjects();
 	_context->player->HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
