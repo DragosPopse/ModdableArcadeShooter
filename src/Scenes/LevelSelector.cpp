@@ -7,7 +7,17 @@
 #include "Scenes/LevelLoader.h"
 #include "Scenes/Level.h"
 
+#include <rapidjson/writer.h>
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/istreamwrapper.h>
+#include <rapidjson/ostreamwrapper.h>
+#include <fstream>
 
+namespace rjs = rapidjson;
 
 LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	Scene(context),
@@ -18,7 +28,9 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	_background.setPosition(0, 0);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_levelTitle.setFont(_menu->_fonts["Menu"]);
-	_levelTitle.setCharacterSize(30);
+	_levelScore.setFont(_menu->_fonts["Menu"]);
+	_levelTitle.setCharacterSize(40);
+	_levelScore.setCharacterSize(30);
 	_infoText.setCharacterSize(20);
 	_infoText.setFont(_menu->_fonts["Menu"]);
 	_infoText.setString("Press A/D to change level, \nSpace to confirm and Escape to go back.");
@@ -31,7 +43,17 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 		sol::table level = _context->lua->do_file(file);
 		std::string title = level["title"];
 		std::string previewImage = level["previewImage"];
-		_levelData.emplace_back(file, title, previewImage);
+		std::string saveFile = level["saveFile"];
+		int highScore = 0;
+		std::ifstream in(saveFile);
+		if (in.good())
+		{
+			rjs::IStreamWrapper wrapper(in);
+			rjs::Document document;
+			document.ParseStream(wrapper);
+			highScore = document["HighScore"].GetInt();
+		}
+		_levelData.emplace_back(file, title, previewImage, highScore);
 
 		_textures.Load(title, previewImage);
 	}
@@ -93,6 +115,7 @@ bool LevelSelector::Render()
 	_context->window->draw(_levelImage);
 	_context->window->draw(_levelTitle);
 	_context->window->draw(_infoText);
+	_context->window->draw(_levelScore);
 	return true;
 }
 
@@ -108,13 +131,24 @@ void LevelSelector::UpdateDisplay()
 	auto& level = _levelData[_currentIndex];
 	_levelImage.setTexture(_textures[level.title]);
 	_levelTitle.setString(level.title);
+	if (level.highScore != 0)
+	{
+		_levelScore.setString(BuildString("High Score: ", level.highScore));
+	}
+	else
+	{
+		_levelScore.setString("No High Score Set");
+
+	}
 	_levelImage.setScale(3, 3);
 
 	CenterOrigin(_levelTitle);
 	CenterOrigin(_levelImage);
+	CenterOrigin(_levelScore);
 	_levelImage.setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
-	_levelTitle.setPosition(_context->window->getSize().x / 2,
+	_levelScore.setPosition(_context->window->getSize().x / 2,
 		_context->window->getSize().y / 2 - _levelImage.getGlobalBounds().height / 2 - _levelTitle.getCharacterSize());
+	_levelTitle.setPosition(_context->window->getSize().x / 2, _levelScore.getPosition().y - _levelScore.getCharacterSize() / 2 - _levelTitle.getCharacterSize());
 	_infoText.setPosition(_context->window->getSize().x / 2, 
 		_context->window->getSize().y / 2 + _levelImage.getGlobalBounds().height / 2 + _infoText.getCharacterSize());
 }

@@ -13,11 +13,13 @@ struct LevelData
 	std::string file;
 	std::string title;
 	std::string previewImage;
+	int highScore;
 
-	LevelData(const std::string& f, const std::string& t, const std::string& p) :
+	LevelData(const std::string& f, const std::string& t, const std::string& p, int hs) :
 		file(f),
 		title(t),
-		previewImage(p)
+		previewImage(p),
+		highScore(hs)
 	{
 	}
 };
@@ -33,6 +35,7 @@ class LevelSelector :
 	int _currentIndex;
 	sf::Sprite _levelImage;
 	sf::Text _levelTitle;
+	sf::Text _levelScore;
 	sf::Text _infoText;
 	
 	
