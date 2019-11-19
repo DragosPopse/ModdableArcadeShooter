@@ -41,6 +41,15 @@ LoseState::LoseState(Context* context, Level* level) :
 		{
 			return animated.GetColor();
 		}),
+	_flickerAnimation(0.1f, 0.1f, 
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		}),
 	_yourScore(new TextObject()),
 	_score(new NumberIncrementAnimation()),
 	_incrementDuration(2.5f),
@@ -52,12 +61,19 @@ LoseState::LoseState(Context* context, Level* level) :
 			animated.SetCharSize(size);
 	}),
 	_highScore(new TextObject()),
-	_highScoreText(new TextObject())
+	_highScoreText(new TextObject()),
+	_flickerElapsedTime(0.f),
+	_flickerDuration(2.f),
+	_infoText(new TextObject()),
+	_summaryText(new TextAnimation("")),
+	_letterDuration(0.06f),
+	_currentIncrement(-1)
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 
+	_summaryText->SetTimePerLetter(_letterDuration);
 	_highScoreAnimation.SetBeginCharSize(_charSize);
 	_highScoreAnimation.SetFinalCharSize(_finalCharSize);
 	
@@ -66,16 +82,24 @@ LoseState::LoseState(Context* context, Level* level) :
 	_highScoreText->AddChild(std::move(highScorePtr));
 	_yourScore->AddChild(std::move(scorePtr));
 
+	_summaryText->SetFont(_level->GetDefaultFontID()); //Inconsistency in design
+	_summaryText->Start(_level); //Inconsistency in design
+	_summaryText->SetCharSize(15);
+	_summaryText->setPosition(_context->window->getSize().x / 2, _charSize);
+
 	_yourScore->SetFont(_level->GetDefaultFont());
 	_score->SetFont(_level->GetDefaultFont());
 	_highScoreText->SetFont(_level->GetDefaultFont());
 	_highScore->SetFont(_level->GetDefaultFont());
+	_infoText->SetFont(_level->GetDefaultFont());
 	_yourScore->SetCharSize(_charSize);
 	_highScore->SetCharSize(_charSize);
 	_highScoreText->SetCharSize(_charSize);
+	_infoText->SetCharSize(_charSize);
 	_score->SetCharSize(_charSize);
 	_yourScore->SetString("Your Score:");
 	_highScoreText->SetString("High Score:");
+	_infoText->SetString("Press Space to Skip");
 	_highScore->SetString(std::to_string(_level->_highScore));
 	
 	_score->SetFinalCharSize(_finalCharSize);
@@ -85,15 +109,23 @@ LoseState::LoseState(Context* context, Level* level) :
 	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
 	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + _score->GetCharSize() * 2);
 	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
-
+	_infoText->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y - _infoText->GetCharSize());
 	 
 
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
 	{
 		_score->AddIncrement(it->second * _level->_airplaneDataDict[it->first].score);
+		if (it->second == 1)
+		{
+			_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplane"));
+		}
+		else
+		{
+			_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplanes"));
+		}
 	}
 }
-
+	 
 
 bool LoseState::Update(float dt)
 {
@@ -121,7 +153,16 @@ bool LoseState::Update(float dt)
 	else
 	{
 		_score->Update(dt);
-		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::Scale && _score->GetCurrentNumber() > _level->_highScore)
+		if (_summaries.size() != 0 && 
+			_currentIncrement != _score->GetCurrentIncrement() 
+			&& _score->GetCurrentState() != NumberIncrementAnimation::StateID::None)
+		{
+			_currentIncrement = _score->GetCurrentIncrement();
+			_summaryText->SetFinalString(_summaries[_currentIncrement]);
+		}
+		_summaryText->Update(dt);
+		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::Scale 
+			&& _score->GetCurrentNumber() > _level->_highScore)
 		{
 			_elapsedTime += dt;
 			float progress = _elapsedTime / (_scaleDuration * 2.f);
@@ -133,6 +174,22 @@ bool LoseState::Update(float dt)
 		{
 			_elapsedTime = 0.f;
 		}
+
+		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::None)
+		{
+			_infoText->SetString("Press Space to Continue");
+		}
+	}
+
+	_flickerElapsedTime += dt;
+	float progress = _flickerElapsedTime / _flickerDuration;
+	if (progress > 1.f)
+	{
+		_flickerElapsedTime = 0.f;
+	}
+	else
+	{
+		_flickerAnimation(*_infoText, progress);
 	}
 
 	return true;
@@ -191,6 +248,11 @@ bool LoseState::Render()
 	_context->window->draw(_background);
 	_yourScore->Draw(*_context->window, sf::RenderStates::Default);
 	_highScoreText->Draw(*_context->window, sf::RenderStates::Default);
+	if (!_backgroundFading)
+	{
+		_infoText->Draw(*_context->window, sf::RenderStates::Default);
+	}
+	_summaryText->Draw(*_context->window, sf::RenderStates::Default);
 	//_score->Draw(*_context->window, sf::RenderStates::Default);
 	return false;
 }

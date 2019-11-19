@@ -102,6 +102,7 @@ private:
 
 	std::vector<int> _increments;
 	std::vector<int>::const_iterator _currentIncrement;
+	int _nCurrentIncrement;
 
 public:
 
@@ -121,6 +122,7 @@ public:
 	StateID GetCurrentState() const;
 
 	int GetCurrentNumber() const;
+	int GetCurrentIncrement() const;
 
 	void Skip();
 

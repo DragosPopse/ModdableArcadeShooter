@@ -8,6 +8,7 @@
 #include <SFML/Audio.hpp>
 #include "GameObjects/NumberIncrementAnimation.h"
 #include "GameObjects/TextObject.h"
+#include "GameObjects/TextAnimation.h"
 #include <memory>
 
 class Level;
@@ -21,13 +22,18 @@ class LoseState :
 	sf::RectangleShape _background;
 	GenericFadeAnimation<sf::RectangleShape> _backgroundAnimation;
 	GenericFadeAnimation<TextObject> _textAnimation;
+	GenericFadeAnimation<TextObject> _flickerAnimation;
 	TextCharScaleAnimation<TextObject> _highScoreAnimation;
 
 	float _elapsedTime;
+	float _flickerElapsedTime;
 
 	bool _backgroundFading;
 	float _animationDuration;
+	float _flickerDuration;
 	bool _animateHighScore;
+
+	float _letterDuration;
 
 	float _scaleDuration;
 	float _incrementDuration;
@@ -37,9 +43,16 @@ class LoseState :
 
 	std::unique_ptr<TextObject> _yourScore;
 	NumberIncrementAnimation* _score;
+	
+	std::unique_ptr<TextObject> _infoText;
+	std::unique_ptr<TextAnimation> _summaryText;
 
 	std::unique_ptr<TextObject> _highScoreText;
 	TextObject* _highScore;
+
+	int _currentIncrement;
+
+	std::vector<std::string> _summaries;
 
 public:
 	LoseState(Context* context, Level* level);

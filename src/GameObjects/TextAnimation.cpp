@@ -16,6 +16,16 @@ TextAnimation::TextAnimation(const std::string& finalStr) :
 }
 
 
+void TextAnimation::SetFinalString(const std::string& finalStr)
+{
+	_currentStr.clear();
+	_finalStr = finalStr;
+	_finished = false;
+	_currentLetter = 0;
+	_strSize = _finalStr.size();
+}
+
+
 void TextAnimation::SetString(const std::string& str)
 {
 	_text.setString(str);

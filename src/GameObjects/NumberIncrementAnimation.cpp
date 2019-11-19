@@ -15,7 +15,14 @@ void NumberIncrementAnimation::Start(Scene* scene)
 {
 	_currentState = &_incrementState; 
 	_currentIncrement = _increments.cbegin();
+	_nCurrentIncrement = -1;
 	_incrementState.Start();
+}
+
+
+int NumberIncrementAnimation::GetCurrentIncrement() const
+{
+	return _nCurrentIncrement;
 }
 
 
@@ -71,6 +78,7 @@ void NumberIncrementAnimation::IncrementState::Start()
 	_beginNumber = _currentNumber;
 	std::cout << "TARGET: " << _beginNumber << '\n';
 	++_animation->_currentIncrement;
+	++_animation->_nCurrentIncrement;
 	_skip = false;
 }
 

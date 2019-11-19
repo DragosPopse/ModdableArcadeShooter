@@ -193,4 +193,5 @@ public:
 };
 
 
+
 using ParticleAnimationFunction = std::function<void(thor::Particle&, sf::Time)> ;

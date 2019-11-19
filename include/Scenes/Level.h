@@ -156,6 +156,8 @@ public:
 
 	sf::Font& GetDefaultFont() { return _fonts[_defaultFont]; }
 
+	std::string GetDefaultFontID() { return _defaultFont; }
+
 	int GetHighScore() const { return _highScore; }
 
 private:
