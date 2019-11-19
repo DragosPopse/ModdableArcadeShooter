@@ -15,7 +15,14 @@ void NumberIncrementAnimation::Start(Scene* scene)
 {
 	_currentState = &_incrementState; 
 	_currentIncrement = _increments.cbegin();
+	_nCurrentIncrement = -1;
 	_incrementState.Start();
+}
+
+
+int NumberIncrementAnimation::GetCurrentIncrement() const
+{
+	return _nCurrentIncrement;
 }
 
 
@@ -31,7 +38,8 @@ void NumberIncrementAnimation::Update(float dt)
 
 
 NumberIncrementAnimation::AnimationState::AnimationState(NumberIncrementAnimation* animation) :
-	_animation(animation)
+	_animation(animation),
+	_skip(false)
 {
 }
 
@@ -70,6 +78,8 @@ void NumberIncrementAnimation::IncrementState::Start()
 	_beginNumber = _currentNumber;
 	std::cout << "TARGET: " << _beginNumber << '\n';
 	++_animation->_currentIncrement;
+	++_animation->_nCurrentIncrement;
+	_skip = false;
 }
 
 
@@ -78,6 +88,7 @@ void NumberIncrementAnimation::ScaleState::Start()
 	_elapsedTime = 0.f;
 	_upscaling = true;
 	_beginCharSize = _animation->GetCharSize();
+	_skip = false;
 }
 
 
@@ -86,7 +97,7 @@ void NumberIncrementAnimation::IncrementState::Update(float dt)
 	_elapsedTime += dt;
 	float progress = _elapsedTime / _incrementDuration;
 	
-	if (progress <= 1.f)
+	if (progress <= 1.f && !_skip)
 	{
 		_currentNumber = Lerp(_beginNumber, _targetNumber, progress);
 	}
@@ -201,4 +212,37 @@ void NumberIncrementAnimation::ScaleState::SetScaleDuration(float t)
 void NumberIncrementAnimation::AddIncrement(int n)
 {
 	_increments.push_back(n);
+}
+
+
+NumberIncrementAnimation::StateID NumberIncrementAnimation::GetCurrentState() const
+{
+	return _currentState ? _currentState->GetStateID() : StateID::None;
+}
+
+
+int NumberIncrementAnimation::GetCurrentNumber() const
+{
+	return _incrementState.GetCurrentNumber();
+}
+
+
+int NumberIncrementAnimation::IncrementState::GetCurrentNumber() const
+{
+	return _currentNumber;
+}
+
+
+void NumberIncrementAnimation::AnimationState::Skip()
+{
+	_skip = true;
+}
+
+
+void NumberIncrementAnimation::Skip()
+{
+	if (_currentState)
+	{
+		_currentState->Skip();
+	}
 }

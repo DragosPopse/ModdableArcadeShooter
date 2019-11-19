@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "GameObjects/TextObject.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <sstream>
@@ -34,6 +35,7 @@ public:
 	bool IsFinished() const;
 	void SetCharSize(unsigned int n);
 
+	void SetFinalString(const std::string& finalStr);
 
 private:
 	void SetString(const std::string& str);

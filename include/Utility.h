@@ -25,6 +25,7 @@ float Magnitude(const sf::Vector2f vector);
 sf::Vector2f Normalize(const sf::Vector2f& vector);
 sf::Vector2f Direction(const sf::Vector2f& from, const sf::Vector2f& to);
 float Distance(const sf::Vector2f& lhs, const sf::Vector2f& rhs);
+float Lerp(float start, float end, float progress);
 
 std::string ToString(sf::Keyboard::Key key);
 
@@ -114,6 +115,83 @@ public:
 };
 
 
-float Lerp(float start, float end, float progress);
+template <class Animated>
+class TextCharScaleAnimation
+{
+	std::function<void(Animated&, size_t)> _setCharSize;
+	size_t _finalCharSize;
+	size_t _beginCharSize;
+	bool _upscaling;
+	bool _loop;
 
-typedef std::function<void(thor::Particle&, sf::Time)> ParticleAnimationFunction;
+public:
+	TextCharScaleAnimation(std::function<void(Animated&, size_t)> setCharSize) :
+		_setCharSize(setCharSize),
+		_upscaling(true),
+		_loop(false)
+	{
+	}
+
+
+	void SetLoop(bool loop)
+	{
+		_loop = loop;
+	}
+
+
+	void SetFinalCharSize(size_t size)
+	{
+		_finalCharSize = size;
+	}
+
+
+	void SetBeginCharSize(size_t size)
+	{
+		_beginCharSize = size;
+	}
+
+
+	void Reset()
+	{
+		_upscaling = true;
+	}
+
+	
+	void operator()(Animated& animated, float progress)
+	{
+		int currentSize = 0;
+		if (_upscaling)
+		{
+			if (progress <= 0.5f)
+			{
+				currentSize = Lerp(_beginCharSize, _finalCharSize, progress);
+			}
+			else
+			{
+				currentSize = _finalCharSize;
+				_upscaling = false;
+			}
+		}
+		else
+		{
+			if (progress <= 1.f)
+			{
+				currentSize = Lerp(_finalCharSize, _beginCharSize, progress);
+			}
+			else
+			{
+				currentSize = _beginCharSize;
+				if (_loop)
+				{
+					Reset();
+				}
+			}
+		}
+
+		_setCharSize(animated, currentSize);
+	}
+};
+
+
+
+using ParticleAnimationFunction = std::function<void(thor::Particle&, sf::Time)> ;

@@ -8,10 +8,10 @@
 #include <SFML/Audio.hpp>
 #include "GameObjects/NumberIncrementAnimation.h"
 #include "GameObjects/TextObject.h"
+#include "GameObjects/TextAnimation.h"
 #include <memory>
 
 class Level;
-
 
 
 class LoseState :
@@ -22,25 +22,37 @@ class LoseState :
 	sf::RectangleShape _background;
 	GenericFadeAnimation<sf::RectangleShape> _backgroundAnimation;
 	GenericFadeAnimation<TextObject> _textAnimation;
+	GenericFadeAnimation<TextObject> _flickerAnimation;
+	TextCharScaleAnimation<TextObject> _highScoreAnimation;
 
 	float _elapsedTime;
-	float _animationDuration;
-	float _timePerIncrement;
-	float _scaleAnimationDuration;
-	float _animationFinalScale;
+	float _flickerElapsedTime;
 
 	bool _backgroundFading;
+	float _animationDuration;
+	float _flickerDuration;
+	bool _animateHighScore;
+
+	float _letterDuration;
+
+	float _scaleDuration;
+	float _incrementDuration;
+	bool _upscaling;
+	size_t _charSize;
+	size_t _finalCharSize;
 
 	std::unique_ptr<TextObject> _yourScore;
 	NumberIncrementAnimation* _score;
+	
+	std::unique_ptr<TextObject> _infoText;
+	std::unique_ptr<TextAnimation> _summaryText;
 
+	std::unique_ptr<TextObject> _highScoreText;
+	TextObject* _highScore;
 
-	std::map<std::string, int> _increments;
+	int _currentIncrement;
 
-	std::map<std::string, int>::const_iterator _currentIncrement;
-
-	int _currentScore;
-	int _nextIncrementScore;
+	std::vector<std::string> _summaries;
 
 public:
 	LoseState(Context* context, Level* level);
@@ -49,6 +61,4 @@ public:
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Render() override;
 	bool FixedUpdate(float dt) override;
-
-private:
 };
