@@ -42,27 +42,50 @@ LoseState::LoseState(Context* context, Level* level) :
 			return animated.GetColor();
 		}),
 	_yourScore(new TextObject()),
-	_score(new NumberIncrementAnimation())
+	_score(new NumberIncrementAnimation()),
+	_incrementDuration(2.5f),
+	_scaleDuration(0.2f),
+	_charSize(30u),
+	_finalCharSize(50u),
+	_highScoreAnimation([](TextObject& animated, size_t size)
+	{
+			animated.SetCharSize(size);
+	}),
+	_highScore(new TextObject()),
+	_highScoreText(new TextObject())
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+
+	_highScoreAnimation.SetBeginCharSize(_charSize);
+	_highScoreAnimation.SetFinalCharSize(_finalCharSize);
 	
 	std::unique_ptr<NumberIncrementAnimation> scorePtr(_score);
+	std::unique_ptr<TextObject> highScorePtr(_highScore);
+	_highScoreText->AddChild(std::move(highScorePtr));
 	_yourScore->AddChild(std::move(scorePtr));
 
 	_yourScore->SetFont(_level->GetDefaultFont());
 	_score->SetFont(_level->GetDefaultFont());
-	_yourScore->SetCharSize(30u);
-	_score->SetCharSize(30u);
+	_highScoreText->SetFont(_level->GetDefaultFont());
+	_highScore->SetFont(_level->GetDefaultFont());
+	_yourScore->SetCharSize(_charSize);
+	_highScore->SetCharSize(_charSize);
+	_highScoreText->SetCharSize(_charSize);
+	_score->SetCharSize(_charSize);
 	_yourScore->SetString("Your Score:");
+	_highScoreText->SetString("High Score:");
+	_highScore->SetString(std::to_string(_level->_highScore));
 	
-	_score->SetFinalCharSize(50u);
-	_score->SetIncrementDuration(2.5f);
-	_score->SetScaleDuration(0.2f);
+	_score->SetFinalCharSize(_finalCharSize);
+	_score->SetIncrementDuration(_incrementDuration);
+	_score->SetScaleDuration(_scaleDuration);
 	_yourScore->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
 	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
-	
+	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + _score->GetCharSize() * 2);
+	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
+
 	 
 
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
@@ -84,18 +107,32 @@ bool LoseState::Update(float dt)
 			_backgroundAnimation(_background, progress);
 			_textAnimation(*_yourScore, progress);
 			_textAnimation(*_score, progress);
+			_textAnimation(*_highScore, progress);
+			_textAnimation(*_highScoreText, progress);
 			_context->music->setVolume(Lerp(_context->player->GetMusicVolume(), 0.f, progress));
 		}
 		else
 		{
 			_score->Start(this);
 			_backgroundFading = false;
+			_elapsedTime = 0.f;
 		}
 	}
 	else
 	{
 		_score->Update(dt);
-		
+		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::Scale && _score->GetCurrentNumber() > _level->_highScore)
+		{
+			_elapsedTime += dt;
+			float progress = _elapsedTime / (_scaleDuration * 2.f);
+			std::string number = std::to_string(_score->GetCurrentNumber());
+			_highScore->SetString(number);
+			_highScoreAnimation(*_highScore, progress);
+		} 
+		else
+		{
+			_elapsedTime = 0.f;
+		}
 	}
 
 	return true;
@@ -153,6 +190,7 @@ bool LoseState::Render()
 	_context->window->setView(_context->window->getDefaultView());
 	_context->window->draw(_background);
 	_yourScore->Draw(*_context->window, sf::RenderStates::Default);
+	_highScoreText->Draw(*_context->window, sf::RenderStates::Default);
 	//_score->Draw(*_context->window, sf::RenderStates::Default);
 	return false;
 }

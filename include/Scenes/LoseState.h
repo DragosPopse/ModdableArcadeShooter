@@ -21,14 +21,25 @@ class LoseState :
 	sf::RectangleShape _background;
 	GenericFadeAnimation<sf::RectangleShape> _backgroundAnimation;
 	GenericFadeAnimation<TextObject> _textAnimation;
+	TextCharScaleAnimation<TextObject> _highScoreAnimation;
 
 	float _elapsedTime;
 
 	bool _backgroundFading;
 	float _animationDuration;
+	bool _animateHighScore;
+
+	float _scaleDuration;
+	float _incrementDuration;
+	bool _upscaling;
+	size_t _charSize;
+	size_t _finalCharSize;
 
 	std::unique_ptr<TextObject> _yourScore;
 	NumberIncrementAnimation* _score;
+
+	std::unique_ptr<TextObject> _highScoreText;
+	TextObject* _highScore;
 
 public:
 	LoseState(Context* context, Level* level);
