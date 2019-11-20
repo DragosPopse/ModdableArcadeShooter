@@ -6,6 +6,7 @@ level.backgroundTexture = 'Island'
 level.repeatBackground = true
 level.scrollSpeed = 60
 level.scale = 3.125
+--level.scale = 4
 level.borderSize = 40
 --level.length = 400 * level.scale * 3
 level.length = 200

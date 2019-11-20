@@ -143,6 +143,9 @@ WinState::WinState(Context* context, Level* level) :
 		}
 	}
 
+	_summaries.push_back(BuildString("You Completed The Level"));
+	_score->AddIncrement(100); ///maybe dynamic win score?
+
 	CalculateVignetteParams();
 }
 
