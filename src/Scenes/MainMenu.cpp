@@ -31,6 +31,10 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 		_context->player->SaveSettings();
 	}
 
+	_sounds.Load("Click", "assets/audio/sfx/Click.wav");
+	_clickSound.setBuffer(_sounds["Click"]);
+	_clickSound.setVolume(_context->player->GetSfxVolume());
+
 	_mainPanel = tgui::VerticalLayout::create();
 	_settingsPanel = tgui::VerticalLayout::create();
 	_keyBindingsPanel = tgui::VerticalLayout::create();
@@ -100,15 +104,14 @@ void MainMenu::SetupMain()
 	_exitButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.play();
 			RequestClear();
 		});
 
 	_playButton->connect("pressed",
 		[this]()
 		{
-			//RequestClear();
-			//std::shared_ptr<LevelLoader> level(new LevelLoader(_context, "Level1.lua"));
-			//RequestPush(level);
+			_clickSound.play();
 			DisableAll();
 			RequestPush(_levelSelector);
 		});
@@ -116,6 +119,7 @@ void MainMenu::SetupMain()
 	_settingsButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.play();
 			EnableSettings();
 		});
 
@@ -176,6 +180,7 @@ void MainMenu::SetupSettings()
 	_confirmSettingsButton->connect("pressed", 
 		[this]()
 		{
+			_clickSound.play();
 			EnableMain();
 			_context->player->SaveSettings();
 		});
@@ -183,6 +188,7 @@ void MainMenu::SetupSettings()
 	_keyBindingsButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.play();
 			EnableKeyBindings();
 		});
 
@@ -191,6 +197,7 @@ void MainMenu::SetupSettings()
 
 	_sfxSlider->connect("ValueChanged", [this](float v)
 		{
+			_clickSound.setVolume(_context->player->GetSfxVolume());
 			_context->player->SetSfxVolume(v);
 		});
 	_musicSlider->connect("ValueChanged", [this](float v)
@@ -268,19 +275,20 @@ void MainMenu::SetupKeyBindings()
 		_actionToBind = action;
 	};
 
-	_moveLeftButton->connect("pressed", [this, assignKey]() {assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
-	_moveRightButton->connect("pressed", [this, assignKey]() {assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
-	_moveUpButton->connect("pressed", [this, assignKey]() {assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
-	_moveDownButton->connect("pressed", [this, assignKey]() {assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
-	_fireButton->connect("pressed", [this, assignKey]() {assignKey(_fireButton, "Fire", Player::Fire); });
-	_previousWeaponButton->connect("pressed", [this, assignKey]() {assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
-	_nextWeaponButton->connect("pressed", [this, assignKey]() {assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
+	_moveLeftButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
+	_moveRightButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
+	_moveUpButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
+	_moveDownButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
+	_fireButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_fireButton, "Fire", Player::Fire); });
+	_previousWeaponButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
+	_nextWeaponButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
 	
 
 
 	_confirmBindingsButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.play();
 			EnableSettings();
 		});
 

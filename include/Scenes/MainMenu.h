@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <TGUI/TGUI.hpp>
 #include "Player.h"
 #include <Thor/Animations.hpp>
@@ -64,6 +65,8 @@ class MainMenu :
 	int _keybindingTextSize;
 
 	std::shared_ptr<LevelSelector> _levelSelector;
+
+	sf::Sound _clickSound;
 
 public:
 	MainMenu(Context* context, bool firstTime = false);
