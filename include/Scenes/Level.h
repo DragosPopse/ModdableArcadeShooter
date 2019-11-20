@@ -162,6 +162,8 @@ public:
 
 	int GetHighScore() const { return _highScore; }
 
+	sf::Shader* GetVignette() { return &_vignetteShader; }
+
 private:
 	void SpawnObjects();
 	void RemoveOffScreenObjects(float dt);

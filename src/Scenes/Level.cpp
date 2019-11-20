@@ -480,7 +480,10 @@ bool Level::FixedUpdate(float dt)
 	{
 		_playerAirplane->move(0, -_scrollSpeed * dt);
 	}
-	_worldView.move(0, -_scrollSpeed * dt);
+	if (!_win)
+	{
+		_worldView.move(0, -_scrollSpeed * dt);
+	}
 	if (_worldView.getCenter().y < _background[_firstIndex]->getPosition().y + _background[_firstIndex]->GetBoundingRect().height / 2)
 	{
 		SwitchBackground();
@@ -489,7 +492,7 @@ bool Level::FixedUpdate(float dt)
 	_root->RemoveDestroyedChilldren();
 	_uiRoot->RemoveDestroyedChilldren();
 
-	return false;
+	return false; 
 }
 
 
@@ -569,7 +572,10 @@ bool Level::Render()
 	sf::RenderStates renderStates = sf::RenderStates::Default;
 	
 	_vignetteShader.setUniform("u_texture", _renderTexture.getTexture());
-	_vignetteShader.setUniform("u_intensity", _vignetteCurrentIntensity);
+	if (!_win)
+	{
+		_vignetteShader.setUniform("u_intensity", _vignetteCurrentIntensity);
+	}
 	_context->window->draw(sprite, &_vignetteShader);
 
 	

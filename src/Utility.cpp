@@ -185,3 +185,9 @@ float Lerp(float start, float end, float progress)
 {
 	return start + progress * (end - start);
 }
+
+
+sf::Vector2f Lerp(const sf::Vector2f& start, const sf::Vector2f& end, float progress)
+{
+	return start + progress * (end - start);
+}

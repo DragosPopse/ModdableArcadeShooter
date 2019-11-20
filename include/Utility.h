@@ -26,6 +26,7 @@ sf::Vector2f Normalize(const sf::Vector2f& vector);
 sf::Vector2f Direction(const sf::Vector2f& from, const sf::Vector2f& to);
 float Distance(const sf::Vector2f& lhs, const sf::Vector2f& rhs);
 float Lerp(float start, float end, float progress);
+sf::Vector2f Lerp(const sf::Vector2f& start, const sf::Vector2f& end, float progress);
 
 std::string ToString(sf::Keyboard::Key key);
 

@@ -29,6 +29,7 @@ class WinState :
 	TextCharScaleAnimation<TextObject> _highScoreAnimation;
 
 	float _elapsedTime;
+	float _fixedElapsedTime;
 	float _flickerElapsedTime;
 
 	bool _backgroundFading;
@@ -56,6 +57,20 @@ class WinState :
 	int _currentIncrement;
 
 	std::vector<std::string> _summaries;
+	sf::Shader* _vignette;
+	sf::Glsl::Vec4 _vignetteColor;
+	float _vignetteInner;
+	float _currentVignetteInner;
+	float _currentVignetteOuter;
+	float _vignetteOuter;
+	float _zoomFactor;
+	float _vignetteDuration;
+	float _zoomDuration;
+	float _maxDuration;
+	float _vignetteIntensity;
+	float _currentZoomFactor;
+	sf::Vector2f _startViewCenter;
+	
 
 public:
 	WinState(Context* context, Level* level);
@@ -64,4 +79,8 @@ public:
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Render() override;
 	bool FixedUpdate(float dt) override;
+
+private:
+	void CalculateVignetteParams();
+	void CapPlayerHorizontalPosition(); //This overrides the one in Level because the view now follows the player
 };

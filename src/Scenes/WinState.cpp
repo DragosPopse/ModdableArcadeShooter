@@ -3,7 +3,9 @@
 #include "Context.h"
 #include "Utility.h"
 #include <iostream>
+#include <algorithm>
 #include "Scenes/MainMenu.h"
+#include "GameObjects/Airplane.h"
 
 #include <fstream>
 #include <rapidjson/writer.h>
@@ -31,44 +33,57 @@ WinState::WinState(Context* context, Level* level) :
 			return animated.getFillColor();
 		}),
 	_backgroundFading(true),
-			_animationDuration(3.f),
-			_textAnimation(1.f, 0.f,
-				[](TextObject& animated, const sf::Color& color)
-				{
-					animated.SetColor(color);
-				},
-				[](const TextObject& animated)
-				{
-					return animated.GetColor();
-				}),
-			_flickerAnimation(0.1f, 0.1f,
-				[](TextObject& animated, const sf::Color& color)
-				{
-					animated.SetColor(color);
-				},
-				[](const TextObject& animated)
-				{
-					return animated.GetColor();
-				}),
-					_yourScore(new TextObject()),
-					_score(new NumberIncrementAnimation()),
-					_incrementDuration(2.5f),
-					_scaleDuration(0.2f),
-					_charSize(30u),
-					_finalCharSize(50u),
-					_highScoreAnimation([](TextObject& animated, size_t size)
-						{
-							animated.SetCharSize(size);
-						}),
-					_highScore(new TextObject()),
-							_highScoreText(new TextObject()),
-							_flickerElapsedTime(0.f),
-							_flickerDuration(2.f),
-							_infoText(new TextObject()),
-							_summaryText(new TextAnimation("")),
-							_letterDuration(0.06f),
-							_currentIncrement(-1)
+	_animationDuration(3.f),
+	_textAnimation(1.f, 0.f,
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		}),
+	_flickerAnimation(0.1f, 0.1f,
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		}),
+	_yourScore(new TextObject()),
+	_score(new NumberIncrementAnimation()),
+	_incrementDuration(2.5f),
+	_scaleDuration(0.2f),
+	_charSize(30u),
+	_finalCharSize(50u),
+	_highScoreAnimation(
+		[](TextObject& animated, size_t size)
+		{
+			animated.SetCharSize(size);
+		}),
+	_highScore(new TextObject()),
+	_highScoreText(new TextObject()),
+	_flickerElapsedTime(0.f),
+	_flickerDuration(2.f),
+	_infoText(new TextObject()),
+	_summaryText(new TextAnimation("")),
+	_letterDuration(0.06f),
+	_currentIncrement(-1),
+	_vignetteColor(0.f, 0.f, 0.f, 1.f),
+	_vignetteInner(0.3f),
+	_vignetteOuter(0.4f),
+	_currentZoomFactor(1.f),
+	_fixedElapsedTime(0.f),
+	_zoomDuration(1.5),
+	_vignetteDuration(1.5),
+	_zoomFactor(0.99)
 {
+	_vignette = _level->GetVignette();
+
+	_maxDuration = std::max(_zoomDuration, _vignetteDuration);
+
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
@@ -105,7 +120,7 @@ WinState::WinState(Context* context, Level* level) :
 	_score->SetFinalCharSize(_finalCharSize);
 	_score->SetIncrementDuration(_incrementDuration);
 	_score->SetScaleDuration(_scaleDuration);
-	_yourScore->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
+	_yourScore->setPosition(_context->window->getSize().x / 2, _summaryText->getPosition().y + _yourScore->GetCharSize());
 	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
 	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + _score->GetCharSize() * 2);
 	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
@@ -127,6 +142,27 @@ WinState::WinState(Context* context, Level* level) :
 			}
 		}
 	}
+
+	CalculateVignetteParams();
+}
+
+
+void WinState::CalculateVignetteParams()
+{
+	Airplane* airplane = _level->_playerAirplane;
+	sf::FloatRect bounds = airplane->GetBoundingRect();
+	float maxSide = bounds.width > bounds.height ? bounds.width : bounds.height;
+	maxSide += maxSide * (1.f - _zoomFactor);
+
+	_vignetteInner = maxSide / _context->window->getSize().x; //should be redone
+
+	_vignetteOuter = _vignetteInner * 1.12f;
+
+	_vignetteIntensity = 0.f;
+	_currentVignetteInner = 0.f;
+	_currentVignetteOuter = 0.f;
+
+	_startViewCenter = _level->_worldView.getCenter();
 }
 
 
@@ -135,16 +171,27 @@ bool WinState::Update(float dt)
 	if (_backgroundFading)
 	{
 		_elapsedTime += dt;
-		float progress = _elapsedTime / _animationDuration;
+		float vignetteProgress = _elapsedTime / _vignetteDuration;
+		float progress = _elapsedTime / _maxDuration;
 
+		if (vignetteProgress <= 1.f)
+		{
+			//_backgroundAnimation(_background, progress);	
+			_vignetteIntensity = Lerp(0.f, 1.f, vignetteProgress);
+			_currentVignetteInner = Lerp(1.f, _vignetteInner, vignetteProgress);
+			_currentVignetteOuter = Lerp(1.f, _vignetteOuter, vignetteProgress);
+			//_level->_worldView.setCenter(Lerp(_startViewCenter, _level->_playerAirplane->GetWorldPosition(), progress));
+			//_level->_worldView.zoom(Lerp(1.f, _level->_winZoomFactor, progress));
+
+		}
 		if (progress <= 1.f)
 		{
-			_backgroundAnimation(_background, progress);
 			_textAnimation(*_yourScore, progress);
 			_textAnimation(*_score, progress);
 			_textAnimation(*_highScore, progress);
 			_textAnimation(*_highScoreText, progress);
 			_context->music->setVolume(Lerp(_context->player->GetMusicVolume(), 0.f, progress));
+
 		}
 		else
 		{
@@ -155,6 +202,7 @@ bool WinState::Update(float dt)
 	}
 	else
 	{
+		//_level->_worldView.setCenter(Lerp(_level->_worldView.getCenter(), _level->_playerAirplane->GetWorldPosition(), dt));
 		_score->Update(dt);
 		if (_summaries.size() != 0 &&
 			_currentIncrement != _score->GetCurrentIncrement()
@@ -165,7 +213,7 @@ bool WinState::Update(float dt)
 		}
 		_summaryText->Update(dt);
 		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::Scale
-			&& _score->GetCurrentNumber() > _level->_highScore)
+			&& _score->GetCurrentNumber() > _level->_highScore) 
 		{
 			_elapsedTime += dt;
 			float progress = _elapsedTime / (_scaleDuration * 2.f);
@@ -196,6 +244,42 @@ bool WinState::Update(float dt)
 	}
 
 	return true;
+}
+
+
+bool WinState::FixedUpdate(float dt)
+{
+	CapPlayerHorizontalPosition();
+	_fixedElapsedTime += dt;
+	if (_backgroundFading)
+	{
+		float progress = _fixedElapsedTime / _zoomDuration;
+		if (progress <= 1.f)
+		{
+			_level->_worldView.setCenter(Lerp(_startViewCenter, _level->_playerAirplane->GetWorldPosition(), progress));
+			_level->_worldView.zoom(Lerp(1.f, _zoomFactor, progress));
+		}
+	}
+	else
+	{
+		_level->_worldView.setCenter(_level->_playerAirplane->GetWorldPosition());
+	}
+	return true;
+}
+
+
+void WinState::CapPlayerHorizontalPosition()
+{
+	sf::Vector2f playerPos = _level->_playerAirplane->getPosition();
+	sf::FloatRect backgroundBounds = _level->_background[0]->GetBoundingRect();
+
+	float outerModifier = _vignetteOuter * backgroundBounds.width;
+	float leftBound = backgroundBounds.left + outerModifier;
+	float rightBound = backgroundBounds.left + backgroundBounds.width - outerModifier;
+	playerPos.x = playerPos.x < leftBound ? leftBound : playerPos.x;
+	playerPos.x = playerPos.x > rightBound ? rightBound : playerPos.x;
+
+	_level->_playerAirplane->setPosition(playerPos);
 }
 
 
@@ -239,16 +323,10 @@ bool WinState::HandleEvent(const sf::Event& ev)
 }
 
 
-bool WinState::FixedUpdate(float dt)
-{
-	return true;
-}
-
-
 bool WinState::Render()
 {
 	_context->window->setView(_context->window->getDefaultView());
-	_context->window->draw(_background);
+	//_context->window->draw(_background);
 	_yourScore->Draw(*_context->window, sf::RenderStates::Default);
 	_highScoreText->Draw(*_context->window, sf::RenderStates::Default);
 	if (!_backgroundFading)
@@ -256,6 +334,12 @@ bool WinState::Render()
 		_infoText->Draw(*_context->window, sf::RenderStates::Default);
 	}
 	_summaryText->Draw(*_context->window, sf::RenderStates::Default);
+	
+	_vignette->setUniform("u_intensity", _vignetteIntensity);
+	_vignette->setUniform("u_vignetteColor", _vignetteColor);
+	_vignette->setUniform("u_innerRadius", _currentVignetteInner);
+	_vignette->setUniform("u_outerRadius", _currentVignetteOuter);
+	
 	//_score->Draw(*_context->window, sf::RenderStates::Default);
 	return false;
 }
