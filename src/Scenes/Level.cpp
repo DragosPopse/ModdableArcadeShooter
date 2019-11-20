@@ -64,7 +64,8 @@ Level::Level(Context* context, const std::string& path) :
 	_vignetteCurrentIntensity(0.f),
 	_nextIndex(0),
 	_firstIndex(1),
-	_highScore(0)
+	_highScore(0),
+	_win(false)
 	
 {
 	std::cout << "BEGIN_LEVEL_LOAD\n";
@@ -461,6 +462,12 @@ bool Level::FixedUpdate(float dt)
 		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
 		RequestPush(lose);
 	}
+	else if (_playerAirplane && !_win && _worldView.getCenter().y < _playerSpawn.y - _levelLength)
+	{
+		std::shared_ptr<WinState> lose(new WinState(_context, this));
+		RequestPush(lose);
+		_win = true;
+	}
 	SpawnObjects();
 	_context->player->HandleRealtimeInput(_commands);
 	while (!_commands.IsEmpty())
@@ -473,7 +480,10 @@ bool Level::FixedUpdate(float dt)
 	{
 		_playerAirplane->move(0, -_scrollSpeed * dt);
 	}
-	_worldView.move(0, -_scrollSpeed * dt);
+	if (!_win)
+	{
+		_worldView.move(0, -_scrollSpeed * dt);
+	}
 	if (_worldView.getCenter().y < _background[_firstIndex]->getPosition().y + _background[_firstIndex]->GetBoundingRect().height / 2)
 	{
 		SwitchBackground();
@@ -482,7 +492,7 @@ bool Level::FixedUpdate(float dt)
 	_root->RemoveDestroyedChilldren();
 	_uiRoot->RemoveDestroyedChilldren();
 
-	return false;
+	return false; 
 }
 
 
@@ -562,7 +572,10 @@ bool Level::Render()
 	sf::RenderStates renderStates = sf::RenderStates::Default;
 	
 	_vignetteShader.setUniform("u_texture", _renderTexture.getTexture());
-	_vignetteShader.setUniform("u_intensity", _vignetteCurrentIntensity);
+	if (!_win)
+	{
+		_vignetteShader.setUniform("u_intensity", _vignetteCurrentIntensity);
+	}
 	_context->window->draw(sprite, &_vignetteShader);
 
 	

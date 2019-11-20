@@ -118,6 +118,8 @@ class Level :
 	std::map<std::string, int> _enemiesDowned;
 	std::string _defaultFont;
 
+	bool _win;
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -159,6 +161,8 @@ public:
 	std::string GetDefaultFontID() { return _defaultFont; }
 
 	int GetHighScore() const { return _highScore; }
+
+	sf::Shader* GetVignette() { return &_vignetteShader; }
 
 private:
 	void SpawnObjects();
