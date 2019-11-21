@@ -113,6 +113,17 @@ Level::Level(Context* context, const std::string& path) :
 		std::cout << id << " :: " << path << '\n';
 	}
 
+	//Load required sounds
+	sol::table usedSounds = level["usedSounds"];
+	for (int i = 1; i <= usedSounds.size(); i++)
+	{
+		sol::table sound = usedSounds[i];
+		std::string id = sound[1];
+		std::string file = sound[2];
+		std::string path = BuildString("assets/audio/sfx/", file);
+		_sounds.Load(id, path);
+	}
+
 	std::string backgroundTexture = level["backgroundTexture"];
 	//bool repeatBackground = level["repeatBackground"];
 	//_textures[backgroundTexture].setRepeated(repeatBackground);
@@ -227,6 +238,7 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.name = projectileName;
 			projdata.texture = &_textures[projectile["texture"]];
 			projdata.iconTexture = &_textures[projectile["iconTexture"]];
+			projdata.sound = &_sounds[projectile["sound"]];
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
@@ -240,6 +252,12 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.iconScale = projectile["iconScale"];
 			projdata.start = projectile["start"];
 			projdata.create = createProjectile;
+			float minPitch = projectile["minPitch"];
+			float maxPitch = projectile["maxPitch"];
+			float minVolumeFactor = projectile["minVolumeFactor"];
+			float maxVolumeFactor = projectile["maxVolumeFactor"];
+			projdata.volumeGenerator = std::uniform_real_distribution<float>(minVolumeFactor, maxVolumeFactor);
+			projdata.pitchGenerator = std::uniform_real_distribution<float>(minPitch, maxPitch);
 
 			projdata.spreadAngle = projectile["spreadAngle"];
 			projdata.rng = std::mt19937(randDevice());

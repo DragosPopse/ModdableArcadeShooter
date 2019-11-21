@@ -41,11 +41,13 @@ struct ProjectileData
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 
-	sf::SoundBuffer* launchSound;
+	sf::SoundBuffer* sound;
 	float minVolumeFactor;
 	float maxVolumeFactor;
 	float minPitch;
 	float maxPitch;
+	std::uniform_real_distribution<float> volumeGenerator;
+	std::uniform_real_distribution<float> pitchGenerator;
 };
 
 
@@ -68,6 +70,8 @@ class Projectile :
 	sf::Vector2f _direction;
 
 	sol::table _luaObject;
+
+	sf::Sound _sound;
 
 public:
 

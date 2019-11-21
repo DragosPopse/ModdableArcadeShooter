@@ -33,6 +33,11 @@ level.usedFonts = {
     {'Pixel', 'pcsenior.ttf'}
 }
 
+level.usedSounds = {
+    {'Bullet', 'Bullet.wav'},
+    {'OnDamage', 'OnDamage.wav'}
+}
+
 level.player = {
     airplane = 'Eagle',
     --spawnPoint = {400, 400 * level.scale * 3 - 100}

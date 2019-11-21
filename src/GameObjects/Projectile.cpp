@@ -75,6 +75,14 @@ void Projectile::Start(Scene* scene)
 	AddChild(std::move(ptr));
 	*/
 
+	_sound.setBuffer(*_data->sound);
+	float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+	float volume = _data->volumeGenerator(_data->rng) * defaultVolume;
+	float pitch = _data->pitchGenerator(_data->rng);
+	_sound.setVolume(volume);
+	_sound.setPitch(pitch);
+	_sound.play();
+
 	GameObject::Start(scene);
 }
 
