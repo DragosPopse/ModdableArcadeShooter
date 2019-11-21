@@ -27,7 +27,7 @@ void Projectile::Start(Scene* scene)
 {
 	_currentScene = static_cast<Level*>(scene);
 
-	SetTexture(_currentScene->GetTextures()[_data->texture]);
+	SetTexture(*_data->texture);
 	SetTextureRect(_data->muzzleRect);
 	setScale(_data->muzzleScale, _data->muzzleScale);
 

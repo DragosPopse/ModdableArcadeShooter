@@ -35,8 +35,8 @@ struct AirplaneData
 	float scale;
 	int hitpoints;
 	float speed;
-	std::string texture;
-	std::string healthFont;
+	sf::Texture* texture;
+	sf::Font* healthFont;
 	sf::IntRect idleRect;
 	sf::IntRect leftRect;
 	sf::IntRect rightRect;
@@ -48,7 +48,7 @@ struct AirplaneData
 	sf::Vector2i explosionSize;
 	int framesPerExplosion;
 	int numberOfExplosions;
-	std::string explosionsTexture;
+	sf::Texture* explosionsTexture;
 	float explosionFrameDuration;
 	float explosionMinScale;
 	float explosionMaxScale;

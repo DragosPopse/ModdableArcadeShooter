@@ -139,14 +139,14 @@ Level::Level(Context* context, const std::string& path) :
 		std::string pickupPath = BuildString(PICKUPS_PATH, pickupName, ".lua");
 		sol::table pickup = _context->lua->do_file(pickupPath);
 		PickupData pickupData;
-		pickupData.texture = pickup["texture"];
+		pickupData.texture = &_textures[pickup["texture"]];
 		pickupData.firstRect = TableToRect(pickup["firstRect"]);//pickup["firstRect"];
 		pickupData.frames = pickup["frames"];
 		pickupData.frameDuration = pickup["frameDuration"];
 		pickupData.scale = pickup["scale"];
 		pickupData.onPickup = pickup["onPickup"];
 		sol::table destroyPickup = pickup["destroyAnimation"];
-		pickupData.destroyTexture = destroyPickup["texture"];
+		pickupData.destroyTexture = &_textures[destroyPickup["texture"]];
 		pickupData.destroyFirstRect = TableToRect(destroyPickup["firstRect"]);
 		pickupData.destroyFrames = destroyPickup["frames"];
 		pickupData.destroyFrameDuration = destroyPickup["frameDuration"];
@@ -172,9 +172,9 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.idleRect = TableToRect(plane["idleRect"]);
 		apdata.rightRect = TableToRect(plane["rightRect"]);
 		apdata.leftRect = TableToRect(plane["leftRect"]);
-		apdata.texture = plane["texture"];
+		apdata.texture = &_textures[plane["texture"]];
 		apdata.speed = plane["speed"];
-		apdata.healthFont = plane["healthFont"];
+		apdata.healthFont = &_fonts[plane["healthFont"]];
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
@@ -185,7 +185,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.framesPerExplosion = explosionData["framesPerAnimation"];
 		apdata.numberOfExplosions = explosionData["numberOfAnimations"];
 		apdata.explosionFrameDuration = explosionData["frameDuration"];
-		apdata.explosionsTexture = explosionData["texture"];
+		apdata.explosionsTexture = &_textures[explosionData["texture"]];
 		apdata.explosionMaxScale = explosionData["maxScale"];
 		apdata.explosionMinScale = explosionData["minScale"];
 		apdata.explosionMaxRotation = explosionData["maxRotation"];
@@ -225,8 +225,8 @@ Level::Level(Context* context, const std::string& path) :
 			sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
 			ProjectileData projdata;
 			projdata.name = projectileName;
-			projdata.texture = projectile["texture"];
-			projdata.iconTexture = projectile["iconTexture"];
+			projdata.texture = &_textures[projectile["texture"]];
+			projdata.iconTexture = &_textures[projectile["iconTexture"]];
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
@@ -234,7 +234,7 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.damage = projectile["damage"];
 			projdata.fireRate = projectile["fireRate"];
 			projdata.scale = projectile["scale"];
-			projdata.ammoFont = projectile["ammoFont"];
+			projdata.ammoFont = &_fonts[projectile["ammoFont"]];
 			projdata.ammoTextSize = projectile["ammoTextSize"];
 			projdata.muzzleScale = projectile["muzzleScale"];
 			projdata.iconScale = projectile["iconScale"];
