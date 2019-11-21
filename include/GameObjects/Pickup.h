@@ -11,13 +11,13 @@ class Level;
 struct PickupData
 {
 	sol::function onPickup;
-	std::string texture;
+	sf::Texture* texture;
 	sf::IntRect firstRect;
 	int frames;
 	float frameDuration;
 	float scale; //WIP
 
-	std::string destroyTexture;
+	sf::Texture* destroyTexture;
 	sf::IntRect destroyFirstRect;
 	int destroyFrames;
 	float destroyFrameDuration;

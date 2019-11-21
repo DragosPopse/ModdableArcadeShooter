@@ -18,8 +18,8 @@ struct ProjectileData
 	float muzzleScale;
 	float iconScale;
 
-	std::string texture;
-	std::string iconTexture;
+	sf::Texture* texture;
+	sf::Texture* iconTexture;
 	sf::IntRect iconRect;
 	sf::IntRect rect;
 	sf::IntRect muzzleRect;
@@ -36,12 +36,12 @@ struct ProjectileData
 
 
 	int ammoTextSize;
-	std::string ammoFont;
+	sf::Font* ammoFont;
 
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 
-	std::string launchSound;
+	sf::SoundBuffer* launchSound;
 	float minVolumeFactor;
 	float maxVolumeFactor;
 	float minPitch;

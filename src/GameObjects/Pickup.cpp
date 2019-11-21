@@ -17,7 +17,7 @@ void Pickup::Start(Scene* scene)
 	_animation = new Animation();
 	std::unique_ptr<Animation> animation(_animation);
 
-	_animation->SetTexture(_level->GetTexture(_data->texture));
+	_animation->SetTexture(*_data->texture);
 	_animation->SetFirstRect(_data->firstRect);
 	_animation->SetNumberOfFrames(_data->frames);
 	_animation->SetTimePerFrame(_data->frameDuration);
@@ -58,7 +58,7 @@ void Pickup::OnPickup(Airplane& player)
 {
 	_data->onPickup(player);
 	
-	_animation->SetTexture(_level->GetTexture(_data->destroyTexture));
+	_animation->SetTexture(*_data->destroyTexture);
 	_animation->SetFirstRect(_data->destroyFirstRect);
 	_animation->SetNumberOfFrames(_data->destroyFrames);
 	_animation->SetTimePerFrame(_data->destroyFrameDuration);

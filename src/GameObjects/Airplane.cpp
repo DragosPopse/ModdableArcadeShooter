@@ -46,11 +46,11 @@ void Airplane::Start(Scene* scene)
 	auto& textures = _currentScene->GetTextures();
 	
 	setScale(_data->scale, _data->scale);
-	SetTexture(textures[_data->texture]);
+	SetTexture(*_data->texture);
 	SetTextureRect(_data->idleRect);
 
 	_healthText = new TextObject();
-	_healthText->SetFont(_currentScene->GetFonts()[_data->healthFont]);
+	_healthText->SetFont(*_data->healthFont);
 	_healthText->SetCharSize(_data->healthTextCharSize);
 
 	auto bounds = GetBoundingRect();
@@ -194,7 +194,7 @@ void Airplane::Damage(int hp)
 		int randN;
 		Animation* explosion = new Animation();
 		explosion->setPosition(GetWorldPosition());
-		explosion->SetTexture(_currentScene->GetTextures()[_data->explosionsTexture]);
+		explosion->SetTexture(*_data->explosionsTexture);
 		sf::IntRect firstRect;
 		firstRect.width = _data->explosionSize.x;
 		firstRect.height = _data->explosionSize.y;
@@ -370,7 +370,7 @@ void Airplane::UpdateHealthDisplay()
 
 void Airplane::UpdateWeaponDisplay()
 {
-	_weaponDisplay->SetTexture(_currentScene->GetTextures()[_data->weapons[_currentWeaponIndex]->iconTexture]);
+	_weaponDisplay->SetTexture(*_data->weapons[_currentWeaponIndex]->iconTexture);
 	_weaponDisplay->SetTextureRect(_data->weapons[_currentWeaponIndex]->iconRect);
 	sf::Vector2u ws = _currentScene->GetContext()->window->getSize();
 	float displayX = 0 - ((int)ws.x / 2);
@@ -386,7 +386,7 @@ void Airplane::UpdateWeaponDisplay()
 
 void Airplane::UpdateAmmoDisplay()
 {
-	_ammoDisplay->SetFont(_currentScene->GetFont(_data->weapons[_currentWeaponIndex]->ammoFont));
+	_ammoDisplay->SetFont(*_data->weapons[_currentWeaponIndex]->ammoFont);
 	_ammoDisplay->SetCharSize(_data->weapons[_currentWeaponIndex]->ammoTextSize);
 
 	if (_data->ammo[_currentWeaponIndex] < 0) //infinite ammo
