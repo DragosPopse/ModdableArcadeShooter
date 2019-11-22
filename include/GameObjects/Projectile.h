@@ -41,13 +41,24 @@ struct ProjectileData
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 
-	sf::SoundBuffer* sound;
-	float minVolumeFactor;
-	float maxVolumeFactor;
-	float minPitch;
-	float maxPitch;
-	std::uniform_real_distribution<float> volumeGenerator;
-	std::uniform_real_distribution<float> pitchGenerator;
+	sf::SoundBuffer* muzzleSound;
+	float muzzleMinVolumeFactor;
+	float muzzleMaxVolumeFactor;
+	float muzzleMinPitch;
+	float muzzleMaxPitch;
+	std::uniform_real_distribution<float> muzzleVolumeGenerator;
+	std::uniform_real_distribution<float> muzzlePitchGenerator;
+
+
+
+	sf::SoundBuffer* destroySound;
+	float destroyMinVolumeFactor;
+	float destroyMaxVolumeFactor;
+	float destroyMinPitch;
+	float destroyMaxPitch;
+	std::uniform_real_distribution<float> destroyVolumeGenerator;
+	std::uniform_real_distribution<float> destroyPitchGenerator;
+
 };
 
 
@@ -71,7 +82,7 @@ class Projectile :
 
 	sol::table _luaObject;
 
-	sf::Sound _sound;
+	bool _collided;
 
 public:
 
@@ -102,4 +113,6 @@ public:
 	unsigned int GetCategory() const override;
 
 	void OnCollision(Airplane* airplane);
+
+	void MarkForDestroy() override;
 };

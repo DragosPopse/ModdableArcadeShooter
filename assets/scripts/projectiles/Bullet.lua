@@ -1,14 +1,22 @@
 local Bullet = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
-    sound = 'Bullet',
-    minPitch = 0.5,
-    maxPitch = 1.25,
-    minVolumeFactor = 0.75,
-    maxVolumeFactor = 1,
     muzzleRect = {0, 57, 13, 19},
     rect = {14, 57, 9, 22},
     iconRect = {0 + 56 * 2, 0, 56, 56},
+
+    muzzleSound = 'Bullet',
+    muzzleMinPitch = 0.5,
+    muzzleMaxPitch = 1.25,
+    muzzleMinVolumeFactor = 0.75,
+    muzzleMaxVolumeFactor = 1,
+
+    destroySound = 'Hit',
+    destroyMinPitch = 0.5,
+    destroyMaxPitch = 1.5,
+    destroyMinVolumeFactor = 1,
+    destroyMaxVolumeFactor = 1,
+
 
     scale = 1.1,
     iconScale = 2,

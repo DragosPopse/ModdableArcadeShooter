@@ -59,7 +59,7 @@ public:
 
 	sf::Vector2f GetWorldPosition() const;
 
-	void MarkForDestroy();
+	virtual void MarkForDestroy();
 
 	bool IsDestroyed() const;
 

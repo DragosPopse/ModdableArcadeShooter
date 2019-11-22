@@ -11,7 +11,7 @@ the explosion is a generic Animation that is not supposed to store an sf::Sound
 
 #include <SFML/Audio.hpp>
 #include <list> 
-#include <vector>
+//#include <vector>
 
 
 class SoundQueue
@@ -19,7 +19,7 @@ class SoundQueue
 	std::list<sf::Sound> _queue;
 
 public:
-	void Push(const sf::SoundBuffer& buffer, float pitch, float volume);
+	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1);
 
 	void Update();
 };

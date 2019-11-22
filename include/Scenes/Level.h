@@ -18,6 +18,7 @@
 #include <memory>
 #include "LocalMenu.h"
 #include "GameObjects/Pickup.h"
+#include "SoundQueue.h"
 
 class Airplane;
 class Projectile;
@@ -120,6 +121,8 @@ class Level :
 
 	bool _win;
 
+	SoundQueue _soundQueue;
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -163,6 +166,8 @@ public:
 	int GetHighScore() const { return _highScore; }
 
 	sf::Shader* GetVignette() { return &_vignetteShader; }
+
+	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1) { _soundQueue.PlaySound(buffer, volume, pitch); }
 
 private:
 	void SpawnObjects();

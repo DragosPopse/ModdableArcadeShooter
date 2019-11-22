@@ -238,7 +238,8 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.name = projectileName;
 			projdata.texture = &_textures[projectile["texture"]];
 			projdata.iconTexture = &_textures[projectile["iconTexture"]];
-			projdata.sound = &_sounds[projectile["sound"]];
+			projdata.muzzleSound = &_sounds[projectile["muzzleSound"]];
+			projdata.destroySound = &_sounds[projectile["destroySound"]];
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
@@ -252,12 +253,21 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.iconScale = projectile["iconScale"];
 			projdata.start = projectile["start"];
 			projdata.create = createProjectile;
-			float minPitch = projectile["minPitch"];
-			float maxPitch = projectile["maxPitch"];
-			float minVolumeFactor = projectile["minVolumeFactor"];
-			float maxVolumeFactor = projectile["maxVolumeFactor"];
-			projdata.volumeGenerator = std::uniform_real_distribution<float>(minVolumeFactor, maxVolumeFactor);
-			projdata.pitchGenerator = std::uniform_real_distribution<float>(minPitch, maxPitch);
+
+			float muzzleMinPitch = projectile["muzzleMinPitch"];
+			float muzzleMaxPitch = projectile["muzzleMaxPitch"];
+			float muzzleMinVolumeFactor = projectile["muzzleMinVolumeFactor"];
+			float muzzleMaxVolumeFactor = projectile["muzzleMaxVolumeFactor"];
+			projdata.muzzleVolumeGenerator = std::uniform_real_distribution<float>(muzzleMinVolumeFactor, muzzleMaxVolumeFactor);
+			projdata.muzzlePitchGenerator = std::uniform_real_distribution<float>(muzzleMinPitch, muzzleMaxPitch);
+
+			float destroyMinPitch = projectile["destroyMinPitch"];
+			float destroyMaxPitch = projectile["destroyMaxPitch"];
+			float destroyMinVolumeFactor = projectile["destroyMinVolumeFactor"];
+			float destroyMaxVolumeFactor = projectile["destroyMaxVolumeFactor"];
+			projdata.destroyVolumeGenerator = std::uniform_real_distribution<float>(destroyMinVolumeFactor, destroyMaxVolumeFactor);
+			projdata.destroyPitchGenerator = std::uniform_real_distribution<float>(destroyMinPitch, destroyMaxPitch);
+
 
 			projdata.spreadAngle = projectile["spreadAngle"];
 			projdata.rng = std::mt19937(randDevice());
@@ -471,6 +481,7 @@ Level::~Level()
 
 bool Level::FixedUpdate(float dt)
 {
+	_soundQueue.Update();
 	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
 	CapPlayerPosition();

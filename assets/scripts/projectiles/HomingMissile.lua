@@ -1,11 +1,19 @@
 local HomingMissile = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
-    sound = 'Bullet',
-    minPitch = 1,
-    maxPitch = 1,
-    minVolumeFactor = 1,
-    maxVolumeFactor = 1,
+
+    muzzleSound = 'Bullet',
+    muzzleMinPitch = 1,
+    muzzleMaxPitch = 1,
+    muzzleMinVolumeFactor = 1,
+    muzzleMaxVolumeFactor = 1,
+
+    destroySound = 'Hit',
+    destroyMinPitch = 1,
+    destroyMaxPitch = 1,
+    destroyMinVolumeFactor = 1,
+    destroyMaxVolumeFactor = 1,
+
     muzzleRect = {0, 57, 13, 19},
     rect = {31, 56, 19, 43},
     iconRect = {0 + 56 * 1, 0, 56, 56},

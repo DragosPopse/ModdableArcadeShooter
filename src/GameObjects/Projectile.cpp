@@ -17,7 +17,8 @@ Projectile::Projectile(ProjectileData* data) :
 	_data(data),
 	_playerControlled(false),
 	_firstFrame(true),
-	_rectChanged(false)
+	_rectChanged(false),
+	_collided(false)
 {
 	_luaObject = _data->create();
 }
@@ -75,13 +76,11 @@ void Projectile::Start(Scene* scene)
 	AddChild(std::move(ptr));
 	*/
 
-	_sound.setBuffer(*_data->sound);
 	float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
-	float volume = _data->volumeGenerator(_data->rng) * defaultVolume;
-	float pitch = _data->pitchGenerator(_data->rng);
-	_sound.setVolume(volume);
-	_sound.setPitch(pitch);
-	_sound.play();
+	float volume = _data->muzzleVolumeGenerator(_data->rng) * defaultVolume;
+	float pitch = _data->muzzlePitchGenerator(_data->rng);
+
+	_currentScene->PlaySound(*_data->muzzleSound, volume, pitch);
 
 	GameObject::Start(scene);
 }
@@ -182,5 +181,21 @@ sf::FloatRect Projectile::GetBoundingRect() const
 
 void Projectile::OnCollision(Airplane* airplane)
 {
+	_collided = true;
 	_data->onCollision(_luaObject, this, airplane);
+}
+
+
+void Projectile::MarkForDestroy()
+{
+	if (_collided)
+	{
+		float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+		float volume = _data->destroyVolumeGenerator(_data->rng) * defaultVolume;
+		float pitch = _data->destroyPitchGenerator(_data->rng);
+
+		_currentScene->PlaySound(*_data->destroySound, volume, pitch);
+	}
+
+	GameObject::MarkForDestroy();
 }

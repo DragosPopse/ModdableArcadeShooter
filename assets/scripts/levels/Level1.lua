@@ -6,10 +6,10 @@ level.backgroundTexture = 'Island'
 level.repeatBackground = true
 level.scrollSpeed = 60
 level.scale = 3.125
---level.scale = 4
+level.scale = 4
 level.borderSize = 40
---level.length = 400 * level.scale * 3
-level.length = 200
+level.length = 400 * level.scale * 3
+--level.length = 200
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
 level.saveFile = 'assets/config/saves/Level1.json'
@@ -35,7 +35,7 @@ level.usedFonts = {
 
 level.usedSounds = {
     {'Bullet', 'Bullet.wav'},
-    {'OnDamage', 'OnDamage.wav'}
+    {'Hit', 'OnDamage.wav'}
 }
 
 level.player = {
@@ -54,7 +54,7 @@ level.usedPickups = {
 
 level.spawnPoints = { }
  
-for i, v in ipairs(spawn.wall('Eagle', 5, {0, 4500}, 0, 100)) do
+for i, v in ipairs(spawn.wall('Eagle', 5, {0, 3500}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
