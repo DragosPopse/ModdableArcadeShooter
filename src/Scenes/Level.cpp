@@ -130,6 +130,7 @@ Level::Level(Context* context, const std::string& path) :
 		std::string id = sound[1];
 		std::string file = sound[2];
 		std::string path = BuildString("assets/audio/sfx/", file);
+		std::cout << path << '\n';
 		_sounds.Load(id, path);
 	}
 
@@ -198,7 +199,6 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
-		apdata.dropRng = std::mt19937(randDevice());
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -208,9 +208,18 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.explosionsTexture = &_textures[explosionData["texture"]];
 		apdata.explosionMaxScale = explosionData["maxScale"];
 		apdata.explosionMinScale = explosionData["minScale"];
+		sol::table explosionSounds = explosionData["sounds"];
+		for (int i = 1; i <= explosionSounds.size(); i++)
+		{
+			RandomizedSound explosionSound = tableToSound(explosionSounds[i]);
+			apdata.explosionSounds.push_back(explosionSound);
+		}
+		apdata.explosionSoundDistribution = std::uniform_int_distribution<int>(0, apdata.explosionSounds.size() - 1);
 		apdata.explosionMaxRotation = explosionData["maxRotation"];
-		apdata.generator = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
+		apdata.scaleDistribution = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
+		apdata.explosionSpriteDistribution = std::uniform_int_distribution(0, apdata.numberOfExplosions - 1);
 
+		
 
 		sol::table directions = plane["aiPattern"];
 		for (int i = 1; i <= directions.size(); i++)
@@ -331,7 +340,7 @@ Level::Level(Context* context, const std::string& path) :
 			std::cout << "DROPCHANCE: " << apdata.drops[i].dropRate << '\n';
 		}
 
-		apdata.dropGenerator = std::uniform_int_distribution<int>(1, 100);
+		apdata.dropDistribution = std::uniform_int_distribution<int>(1, 100);
 
 		_airplaneDataDict.insert(std::make_pair(name,
 			apdata));

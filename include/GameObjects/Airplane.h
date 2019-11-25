@@ -9,6 +9,7 @@
 #include <Thor/Animations.hpp>
 #include "GameObjects/CircleCooldown.h"
 #include "GameObjects/TextObject.h"
+#include "RandomizedSound.h"
 
 class Level;
 struct ProjectileData;
@@ -54,14 +55,15 @@ struct AirplaneData
 	float explosionMaxScale;
 	float explosionMaxRotation;
 
+	std::vector<RandomizedSound> explosionSounds;
+
 	std::vector<DropData> drops;
-
+	
 	std::mt19937 rng;
-	std::uniform_real_distribution<float> generator;
-
-	std::mt19937 dropRng;
-	std::uniform_int_distribution<int> dropGenerator;
-
+	std::uniform_real_distribution<float> scaleDistribution;
+	std::uniform_int_distribution<int> dropDistribution;
+	std::uniform_int_distribution<int> explosionSpriteDistribution;
+	std::uniform_int_distribution<int> explosionSoundDistribution;
 
 
 	int score;

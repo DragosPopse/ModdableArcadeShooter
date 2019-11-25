@@ -199,15 +199,17 @@ void Airplane::Damage(int hp)
 		firstRect.width = _data->explosionSize.x;
 		firstRect.height = _data->explosionSize.y;
 		firstRect.left = 0;
-		randN = rand() % _data->numberOfExplosions;
+		randN = _data->explosionSpriteDistribution(_data->rng);
 		firstRect.top = firstRect.height * randN;
 		explosion->SetFirstRect(firstRect);
 		explosion->SetDestroyOnFinish(true);
 		explosion->SetLoopable(false);
 		explosion->SetNumberOfFrames(_data->framesPerExplosion);
 		explosion->SetTimePerFrame(_data->explosionFrameDuration);
-		float randomScale = _data->generator(_data->rng);
+		float randomScale = _data->scaleDistribution(_data->rng);
 		explosion->setScale(randomScale, randomScale);
+		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _currentScene->GetContext()->player->GetMusicVolume());
+		_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
 		explosion->setRotation(randomRotation);
@@ -215,7 +217,7 @@ void Airplane::Damage(int hp)
 
 
 		//Spawn pickup if RNG is in your favor
-		randN = _data->dropGenerator(_data->dropRng);
+		randN = _data->dropDistribution(_data->rng);
 		for (int i = 0; i < _data->drops.size(); i++)
 		{
 			if (randN <= _data->drops[i].dropRate)
