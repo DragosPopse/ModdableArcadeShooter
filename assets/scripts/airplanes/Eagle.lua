@@ -22,10 +22,10 @@ local Eagle = {
         sounds = {
             {
                 sound = 'Exp1',
-                minPitch = 1,
-                maxPitch = 1,
-                minVolumeFactor = 0.5,
-                maxVolumeFactor = 0.8
+                minPitch = 0.7,
+                maxPitch = 1.1,
+                minVolumeFactor = 0.7,
+                maxVolumeFactor = 1
             }
         }
     },
