@@ -17,7 +17,8 @@ Projectile::Projectile(ProjectileData* data) :
 	_data(data),
 	_playerControlled(false),
 	_firstFrame(true),
-	_rectChanged(false)
+	_rectChanged(false),
+	_collided(false)
 {
 	_luaObject = _data->create();
 }
@@ -56,24 +57,10 @@ void Projectile::Start(Scene* scene)
 
 	_data->start(_luaObject, this);
 
-	//TEST
-	/*ParticleSystemObject* pso = new ParticleSystemObject;
-	pso->system.setTexture(_currentScene->GetTexture("Smoke"));
-	for (int i = 0; i < 5; i++)
-	{
-		pso->system.addTextureRect(sf::IntRect(10 * i, 0, 10, 10));
-	}
+	float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);
 
-	thor::UniversalEmitter em;
-	em.setEmissionRate(40);
-	em.setParticleTextureIndex(thor::Distributions::uniform(0u, 4u));
-	em.setParticleScale(sf::Vector2f(5, 5));
-
-	pso->AddEmitter(em);
-	std::unique_ptr<ParticleSystemObject> ptr(pso);
-	ptr->Start(_currentScene);
-	AddChild(std::move(ptr));
-	*/
+	_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 	GameObject::Start(scene);
 }
@@ -174,5 +161,20 @@ sf::FloatRect Projectile::GetBoundingRect() const
 
 void Projectile::OnCollision(Airplane* airplane)
 {
+	_collided = true;
 	_data->onCollision(_luaObject, this, airplane);
+}
+
+
+void Projectile::MarkForDestroy()
+{
+	if (_collided)
+	{
+		float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+		RandomizedSoundResult randSound = _data->destroySound(_data->rng, defaultVolume);
+
+		_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
+	}
+
+	GameObject::MarkForDestroy();
 }

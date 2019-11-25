@@ -18,7 +18,16 @@ local Eagle = {
         frameDuration = 0.1,
         minScale = 4,
         maxScale = 7,
-        maxRotation = 0
+        maxRotation = 0,
+        sounds = {
+            {
+                sound = 'Exp1',
+                minPitch = 1,
+                maxPitch = 1,
+                minVolumeFactor = 0.5,
+                maxVolumeFactor = 0.8
+            }
+        }
     },
 
     onDestroy = function (this)

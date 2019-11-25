@@ -5,6 +5,23 @@ local Bullet = {
     rect = {14, 57, 9, 22},
     iconRect = {0 + 56 * 2, 0, 56, 56},
 
+    muzzleSound = {
+        sound = 'Bullet',
+        minPitch = 0.5,
+        maxPitch = 1.22,
+        minVolumeFactor = 0.92,
+        maxVolumeFactor = 1,
+    },
+
+    destroySound = {
+        sound = 'Hit',
+        minPitch = 1,
+        maxPitch = 1,
+        minVolumeFactor = 1,
+        maxVolumeFactor = 1,
+    },
+
+
     scale = 1.1,
     iconScale = 2,
     muzzleScale = 2,

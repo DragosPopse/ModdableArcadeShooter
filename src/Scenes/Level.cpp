@@ -12,6 +12,7 @@
 #include "GameObjects/SpriteObject.h"
 #include "GameObjects/Projectile.h"
 #include "GameObjects/TextObject.h"
+#include "RandomizedSound.h"
 #include <sol/sol.hpp>
 #include "Utility.h"
 #include <vector>
@@ -43,7 +44,7 @@ namespace
 		result.width = table[3];
 		result.height = table[4];
 		return result;
-	} 
+	}
 	
 	
 	bool CheckCollision(const GameObject& lhs, const GameObject& rhs)
@@ -68,6 +69,14 @@ Level::Level(Context* context, const std::string& path) :
 	_win(false)
 	
 {
+	auto tableToSound = [this](const sol::table& table) {
+		RandomizedSound sound;
+		sf::SoundBuffer* buffer = &this->_sounds[table["sound"]];
+		sound.SetBuffer(buffer);
+		sound.SetVolumeFactorDistribution(table["minVolumeFactor"], table["maxVolumeFactor"]);
+		sound.SetPitchDistribution(table["minPitch"], table["maxPitch"]);
+		return sound;
+	};
 	std::cout << "BEGIN_LEVEL_LOAD\n";
 	std::random_device randDevice;
 	_localMenu->SetLevel(this);
@@ -111,6 +120,18 @@ Level::Level(Context* context, const std::string& path) :
 		std::string path = BuildString(FONTS_PATH, file);
 		_fonts.Load(id, path);
 		std::cout << id << " :: " << path << '\n';
+	}
+
+	//Load required sounds
+	sol::table usedSounds = level["usedSounds"];
+	for (int i = 1; i <= usedSounds.size(); i++)
+	{
+		sol::table sound = usedSounds[i];
+		std::string id = sound[1];
+		std::string file = sound[2];
+		std::string path = BuildString("assets/audio/sfx/", file);
+		std::cout << path << '\n';
+		_sounds.Load(id, path);
 	}
 
 	std::string backgroundTexture = level["backgroundTexture"];
@@ -178,7 +199,6 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
-		apdata.dropRng = std::mt19937(randDevice());
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -188,9 +208,18 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.explosionsTexture = &_textures[explosionData["texture"]];
 		apdata.explosionMaxScale = explosionData["maxScale"];
 		apdata.explosionMinScale = explosionData["minScale"];
+		sol::table explosionSounds = explosionData["sounds"];
+		for (int i = 1; i <= explosionSounds.size(); i++)
+		{
+			RandomizedSound explosionSound = tableToSound(explosionSounds[i]);
+			apdata.explosionSounds.push_back(explosionSound);
+		}
+		apdata.explosionSoundDistribution = std::uniform_int_distribution<int>(0, apdata.explosionSounds.size() - 1);
 		apdata.explosionMaxRotation = explosionData["maxRotation"];
-		apdata.generator = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
+		apdata.scaleDistribution = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
+		apdata.explosionSpriteDistribution = std::uniform_int_distribution(0, apdata.numberOfExplosions - 1);
 
+		
 
 		sol::table directions = plane["aiPattern"];
 		for (int i = 1; i <= directions.size(); i++)
@@ -227,6 +256,8 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.name = projectileName;
 			projdata.texture = &_textures[projectile["texture"]];
 			projdata.iconTexture = &_textures[projectile["iconTexture"]];
+			projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
+			projdata.destroySound = tableToSound(projectile["destroySound"]);
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
@@ -240,6 +271,21 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.iconScale = projectile["iconScale"];
 			projdata.start = projectile["start"];
 			projdata.create = createProjectile;
+
+			float muzzleMinPitch = projectile["muzzleMinPitch"];
+			float muzzleMaxPitch = projectile["muzzleMaxPitch"];
+			float muzzleMinVolumeFactor = projectile["muzzleMinVolumeFactor"];
+			float muzzleMaxVolumeFactor = projectile["muzzleMaxVolumeFactor"];
+			projdata.muzzleVolumeGenerator = std::uniform_real_distribution<float>(muzzleMinVolumeFactor, muzzleMaxVolumeFactor);
+			projdata.muzzlePitchGenerator = std::uniform_real_distribution<float>(muzzleMinPitch, muzzleMaxPitch);
+
+			float destroyMinPitch = projectile["destroyMinPitch"];
+			float destroyMaxPitch = projectile["destroyMaxPitch"];
+			float destroyMinVolumeFactor = projectile["destroyMinVolumeFactor"];
+			float destroyMaxVolumeFactor = projectile["destroyMaxVolumeFactor"];
+			projdata.destroyVolumeGenerator = std::uniform_real_distribution<float>(destroyMinVolumeFactor, destroyMaxVolumeFactor);
+			projdata.destroyPitchGenerator = std::uniform_real_distribution<float>(destroyMinPitch, destroyMaxPitch);
+
 
 			projdata.spreadAngle = projectile["spreadAngle"];
 			projdata.rng = std::mt19937(randDevice());
@@ -294,7 +340,7 @@ Level::Level(Context* context, const std::string& path) :
 			std::cout << "DROPCHANCE: " << apdata.drops[i].dropRate << '\n';
 		}
 
-		apdata.dropGenerator = std::uniform_int_distribution<int>(1, 100);
+		apdata.dropDistribution = std::uniform_int_distribution<int>(1, 100);
 
 		_airplaneDataDict.insert(std::make_pair(name,
 			apdata));
@@ -453,6 +499,7 @@ Level::~Level()
 
 bool Level::FixedUpdate(float dt)
 {
+	_soundQueue.Update();
 	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
 	CapPlayerPosition();

@@ -6,6 +6,7 @@
 #include <sol/sol.hpp>
 #include <optional>
 #include <random>
+#include "RandomizedSound.h"
 
 class Level;
 class Airplane;
@@ -41,11 +42,16 @@ struct ProjectileData
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 
-	sf::SoundBuffer* launchSound;
-	float minVolumeFactor;
-	float maxVolumeFactor;
-	float minPitch;
-	float maxPitch;
+	RandomizedSound muzzleSound;
+	std::uniform_real_distribution<float> muzzleVolumeGenerator;
+	std::uniform_real_distribution<float> muzzlePitchGenerator;
+
+
+
+	RandomizedSound destroySound;
+	std::uniform_real_distribution<float> destroyVolumeGenerator;
+	std::uniform_real_distribution<float> destroyPitchGenerator;
+
 };
 
 
@@ -68,6 +74,8 @@ class Projectile :
 	sf::Vector2f _direction;
 
 	sol::table _luaObject;
+
+	bool _collided;
 
 public:
 
@@ -98,4 +106,6 @@ public:
 	unsigned int GetCategory() const override;
 
 	void OnCollision(Airplane* airplane);
+
+	void MarkForDestroy() override;
 };
