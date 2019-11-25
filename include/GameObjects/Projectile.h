@@ -6,6 +6,7 @@
 #include <sol/sol.hpp>
 #include <optional>
 #include <random>
+#include "RandomizedSound.h"
 
 class Level;
 class Airplane;
@@ -41,21 +42,13 @@ struct ProjectileData
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
 
-	sf::SoundBuffer* muzzleSound;
-	float muzzleMinVolumeFactor;
-	float muzzleMaxVolumeFactor;
-	float muzzleMinPitch;
-	float muzzleMaxPitch;
+	RandomizedSound muzzleSound;
 	std::uniform_real_distribution<float> muzzleVolumeGenerator;
 	std::uniform_real_distribution<float> muzzlePitchGenerator;
 
 
 
-	sf::SoundBuffer* destroySound;
-	float destroyMinVolumeFactor;
-	float destroyMaxVolumeFactor;
-	float destroyMinPitch;
-	float destroyMaxPitch;
+	RandomizedSound destroySound;
 	std::uniform_real_distribution<float> destroyVolumeGenerator;
 	std::uniform_real_distribution<float> destroyPitchGenerator;
 

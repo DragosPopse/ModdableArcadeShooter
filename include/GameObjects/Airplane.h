@@ -62,6 +62,8 @@ struct AirplaneData
 	std::mt19937 dropRng;
 	std::uniform_int_distribution<int> dropGenerator;
 
+
+
 	int score;
 };
 

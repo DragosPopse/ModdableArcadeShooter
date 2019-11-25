@@ -57,30 +57,10 @@ void Projectile::Start(Scene* scene)
 
 	_data->start(_luaObject, this);
 
-	//TEST
-	/*ParticleSystemObject* pso = new ParticleSystemObject;
-	pso->system.setTexture(_currentScene->GetTexture("Smoke"));
-	for (int i = 0; i < 5; i++)
-	{
-		pso->system.addTextureRect(sf::IntRect(10 * i, 0, 10, 10));
-	}
-
-	thor::UniversalEmitter em;
-	em.setEmissionRate(40);
-	em.setParticleTextureIndex(thor::Distributions::uniform(0u, 4u));
-	em.setParticleScale(sf::Vector2f(5, 5));
-
-	pso->AddEmitter(em);
-	std::unique_ptr<ParticleSystemObject> ptr(pso);
-	ptr->Start(_currentScene);
-	AddChild(std::move(ptr));
-	*/
-
 	float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
-	float volume = _data->muzzleVolumeGenerator(_data->rng) * defaultVolume;
-	float pitch = _data->muzzlePitchGenerator(_data->rng);
+	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);
 
-	_currentScene->PlaySound(*_data->muzzleSound, volume, pitch);
+	_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 	GameObject::Start(scene);
 }
@@ -191,10 +171,9 @@ void Projectile::MarkForDestroy()
 	if (_collided)
 	{
 		float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
-		float volume = _data->destroyVolumeGenerator(_data->rng) * defaultVolume;
-		float pitch = _data->destroyPitchGenerator(_data->rng);
+		RandomizedSoundResult randSound = _data->destroySound(_data->rng, defaultVolume);
 
-		_currentScene->PlaySound(*_data->destroySound, volume, pitch);
+		_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 	}
 
 	GameObject::MarkForDestroy();

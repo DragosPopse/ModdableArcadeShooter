@@ -12,6 +12,7 @@
 #include "GameObjects/SpriteObject.h"
 #include "GameObjects/Projectile.h"
 #include "GameObjects/TextObject.h"
+#include "RandomizedSound.h"
 #include <sol/sol.hpp>
 #include "Utility.h"
 #include <vector>
@@ -43,7 +44,7 @@ namespace
 		result.width = table[3];
 		result.height = table[4];
 		return result;
-	} 
+	}
 	
 	
 	bool CheckCollision(const GameObject& lhs, const GameObject& rhs)
@@ -68,6 +69,14 @@ Level::Level(Context* context, const std::string& path) :
 	_win(false)
 	
 {
+	auto tableToSound = [this](const sol::table& table) {
+		RandomizedSound sound;
+		sf::SoundBuffer* buffer = &this->_sounds[table["sound"]];
+		sound.SetBuffer(buffer);
+		sound.SetVolumeFactorDistribution(table["minVolumeFactor"], table["maxVolumeFactor"]);
+		sound.SetPitchDistribution(table["minPitch"], table["maxPitch"]);
+		return sound;
+	};
 	std::cout << "BEGIN_LEVEL_LOAD\n";
 	std::random_device randDevice;
 	_localMenu->SetLevel(this);
@@ -238,8 +247,8 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.name = projectileName;
 			projdata.texture = &_textures[projectile["texture"]];
 			projdata.iconTexture = &_textures[projectile["iconTexture"]];
-			projdata.muzzleSound = &_sounds[projectile["muzzleSound"]];
-			projdata.destroySound = &_sounds[projectile["destroySound"]];
+			projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
+			projdata.destroySound = tableToSound(projectile["destroySound"]);
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
 			projdata.rect = TableToRect(projectile["rect"]);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
