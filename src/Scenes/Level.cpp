@@ -63,11 +63,9 @@ Level::Level(Context* context, const std::string& path) :
 	_localMenu(new LocalMenu(context)),
 	_playingVignette(false),
 	_vignetteCurrentIntensity(0.f),
-	_nextIndex(0),
-	_firstIndex(1),
 	_highScore(0),
-	_win(false)
-	
+	_win(false),
+	_currentBgIndex(0)
 {
 	auto tableToSound = [this](const sol::table& table) {
 		RandomizedSound sound;
@@ -362,7 +360,9 @@ Level::Level(Context* context, const std::string& path) :
 	airplane->setPosition(_playerSpawn);
 	_playerAirplane = airplane.get();
 
-	_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
+	//_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
+	_background[0]->setPosition(_worldView.getSize().x / 2, _worldView.getCenter().y - _worldView.getSize().y / 2);
+	_background[1]->setPosition(_worldView.getSize().x / 2, _background[0]->getPosition().y - _background[0]->GetBoundingRect().height);
 
 	_enemyProjectilesRoot = new GameObject();
 	_playerProjectilesRoot = new GameObject();
@@ -531,7 +531,7 @@ bool Level::FixedUpdate(float dt)
 	{
 		_worldView.move(0, -_scrollSpeed * dt);
 	}
-	if (_worldView.getCenter().y < _background[_firstIndex]->getPosition().y + _background[_firstIndex]->GetBoundingRect().height / 2)
+	if (_worldView.getCenter().y + _worldView.getSize().y / 2 < _background[_currentBgIndex]->getPosition().y - _background[_currentBgIndex]->GetBoundingRect().height / 2)
 	{
 		SwitchBackground();
 	}
@@ -918,9 +918,14 @@ void Level::PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, floa
 
 void Level::SwitchBackground()
 {
-	_background[_nextIndex]->setPosition(0, _background[_firstIndex]->getPosition().y - _background[_firstIndex]->GetBoundingRect().height);
+	_background[_currentBgIndex]->setPosition(_context->window->getSize().x / 2, _background[_currentBgIndex]->getPosition().y - _background[_currentBgIndex]->GetBoundingRect().height * 2);
 
-	int aux = _firstIndex;
-	_firstIndex = _nextIndex;
-	_nextIndex = aux;
+	if (_currentBgIndex == 0)
+	{
+		_currentBgIndex++;
+	}
+	else
+	{
+		_currentBgIndex = 0;
+	}
 }
