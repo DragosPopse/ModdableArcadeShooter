@@ -274,11 +274,13 @@ bool WinState::FixedUpdate(float dt)
 void WinState::CapPlayerHorizontalPosition()
 {
 	sf::Vector2f playerPos = _level->_playerAirplane->getPosition();
-	sf::FloatRect backgroundBounds = _level->_background[0]->GetBoundingRect();
+	sf::Vector2u screenSize = _context->window->getSize();
+	
+	//sf::FloatRect backgroundBounds = _level->_background[0]->GetBoundingRect();
 
-	float outerModifier = _vignetteOuter * backgroundBounds.width;
-	float leftBound = backgroundBounds.left + outerModifier;
-	float rightBound = backgroundBounds.left + backgroundBounds.width - outerModifier;
+	float outerModifier = _vignetteOuter * screenSize.x;
+	float leftBound = 0 + outerModifier;
+	float rightBound = 0 + screenSize.x - outerModifier;
 	playerPos.x = playerPos.x < leftBound ? leftBound : playerPos.x;
 	playerPos.x = playerPos.x > rightBound ? rightBound : playerPos.x;
 

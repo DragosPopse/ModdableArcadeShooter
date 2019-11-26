@@ -375,8 +375,8 @@ void Airplane::UpdateWeaponDisplay()
 	_weaponDisplay->SetTexture(*_data->weapons[_currentWeaponIndex]->iconTexture);
 	_weaponDisplay->SetTextureRect(_data->weapons[_currentWeaponIndex]->iconRect);
 	sf::Vector2u ws = _currentScene->GetContext()->window->getSize();
-	float displayX = 0 - ((int)ws.x / 2);
-	float displayY = (int)ws.y / 2 - _data->weapons[_currentWeaponIndex]->iconRect.height * _data->weapons[_currentWeaponIndex]->iconScale;
+	float displayX = 0 - ((int)ws.x / 2) + (_data->weapons[_currentWeaponIndex]->iconRect.width / 2) * _data->weapons[_currentWeaponIndex]->iconScale;
+	float displayY = (int)ws.y / 2 - (_data->weapons[_currentWeaponIndex]->iconRect.height / 2) * _data->weapons[_currentWeaponIndex]->iconScale;
 	_weaponDisplay->setPosition(displayX, displayY);
 	_weaponDisplay->setScale(_data->weapons[_currentWeaponIndex]->iconScale, _data->weapons[_currentWeaponIndex]->iconScale);
 	
@@ -398,8 +398,8 @@ void Airplane::UpdateAmmoDisplay()
 		int chars = text.size();
 		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
 
-		int ammoX = _weaponDisplay->getPosition().x + _weaponDisplay->GetBoundingRect().width / 2;
-		int ammoY = _weaponDisplay->getPosition().y - charSize / 2;
+		int ammoX = _weaponDisplay->getPosition().x;
+		int ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2 - charSize / 2;
 
 		_ammoDisplay->setRotation(90);
 		_ammoDisplay->setPosition(ammoX, ammoY);
@@ -411,8 +411,8 @@ void Airplane::UpdateAmmoDisplay()
 		_ammoDisplay->SetString(text);
 		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
 
-		int ammoX = _weaponDisplay->getPosition().x + _weaponDisplay->GetBoundingRect().width / 2;
-		int ammoY = _weaponDisplay->getPosition().y - charSize / 2;
+		int ammoX = _weaponDisplay->getPosition().x;
+		int ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2 - charSize / 2;
 
 		_ammoDisplay->setRotation(0);
 		_ammoDisplay->setPosition(ammoX, ammoY);
