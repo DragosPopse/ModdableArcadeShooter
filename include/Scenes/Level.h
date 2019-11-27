@@ -53,6 +53,7 @@ class Level :
 {
 	friend class WinState;
 	friend class LoseState;
+	friend class LocalMenu;
 
 	std::vector<Airplane*> _airplanes;
 	std::vector<Projectile*> _projectiles;
@@ -121,6 +122,9 @@ class Level :
 	bool _win;
 
 	SoundQueue _soundQueue;
+	std::string _soundtrack;
+	std::string _menuSoundtrack;
+	sf::Time _musicPauseTime;
 
 public:
 	Level(Context* context, const std::string& fileName);

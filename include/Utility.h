@@ -84,7 +84,7 @@ class GenericFadeAnimation
 	float _outRatio;
 	std::function<void(Animated&, const sf::Color&)> _setColor;
 	std::function<sf::Color(const Animated&)> _getColor;
-
+	int _defaultAlpha;
 	
 public:
 	GenericFadeAnimation(float in, float out, 
@@ -93,8 +93,15 @@ public:
 		_inRatio(in),
 		_outRatio(out),
 		_setColor(setColor),
-		_getColor(getColor)
+		_getColor(getColor),
+		_defaultAlpha(255)
 	{
+	}
+
+
+	void SetHighestAlpha(int alpha)
+	{
+		_defaultAlpha = alpha;
 	}
 	
 
@@ -104,11 +111,11 @@ public:
 
 		if (progress < _inRatio)
 		{
-			color.a = 256 * progress / _inRatio;
+			color.a = (_defaultAlpha + 1) * progress / _inRatio;
 		}
 		else if (progress > 1.f - _outRatio)
 		{
-			color.a = 256 * (1.f - progress) / _outRatio;
+			color.a = (_defaultAlpha + 1) * (1.f - progress) / _outRatio;
 		}
 
 		_setColor(target, color);

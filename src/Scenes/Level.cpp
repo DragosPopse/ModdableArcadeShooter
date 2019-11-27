@@ -149,7 +149,7 @@ Level::Level(Context* context, const std::string& path) :
 	_background[1]->setScale(_scale, _scale);
 	_background[0]->SetTexture(_textures[backgroundTexture]);
 	_background[1]->SetTexture(_textures[backgroundTexture]);
-
+	
 	//Load Pickups
 	sol::table pickups = level["usedPickups"];
 	for (int i = 1; i <= pickups.size(); i++)
@@ -481,8 +481,9 @@ Level::Level(Context* context, const std::string& path) :
 	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_root->Start(this);
 
-	std::string soundtrack = level["soundtrack"];
-	_context->music->openFromFile(soundtrack);
+	_soundtrack = level["soundtrack"];
+	_menuSoundtrack = level["menuSoundtrack"];
+	_context->music->openFromFile(_soundtrack);
 	_context->music->setVolume(_context->player->GetMusicVolume());
 	_context->music->play();
 }
@@ -646,6 +647,8 @@ bool Level::HandleEvent(const sf::Event& ev)
 		_context->player->HandleEvent(ev, _commands);
 		if (ev.key.code == sf::Keyboard::Escape)
 		{
+			_musicPauseTime = _context->music->getPlayingOffset();
+			_localMenu->Start();
 			RequestPush(_localMenu);
 		}
 		break;
