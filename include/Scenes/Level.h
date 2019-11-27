@@ -124,7 +124,8 @@ class Level :
 	SoundQueue _soundQueue;
 	std::string _soundtrack;
 	std::string _menuSoundtrack;
-	sf::Time _musicPauseTime;
+
+	float _timeScale;
 
 public:
 	Level(Context* context, const std::string& fileName);
@@ -170,7 +171,7 @@ public:
 
 	sf::Shader* GetVignette() { return &_vignetteShader; }
 
-	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1) { _soundQueue.PlaySound(buffer, volume, pitch); }
+	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1);
 
 private:
 	void SpawnObjects();

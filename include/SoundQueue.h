@@ -19,6 +19,12 @@ class SoundQueue
 	std::list<sf::Sound> _queue;
 
 public:
+	using Iterator = std::list<sf::Sound>::iterator;
+
+	//Must start with lowercase for the class to support foreach loop
+	Iterator begin();
+	Iterator end();
+
 	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1);
 
 	void Update();

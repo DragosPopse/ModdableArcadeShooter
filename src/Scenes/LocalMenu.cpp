@@ -31,14 +31,14 @@ bool LocalMenu::HandleEvent(const sf::Event& ev)
 bool LocalMenu::Update(float dt)
 {
 	//_currentState->Update(dt);
-	return false;
+	return true;
 }
 
 
 bool LocalMenu::FixedUpdate(float dt)
 {
 	_currentState->Update(dt);
-	return false;
+	return true;
 }
 
 
@@ -179,7 +179,14 @@ void LocalMenu::PoppingState::Start()
 	_menu->_context->music->setVolume(0.f);
 	_menu->_context->music->setPitch(_menu->_lowestPitch);
 	_menu->_context->music->play();
-	_menu->_context->music->setPlayingOffset(_menu->_level->_musicPauseTime - sf::seconds(_transitionDuration));
+	
+	for (auto& sound : _menu->_level->_soundQueue)
+	{
+		if (sound.getStatus() != sf::Sound::Status::Stopped)
+		{
+			sound.play();
+		} 
+	}
 }
 
 
@@ -194,18 +201,33 @@ void LocalMenu::PushingState::Update(float dt)
 		float levelMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		float menuMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
 		float menuMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
+		_menu->_level->_timeScale = Lerp(1.f, 0.f, progress);
 
 		_menu->_context->music->setVolume(levelMusicVolume);
 		_menu->_context->music->setPitch(levelMusicPitch);
 		_menu->_music.setVolume(menuMusicVolume);
 		_menu->_music.setPitch(menuMusicPitch);
+
+		for (auto& sound : _menu->_level->_soundQueue)
+		{
+			sound.setVolume(levelMusicVolume);
+			sound.setPitch(levelMusicPitch);
+		}
 	}
 	else
 	{
+		_menu->_level->_timeScale = 0.f;
 		_menu->_context->music->pause();
 		_menu->_music.setVolume(_menu->_highestVolume);
 		_menu->_music.setPitch(1.f);
 		_menu->StartIdleState();
+		for (auto& sound : _menu->_level->_soundQueue)
+		{
+			if (sound.getStatus() != sf::Sound::Status::Stopped)
+			{
+				sound.pause();
+			}
+		}
 	}
 	
 }
@@ -228,18 +250,29 @@ void LocalMenu::PoppingState::Update(float dt)
 		float menuMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		float levelMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
 		float levelMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
+		_menu->_level->_timeScale = Lerp(0.f, 1.f, progress);
 		_menu->_context->music->setVolume(levelMusicVolume);
 		_menu->_context->music->setPitch(levelMusicPitch);
 		_menu->_music.setVolume(menuMusicVolume);
 		_menu->_music.setPitch(menuMusicPitch);
+		for (auto& sound : _menu->_level->_soundQueue)
+		{
+			sound.setVolume(levelMusicVolume);
+			sound.setPitch(levelMusicPitch);
+		}
 	}
 	else
 	{
+		_menu->_level->_timeScale = 1.f;
 		_menu->_music.stop();
 		_menu->_context->music->setVolume(_menu->_highestVolume);
 		_menu->_context->music->setPitch(1.f);
-		_menu->_context->music->setPlayingOffset(_menu->_level->_musicPauseTime);
 		_menu->RequestPop();
+		for (auto& sound : _menu->_level->_soundQueue)
+		{
+			sound.setVolume(_menu->_highestVolume);
+			sound.setPitch(1.f);
+		}
 	}
 }
 

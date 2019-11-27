@@ -65,7 +65,8 @@ Level::Level(Context* context, const std::string& path) :
 	_vignetteCurrentIntensity(0.f),
 	_highScore(0),
 	_win(false),
-	_currentBgIndex(0)
+	_currentBgIndex(0),
+	_timeScale(1.f)
 {
 	auto tableToSound = [this](const sol::table& table) {
 		RandomizedSound sound;
@@ -500,6 +501,7 @@ Level::~Level()
 
 bool Level::FixedUpdate(float dt)
 {
+	dt *= _timeScale;
 	_soundQueue.Update();
 	RemoveOffScreenObjects(dt);
 	HandleCollisions(dt);
@@ -601,6 +603,7 @@ bool Level::Update(float dt)
 		}
 	}
 
+	dt *= _timeScale;
 	_root->Update(dt);
 	_uiRoot->Update(dt);
 	return false;
@@ -647,7 +650,6 @@ bool Level::HandleEvent(const sf::Event& ev)
 		_context->player->HandleEvent(ev, _commands);
 		if (ev.key.code == sf::Keyboard::Escape)
 		{
-			_musicPauseTime = _context->music->getPlayingOffset();
 			_localMenu->Start();
 			RequestPush(_localMenu);
 		}
@@ -931,4 +933,10 @@ void Level::SwitchBackground()
 	{
 		_currentBgIndex = 0;
 	}
+}
+
+
+void Level::PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch)
+{
+	_soundQueue.PlaySound(buffer, volume, pitch);
 }
