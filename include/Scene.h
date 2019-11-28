@@ -30,10 +30,13 @@ public:
 	virtual bool Update(float dt) { return false; }
 	virtual bool FixedUpdate(float dt) { return false; }
 	virtual bool Render() { return false; }
+	virtual void Enable() { } //Called when pushing
+	virtual void Disable() { } //Called when popping
 
 	void RequestPush(std::shared_ptr<Scene> scene);
 	void RequestPop();
 	void RequestClear();
+	bool OnTop() const;
 
 	Context* GetContext() const { return _context; }
 	TextureHolder& GetTextures() { return _textures; }

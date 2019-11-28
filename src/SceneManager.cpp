@@ -99,6 +99,7 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Push:
 			{
 				std::shared_ptr<Scene> ptr(change.scene);
+				ptr->Enable();
 				_stack.emplace_back(std::move(ptr));
 			}
 			break;
@@ -106,6 +107,7 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Pop:
 			if (!_stack.empty())
 			{
+				_stack.back()->Disable();
 				_stack.pop_back();
 			}
 			break;
@@ -113,9 +115,19 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Clear:
 			if (!_stack.empty())
 			{
+				for (auto it = _stack.rbegin(); it != _stack.rend(); it++)
+				{
+					(*it)->Disable();
+				}
 				_stack.clear();
 			}
 			break;
 		}
 	}
+}
+
+
+const Scene* SceneManager::Top() const
+{
+	return _stack.back().get();
 }

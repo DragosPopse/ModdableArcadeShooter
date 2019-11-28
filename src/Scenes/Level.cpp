@@ -650,7 +650,6 @@ bool Level::HandleEvent(const sf::Event& ev)
 		_context->player->HandleEvent(ev, _commands);
 		if (ev.key.code == sf::Keyboard::Escape)
 		{
-			_localMenu->Start();
 			RequestPush(_localMenu);
 		}
 		break;

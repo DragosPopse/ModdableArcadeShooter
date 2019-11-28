@@ -49,7 +49,7 @@ bool LocalMenu::Render()
 }
 
 
-void LocalMenu::Start()
+void LocalMenu::Enable()
 {
 	_music.openFromFile(_level->_menuSoundtrack);
 	_music.setVolume(0.f);
@@ -57,6 +57,12 @@ void LocalMenu::Start()
 	_music.play();
 	_highestVolume = _context->player->GetMusicVolume();
 	StartPushingState();
+}
+
+
+void LocalMenu::Disable()
+{
+
 }
 
 
@@ -337,5 +343,3 @@ void LocalMenu::PoppingState::HandleEvent(const sf::Event& ev)
 		break;
 	}
 }
-
-

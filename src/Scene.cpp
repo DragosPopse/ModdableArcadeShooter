@@ -30,3 +30,9 @@ void Scene::RequestClear()
 {
 	_manager->Clear();
 }
+
+
+bool Scene::OnTop() const
+{
+	return _manager->Top() == this;
+}

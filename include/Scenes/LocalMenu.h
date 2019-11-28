@@ -92,9 +92,11 @@ public:
 	bool Update(float dt) override;
 	bool FixedUpdate(float dt) override;
 	bool Render() override;
+	void Enable() override;
+	void Disable() override;
+
 	void SetLevel(Level* lvl) { _level = lvl; }
 
-	void Start();
 
 private:
 	void StartPushingState();
