@@ -510,12 +510,20 @@ bool Level::FixedUpdate(float dt)
 	{
 		_playerAirplane = nullptr;
 		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
+		if (!OnTop()) // LocalMenu is up
+		{
+			RequestPop();
+		}
 		RequestPush(lose);
 	}
 	else if (_playerAirplane && !_win && _worldView.getCenter().y < _playerSpawn.y - _levelLength)
 	{
-		std::shared_ptr<WinState> lose(new WinState(_context, this));
-		RequestPush(lose);
+		std::shared_ptr<WinState> win(new WinState(_context, this));
+		if (!OnTop()) // LocalMenu is up
+		{
+			RequestPop();
+		}
+		RequestPush(win);
 		_win = true;
 	}
 	SpawnObjects();

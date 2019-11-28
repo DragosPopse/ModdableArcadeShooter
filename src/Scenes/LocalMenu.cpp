@@ -62,7 +62,15 @@ void LocalMenu::Enable()
 
 void LocalMenu::Disable()
 {
-
+	_level->_timeScale = 1.f;
+	_music.stop();
+	_context->music->setVolume(_highestVolume);
+	_context->music->setPitch(1.f);
+	for (auto& sound : _level->_soundQueue)
+	{
+		sound.setVolume(_highestVolume);
+		sound.setPitch(1.f);
+	}
 }
 
 
@@ -273,16 +281,7 @@ void LocalMenu::PoppingState::Update(float dt)
 	}
 	else
 	{
-		_menu->_level->_timeScale = 1.f;
-		_menu->_music.stop();
-		_menu->_context->music->setVolume(_menu->_highestVolume);
-		_menu->_context->music->setPitch(1.f);
 		_menu->RequestPop();
-		for (auto& sound : _menu->_level->_soundQueue)
-		{
-			sound.setVolume(_menu->_highestVolume);
-			sound.setPitch(1.f);
-		}
 	}
 }
 
