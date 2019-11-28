@@ -15,9 +15,6 @@ LocalMenu::LocalMenu(Context* context) :
 {
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
-
-	
-
 }
 
 
