@@ -6,7 +6,7 @@
 
 LocalMenu::LocalMenu(Context* context) :
 	Scene(context),
-	_lowestPitch(0.5),
+	_lowestPitch(0.f),
 	_currentState(nullptr),
 	_push(this),
 	_pop(this),
@@ -49,7 +49,7 @@ bool LocalMenu::Render()
 }
 
 
-void LocalMenu::Start()
+void LocalMenu::Enable()
 {
 	_music.openFromFile(_level->_menuSoundtrack);
 	_music.setVolume(0.f);
@@ -57,6 +57,20 @@ void LocalMenu::Start()
 	_music.play();
 	_highestVolume = _context->player->GetMusicVolume();
 	StartPushingState();
+}
+
+
+void LocalMenu::Disable()
+{
+	_level->_timeScale = 1.f;
+	_music.stop();
+	_context->music->setVolume(_highestVolume);
+	_context->music->setPitch(1.f);
+	for (auto& sound : _level->_soundQueue)
+	{
+		sound.setVolume(_highestVolume);
+		sound.setPitch(1.f);
+	}
 }
 
 
@@ -198,9 +212,11 @@ void LocalMenu::PushingState::Update(float dt)
 	{
 		_fadeInAnimation(_menu->_background, progress);
 		float levelMusicPitch = Lerp(1.f, _menu->_lowestPitch, progress);
-		float levelMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		float menuMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
-		float menuMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
+		float menuMusicVolume = _menu->_highestVolume;
+		float levelMusicVolume = _menu->_highestVolume;
+		//float levelMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
+		//float menuMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
 		_menu->_level->_timeScale = Lerp(1.f, 0.f, progress);
 
 		_menu->_context->music->setVolume(levelMusicVolume);
@@ -247,9 +263,11 @@ void LocalMenu::PoppingState::Update(float dt)
 	{
 		_fadeOutAnimation(_menu->_background, progress);
 		float menuMusicPitch = Lerp(1.f, _menu->_lowestPitch, progress);
-		float menuMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		float levelMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
-		float levelMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
+		//float menuMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
+		//float levelMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
+		float menuMusicVolume = _menu->_highestVolume;
+		float levelMusicVolume = _menu->_highestVolume;
 		_menu->_level->_timeScale = Lerp(0.f, 1.f, progress);
 		_menu->_context->music->setVolume(levelMusicVolume);
 		_menu->_context->music->setPitch(levelMusicPitch);
@@ -263,16 +281,7 @@ void LocalMenu::PoppingState::Update(float dt)
 	}
 	else
 	{
-		_menu->_level->_timeScale = 1.f;
-		_menu->_music.stop();
-		_menu->_context->music->setVolume(_menu->_highestVolume);
-		_menu->_context->music->setPitch(1.f);
 		_menu->RequestPop();
-		for (auto& sound : _menu->_level->_soundQueue)
-		{
-			sound.setVolume(_menu->_highestVolume);
-			sound.setPitch(1.f);
-		}
 	}
 }
 
@@ -337,5 +346,3 @@ void LocalMenu::PoppingState::HandleEvent(const sf::Event& ev)
 		break;
 	}
 }
-
-

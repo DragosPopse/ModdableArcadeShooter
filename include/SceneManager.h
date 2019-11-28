@@ -47,6 +47,8 @@ public:
 	void FixedUpdate(float dt);
 	void Render();
 
+	const Scene* Top() const;
+
 private:
 	void ApplyChanges();
 };
