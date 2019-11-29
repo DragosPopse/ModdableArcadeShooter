@@ -50,6 +50,18 @@ public:
 	void SetSfxVolume(float v) { _sfxVolume = v; }
 	void SetMusicVolume(float v) { _musicVolume = v; }
 
+	/*
+		Available tokens (words inside {} brackets): 
+			MoveLeft
+			MoveRight
+			MoveUp
+			MoveDown
+			Fire
+			NextWeapon
+			PreviousWeapon
+	*/
+	std::string Parse(const std::string& str);
+
 private:
 	bool IsRealtime(ActionType action) const;
 };

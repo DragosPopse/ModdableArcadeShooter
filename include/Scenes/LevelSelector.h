@@ -45,6 +45,7 @@ public:
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Update(float dt) override;
 	bool Render() override;
+	void Enable() override;
 
 private:
 	void UpdateDisplay();

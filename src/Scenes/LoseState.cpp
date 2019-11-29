@@ -99,7 +99,7 @@ LoseState::LoseState(Context* context, Level* level) :
 	_score->SetCharSize(_charSize);
 	_yourScore->SetString("Your Score:");
 	_highScoreText->SetString("High Score:");
-	_infoText->SetString("Press Space to Skip");
+	_infoText->SetString(_context->player->Parse("Press {Fire} to Skip"));
 	_highScore->SetString(std::to_string(_level->_highScore));
 	
 	_score->SetFinalCharSize(_finalCharSize);
@@ -180,7 +180,7 @@ bool LoseState::Update(float dt)
 
 		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::None)
 		{
-			_infoText->SetString("Press Space to Continue");
+			_infoText->SetString(_context->player->Parse("Press {Fire} to Continue"));
 		}
 	}
 

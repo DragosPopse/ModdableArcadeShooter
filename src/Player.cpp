@@ -5,6 +5,7 @@
 #include "GameObjects/Airplane.h"
 #include <functional>
 #include <iostream>
+#include <sstream>
 
 #include "Utility.h"
 
@@ -266,4 +267,79 @@ bool Player::HasSettings() const
 {
 	std::ifstream file(BuildString(CONFIG_PATH, "Player.json"));
 	return file.good();
+}
+
+
+std::string Player::Parse(const std::string& str)
+{
+	std::stringstream result;
+
+	int i = 0;
+	while (i < str.size())
+	{
+		if (str[i] == '{')
+		{
+			std::stringstream param;
+			int j = i + 1;
+			if (j >= str.size())
+			{
+				throw std::invalid_argument("Invalid Format");
+			}
+
+			while (str[j] != '}' && j < str.size())
+			{
+				param << str[j];
+				j++;
+			}
+
+			if (j == str.size())
+			{
+				throw std::invalid_argument("Invalid Format");
+			}
+
+			i = j + 1;
+
+			std::string sub = param.str();
+			
+			if (sub.compare("MoveLeft") == 0)
+			{
+				result << ToString(GetKey(MoveLeft));
+			}
+			else if (sub.compare("MoveRight") == 0)
+			{
+				result << ToString(GetKey(MoveRight));
+			}
+			else if (sub.compare("MoveUp") == 0)
+			{
+				result << ToString(GetKey(MoveUp));
+			}
+			else if (sub.compare("MoveDown") == 0)
+			{
+				result << ToString(GetKey(MoveDown));
+			}
+			else if (sub.compare("Fire") == 0)
+			{
+				result << ToString(GetKey(Fire));
+			}
+			else if (sub.compare("NextWeapon") == 0)
+			{
+				result << ToString(GetKey(NextWeapon));
+			}
+			else if (sub.compare("PreviousWeapon") == 0)
+			{
+				result << ToString(GetKey(PreviousWeapon));
+			}
+			else
+			{
+				throw std::invalid_argument(BuildString(sub, " is not a valid token"));
+			}
+		}
+		else
+		{
+			result << str[i];
+			i++;
+		}
+	}
+
+	return result.str();
 }

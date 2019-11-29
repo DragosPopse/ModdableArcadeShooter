@@ -446,7 +446,7 @@ Level::Level(Context* context, const std::string& path) :
 	{
 		TextAnimationData tdata;
 		sol::table text = texts[1];
-		tdata.str = text["text"];
+		tdata.str = _context->player->Parse(text["text"]);
 		tdata.y = text["y"];
 		tdata.timePerLetter = text["timePerLetter"];
 		tdata.timeBeforeDestroy = text["timeBeforeDestroy"];
