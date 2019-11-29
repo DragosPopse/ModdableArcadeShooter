@@ -341,5 +341,5 @@ void LocalMenu::PoppingState::HandleEvent(const sf::Event& ev)
 	case sf::Event::Closed:
 		_menu->RequestClear();
 		break;
-	}
+	}	
 }
