@@ -21,6 +21,10 @@ LocalMenu::LocalMenu(Context* context) :
 bool LocalMenu::HandleEvent(const sf::Event& ev)
 {
 	_currentState->HandleEvent(ev);
+	if (_currentState != &_idle)
+	{
+		return true;
+	}
 	return false;
 }
 
@@ -28,14 +32,22 @@ bool LocalMenu::HandleEvent(const sf::Event& ev)
 bool LocalMenu::Update(float dt)
 {
 	//_currentState->Update(dt);
-	return true;
+	if (_currentState != &_idle)
+	{
+		return true;
+	}
+	return false;
 }
 
 
 bool LocalMenu::FixedUpdate(float dt)
 {
 	_currentState->Update(dt);
-	return true;
+	if (_currentState != &_idle)
+	{
+		return true;
+	}
+	return false;
 }
 
 
