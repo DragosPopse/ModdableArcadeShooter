@@ -1,26 +1,26 @@
 //https://stackoverflow.com/questions/48548292/sfml-c-flashing-hit-effect-on-sfsprite
 
-uniform sampler2D texture;
+uniform sampler2D u_texture;
 
-uniform vec4 flashColor;
+uniform vec4 u_flashColor;
 
 void main()
 {
 
 
-    vec4 pixel_color = texture2D(texture, gl_TexCoord[0].xy);
-    float percent = flashColor.a;
+    vec4 color = texture2D(u_texture, gl_TexCoord[0].xy);
+    float percent = u_flashColor.a;
 
     vec4 colorDifference = vec4(0,0,0,1);
 
-    colorDifference.r = flashColor.r - pixel_color.r;
-    colorDifference.g = flashColor.g - pixel_color.g;
-    colorDifference.b = flashColor.b - pixel_color.b;
-    pixel_color.r = pixel_color.r + colorDifference.r * percent;
-    pixel_color.g = pixel_color.g +colorDifference.g * percent;
-    pixel_color.b =pixel_color.b + colorDifference.b * percent;
+    colorDifference.r = u_flashColor.r - color.r;
+    colorDifference.g = u_flashColor.g - color.g;
+    colorDifference.b = u_flashColor.b - color.b;
+    color.r = color.r + colorDifference.r * percent;
+    color.g = color.g + colorDifference.g * percent;
+    color.b = color.b + colorDifference.b * percent;
 
 
-    gl_FragColor = pixel_color; 
+    gl_FragColor = color; 
 
 }
