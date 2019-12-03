@@ -293,6 +293,8 @@ void Airplane::NextWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
+		RandomizedSoundResult sound = _data->switchSound(_data->rng, _currentScene->GetContext()->player->GetSfxVolume());
+		_currentScene->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}
 }
@@ -309,6 +311,8 @@ void Airplane::PreviousWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
+		RandomizedSoundResult sound = _data->switchSound(_data->rng, _currentScene->GetContext()->player->GetSfxVolume());
+		_currentScene->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}
 }

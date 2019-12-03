@@ -56,6 +56,7 @@ struct AirplaneData
 	float explosionMaxRotation;
 
 	std::vector<RandomizedSound> explosionSounds;
+	RandomizedSound switchSound;
 
 	std::vector<DropData> drops;
 	
