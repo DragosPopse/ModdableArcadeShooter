@@ -102,10 +102,8 @@ Level::Level(Context* context, const std::string& path) :
 	{
 		sol::table texture = usedTextures[i];
 		std::string id = texture[1];
-
 		std::string file = texture[2];
-		std::string path = BuildString(TEXTURES_PATH, file);
-		_textures.Load(id, path);
+		_textures.Load(id, file);
 		std::cout << id << " :: " << path << '\n';
 	}
 
@@ -116,9 +114,7 @@ Level::Level(Context* context, const std::string& path) :
 		sol::table font = usedFonts[i];
 		std::string id = font[1];
 		std::string file = font[2];
-		std::string path = BuildString(FONTS_PATH, file);
-		_fonts.Load(id, path);
-		std::cout << id << " :: " << path << '\n';
+		_fonts.Load(id, file);
 	}
 
 	//Load required sounds
@@ -128,9 +124,7 @@ Level::Level(Context* context, const std::string& path) :
 		sol::table sound = usedSounds[i];
 		std::string id = sound[1];
 		std::string file = sound[2];
-		std::string path = BuildString("assets/audio/sfx/", file);
-		std::cout << path << '\n';
-		_sounds.Load(id, path);
+		_sounds.Load(id, file);
 	}
 
 	std::string backgroundTexture = level["backgroundTexture"];
@@ -156,7 +150,7 @@ Level::Level(Context* context, const std::string& path) :
 	for (int i = 1; i <= pickups.size(); i++)
 	{
 		std::string pickupName = pickups[i];
-		std::string pickupPath = BuildString(PICKUPS_PATH, pickupName, ".lua");
+		std::string pickupPath = BuildString("assets/scripts/pickups/", pickupName, ".lua");
 		sol::table pickup = _context->lua->do_file(pickupPath);
 		PickupData pickupData;
 		pickupData.texture = &_textures[pickup["texture"]];
@@ -179,7 +173,7 @@ Level::Level(Context* context, const std::string& path) :
 	for (int i = 1; i <= planes.size(); i++)
 	{
 		std::string name = planes[i];
-		std::string path = BuildString(AIRPLANES_PATH, name, ".lua");
+		std::string path = BuildString("assets/scripts/airplanes/", name, ".lua");
 		std::cout << path << '\n';
 		_enemiesDowned[name] = 0;
 
@@ -246,7 +240,7 @@ Level::Level(Context* context, const std::string& path) :
 			}*/
 			int ammo = weapon["ammo"];
 
-			std::string projectilePath = BuildString(PROJECTILES_PATH, projectileName, ".lua");
+			std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
 
 			std::cout << projectilePath << '\n';
 			sol::table projectile;

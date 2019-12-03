@@ -58,7 +58,7 @@ struct ProjectileData
 class Projectile :
 	public GameObject
 {
-	Level* _currentScene;
+	Level* _level;
 	sf::Sprite _sprite;
 	ProjectileData* _data;
 	sf::Vector2f _velocity;
@@ -93,7 +93,7 @@ public:
 	float GetSpeed() const;
 	float GetDamage() const;
 
-	Level* GetLevel() { return _currentScene; }
+	Level* GetLevel() { return _level; }
 
 	sf::Vector2f GetVelocity() const;
 	void SetVelocity(const sf::Vector2f& velocity);

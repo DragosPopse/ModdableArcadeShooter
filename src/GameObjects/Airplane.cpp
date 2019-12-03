@@ -18,7 +18,7 @@ namespace
 
 
 Airplane::Airplane(AirplaneData* data) :
-	_currentScene(nullptr),
+	_level(nullptr),
 	_data(data),
 	_hitpoints(data->hitpoints),
 	_currentWeaponIndex(0),
@@ -42,8 +42,8 @@ Airplane::Airplane(AirplaneData* data) :
 
 void Airplane::Start(Scene* scene)
 {
-	_currentScene = static_cast<Level*>(scene);
-	auto& textures = _currentScene->GetTextures();
+	_level = static_cast<Level*>(scene);
+	auto& textures = _level->GetTextures();
 	
 	setScale(_data->scale, _data->scale);
 	SetTexture(*_data->texture);
@@ -67,9 +67,9 @@ void Airplane::Start(Scene* scene)
 		_cooldownDisplay = new CircleCooldown();
 		UpdateWeaponDisplay();
 		
-		_currentScene->AddUiElement(_weaponDisplay);
-		_currentScene->AddUiElement(_cooldownDisplay);
-		_currentScene->AddUiElement(_ammoDisplay);
+		_level->AddUiElement(_weaponDisplay);
+		_level->AddUiElement(_cooldownDisplay);
+		_level->AddUiElement(_ammoDisplay);
 		
 	}
 
@@ -77,7 +77,7 @@ void Airplane::Start(Scene* scene)
 	AddChild(std::move(textPtr));
 	UpdateHealthDisplay();
 	
-	SetShader(_currentScene->GetFlashShader());
+	SetShader(_level->GetFlashShader());
 
 	GameObject::Start(scene);
 }
@@ -208,12 +208,12 @@ void Airplane::Damage(int hp)
 		explosion->SetTimePerFrame(_data->explosionFrameDuration);
 		float randomScale = _data->scaleDistribution(_data->rng);
 		explosion->setScale(randomScale, randomScale);
-		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _currentScene->GetContext()->player->GetMusicVolume());
-		_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
+		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _level->GetContext()->player->GetMusicVolume());
+		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
 		explosion->setRotation(randomRotation);
-		_currentScene->AddExplosion(explosion);
+		_level->AddExplosion(explosion);
 
 
 		//Spawn pickup if RNG is in your favor
@@ -224,14 +224,14 @@ void Airplane::Damage(int hp)
 			{
 				Pickup* pickup = new Pickup(_data->drops[i].pickup);
 				pickup->setPosition(GetWorldPosition());
-				_currentScene->AddPickup(pickup);
+				_level->AddPickup(pickup);
 				break;
 			}
 		}
 
 		if (!_playerControlled)
 		{
-			_currentScene->AddDownedEnemy(_data->name);
+			_level->AddDownedEnemy(_data->name);
 		}
 	}
 	else
@@ -293,8 +293,8 @@ void Airplane::NextWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
-		RandomizedSoundResult sound = _data->switchSound(_data->rng, _currentScene->GetContext()->player->GetSfxVolume());
-		_currentScene->PlaySound(*sound.buffer, sound.volume, sound.pitch);
+		RandomizedSoundResult sound = _data->switchSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+		_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}
 }
@@ -311,8 +311,8 @@ void Airplane::PreviousWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
-		RandomizedSoundResult sound = _data->switchSound(_data->rng, _currentScene->GetContext()->player->GetSfxVolume());
-		_currentScene->PlaySound(*sound.buffer, sound.volume, sound.pitch);
+		RandomizedSoundResult sound = _data->switchSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+		_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}
 }
@@ -332,7 +332,7 @@ void Airplane::Fire()
 		if (_playerControlled)
 		{
 			proj->SetPlayerControlled(true);
-			_currentScene->AddPlayerProjectile(proj);
+			_level->AddPlayerProjectile(proj);
 			proj->move(0, -GetBoundingRect().height / 2);
 			UpdateCooldownDisplay();
 			UpdateAmmoDisplay();
@@ -340,7 +340,7 @@ void Airplane::Fire()
 		else
 		{
 			proj->setRotation(180);
-			_currentScene->AddEnemyProjectile(proj);
+			_level->AddEnemyProjectile(proj);
 			proj->move(0, GetBoundingRect().height / 2);
 		}
 	}
@@ -378,7 +378,7 @@ void Airplane::UpdateWeaponDisplay()
 {
 	_weaponDisplay->SetTexture(*_data->weapons[_currentWeaponIndex]->iconTexture);
 	_weaponDisplay->SetTextureRect(_data->weapons[_currentWeaponIndex]->iconRect);
-	sf::Vector2u ws = _currentScene->GetContext()->window->getSize();
+	sf::Vector2u ws = _level->GetContext()->window->getSize();
 	float displayX = 0 - ((int)ws.x / 2) + (_data->weapons[_currentWeaponIndex]->iconRect.width / 2) * _data->weapons[_currentWeaponIndex]->iconScale;
 	float displayY = (int)ws.y / 2 - (_data->weapons[_currentWeaponIndex]->iconRect.height / 2) * _data->weapons[_currentWeaponIndex]->iconScale;
 	_weaponDisplay->setPosition(displayX, displayY);
@@ -440,8 +440,8 @@ void Airplane::UpdateCooldownVertices()
 void Airplane::SetShader(sf::Shader* shader)
 {
 	_shader = shader;
-	_shader->setUniform("texture", *_texture);
-	_shader->setUniform("flashColor", sf::Glsl::Vec4(1, 1, 1, 0.7));
+	_shader->setUniform("u_texture", *_texture);
+	_shader->setUniform("u_flashColor", sf::Glsl::Vec4(1, 1, 1, 0.7));
 	_shader = shader;
 }
 

@@ -19,27 +19,27 @@ level.defaultFont = 'Pixel'
 
 
 level.usedTextures = {
-    {'Eagle',  'Eagle.png'},
-    {'Island', 'Island.png'}, 
-    {'Projectiles', 'Projectiles.png'},
-    {'Explosions', 'Explosions.png'},
-    {'Fragments', 'Fragments.png'},
-    {'Vortex', 'Vortex.png'},
-    {'Smoke', 'Smoke.png'},
-    {'SmokeExplosion', 'SmokeExplosion.png'},
-    {'Health', 'Health.png'}
+    {'Eagle',  'assets/textures/Eagle.png'},
+    {'Island', 'assets/textures/Island.png'}, 
+    {'Projectiles', 'assets/textures/Projectiles.png'},
+    {'Explosions', 'assets/textures/Explosions.png'},
+    {'Fragments', 'assets/textures/Fragments.png'},
+    {'Vortex', 'assets/textures/Vortex.png'},
+    {'Smoke', 'assets/textures/Smoke.png'},
+    {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
+    {'Health', 'assets/textures/Health.png'}
 }
 
 level.usedFonts = {
-    {'Mont', 'Montserrat-Regular.otf'},
-    {'Pixel', 'pcsenior.ttf'}
+    {'Mont', 'assets/fonts/Montserrat-Regular.otf'},
+    {'Pixel', 'assets/fonts/pcsenior.ttf'}
 }
 
 level.usedSounds = {
-    {'Bullet', 'Bullet.wav'},
-    {'Hit', 'OnDamage.wav'},
-    {'Exp1', 'Exp1.wav'},
-    {'Switch', 'Switch.wav'}
+    {'Bullet', 'assets/audio/sfx/Bullet.wav'},
+    {'Hit', 'assets/audio/sfx/OnDamage.wav'},
+    {'Exp1', 'assets/audio/sfx/Exp1.wav'},
+    {'Switch', 'assets/audio/sfx/Switch.wav'}
 }
 
 level.player = {

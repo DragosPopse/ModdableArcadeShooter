@@ -17,6 +17,8 @@
 #include <rapidjson/ostreamwrapper.h>
 #include <fstream>
 
+#define LEVELS_PATH "assets/scripts/levels/"
+
 namespace rjs = rapidjson;
 
 LevelSelector::LevelSelector(Context* context, MainMenu* menu) :

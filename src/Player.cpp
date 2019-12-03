@@ -19,6 +19,8 @@
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 
+#define CONFIG_PATH "assets/config/"
+
 namespace rjs = rapidjson;
 
 

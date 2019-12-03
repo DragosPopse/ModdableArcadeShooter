@@ -76,7 +76,7 @@ class TextObject;
 class Airplane :
 	public GameObject
 {
-	Level* _currentScene;
+	Level* _level;
 	sf::Sprite _sprite;
 	int _hitpoints;
 	AirplaneData* _data;
@@ -124,7 +124,7 @@ public:
 	void NextWeapon();
 	void PreviousWeapon();
 
-	Level* GetLevel() { return _currentScene; }
+	Level* GetLevel() { return _level; }
 
 	int GetHealth() const { return _hitpoints; }
 	void AddHealth(int n);
