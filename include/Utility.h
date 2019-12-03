@@ -9,14 +9,6 @@
 #include <Thor/Animations.hpp>
 #include <Thor/Particles.hpp>
 
-#define SCRIPTS_PATH "assets/scripts/"
-#define TEXTURES_PATH "assets/textures/"
-#define AIRPLANES_PATH "assets/scripts/airplanes/"
-#define LEVELS_PATH "assets/scripts/levels/"
-#define PROJECTILES_PATH "assets/scripts/projectiles/"
-#define CONFIG_PATH "assets/config/"
-#define FONTS_PATH "assets/fonts/"
-#define PICKUPS_PATH "assets/scripts/pickups/"
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);
