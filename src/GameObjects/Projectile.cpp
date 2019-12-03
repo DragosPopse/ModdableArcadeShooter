@@ -13,7 +13,7 @@
 
 
 Projectile::Projectile(ProjectileData* data) :
-	_currentScene(nullptr),
+	_level(nullptr),
 	_data(data),
 	_playerControlled(false),
 	_firstFrame(true),
@@ -26,7 +26,7 @@ Projectile::Projectile(ProjectileData* data) :
 
 void Projectile::Start(Scene* scene)
 {
-	_currentScene = static_cast<Level*>(scene);
+	_level = static_cast<Level*>(scene);
 
 	SetTexture(*_data->texture);
 	SetTextureRect(_data->muzzleRect);
@@ -57,10 +57,10 @@ void Projectile::Start(Scene* scene)
 
 	_data->start(_luaObject, this);
 
-	float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+	float defaultVolume = _level->GetContext()->player->GetSfxVolume();
 	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);
 
-	_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
+	_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 	GameObject::Start(scene);
 }
@@ -170,10 +170,10 @@ void Projectile::MarkForDestroy()
 {
 	if (_collided)
 	{
-		float defaultVolume = _currentScene->GetContext()->player->GetSfxVolume();
+		float defaultVolume = _level->GetContext()->player->GetSfxVolume();
 		RandomizedSoundResult randSound = _data->destroySound(_data->rng, defaultVolume);
 
-		_currentScene->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
+		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 	}
 
 	GameObject::MarkForDestroy();
