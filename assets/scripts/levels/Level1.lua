@@ -38,7 +38,8 @@ level.usedFonts = {
 level.usedSounds = {
     {'Bullet', 'Bullet.wav'},
     {'Hit', 'OnDamage.wav'},
-    {'Exp1', 'Exp1.wav'}
+    {'Exp1', 'Exp1.wav'},
+    {'Switch', 'Switch.wav'}
 }
 
 level.player = {

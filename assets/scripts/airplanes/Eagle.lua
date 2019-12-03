@@ -10,6 +10,14 @@ local Eagle = {
     healthCharSize = 24,
     score = 20,
 
+    switchSound = {
+        sound = 'Switch',
+        minPitch = 1,
+        maxPitch = 1,
+        minVolumeFactor = 1,
+        maxVolumeFactor = 1
+    },
+
     explosionData = {
         texture = 'Explosions',
         framesPerAnimation = 10,

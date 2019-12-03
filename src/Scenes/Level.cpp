@@ -208,6 +208,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.explosionMaxScale = explosionData["maxScale"];
 		apdata.explosionMinScale = explosionData["minScale"];
 		sol::table explosionSounds = explosionData["sounds"];
+		apdata.switchSound = tableToSound(plane["switchSound"]);
 		for (int i = 1; i <= explosionSounds.size(); i++)
 		{
 			RandomizedSound explosionSound = tableToSound(explosionSounds[i]);
