@@ -18,10 +18,12 @@ TextAnimation::TextAnimation(const std::string& finalStr) :
 
 void TextAnimation::SetFinalString(const std::string& finalStr)
 {
+	_currentStr.str(std::string());
 	_currentStr.clear();
 	_finalStr = finalStr;
 	_finished = false;
 	_currentLetter = 0;
+	_elapsedTime = 0.f;
 	_strSize = _finalStr.size();
 }
 
