@@ -27,7 +27,8 @@ level.usedTextures = {
     {'Vortex', 'assets/textures/Vortex.png'},
     {'Smoke', 'assets/textures/Smoke.png'},
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
-    {'Health', 'assets/textures/Health.png'}
+    {'Health', 'assets/textures/Health.png'},
+    {'Ship', 'assets/textures/Ship.png'}
 }
 
 level.usedFonts = {
@@ -74,7 +75,15 @@ level.animations = {
         frames = 8,
         firstRect = {0, 0, 90, 90},
         frameDuration = 0.1,
-        position = {78 * 3.125, 702 * level.scale}
+        position = {0, 615}
+    },
+
+    {
+        texture = 'Ship',
+        frames = 4,
+        firstRect = {0, 0, 161 / 4, 67},
+        frameDuration = 0.2,
+        position = {0, 287}
     }
 }
 
