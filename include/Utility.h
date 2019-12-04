@@ -193,5 +193,33 @@ public:
 };
 
 
+/*
+	Random utility that returns a Vector2f inside a circle of radius 1
+	https://programming.guide/random-point-within-circle.html
+*/
+class UniformCircleDistribution
+{
+	std::uniform_real_distribution<float> _distribution;
+
+public:
+	UniformCircleDistribution() :
+		_distribution(0.f, 1.f)
+	{
+	}
+
+	template <class Generator>
+	sf::Vector2f operator()(Generator& generator)
+	{
+		float a = _distribution(generator) * 2.f * M_PI;
+		float r = sqrt(_distribution(generator));
+
+		float x = r * cos(a);
+		float y = r * sin(a);
+
+		return { x, y };
+	}
+};
+
+
 
 using ParticleAnimationFunction = std::function<void(thor::Particle&, sf::Time)> ;
