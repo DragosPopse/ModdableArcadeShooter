@@ -184,7 +184,8 @@ void LuaInit_Game(sol::state& lua)
 		"getEnemyAirplanesRoot", &Level::GetEnemyAirplanesRoot,
 		"getTexture", &Level::GetTexture,
 		"addParticles", &Level::AddLuaParticle,
-		"playVignetteAnimation", &Level::PlayVignetteAnimation);
+		"playVignetteAnimation", &Level::PlayVignetteAnimation,
+		"shakeScreen", &Level::ShakeScreen);
 
 	engineTable.new_usertype<UniformVector2fDistribution>("UniformVector2fDistribution",
 		sol::constructors<UniformVector2fDistribution(float, float)>());

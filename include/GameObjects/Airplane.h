@@ -66,6 +66,7 @@ struct AirplaneData
 	std::uniform_int_distribution<int> explosionSpriteDistribution;
 	std::uniform_int_distribution<int> explosionSoundDistribution;
 
+	sol::function onDestroy;
 
 	int score;
 };

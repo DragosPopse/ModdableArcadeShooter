@@ -19,6 +19,7 @@
 #include "LocalMenu.h"
 #include "GameObjects/Pickup.h"
 #include "SoundQueue.h"
+#include "ViewShaker.h"
 
 class Airplane;
 class Projectile;
@@ -127,6 +128,9 @@ class Level :
 
 	float _timeScale;
 
+	ViewShaker _shaker;
+	float _actualViewPosition; //so that the shaker doesn't desync the view
+
 public:
 	Level(Context* context, const std::string& fileName);
 
@@ -172,6 +176,8 @@ public:
 	sf::Shader* GetVignette() { return &_vignetteShader; }
 
 	void PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch = 1);
+
+	void ShakeScreen(float amplitude, float duration);
 
 private:
 	void SpawnObjects();

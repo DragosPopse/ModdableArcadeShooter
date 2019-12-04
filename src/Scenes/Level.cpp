@@ -80,7 +80,7 @@ Level::Level(Context* context, const std::string& path) :
 	std::random_device randDevice;
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
-
+	_shaker.SetView(&_worldView);
 
 	sol::table level = _context->lua->do_file(path);
 
@@ -192,6 +192,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
+		apdata.onDestroy = plane["onDestroy"];
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -349,6 +350,7 @@ Level::Level(Context* context, const std::string& path) :
 	std::string playerPlane = playerTable["airplane"];
 
 	_worldView.setCenter(_playerSpawn);
+	_actualViewPosition = _worldView.getCenter().y;
 
 	auto& airplaneData = _airplaneDataDict[playerPlane];
 	std::unique_ptr<Airplane> airplane(new Airplane(&airplaneData));
@@ -535,7 +537,11 @@ bool Level::FixedUpdate(float dt)
 	}
 	if (!_win)
 	{
-		_worldView.move(0, -_scrollSpeed * dt);
+		//_worldView.move(0, -_scrollSpeed * dt);
+		_actualViewPosition += -_scrollSpeed * dt;
+		_worldView.setCenter(_playerSpawn.x, _actualViewPosition);
+		_shaker.Update(dt);
+
 	}
 	if (_worldView.getCenter().y + _worldView.getSize().y / 2 < _background[_currentBgIndex]->getPosition().y - _background[_currentBgIndex]->GetBoundingRect().height / 2)
 	{
@@ -941,4 +947,10 @@ void Level::SwitchBackground()
 void Level::PlaySound(const sf::SoundBuffer& buffer, float volume, float pitch)
 {
 	_soundQueue.PlaySound(buffer, volume, pitch);
+}
+
+
+void Level::ShakeScreen(float amplitude, float duration)
+{
+	_shaker.Shake(amplitude, duration);
 }

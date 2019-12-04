@@ -233,6 +233,8 @@ void Airplane::Damage(int hp)
 		{
 			_level->AddDownedEnemy(_data->name);
 		}
+
+		_data->onDestroy(this);
 	}
 	else
 	{

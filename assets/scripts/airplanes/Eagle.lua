@@ -39,7 +39,7 @@ local Eagle = {
     },
 
     onDestroy = function (this)
-        this:playAnimation('Explode')
+        this:getLevel():shakeScreen(100, 0.5);
     end,
     
     aiPattern = { --{angle, distance} 
