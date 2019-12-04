@@ -9,8 +9,8 @@ level.scrollSpeed = 120
 level.scale = 3.125
 level.scale = 4
 level.borderSize = 40
-level.length = 400 * level.scale * 3
---level.length = 200
+--level.length = 400 * level.scale * 3
+level.length = 1000
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
 level.menuSoundtrack = 'assets/audio/music/MainMenu.wav'
@@ -56,7 +56,9 @@ level.usedPickups = {
     'HomingMissileAmmo'
 }
 
-level.spawnPoints = { }
+level.spawnPoints = { 
+    {'Eagle', 400, 500}
+}
  
 for i, v in ipairs(spawn.wall('Eagle', 5, {0, 3500}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
