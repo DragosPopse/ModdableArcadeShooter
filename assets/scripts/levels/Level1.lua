@@ -9,8 +9,8 @@ level.scrollSpeed = 120
 level.scale = 3.125
 level.scale = 4
 level.borderSize = 40
---level.length = 400 * level.scale * 3
-level.length = 1000
+level.length = 400 * level.scale * 3
+--level.length = 1000
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
 level.menuSoundtrack = 'assets/audio/music/MainMenu.wav'
@@ -43,7 +43,7 @@ level.usedSounds = {
 }
 
 level.player = {
-    airplane = 'Eagle',
+    airplane = 'Eagle'
     --spawnPoint = {400, 400 * level.scale * 3 - 100}
 }
 
@@ -57,7 +57,7 @@ level.usedPickups = {
 }
 
 level.spawnPoints = { 
-    {'Eagle', 400, 500}
+    {'Eagle', 0, 600}
 }
  
 for i, v in ipairs(spawn.wall('Eagle', 5, {0, 3500}, 0, 100)) do
@@ -80,7 +80,7 @@ level.animations = {
 
 level.texts = {
     {
-        y = 4000,
+        y = 600,
         text = 'Wave 1 {MoveDown}',
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
