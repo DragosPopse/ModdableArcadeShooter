@@ -28,6 +28,14 @@ void TextAnimation::SetFinalString(const std::string& finalStr)
 }
 
 
+void TextAnimation::Skip()
+{
+	_currentStr.str(_finalStr);
+	SetString(_finalStr);
+	_finished = true;
+}
+
+
 void TextAnimation::SetString(const std::string& str)
 {
 	_text.setString(str);
@@ -60,7 +68,7 @@ void TextAnimation::Update(float dt)
 			MarkForDestroy();
 		}
 	}
-	else
+	else if (!_finished)
 	{
 		if (_elapsedTime > _timePerLetter)
 		{

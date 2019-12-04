@@ -214,6 +214,7 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 				if (_score->GetCurrentState() != NumberIncrementAnimation::StateID::None)
 				{
 					_score->Skip();
+					_summaryText->Skip();
 				}
 				else
 				{

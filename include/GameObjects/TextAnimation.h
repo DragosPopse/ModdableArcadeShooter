@@ -36,6 +36,7 @@ public:
 	void SetCharSize(unsigned int n);
 
 	void SetFinalString(const std::string& finalStr);
+	void Skip();
 
 private:
 	void SetString(const std::string& str);
