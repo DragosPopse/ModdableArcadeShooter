@@ -45,8 +45,8 @@ local Eagle = {
     end,
     
     aiPattern = { --{angle, distance} 
-        {45, 80},
-        {-45, 80},
+        --{45, 80},
+        --{-45, 80},
         {0, 80}
     },
 

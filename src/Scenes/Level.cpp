@@ -411,6 +411,8 @@ Level::Level(Context* context, const std::string& path) :
 		sf::Vector2f animationPosition;
 		animationPosition.x = animationData["position"][1];
 		animationPosition.y = animationData["position"][2];
+		animationPosition.x += _playerSpawn.x;
+		animationPosition.y = _levelLength - animationPosition.y;
 
 		Animation* animation = new Animation();
 		animation->SetTexture(_textures[animationTexture]);
@@ -436,6 +438,8 @@ Level::Level(Context* context, const std::string& path) :
 		std::string id = spawnPoints[i][1];
 		spawn.x = spawnPoints[i][2];
 		spawn.y = spawnPoints[i][3];
+		spawn.y = _levelLength - spawn.y;
+		spawn.x += _playerSpawn.x;
 		spawn.data = &_airplaneDataDict[id];
 		_enemySpawns.push_back(spawn);
 	}
@@ -448,6 +452,7 @@ Level::Level(Context* context, const std::string& path) :
 		sol::table text = texts[1];
 		tdata.str = _context->player->Parse(text["text"]);
 		tdata.y = text["y"];
+		tdata.y = _levelLength - tdata.y;
 		tdata.timePerLetter = text["timePerLetter"];
 		tdata.timeBeforeDestroy = text["timeBeforeDestroy"];
 		tdata.charSize = text["charSize"];
