@@ -22,7 +22,6 @@ void ViewShaker::Shake(float amplitude, float duration)
 	_elapsedTime = 0.f;
 	_amplitude = amplitude;
 	_duration = duration;
-	_originalPosition = _view->getCenter();
 }
 
 
@@ -48,4 +47,10 @@ void ViewShaker::Update(float dt)
 			_shaking = false;
 		}
 	}
+}
+
+
+void ViewShaker::SetSeed(unsigned int seed)
+{
+	_rng.seed(seed);
 }

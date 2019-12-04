@@ -81,6 +81,7 @@ Level::Level(Context* context, const std::string& path) :
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
+	_shaker.SetSeed(randDevice());
 
 	sol::table level = _context->lua->do_file(path);
 
