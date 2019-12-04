@@ -82,6 +82,8 @@ Level::Level(Context* context, const std::string& path) :
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
 	_shaker.SetSeed(randDevice());
+	(*_context->lua)["_level_seed"] = randDevice();
+	_context->lua->do_string("math.randomseed(_level_seed)");
 
 	sol::table level = _context->lua->do_file(path);
 

@@ -39,7 +39,9 @@ local Eagle = {
     },
 
     onDestroy = function (this)
-        this:getLevel():shakeScreen(100, 0.5);
+        if math.random() < 0.5 then
+            this:getLevel():shakeScreen(10, 0.3)
+        end
     end,
     
     aiPattern = { --{angle, distance} 
