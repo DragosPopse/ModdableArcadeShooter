@@ -7,7 +7,7 @@ level.repeatBackground = true
 --level.scrollSpeed = 60
 level.scrollSpeed = 120
 level.scale = 3.125
-level.scale = 4
+--level.scale = 4
 level.borderSize = 40
 level.length = 400 * level.scale * 3
 --level.length = 1000
@@ -75,7 +75,7 @@ level.animations = {
         frames = 8,
         firstRect = {0, 0, 90, 90},
         frameDuration = 0.1,
-        position = {0, 615}
+        position = {-74 * level.scale, 615 * level.scale}
     },
 
     {
@@ -83,7 +83,7 @@ level.animations = {
         frames = 4,
         firstRect = {0, 0, 161 / 4, 67},
         frameDuration = 0.2,
-        position = {0, 287}
+        position = {-33 * level.scale, 287 * level.scale}
     }
 }
 

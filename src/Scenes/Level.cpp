@@ -362,8 +362,8 @@ Level::Level(Context* context, const std::string& path) :
 	_playerAirplane = airplane.get();
 
 	//_background[1]->setPosition(0, _worldView.getCenter().y - _background[1]->GetBoundingRect().height + _worldView.getSize().y / 2);
-	_background[0]->setPosition(_worldView.getSize().x / 2, _worldView.getCenter().y - _worldView.getSize().y / 2);
-	_background[1]->setPosition(_worldView.getSize().x / 2, _background[0]->getPosition().y - _background[0]->GetBoundingRect().height);
+	_background[0]->setPosition(_worldView.getCenter().x, _worldView.getCenter().y - _background[0]->GetBoundingRect().height / 2 + _worldView.getSize().y / 2);
+	_background[1]->setPosition(_worldView.getCenter().x, _background[0]->getPosition().y - _background[0]->GetBoundingRect().height);
 
 	_enemyProjectilesRoot = new GameObject();
 	_playerProjectilesRoot = new GameObject();
