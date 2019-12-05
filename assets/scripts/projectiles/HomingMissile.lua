@@ -19,7 +19,9 @@ local HomingMissile = {
     },
 
     muzzleRect = {0, 57, 13, 19},
-    rect = {31, 56, 19, 43},
+    rects = {
+        {49, 56, 19, 43}
+    },
     iconRect = {0 + 56 * 1, 0, 56, 56},
 
     scale = 1.5,

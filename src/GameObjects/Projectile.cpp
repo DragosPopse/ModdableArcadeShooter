@@ -71,7 +71,9 @@ void Projectile::Update(float dt)
 	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.02f)
 	{
 		_rectChanged = true;
-		SetTextureRect(_data->rect);
+		int randRect = _data->rectDistribution(_data->rng);
+		//std::cout << randRect << '\n';
+		SetTextureRect(_data->rects[randRect]);
 		setScale(_data->scale, _data->scale);
 	}
 

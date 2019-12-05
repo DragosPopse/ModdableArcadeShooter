@@ -2,7 +2,11 @@ local Bullet = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
-    rect = {14, 57, 9, 22},
+    rects = {
+        {14, 57, 9, 22},
+        {22, 56, 9, 22},
+        {31, 56, 9, 22}
+    },
     iconRect = {0 + 56 * 2, 0, 56, 56},
 
     muzzleSound = {

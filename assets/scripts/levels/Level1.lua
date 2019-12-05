@@ -58,7 +58,8 @@ level.usedPickups = {
 }
 
 level.spawnPoints = { 
-    {'Eagle', 0, 600}
+    {'Eagle', 0, 1000},
+    {'Eagle', 100, 1500}
 }
  
 for i, v in ipairs(spawn.wall('Eagle', 5, {0, 3500}, 0, 100)) do

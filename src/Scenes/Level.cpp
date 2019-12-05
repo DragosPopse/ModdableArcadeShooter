@@ -257,7 +257,12 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
 			projdata.destroySound = tableToSound(projectile["destroySound"]);
 			projdata.iconRect = TableToRect(projectile["iconRect"]);
-			projdata.rect = TableToRect(projectile["rect"]);
+			sol::table rects = projectile["rects"];
+			for (int i = 1; i <= rects.size(); i++)
+			{
+				projdata.rects.push_back(TableToRect(rects[i]));
+			}
+			projdata.rectDistribution = std::uniform_int_distribution<int>(0, projdata.rects.size() - 1);
 			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
 			projdata.speed = projectile["speed"];
 			projdata.damage = projectile["damage"];

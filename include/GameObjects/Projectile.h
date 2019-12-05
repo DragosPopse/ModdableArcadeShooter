@@ -22,7 +22,7 @@ struct ProjectileData
 	sf::Texture* texture;
 	sf::Texture* iconTexture;
 	sf::IntRect iconRect;
-	sf::IntRect rect;
+	std::vector<sf::IntRect> rects;
 	sf::IntRect muzzleRect;
 	float speed;
 	int damage;
@@ -41,6 +41,7 @@ struct ProjectileData
 
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> generator;
+	std::uniform_int_distribution<int> rectDistribution;
 
 	RandomizedSound muzzleSound;
 	std::uniform_real_distribution<float> muzzleVolumeGenerator;
