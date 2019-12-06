@@ -235,7 +235,10 @@ void MainMenu::SetupSettings()
 
 
 
+void MainMenu::SetVisible(bool visible)
+{
 
+}
 
 
 

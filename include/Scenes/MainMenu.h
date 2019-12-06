@@ -7,11 +7,13 @@
 #include "Player.h"
 #include <Thor/Animations.hpp>
 #include <memory>
+#include "Menu.h"
 
 #include "Scenes/LevelSelector.h"
 
 class MainMenu :
-	public Scene
+	public Scene,
+	public Menu
 {
 	friend class KeyBindingFunction;
 	friend class LevelSelector;
@@ -74,6 +76,8 @@ public:
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Update(float dt) override;
 	bool Render() override;
+
+	void SetVisible(bool visible) override;
 
 private:
 	void SwitchSprites();
