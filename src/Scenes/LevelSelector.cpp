@@ -82,7 +82,7 @@ bool LevelSelector::HandleEvent(const sf::Event& ev)
 		{
 		case sf::Keyboard::Escape:
 			RequestPop();
-			_menu->EnableMain();
+			_menu->SetVisible(true);
 			break;
 
 		case sf::Keyboard::A:

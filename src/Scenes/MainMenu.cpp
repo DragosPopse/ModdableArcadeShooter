@@ -6,6 +6,7 @@
 #include "Utility.h"
 #include "Scenes/LevelSelector.h"
 #include "Context.h"
+#include "Scenes/SettingsPanel.h"
 
 
 MainMenu::MainMenu(Context* context, bool firstTime) :
@@ -17,10 +18,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_fade(0.9, 0),
 	_elapsedTime(0),
 	_fadeDuration(0.5f),
-	_assigningKey(false),
-	_mainTextSize(30),
-	_keybindingTextSize(30),
-	_settingsTextSize(30)
+	_textSize(30)
 {
 	if (_context->player->HasSettings())
 	{
@@ -35,40 +33,12 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_clickSound.setBuffer(_sounds["Click"]);
 	_clickSound.setVolume(_context->player->GetSfxVolume());
 
-	_mainPanel = tgui::VerticalLayout::create();
-	_settingsPanel = tgui::VerticalLayout::create();
-	_keyBindingsPanel = tgui::VerticalLayout::create();
-	_mainPanel->setVisible(true);
-	_settingsPanel->setVisible(false);
-	_keyBindingsPanel->setVisible(false);
-	
-	
-	SetupMain();
-	SetupSettings();
-	SetupKeyBindings();
-	SetupCredits();
-	SetupSelector();
-	
-	_gui.add(_settingsPanel);
-	_gui.add(_mainPanel);
-	_gui.add(_keyBindingsPanel);
-
-	_levelSelector.reset(new LevelSelector(_context, this));
-	if (!firstTime)
-	{
-		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
-		_context->music->setVolume(_context->player->GetMusicVolume());
-		_context->music->play();
-	}
-}
-
-
-void MainMenu::SetupMain()
-{
 	_view = _context->window->getDefaultView();
 	_textures.Load("Background", "assets/textures/MenuBackground.png");
 	_fonts.Load("Menu", "assets/fonts/pcsenior.ttf");
-	
+
+	_settingsPanel.reset(new SettingsPanel(_context, this, _fonts["Menu"], _sounds["Click"]));
+
 	_parts[0].setTexture(_textures["Background"]);
 	_parts[1].setTexture(_textures["Background"]);
 	float scale = (float)_context->window->getSize().x / _textures["Background"].getSize().x;
@@ -76,30 +46,31 @@ void MainMenu::SetupMain()
 	_parts[1].setScale(scale, scale);
 	_parts[1].setPosition(0, _parts[0].getPosition().y - _parts[0].getGlobalBounds().height);
 
+	_panel = tgui::VerticalLayout::create();
 	_settingsButton = tgui::Button::create("Settings");
 	_playButton = tgui::Button::create("Play");
 	_creditsButton = tgui::Button::create("Credits");
 	_exitButton = tgui::Button::create("Exit");
 
-	_settingsButton->setTextSize(_mainTextSize);
-	_playButton->setTextSize(_mainTextSize);
-	_creditsButton->setTextSize(_mainTextSize);
-	_exitButton->setTextSize(_mainTextSize);
+	_settingsButton->setTextSize(_textSize);
+	_playButton->setTextSize(_textSize);
+	_creditsButton->setTextSize(_textSize);
+	_exitButton->setTextSize(_textSize);
 
 	_playButton->setInheritedFont(_fonts["Menu"]);
 	_creditsButton->setInheritedFont(_fonts["Menu"]);
 	_exitButton->setInheritedFont(_fonts["Menu"]);
 	_settingsButton->setInheritedFont(_fonts["Menu"]);
 
-	_mainPanel->setSize("40%");
-	_mainPanel->setPosition("(&.size - size) / 2");
-	_mainPanel->add(_playButton);
-	_mainPanel->addSpace(0.1);
-	_mainPanel->add(_settingsButton);
-	_mainPanel->addSpace(0.1);
-	_mainPanel->add(_creditsButton);
-	_mainPanel->addSpace(0.1);
-	_mainPanel->add(_exitButton);
+	_panel->setSize("40%");
+	_panel->setPosition("(&.size - size) / 2");
+	_panel->add(_playButton);
+	_panel->addSpace(0.1);
+	_panel->add(_settingsButton);
+	_panel->addSpace(0.1);
+	_panel->add(_creditsButton);
+	_panel->addSpace(0.1);
+	_panel->add(_exitButton);
 
 	_exitButton->connect("pressed",
 		[this]()
@@ -112,7 +83,7 @@ void MainMenu::SetupMain()
 		[this]()
 		{
 			_clickSound.play();
-			DisableAll();
+			SetVisible(false);
 			RequestPush(_levelSelector);
 		});
 
@@ -120,229 +91,52 @@ void MainMenu::SetupMain()
 		[this]()
 		{
 			_clickSound.play();
-			EnableSettings();
+			SetVisible(false);
+			_settingsPanel->SetVisible(true);
+			RequestPush(_settingsPanel);
 		});
+
+
+
 
 	
-}
-
-
-void MainMenu::EnableMain()
-{
-	DisableAll();
-	_mainPanel->setVisible(true);
-}
-
-
-void MainMenu::EnableSettings()
-{
-	DisableAll();
-	_settingsPanel->setVisible(true);
-}
-
-
-void MainMenu::EnableKeyBindings()
-{
-	DisableAll();
-	_keyBindingsPanel->setVisible(true);
-}
-
-
-void MainMenu::DisableAll()
-{
-	_settingsPanel->setVisible(false);
-	_mainPanel->setVisible(false);
-	_keyBindingsPanel->setVisible(false);
-}
-
-
-void MainMenu::SetupSelector()
-{
-
-}
-
-
-void MainMenu::SetupCredits()
-{
-
-}
-
-
-void MainMenu::SetupSettings()
-{
-	_musicSlider = tgui::Slider::create(0, 100);
-	_sfxSlider = tgui::Slider::create(0, 100);
-	_musicLabel = tgui::Label::create("Music");
-	_sfxLabel = tgui::Label::create("SFX");
-	_confirmSettingsButton = tgui::Button::create("Confirm");
-	_keyBindingsButton = tgui::Button::create("Key Bindings"); 
-
-	_confirmSettingsButton->connect("pressed", 
-		[this]()
-		{
-			_clickSound.play();
-			EnableMain();
-			_context->player->SaveSettings();
-		});
 	
-	_keyBindingsButton->connect("pressed",
-		[this]()
-		{
-			_clickSound.play();
-			EnableKeyBindings();
-		});
+	_gui.add(_panel);
 
-	_sfxSlider->setValue(_context->player->GetSfxVolume());
-	_musicSlider->setValue(_context->player->GetMusicVolume());
+	_levelSelector.reset(new LevelSelector(_context, this));
+	if (!firstTime)
+	{
+		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
+		_context->music->setVolume(_context->player->GetMusicVolume());
+		_context->music->play();
+	}
 
-	_sfxSlider->connect("ValueChanged", [this](float v)
-		{
-			_clickSound.setVolume(_context->player->GetSfxVolume());
-			_context->player->SetSfxVolume(v);
-		});
-	_musicSlider->connect("ValueChanged", [this](float v)
-		{
-			_context->player->SetMusicVolume(v);
-			_context->music->setVolume(v);
-		});
-
-	_settingsPanel->setSize("60%");
-	_settingsPanel->setPosition("(&.size - size) / 2");
-	_sfxLabel->getRenderer()->setTextColor(sf::Color::Black);
-	_musicLabel->getRenderer()->setTextColor(sf::Color::Black);
-	//_sfxLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-	//_musicLabel->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-	_sfxLabel->getRenderer()->setFont(_fonts["Menu"]);
-	_musicLabel->getRenderer()->setFont(_fonts["Menu"]);
-	_sfxLabel->setTextSize(_settingsTextSize);
-	_musicLabel->setTextSize(_settingsTextSize);
-	_keyBindingsButton->setTextSize(_settingsTextSize);
-	_confirmSettingsButton->setTextSize(_settingsTextSize);
-	_confirmSettingsButton->setInheritedFont(_fonts["Menu"]);
-	_keyBindingsButton->setInheritedFont(_fonts["Menu"]);
-	_keyBindingsButton->setTextSize(_settingsTextSize);
-
-
-	_settingsPanel->add(_sfxLabel);
-	_settingsPanel->add(_sfxSlider);
-	_settingsPanel->add(_musicLabel);
-	_settingsPanel->add(_musicSlider);
-	_settingsPanel->addSpace(0.1);
-	_settingsPanel->add(_keyBindingsButton);
-	_settingsPanel->addSpace(0.1);
-	_settingsPanel->add(_confirmSettingsButton);
+	SetVisible(true);
 }
+
+
+
 
 
 
 void MainMenu::SetVisible(bool visible)
 {
-
+	_panel->setVisible(visible);
 }
 
 
 
-void MainMenu::SetupKeyBindings()
-{
-	_confirmBindingsButton = tgui::Button::create("Confirm");
-
-	_moveLeftButton = tgui::Button::create(BuildString("Move Left: ", ToString(_context->player->GetKey(Player::MoveLeft))));
-	_moveRightButton = tgui::Button::create(BuildString("Move Right: ", ToString(_context->player->GetKey(Player::MoveRight))));
-	_moveUpButton = tgui::Button::create(BuildString("Move Up: ", ToString(_context->player->GetKey(Player::MoveUp))));
-	_moveDownButton = tgui::Button::create(BuildString("Move Down: ", ToString(_context->player->GetKey(Player::MoveDown))));
-	_fireButton = tgui::Button::create(BuildString("Fire: ", ToString(_context->player->GetKey(Player::Fire))));
-	_nextWeaponButton = tgui::Button::create(BuildString("Next Weapon: ", ToString(_context->player->GetKey(Player::NextWeapon))));
-	_previousWeaponButton = tgui::Button::create(BuildString("Previous Weapon: ", ToString(_context->player->GetKey(Player::PreviousWeapon))));
-	
-
-
-	_keyButtons.push_back(_moveLeftButton);
-	_keyButtons.push_back(_moveRightButton);
-	_keyButtons.push_back(_moveUpButton);
-	_keyButtons.push_back(_moveDownButton);
-	_keyButtons.push_back(_fireButton);
-	_keyButtons.push_back(_nextWeaponButton);
-	_keyButtons.push_back(_previousWeaponButton);
-
-	auto assignKey = [this](tgui::Button::Ptr button, const std::string& text, Player::ActionType action)
-	{
-		_assigningKey = true;
-		_currentKeyButton = button;
-		_buttonText = text;
-		_currentKeyButton->setText(BuildString(text, ": ..."));
-		_confirmBindingsButton->setEnabled(false);
-		for (int i = 0; i < _keyButtons.size(); i++)
-		{
-			_keyButtons[i]->setEnabled(false);
-		}
-		_actionToBind = action;
-	};
-
-	_moveLeftButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
-	_moveRightButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
-	_moveUpButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
-	_moveDownButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
-	_fireButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_fireButton, "Fire", Player::Fire); });
-	_previousWeaponButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
-	_nextWeaponButton->connect("pressed", [this, assignKey]() {_clickSound.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
-	
-
-
-	_confirmBindingsButton->connect("pressed",
-		[this]()
-		{
-			_clickSound.play();
-			EnableSettings();
-		});
-
-	_keyBindingsPanel->setSize("70%");
-	_keyBindingsPanel->setPosition("(&.size - size) / 2");
-	for (int i = 0; i < _keyButtons.size(); i++)
-	{		
-		_keyButtons[i]->setTextSize(_keybindingTextSize);
-		_keyButtons[i]->setInheritedFont(_fonts["Menu"]);
-		_keyBindingsPanel->add(_keyButtons[i]);
-		_keyBindingsPanel->addSpace(0.1);
-	}
-	_confirmBindingsButton->setTextSize(_keybindingTextSize);
-	_confirmBindingsButton->setInheritedFont(_fonts["Menu"]);
-	_keyBindingsPanel->add(_confirmBindingsButton);
-}
 
 
 bool MainMenu::HandleEvent(const sf::Event& ev)
 {
 	_gui.handleEvent(ev);
 
-	if (_assigningKey && ev.type == sf::Event::KeyPressed)
-	{
-		_assigningKey = false;
-		_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(ev.key.code)));
-		for (int i = 0; i < _keyButtons.size(); i++)
-		{
-			_keyButtons[i]->setEnabled(true);
-		}
-		_confirmBindingsButton->setEnabled(true);
-		_context->player->AssignKey(_actionToBind, ev.key.code);
-	}
-
 	if (ev.type == sf::Event::Closed)
 	{
 		RequestClear();
 	}
 
-	/*if (ev.type == sf::Event::KeyPressed)
-	{
-		if (ev.key.code == sf::Keyboard::A)
-		{
-			_context->music->setPitch(_context->music->getPitch() - 0.1);
-		}
-		else if (ev.key.code == sf::Keyboard::D)
-		{
-			_context->music->setPitch(_context->music->getPitch() + 0.1);
-		}
-		std::cout << _context->music->getPitch() << '\n';
-	}*/
 	return false;
 }
 
