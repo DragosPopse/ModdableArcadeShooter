@@ -195,6 +195,7 @@ sf::Keyboard::Key Player::GetKey(ActionType action)
 void Player::LoadSettings()
 {
 	std::string fileName = BuildString(CONFIG_PATH, "Player.json");
+	_keyBinding.clear();
 	std::ifstream stream(fileName);
 	rjs::IStreamWrapper wrapper(stream);
 

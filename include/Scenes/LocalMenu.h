@@ -5,11 +5,14 @@
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
+#include "Menu.h"
+#include "SettingsPanel.h"
 
 class Level;
 
 class LocalMenu :
-	public Scene
+	public Scene,
+	public Menu
 {
 	class LocalMenuState
 	{
@@ -45,6 +48,11 @@ class LocalMenu :
 		public LocalMenuState
 	{
 		tgui::Gui _gui;
+		tgui::VerticalLayout::Ptr _panel;
+		std::shared_ptr<SettingsPanel> _settingsPanel;
+		tgui::Button::Ptr _resume;
+		tgui::Button::Ptr _exit;
+		tgui::Button::Ptr _settings;
 
 	public:
 		IdleState(LocalMenu* menu);
@@ -53,6 +61,10 @@ class LocalMenu :
 		void Draw() override;
 		void HandleEvent(const sf::Event& ev) override;
 		void Update(float dt) override;
+
+		void SetVisible(bool visible);
+
+		void LateInit();
 	};
 
 	class PoppingState : 
@@ -75,7 +87,6 @@ class LocalMenu :
 
 	Level* _level;
 	float _lowestPitch;
-	float _highestVolume;
 	int _highestAlpha;
 
 	LocalMenuState* _currentState;
@@ -84,6 +95,8 @@ class LocalMenu :
 	IdleState _idle;
 
 	sf::Music _music;
+	
+	sf::Sound _click;
 
 public:
 	LocalMenu(Context* context);
@@ -94,6 +107,8 @@ public:
 	bool Render() override;
 	void Enable() override;
 	void Disable() override;
+
+	void SetVisible(bool visible) override;
 
 	void SetLevel(Level* lvl) { _level = lvl; }
 

@@ -15,6 +15,12 @@ LocalMenu::LocalMenu(Context* context) :
 {
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+
+	_fonts.Load("Menu", "assets/fonts/pcsenior.ttf");
+	_sounds.Load("Click", "assets/audio/sfx/Click.wav");
+	_click.setBuffer(_sounds["Click"]);
+
+	_idle.LateInit();
 }
 
 
@@ -64,7 +70,7 @@ void LocalMenu::Enable()
 	_music.setVolume(0.f);
 	_music.setPitch(_lowestPitch);
 	_music.play();
-	_highestVolume = _context->player->GetMusicVolume();
+	SetVisible(true);
 	StartPushingState();
 }
 
@@ -73,11 +79,11 @@ void LocalMenu::Disable()
 {
 	_level->_timeScale = 1.f;
 	_music.stop();
-	_context->music->setVolume(_highestVolume);
+	_context->music->setVolume(_context->player->GetMusicVolume());
 	_context->music->setPitch(1.f);
 	for (auto& sound : _level->_soundQueue)
 	{
-		sound.setVolume(_highestVolume);
+		sound.setVolume(_context->player->GetSfxVolume());
 		sound.setPitch(1.f);
 	}
 }
@@ -127,42 +133,66 @@ LocalMenu::PushingState::PushingState(LocalMenu* menu) :
 }
 
 
+void LocalMenu::IdleState::LateInit()
+{
+	_settingsPanel.reset(new SettingsPanel(_menu->_context, static_cast<Menu*>(_menu), tgui::Font(_menu->_fonts["Menu"]), _menu->_sounds["Click"]));
+	_resume->setInheritedFont(_menu->_fonts["Menu"]);
+	_exit->setInheritedFont(_menu->_fonts["Menu"]);
+	_settings->setInheritedFont(_menu->_fonts["Menu"]);
+}
+
+
 LocalMenu::IdleState::IdleState(LocalMenu* menu) :
 	LocalMenuState(menu),
-	_gui(*menu->_context->window)
+	_gui(*menu->_context->window),
+	_settingsPanel()
 {
-	tgui::Button::Ptr resume = tgui::Button::create("Resume");
-	tgui::Button::Ptr exit = tgui::Button::create("Exit");
+	_resume = tgui::Button::create("Resume");
+	_exit = tgui::Button::create("Exit");
+	_settings = tgui::Button::create("Settings");
 
 
-	resume->connect("pressed",
+	_resume->connect("pressed",
 		[this]()
 		{
+			_menu->_click.play();
 			_menu->StartPoppingState();
 		});
 
-	exit->connect("pressed",
+	_exit->connect("pressed",
 		[this]()
 		{
+			_menu->_click.play();
 			_menu->RequestClear();
-			_menu->_context->music->setVolume(_menu->_highestVolume);
+			_menu->_context->music->setVolume(_menu->GetContext()->player->GetMusicVolume());
 			_menu->_context->music->setPitch(1.f);
 			std::shared_ptr<MainMenu> menu(new MainMenu(_menu->_context, false));
 			_menu->RequestPush(menu);
 		});
 
-	resume->setSize("40%", "20%");
-	resume->setTextSize(30);
-	exit->setTextSize(30);
-	exit->setSize("40%", "20%");
-	tgui::VerticalLayout::Ptr layout = tgui::VerticalLayout::create();
-	layout->setPosition("(&.size - size) / 2", "&.size - size");
-	layout->add(resume);
-	layout->add(exit);
-	layout->setSize("30%");
+	_settings->connect("pressed",
+		[this]()
+		{
+			_menu->_click.play();
+			_menu->SetVisible(false);
+			_settingsPanel->SetVisible(true);
+			_menu->RequestPush(_settingsPanel);
+		});
+
+	_resume->setSize("40%", "20%");
+	_resume->setTextSize(30);
+	_exit->setTextSize(30);
+	_settings->setTextSize(30);
+	_exit->setSize("40%", "20%");
+	_panel = tgui::VerticalLayout::create();
+	_panel->setPosition("(&.size - size) / 2", "&.size - size");
+	_panel->add(_resume);
+	_panel->add(_settings);
+	_panel->add(_exit);
+	_panel->setSize("30%");
 
 
-	_gui.add(layout);
+	_gui.add(_panel);
 }
 
 
@@ -181,6 +211,20 @@ LocalMenu::PoppingState::PoppingState(LocalMenu* menu) :
 {
 	_fadeOutAnimation.SetHighestAlpha(_menu->_highestAlpha);
 }
+
+
+void LocalMenu::SetVisible(bool visible)
+{
+	_idle.SetVisible(visible);
+}
+
+
+void LocalMenu::IdleState::SetVisible(bool visible)
+{
+	_panel->setVisible(visible);
+}
+
+
 
 
 void LocalMenu::PushingState::Start()
@@ -222,8 +266,9 @@ void LocalMenu::PushingState::Update(float dt)
 		_fadeInAnimation(_menu->_background, progress);
 		float levelMusicPitch = Lerp(1.f, _menu->_lowestPitch, progress);
 		float menuMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
-		float menuMusicVolume = _menu->_highestVolume;
-		float levelMusicVolume = _menu->_highestVolume;
+		float menuMusicVolume = _menu->_context->player->GetMusicVolume();
+		float levelMusicVolume = _menu->_context->player->GetMusicVolume();
+		float levelSfxVolume = _menu->_context->player->GetSfxVolume();
 		//float levelMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		//float menuMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
 		_menu->_level->_timeScale = Lerp(1.f, 0.f, progress);
@@ -235,7 +280,7 @@ void LocalMenu::PushingState::Update(float dt)
 
 		for (auto& sound : _menu->_level->_soundQueue)
 		{
-			sound.setVolume(levelMusicVolume);
+			sound.setVolume(levelSfxVolume);
 			sound.setPitch(levelMusicPitch);
 		}
 	}
@@ -243,7 +288,7 @@ void LocalMenu::PushingState::Update(float dt)
 	{
 		_menu->_level->_timeScale = 0.f;
 		_menu->_context->music->pause();
-		_menu->_music.setVolume(_menu->_highestVolume);
+		_menu->_music.setVolume(_menu->GetContext()->player->GetMusicVolume());
 		_menu->_music.setPitch(1.f);
 		_menu->StartIdleState();
 		for (auto& sound : _menu->_level->_soundQueue)
@@ -260,7 +305,7 @@ void LocalMenu::PushingState::Update(float dt)
 
 void LocalMenu::IdleState::Update(float dt)
 {
-
+	_menu->_music.setVolume(_menu->_context->player->GetMusicVolume()); //in case volume changed in settings
 }
 
 
@@ -275,8 +320,9 @@ void LocalMenu::PoppingState::Update(float dt)
 		float levelMusicPitch = Lerp(_menu->_lowestPitch, 1.f, progress);
 		//float menuMusicVolume = Lerp(_menu->_highestVolume, 0.f, progress);
 		//float levelMusicVolume = Lerp(0.f, _menu->_highestVolume, progress);
-		float menuMusicVolume = _menu->_highestVolume;
-		float levelMusicVolume = _menu->_highestVolume;
+		float menuMusicVolume = _menu->GetContext()->player->GetMusicVolume();
+		float levelMusicVolume = _menu->GetContext()->player->GetMusicVolume();
+		float levelSfxVolume = _menu->GetContext()->player->GetSfxVolume();
 		_menu->_level->_timeScale = Lerp(0.f, 1.f, progress);
 		_menu->_context->music->setVolume(levelMusicVolume);
 		_menu->_context->music->setPitch(levelMusicPitch);
@@ -284,7 +330,7 @@ void LocalMenu::PoppingState::Update(float dt)
 		_menu->_music.setPitch(menuMusicPitch);
 		for (auto& sound : _menu->_level->_soundQueue)
 		{
-			sound.setVolume(levelMusicVolume);
+			sound.setVolume(levelSfxVolume);
 			sound.setPitch(levelMusicPitch);
 		}
 	}
