@@ -23,9 +23,11 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	if (_context->player->HasSettings())
 	{
 		_context->player->LoadSettings();
+		std::cout << "LOADED SETTINGS\n";
 	}
 	else
 	{
+		std::cout << "SAVED SETTINGS\n";
 		_context->player->SaveSettings();
 	}
 
