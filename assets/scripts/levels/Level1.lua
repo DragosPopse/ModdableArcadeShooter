@@ -89,13 +89,21 @@ level.animations = {
 
 level.texts = {
     {
-        y = 600,
+        y = 400,
         text = 'Wave 1',
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
         charSize = 40,
         font = 'Pixel'
-    }
+    },
+    {
+        y = 1000,
+        text = 'Wave 2',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel'
+    },
 }
 
 

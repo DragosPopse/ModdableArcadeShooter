@@ -457,7 +457,7 @@ Level::Level(Context* context, const std::string& path) :
 	for (int i = 1; i <= texts.size(); i++)
 	{
 		TextAnimationData tdata;
-		sol::table text = texts[1];
+		sol::table text = texts[i];
 		tdata.str = _context->player->Parse(text["text"]);
 		tdata.y = text["y"];
 		tdata.y = _levelLength - tdata.y;
@@ -696,6 +696,7 @@ void Level::DisplayText()
 		change = false;
 		if (_texts[0].y > _worldView.getCenter().y)
 		{
+			std::cout << "NEW TEXT: " << _texts[0].y << ' ' << _worldView.getCenter().y << '\n';
 			if (_currentText != nullptr)
 			{
 				_currentText->MarkForDestroy();
