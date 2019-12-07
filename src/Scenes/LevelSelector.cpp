@@ -64,7 +64,11 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 
 void LevelSelector::Enable()
 {
-	_infoText.setString(_context->player->Parse("Press {MoveLeft}/{MoveRight} to change level, \n{Fire} to confirm and Escape to go back."));
+	_infoText.setString(_context->player->Parse("Press {MoveLeft}/{MoveRight} to change level, \n{Fire} to confirm and {Exit} to go back."));
+	_leftKey = _context->player->GetKey(Player::MoveLeft);
+	_rightKey = _context->player->GetKey(Player::MoveRight);
+	_fireKey = _context->player->GetKey(Player::Fire);
+	_exitKey = _context->player->GetKey(Player::Exit);
 	CenterOrigin(_infoText);
 }
 
@@ -78,36 +82,34 @@ bool LevelSelector::HandleEvent(const sf::Event& ev)
 		break;
 
 	case sf::Event::KeyPressed:
-		switch (ev.key.code)
+		if (ev.key.code == _exitKey)
 		{
-		case sf::Keyboard::Escape:
 			RequestPop();
 			_menu->SetVisible(true);
-			break;
-
-		case sf::Keyboard::A:
+		}
+		else if (ev.key.code == _fireKey)
+		{
+			RequestClear();
+			std::shared_ptr<LevelLoader> loader(new LevelLoader(_context, _levelData[_currentIndex].file));
+			RequestPush(loader);
+		}
+		else if (ev.key.code == _leftKey)
+		{
 			_currentIndex--;
 			if (_currentIndex < 0)
 			{
 				_currentIndex = _levelData.size() - 1;
 			}
 			UpdateDisplay();
-			break;
-
-		case sf::Keyboard::D:
+		}
+		else if (ev.key.code == _rightKey)
+		{
 			_currentIndex++;
 			if (_currentIndex >= _levelData.size())
 			{
 				_currentIndex = 0;
 			}
 			UpdateDisplay();
-			break;
-
-		case sf::Keyboard::Space:
-			RequestClear();
-			std::shared_ptr<LevelLoader> loader(new LevelLoader(_context, _levelData[_currentIndex].file));
-			RequestPush(loader);
-			break;
 		}
 		break; 
 	}

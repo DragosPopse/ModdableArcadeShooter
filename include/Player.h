@@ -23,7 +23,8 @@ public:
 		MoveDown,
 		Fire,
 		NextWeapon,
-		PreviousWeapon
+		PreviousWeapon,
+		Exit
 	};
 private:
 	std::map<sf::Keyboard::Key, ActionType> _keyBinding;

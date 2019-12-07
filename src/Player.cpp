@@ -112,6 +112,7 @@ Player::Player() :
 	_keyBinding[sf::Keyboard::Space] = Fire;
 	_keyBinding[sf::Keyboard::Q] = PreviousWeapon;
 	_keyBinding[sf::Keyboard::E] = NextWeapon;
+	_keyBinding[sf::Keyboard::Escape] = Exit;
 
 	Command moveLeft;
 	moveLeft.category = GameObject::PlayerAirplane;
@@ -209,6 +210,7 @@ void Player::LoadSettings()
 	_keyBinding[(sf::Keyboard::Key)document["Fire"].GetInt()] = Fire;
 	_keyBinding[(sf::Keyboard::Key)document["NextWeapon"].GetInt()] = NextWeapon;
 	_keyBinding[(sf::Keyboard::Key)document["PreviousWeapon"].GetInt()] = PreviousWeapon;
+	_keyBinding[(sf::Keyboard::Key)document["Exit"].GetInt()] = Exit;
 
 	_sfxVolume = document["SfxVolume"].GetFloat();
 	_musicVolume = document["MusicVolume"].GetFloat();
@@ -229,7 +231,6 @@ void Player::SaveSettings()
 		switch (it->second)
 		{
 		case MoveLeft:
-			
 			document.AddMember("MoveLeft", it->first, allocator);
 			break;
 
@@ -255,6 +256,10 @@ void Player::SaveSettings()
 
 		case PreviousWeapon:
 			document.AddMember("PreviousWeapon", it->first, allocator);
+			break;
+
+		case Exit:
+			document.AddMember("Exit", it->first, allocator);
 			break;
 		}
 	}
@@ -331,6 +336,10 @@ std::string Player::Parse(const std::string& str)
 			else if (sub.compare("PreviousWeapon") == 0)
 			{
 				result << ToString(GetKey(PreviousWeapon));
+			}
+			else if (sub.compare("Exit") == 0)
+			{
+				result << ToString(GetKey(Exit));
 			}
 			else
 			{

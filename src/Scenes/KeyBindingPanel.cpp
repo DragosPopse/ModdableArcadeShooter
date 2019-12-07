@@ -21,7 +21,7 @@ KeyBindingPanel::KeyBindingPanel(Context* context, Menu* settingsPanel, const tg
 	_fireButton = tgui::Button::create(BuildString("Fire: ", ToString(_context->player->GetKey(Player::Fire))));
 	_nextWeaponButton = tgui::Button::create(BuildString("Next Weapon: ", ToString(_context->player->GetKey(Player::NextWeapon))));
 	_previousWeaponButton = tgui::Button::create(BuildString("Previous Weapon: ", ToString(_context->player->GetKey(Player::PreviousWeapon))));
-
+	_pauseButton = tgui::Button::create(BuildString("Exit/Pause: ", ToString(_context->player->GetKey(Player::Exit))));
 
 
 	_keyButtons.push_back(_moveLeftButton);
@@ -31,6 +31,7 @@ KeyBindingPanel::KeyBindingPanel(Context* context, Menu* settingsPanel, const tg
 	_keyButtons.push_back(_fireButton);
 	_keyButtons.push_back(_nextWeaponButton);
 	_keyButtons.push_back(_previousWeaponButton);
+	_keyButtons.push_back(_pauseButton);
 
 	auto assignKey = [this](tgui::Button::Ptr button, const std::string& text, Player::ActionType action)
 	{
@@ -53,7 +54,7 @@ KeyBindingPanel::KeyBindingPanel(Context* context, Menu* settingsPanel, const tg
 	_fireButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_fireButton, "Fire", Player::Fire); });
 	_previousWeaponButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
 	_nextWeaponButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
-
+	_pauseButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_pauseButton, "Exit/Pause", Player::Exit); });
 
 
 	_confirmButton->connect("pressed",
