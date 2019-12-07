@@ -93,6 +93,11 @@ void SettingsPanel::SetVisible(bool visible)
 bool SettingsPanel::HandleEvent(const sf::Event& ev)
 {
 	_gui.handleEvent(ev);
+
+	if (ev.type == sf::Event::Closed)
+	{
+		RequestClear();
+	}
 	return false;
 }
 
