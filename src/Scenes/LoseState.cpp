@@ -111,12 +111,13 @@ LoseState::LoseState(Context* context, Level* level) :
 	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
 	_infoText->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y - _infoText->GetCharSize());
 	 
-
+	int currentScore = 0;
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
 	{
 		if (it->second != 0)
 		{
-			_score->AddIncrement(it->second * _level->_airplaneDataDict[it->first].score);
+			currentScore += _level->_airplaneDataDict[it->first].score * it->second;
+			_score->AddIncrement(currentScore);
 			if (it->second == 1)
 			{
 				_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplane"));

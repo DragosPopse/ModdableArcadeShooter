@@ -24,8 +24,8 @@ local Eagle = {
         numberOfAnimations = 3,
         frameSize = {64, 64},
         frameDuration = 0.1,
-        minScale = 4,
-        maxScale = 7,
+        minScale = 2,
+        maxScale = 10,
         maxRotation = 0,
         sounds = {
             {
@@ -45,8 +45,8 @@ local Eagle = {
     end,
     
     aiPattern = { --{angle, distance} 
-        --{45, 80},
-        --{-45, 80},
+        {45, 80},
+        {-45, 80},
         {0, 80}
     },
 
