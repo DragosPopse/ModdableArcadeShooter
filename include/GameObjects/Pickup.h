@@ -3,7 +3,9 @@
 #include "GameObject.h"
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
+#include <random>
 #include "GameObjects/Animation.h"
+#include "RandomizedSound.h"
 
 class Airplane;
 class Level;
@@ -22,6 +24,9 @@ struct PickupData
 	int destroyFrames;
 	float destroyFrameDuration;
 	float destroyScale;
+
+	std::mt19937 rng;
+	RandomizedSound onPickupSound;
 };
 
 

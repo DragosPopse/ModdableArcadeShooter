@@ -56,6 +56,8 @@ void Pickup::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Pickup::OnPickup(Airplane& player)
 {
+	RandomizedSoundResult sound = _data->onPickupSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+	_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 	_data->onPickup(player);
 	
 	_animation->SetTexture(*_data->destroyTexture);
@@ -67,4 +69,5 @@ void Pickup::OnPickup(Airplane& player)
 	_animation->SetIndex(0);
 	_animation->setScale(_data->destroyScale, _data->destroyScale);
 	_playingDestroyAnimation = true;
+
 }
