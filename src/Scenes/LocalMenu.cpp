@@ -384,7 +384,7 @@ void LocalMenu::IdleState::HandleEvent(const sf::Event& ev)
 		_menu->RequestClear();
 		break;
 	case sf::Event::KeyPressed:
-		if (ev.key.code == sf::Keyboard::Escape)
+		if (ev.key.code == _menu->_context->player->GetKey(Player::Exit))
 		{
 			_menu->StartPoppingState();
 		}

@@ -22,6 +22,7 @@ class KeyBindingPanel :
 	tgui::Button::Ptr _fireButton;
 	tgui::Button::Ptr _nextWeaponButton;
 	tgui::Button::Ptr _previousWeaponButton;
+	tgui::Button::Ptr _pauseButton;
 
 	std::vector<tgui::Button::Ptr> _keyButtons;
 

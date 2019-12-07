@@ -37,6 +37,11 @@ class LevelSelector :
 	sf::Text _levelTitle;
 	sf::Text _levelScore;
 	sf::Text _infoText;
+
+	sf::Keyboard::Key _fireKey;
+	sf::Keyboard::Key _leftKey;
+	sf::Keyboard::Key _rightKey;
+	sf::Keyboard::Key _exitKey;
 	
 	
 public:

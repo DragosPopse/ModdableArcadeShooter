@@ -673,7 +673,7 @@ bool Level::HandleEvent(const sf::Event& ev)
 
 	case sf::Event::KeyPressed:
 		_context->player->HandleEvent(ev, _commands);
-		if (ev.key.code == sf::Keyboard::Escape && OnTop())
+		if (ev.key.code == _context->player->GetKey(Player::Exit) && OnTop())
 		{
 			RequestPush(_localMenu);
 		}
