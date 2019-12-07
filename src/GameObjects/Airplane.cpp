@@ -208,7 +208,7 @@ void Airplane::Damage(int hp)
 		explosion->SetTimePerFrame(_data->explosionFrameDuration);
 		float randomScale = _data->scaleDistribution(_data->rng);
 		explosion->setScale(randomScale, randomScale);
-		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _level->GetContext()->player->GetMusicVolume());
+		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _level->GetContext()->player->GetSfxVolume());
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
 		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
