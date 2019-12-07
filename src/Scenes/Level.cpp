@@ -168,6 +168,9 @@ Level::Level(Context* context, const std::string& path) :
 		pickupData.destroyFrames = destroyPickup["frames"];
 		pickupData.destroyFrameDuration = destroyPickup["frameDuration"];
 		pickupData.destroyScale = destroyPickup["scale"];
+		pickupData.rng = std::mt19937(randDevice());
+		pickupData.onPickupSound = tableToSound(pickup["onPickupSound"]);
+		
 		_pickupDataDict.insert(std::make_pair(pickupName, pickupData));
 	}
 

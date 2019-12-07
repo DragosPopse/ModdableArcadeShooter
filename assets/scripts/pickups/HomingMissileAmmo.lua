@@ -5,6 +5,14 @@ local pickup = {
     frameDuration = 0.1,
     scale = 2,
 
+    onPickupSound = {
+        sound = 'Pickup',
+        minPitch = 0.9,
+        maxPitch = 1.12,
+        minVolumeFactor = 1,
+        maxVolumeFactor = 1,
+    },
+
     destroyAnimation = {
         texture = 'SmokeExplosion',
         firstRect = {0, 0, 16, 16},
