@@ -475,6 +475,7 @@ void Airplane::AddAmmo(const std::string& projectile, int n)
 		if (projectile == _data->weapons[i]->name)
 		{
 			_ammo[i] += n;
+			UpdateAmmoDisplay();
 			break;
 		}
 	}
