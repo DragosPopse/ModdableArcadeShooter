@@ -1,11 +1,11 @@
 local Eagle = {
     texture = 'Airplanes',
-    hitpoints = 200,
-    leftRect = {0, 0, 54, 56},
-    idleRect = {54, 0, 56, 56},
-    rightRect = {110, 0, 54, 56},
-    scale = 1,
-    speed = 300,
+    hitpoints = 100,
+    leftRect = {0, 100, 43, 47},
+    idleRect = {43, 100, 57, 47},
+    rightRect = {100, 100, 43, 47},
+    scale = 1.2,
+    speed = 100,
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 20,
@@ -24,8 +24,8 @@ local Eagle = {
         numberOfAnimations = 3,
         frameSize = {64, 64},
         frameDuration = 0.1,
-        minScale = 5,
-        maxScale = 8,
+        minScale = 2,
+        maxScale = 10,
         maxRotation = 0,
         sounds = {
             {
@@ -52,14 +52,9 @@ local Eagle = {
 
     weapons = {
         {
-            projectile = 'Bullet',
+            projectile = 'BulletSlow',
             ammo = -1
         },
-
-        {
-            projectile = 'HomingMissile',
-            ammo = 9999
-        }
     },
 
     drops = {
