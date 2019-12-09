@@ -5,14 +5,14 @@
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "Utility.h"
-#include "Menu.h"
+#include "GuiMenu.h"
 #include "SettingsPanel.h"
 
 class Level;
 
 class LocalMenu :
 	public Scene,
-	public Menu
+	public GuiMenu
 {
 	class LocalMenuState
 	{
