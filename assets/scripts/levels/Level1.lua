@@ -3,12 +3,13 @@ local spawn = dofile('assets/scripts/utility/Spawn.lua')
 
 level.title = "Overseer"
 level.backgroundTexture = 'Island'
+level.repeatBackground = true
 --level.scrollSpeed = 60
 level.scrollSpeed = 120
 level.scale = 3.125
 --level.scale = 4
 level.borderSize = 40
-level.length = 300 * level.scale * 3
+level.length = 16000
 --level.length = 1000
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level1.wav'
@@ -18,7 +19,7 @@ level.defaultFont = 'Pixel'
 
 
 level.usedTextures = {
-    {'Eagle',  'assets/textures/Eagle.png'},
+    {'Airplanes',  'assets/textures/Airplanes.png'},
     {'Island', 'assets/textures/Island.png'}, 
     {'Projectiles', 'assets/textures/Projectiles.png'},
     {'Explosions', 'assets/textures/Explosions.png'},
@@ -56,18 +57,100 @@ level.usedPickups = {
     'HomingMissileAmmo'
 }
 
+
+ -- SPAWNS --
+
 level.spawnPoints = { 
-    {'Eagle', 0, 1000},
-    {'Eagle', 100, 1500}
+  
 }
  
-for i, v in ipairs(spawn.wall('Eagle', 5, {0, 3500}, 0, 100)) do
+-- WAVE 1 --
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {-350, 1500}, 15, 235)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Eagle', 6, {100, 2000 + 500}, 45, 50)) do
+for i, v in ipairs(spawn.wall('Eagle', 3, {-250, 1800}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
+
+for i, v in ipairs(spawn.wall('Eagle', 5, {-350, 2000}, 0, 175)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {0, 2100}, 90, 150)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {-200, 2100}, 105, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {200, 2100}, 75, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {-350, 2500}, 40, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 4, {350, 2500}, 140, 100)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {0, 2800}, 90, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {100, 2850}, 90, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {-100, 2850}, 90, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {200, 2900}, 90, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {-200, 2900}, 90, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {-350, 3100}, 0, 250)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {100, 3100}, 0, 250)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 3, {-300, 3300}, 0, 300)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {-350, 3500}, 0, 250)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 2, {100, 3500}, 0, 250)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.wall('Eagle', 3, {-300, 3550}, 0, 300)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+-- WAVE 2 --
+
+-- WAVE 3 --
+
+-- WAVE 4 --
+
+-- WAVE 5 --
+
+-- //SPAWNS --
 
 level.animations = {
     {
@@ -90,20 +173,57 @@ level.animations = {
 level.texts = {
     {
         y = 400,
+        text = 'Overseer',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel'
+    },
+
+    {
+        y = 720,
         text = 'Wave 1',
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
         charSize = 40,
         font = 'Pixel'
     },
+
     {
-        y = 1000,
+        y = 3520,
         text = 'Wave 2',
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
         charSize = 40,
         font = 'Pixel'
     },
+
+    {
+        y = 6160,
+        text = 'Wave 3',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel'
+    },
+
+    {
+        y = 8780,
+        text = 'Wave 4',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel'
+    },
+
+    {
+        y = 11420,
+        text = 'Wave 5',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel'
+    }
 }
 
 
