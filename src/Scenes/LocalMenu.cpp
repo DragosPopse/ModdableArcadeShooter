@@ -135,7 +135,7 @@ LocalMenu::PushingState::PushingState(LocalMenu* menu) :
 
 void LocalMenu::IdleState::LateInit()
 {
-	_settingsPanel.reset(new SettingsPanel(_menu->_context, static_cast<Menu*>(_menu), tgui::Font(_menu->_fonts["Menu"]), _menu->_sounds["Click"]));
+	_settingsPanel.reset(new SettingsPanel(_menu->_context, static_cast<GuiMenu*>(_menu), tgui::Font(_menu->_fonts["Menu"]), _menu->_sounds["Click"]));
 	_resume->setInheritedFont(_menu->_fonts["Menu"]);
 	_exit->setInheritedFont(_menu->_fonts["Menu"]);
 	_settings->setInheritedFont(_menu->_fonts["Menu"]);

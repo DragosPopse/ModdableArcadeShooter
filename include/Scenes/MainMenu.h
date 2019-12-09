@@ -7,7 +7,7 @@
 #include "Player.h"
 #include <Thor/Animations.hpp>
 #include <memory>
-#include "Menu.h"
+#include "GuiMenu.h"
 
 #include "Scenes/LevelSelector.h"
 
@@ -15,7 +15,7 @@ class SettingsPanel;
 
 class MainMenu :
 	public Scene,
-	public Menu
+	public GuiMenu
 {
 	friend class KeyBindingFunction;
 	friend class LevelSelector;

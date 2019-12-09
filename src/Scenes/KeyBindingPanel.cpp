@@ -2,7 +2,7 @@
 #include "Utility.h"
 
 
-KeyBindingPanel::KeyBindingPanel(Context* context, Menu* settingsPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound) :
+KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound) :
 	Scene(context),
 	_settingsPanel(settingsPanel),
 	_assigningKey(false),

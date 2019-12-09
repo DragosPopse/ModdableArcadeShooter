@@ -4,7 +4,7 @@
 #include "Scenes/KeyBindingPanel.h"
 
 
-SettingsPanel::SettingsPanel(Context* context, Menu* mainPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound) :
+SettingsPanel::SettingsPanel(Context* context, GuiMenu* mainPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound) :
 	Scene(context),
 	_mainPanel(mainPanel),
 	_textSize(30),

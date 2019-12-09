@@ -5,14 +5,14 @@
 #include <SFML/Audio.hpp>
 #include <memory>
 
-#include "Menu.h"
+#include "GuiMenu.h"
 
 class KeyBindingPanel;
 
 
 class SettingsPanel :
 	public Scene,
-	public Menu
+	public GuiMenu
 {
 	tgui::VerticalLayout::Ptr _panel;
 
@@ -24,8 +24,8 @@ class SettingsPanel :
 
 	tgui::Button::Ptr _confirmSettingsButton;
 
-	Menu* _keyBindingsPanel;
-	Menu* _mainPanel;
+	GuiMenu* _keyBindingsPanel;
+	GuiMenu* _mainPanel;
 
 	tgui::Gui _gui;
 
@@ -36,7 +36,7 @@ class SettingsPanel :
 	std::shared_ptr<KeyBindingPanel> _keyBindingPanel;
 
 public:
-	SettingsPanel(Context* context, Menu* mainPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound);
+	SettingsPanel(Context* context, GuiMenu* mainPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound);
 
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Update(float dt) override;

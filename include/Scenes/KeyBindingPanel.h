@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "Menu.h"
+#include "GuiMenu.h"
 #include "Player.h"
 
 #include <TGUI/TGUI.hpp>
@@ -11,7 +11,7 @@
 
 class KeyBindingPanel :
 	public Scene,
-	public Menu
+	public GuiMenu
 {
 	tgui::VerticalLayout::Ptr _panel;
 
@@ -27,7 +27,7 @@ class KeyBindingPanel :
 	std::vector<tgui::Button::Ptr> _keyButtons;
 
 	tgui::Button::Ptr _confirmButton;
-	Menu* _settingsPanel;
+	GuiMenu* _settingsPanel;
 
 	tgui::Button::Ptr _currentKeyButton;
 	bool _assigningKey;
@@ -41,7 +41,7 @@ class KeyBindingPanel :
 	tgui::Gui _gui;
 
 public:
-	KeyBindingPanel(Context* context, Menu* settingsPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound);
+	KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound);
 
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Update(float dt) override;
