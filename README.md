@@ -7,6 +7,13 @@ This is my programming assignment for the Breda University Creative Media and Ga
 ## Purpose
 The main purpose of this project is to experiment with creating a Modding API in Lua for a C++ game. Another concept that I try to get familiar with while creating this game is makefiles and building from multiple PCs, thing that I do using Premake5.
 
+## Controls
+*Note: all controls can be customized in-game*
+* Movement: WASD
+* Fire: Space
+* Switch weapons: Q and E 
+* Pause: Escape (*please pause the game because something cool happens :>*) 
+
 ## Libraries Used
 * rapidjson (http://rapidjson.org/)
   * JSON library
