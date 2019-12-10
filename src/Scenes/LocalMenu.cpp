@@ -155,6 +155,7 @@ LocalMenu::IdleState::IdleState(LocalMenu* menu) :
 	_resume->connect("pressed",
 		[this]()
 		{
+			_menu->_click.setVolume(_menu->_context->player->GetSfxVolume());
 			_menu->_click.play();
 			_menu->StartPoppingState();
 		});
@@ -162,6 +163,7 @@ LocalMenu::IdleState::IdleState(LocalMenu* menu) :
 	_exit->connect("pressed",
 		[this]()
 		{
+			_menu->_click.setVolume(_menu->_context->player->GetSfxVolume());
 			_menu->_click.play();
 			_menu->RequestClear();
 			_menu->_context->music->setVolume(_menu->GetContext()->player->GetMusicVolume());
@@ -173,6 +175,7 @@ LocalMenu::IdleState::IdleState(LocalMenu* menu) :
 	_settings->connect("pressed",
 		[this]()
 		{
+			_menu->_click.setVolume(_menu->_context->player->GetSfxVolume());
 			_menu->_click.play();
 			_menu->SetVisible(false);
 			_settingsPanel->SetVisible(true);
