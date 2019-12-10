@@ -47,19 +47,20 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 		_actionToBind = action;
 	};
 
-	_moveLeftButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
-	_moveRightButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
-	_moveUpButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
-	_moveDownButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
-	_fireButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_fireButton, "Fire", Player::Fire); });
-	_previousWeaponButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
-	_nextWeaponButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
-	_pauseButton->connect("pressed", [this, assignKey]() {_click.play(); assignKey(_pauseButton, "Exit/Pause", Player::Exit); });
+	_moveLeftButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
+	_moveRightButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
+	_moveUpButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
+	_moveDownButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
+	_fireButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_fireButton, "Fire", Player::Fire); });
+	_previousWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
+	_nextWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
+	_pauseButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_pauseButton, "Exit/Pause", Player::Exit); });
 
 
 	_confirmButton->connect("pressed",
 		[this]()
 		{
+			_click.setVolume(_context->player->GetSfxVolume());
 			_click.play(); 
 			SetVisible(false);
 			_settingsPanel->SetVisible(true);

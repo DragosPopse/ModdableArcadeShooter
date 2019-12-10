@@ -77,6 +77,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_exitButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.setVolume(_context->player->GetSfxVolume());
 			_clickSound.play();
 			RequestClear();
 		});
@@ -84,6 +85,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_playButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.setVolume(_context->player->GetSfxVolume());
 			_clickSound.play();
 			SetVisible(false);
 			RequestPush(_levelSelector);
@@ -92,6 +94,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_settingsButton->connect("pressed",
 		[this]()
 		{
+			_clickSound.setVolume(_context->player->GetSfxVolume());
 			_clickSound.play();
 			SetVisible(false);
 			_settingsPanel->SetVisible(true);
