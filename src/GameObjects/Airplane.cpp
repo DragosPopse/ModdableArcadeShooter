@@ -107,16 +107,17 @@ void Airplane::FixedUpdate(float dt)
 {
 	if (!_playerControlled)
 	{
+		Fire();
 		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
 		{
 			_distanceMoved = 0;
-			_currentWeaponIndex++;
-			if (_currentWeaponIndex >= _data->directions.size())
+			_currentPatternIndex++;
+			if (_currentPatternIndex >= _data->directions.size())
 			{
-				_currentWeaponIndex = 0;
+				_currentPatternIndex = 0;
 			}
 		}
-		float angle = _data->directions[_currentWeaponIndex].angle;
+		float angle = _data->directions[_currentPatternIndex].angle;
 		float radian = ToRadian(angle + 90);
 		float x = _data->speed * cos(radian);
 		float y = _data->speed * sin(radian);
