@@ -78,7 +78,6 @@ void NumberIncrementAnimation::IncrementState::Start()
 		_elapsedTime = 0.f;
 		_targetNumber = *_animation->_currentIncrement;
 		_beginNumber = _currentNumber;
-		std::cout << "TARGET: " << _beginNumber << '\n';
 		++_animation->_currentIncrement;
 		++_animation->_nCurrentIncrement;
 		_skip = false;

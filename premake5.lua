@@ -27,16 +27,6 @@ project "ArcadeAirship"
         "%{prj.location}/include"
     }
 
-    links 
-    {
-        "sfml-system-d",
-        "sfml-window-d",
-        "sfml-graphics-d",
-        "sfml-audio-d",
-        "lua535",
-        "thor-d",
-        "tgui-d"
-    }
     libdirs
     {
         "lib"
@@ -54,6 +44,26 @@ project "ArcadeAirship"
 
     filter "configurations:Debug"
         symbols "On"
+        links 
+        {
+            "sfml-system-d",
+            "sfml-window-d",
+            "sfml-graphics-d",
+            "sfml-audio-d",
+            "lua535",
+            "thor-d",
+            "tgui-d"
+        }
 
     filter "configurations:Release"
         optimize "On"
+        links 
+        {
+            "sfml-system",
+            "sfml-window",
+            "sfml-graphics",
+            "sfml-audio",
+            "lua535",
+            "thor",
+            "tgui"
+        }
