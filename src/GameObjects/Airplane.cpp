@@ -107,7 +107,10 @@ void Airplane::FixedUpdate(float dt)
 {
 	if (!_playerControlled)
 	{
-		Fire();
+		if (!_ammo.empty()) //Check if the airplane has a gun 
+		{
+			Fire();
+		}
 		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
 		{
 			_distanceMoved = 0;
