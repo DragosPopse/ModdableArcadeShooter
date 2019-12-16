@@ -56,7 +56,7 @@ project "ArcadeAirship"
         }
 
     filter "configurations:Release"
-        optimize "On"
+        optimize "Full"
         links 
         {
             "sfml-system",
