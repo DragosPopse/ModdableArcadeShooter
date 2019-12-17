@@ -1,10 +1,13 @@
 workspace "ArcadeAirship"
     configurations
     {
-        "Debug32",
-        "Release32",
-        "Debug64",
-        "Release64"
+        "Debug",
+        "Release"
+    }
+    platforms
+    {
+        "Win32",
+        "Win64"
     }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -37,18 +40,11 @@ project "ArcadeAirship"
             "_USE_MATH_DEFINES"
         }
 
-    filter "configurations:Debug32"
+    filter "platforms:Win32"
         architecture "x86"
-        symbols "On"
-        links 
+        links
         {
-            "sfml-system-d",
-            "sfml-window-d",
-            "sfml-graphics-d",
-            "sfml-audio-d",
-            "lua535_x86",
-            "thor-d",
-            "tgui-d"
+            "lua535_x86"
         }
         libdirs
         {
@@ -58,41 +54,12 @@ project "ArcadeAirship"
         {
             "PATH=%PATH%;$(ProjectDir)/x86"
         }
-
-    filter "configurations:Release32"
-        architecture "x86"
-        optimize "Full"
-        links 
-        {
-            "sfml-system",
-            "sfml-window",
-            "sfml-graphics",
-            "sfml-audio",
-            "lua535_x86",
-            "thor",
-            "tgui"
-        }
-        libdirs
-        {
-            "lib/x86"
-        }
-        debugenvs 
-        {
-            "PATH=%PATH%;$(ProjectDir)/x86"
-        }
-
-        filter "configurations:Debug64"
+    
+    filter "platforms:Win64"
         architecture "x86_64"
-        symbols "On"
-        links 
+        links
         {
-            "sfml-system-d",
-            "sfml-window-d",
-            "sfml-graphics-d",
-            "sfml-audio-d",
-            "lua535_x64",
-            "thor-d",
-            "tgui-d"
+            "lua535_x64"
         }
         libdirs
         {
@@ -104,8 +71,19 @@ project "ArcadeAirship"
         }
         buildoptions { "/bigobj" }
 
-    filter "configurations:Release64"
-        architecture "x86_64"
+    filter "configurations:Debug"
+        symbols "On"
+        links 
+        {
+            "sfml-system-d",
+            "sfml-window-d",
+            "sfml-graphics-d",
+            "sfml-audio-d",
+            "thor-d",
+            "tgui-d"
+        }
+
+    filter "configurations:Release"
         optimize "Full"
         links 
         {
@@ -113,15 +91,7 @@ project "ArcadeAirship"
             "sfml-window",
             "sfml-graphics",
             "sfml-audio",
-            "lua535_x64",
             "thor",
             "tgui"
         }
-        libdirs
-        {
-            "lib/x64"
-        }
-        debugenvs 
-        {
-            "PATH=%PATH%;$(ProjectDir)/x64"
-        }
+
