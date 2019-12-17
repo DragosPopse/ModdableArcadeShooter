@@ -51,7 +51,8 @@ level.player = {
 level.usedAirplanes = {
     'Eagle',
     'EnemyEagle0F',
-    'EnemyEagleFBase'
+    'EnemyEagleFBase',
+    'EnemyEagleFRight'
 }
 
 level.usedPickups = {
@@ -68,15 +69,23 @@ level.spawnPoints = {
  
 -- WAVE 1 --
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-350, 1500}, 15, 235)) do
+--for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-350, 1720}, 15, 235)) do
+--    level.spawnPoints[#level.spawnPoints + 1] = v
+--end
+
+--for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-250, 1800}, 0, 250)) do
+--    level.spawnPoints[#level.spawnPoints + 1] = v
+--end
+
+for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {-350, 1800}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-250, 1800}, 0, 250)) do
+for i, v in ipairs(spawn.wall('EnemyEagleFRight', 10, {-350, 1800}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 5, {-350, 2000}, 0, 175)) do
+for i, v in ipairs(spawn.wall('EnemyEagle0F', 5, {-350, 1940}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
@@ -146,7 +155,7 @@ end
 
 -- WAVE 2 --
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-300, 3620}, 0, 300)) do
+for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-300, 4550}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
