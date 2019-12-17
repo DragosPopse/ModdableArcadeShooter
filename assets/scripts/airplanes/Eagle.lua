@@ -1,4 +1,6 @@
 local Eagle = {
+    name = 'Eagle',
+
     texture = 'Eagle',
     hitpoints = 200,
     leftRect = {54 * 0, 0, 54, 62},
