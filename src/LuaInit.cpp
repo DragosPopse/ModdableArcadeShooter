@@ -1,4 +1,4 @@
-	#include "LuaInit.h"
+#include "LuaInit.h"
 #include <sol/sol.hpp>
 #include <SFML/Graphics.hpp>
 

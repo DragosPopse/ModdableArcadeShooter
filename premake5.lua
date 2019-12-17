@@ -1,10 +1,13 @@
 workspace "ArcadeAirship"
-    architecture "x86"
-
     configurations
     {
         "Debug",
         "Release"
+    }
+    platforms
+    {
+        "Win32",
+        "Win64"
     }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -27,11 +30,6 @@ project "ArcadeAirship"
         "%{prj.location}/include"
     }
 
-    libdirs
-    {
-        "lib"
-    }
-
     filter "system:windows"
         cppdialect "c++17"
         staticruntime "off"
@@ -42,6 +40,37 @@ project "ArcadeAirship"
             "_USE_MATH_DEFINES"
         }
 
+    filter "platforms:Win32"
+        architecture "x86"
+        links
+        {
+            "lua535_x86"
+        }
+        libdirs
+        {
+            "lib/x86"
+        }
+        debugenvs 
+        {
+            "PATH=%PATH%;$(ProjectDir)/x86"
+        }
+    
+    filter "platforms:Win64"
+        architecture "x86_64"
+        links
+        {
+            "lua535_x64"
+        }
+        libdirs
+        {
+            "lib/x64"
+        }
+        debugenvs 
+        {
+            "PATH=%PATH%;$(ProjectDir)/x64"
+        }
+        buildoptions { "/bigobj" }
+
     filter "configurations:Debug"
         symbols "On"
         links 
@@ -50,7 +79,6 @@ project "ArcadeAirship"
             "sfml-window-d",
             "sfml-graphics-d",
             "sfml-audio-d",
-            "lua535",
             "thor-d",
             "tgui-d"
         }
@@ -63,7 +91,7 @@ project "ArcadeAirship"
             "sfml-window",
             "sfml-graphics",
             "sfml-audio",
-            "lua535",
             "thor",
             "tgui"
         }
+

@@ -8,6 +8,7 @@
 #include <Thor/Math.hpp>
 #include <Thor/Animations.hpp>
 #include "GameObjects/Pickup.h"
+#include <iostream>
 
 
 namespace
