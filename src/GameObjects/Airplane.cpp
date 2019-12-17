@@ -111,6 +111,13 @@ void Airplane::FixedUpdate(float dt)
 		{
 			Fire();
 		}
+		else
+		{
+			if (_data->name == "XXX")
+			{
+				std::cout << '\n';
+			}
+		}
 		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
 		{
 			_distanceMoved = 0;

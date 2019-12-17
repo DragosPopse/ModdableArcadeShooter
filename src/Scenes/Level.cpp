@@ -247,6 +247,10 @@ Level::Level(Context* context, const std::string& path) :
 				std::string projectileName = weapon["projectile"];
 				if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
 				{
+					std::cout << "AIRPLANE: " << name << ' ' << projectileName << '\n';
+					apdata.weapons.push_back(&_projectileDataDict[projectileName]);
+					int ammo = weapon["ammo"];
+					apdata.ammo.push_back(ammo);
 					continue; //Don't load projectiles multiple times 
 				}
 				/*		if (projectileName == "HomingMissile")
