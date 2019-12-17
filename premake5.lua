@@ -3,8 +3,8 @@ workspace "ArcadeAirship"
 
     configurations
     {
-        "Debug",
-        "Release"
+        "Debug32",
+        "Release32"
     }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
@@ -42,7 +42,7 @@ project "ArcadeAirship"
             "_USE_MATH_DEFINES"
         }
 
-    filter "configurations:Debug"
+    filter "configurations:Debug32"
         symbols "On"
         links 
         {
@@ -54,8 +54,12 @@ project "ArcadeAirship"
             "thor-d",
             "tgui-d"
         }
+        debugenvs 
+        {
+            "PATH=%PATH%;$(ProjectDir)/x86"
+        }
 
-    filter "configurations:Release"
+    filter "configurations:Release32"
         optimize "Full"
         links 
         {
@@ -66,4 +70,8 @@ project "ArcadeAirship"
             "lua535",
             "thor",
             "tgui"
+        }
+        debugenvs 
+        {
+            "PATH=%PATH%;$(ProjectDir)/x86"
         }
