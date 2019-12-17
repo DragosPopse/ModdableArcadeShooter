@@ -40,6 +40,8 @@ project "ArcadeAirship"
             "_USE_MATH_DEFINES"
         }
 
+        postbuildcommands {"copy %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll"}
+
     filter "platforms:Win32"
         architecture "x86"
         links
@@ -63,11 +65,11 @@ project "ArcadeAirship"
         }
         libdirs
         {
-            "lib/x64"
+            "lib/x86_64"
         }
         debugenvs 
         {
-            "PATH=%PATH%;$(ProjectDir)/x64"
+            "PATH=%PATH%;$(ProjectDir)/x86_64"
         }
         buildoptions { "/bigobj" }
 
