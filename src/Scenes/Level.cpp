@@ -198,7 +198,12 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
-		apdata.onDestroy = plane["onDestroy"];
+		sol::function onDestroy = plane["onDestroy"];
+
+		if (onDestroy)
+		{
+			apdata.onDestroy = onDestroy;
+		}
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -275,7 +280,11 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.ammoTextSize = projectile["ammoTextSize"];
 			projdata.muzzleScale = projectile["muzzleScale"];
 			projdata.iconScale = projectile["iconScale"];
-			projdata.start = projectile["start"];
+			sol::function projstart = projectile["start"];
+			if (projstart)
+			{
+				projdata.start = projstart;
+			}
 			projdata.create = createProjectile;
 
 			float muzzleMinPitch = projectile["muzzleMinPitch"];
@@ -297,7 +306,7 @@ Level::Level(Context* context, const std::string& path) :
 			projdata.rng = std::mt19937(randDevice());
 			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
 
-			projdata.onCollision = projectile["onCollision"];
+			sol::function onCollision = projectile["onCollision"];
 			sol::function fixedUpdate = projectile["fixedUpdate"];
 			sol::function update = projectile["update"];
 			sol::function onDestroy = projectile["onDestroy"];
@@ -312,6 +321,10 @@ Level::Level(Context* context, const std::string& path) :
 			if (onDestroy)
 			{
 				projdata.onDestroy = onDestroy;
+			}
+			if (onCollision)
+			{
+				projdata.onCollision = onCollision;
 			}
 
 			_projectileDataDict.insert(std::make_pair(projectileName,

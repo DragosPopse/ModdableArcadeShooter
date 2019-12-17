@@ -238,7 +238,10 @@ void Airplane::Damage(int hp)
 			_level->AddDownedEnemy(_data->name);
 		}
 
-		_data->onDestroy(this);
+		if (_data->onDestroy.has_value())
+		{
+			_data->onDestroy.value()(this);
+		}
 	}
 	else
 	{
