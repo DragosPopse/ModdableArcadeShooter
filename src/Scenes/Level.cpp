@@ -198,7 +198,12 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = plane["healthCharSize"];
 		apdata.scale = plane["scale"];
 		apdata.rng = std::mt19937(randDevice());
-		apdata.onDestroy = plane["onDestroy"];
+		sol::function onDestroy = plane["onDestroy"];
+
+		if (onDestroy)
+		{
+			apdata.onDestroy = onDestroy;
+		}
 
 		sol::table explosionData = plane["explosionData"];
 		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
@@ -232,94 +237,106 @@ Level::Level(Context* context, const std::string& path) :
 		}
 
 		//Load weapons for airplane
-		sol::table weapons = plane["weapons"];
-		for (int i = 1; i <= weapons.size(); i++)
+		sol::object optionalWeapons = plane["weapons"];
+		if (optionalWeapons != sol::nil)
 		{
-			sol::table weapon = weapons[i];
-			std::string projectileName = weapon["projectile"];
-			if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
+			sol::table weapons = optionalWeapons;
+			for (int i = 1; i <= weapons.size(); i++)
 			{
-				continue; //Don't load projectiles multiple times 
+				sol::table weapon = weapons[i];
+				std::string projectileName = weapon["projectile"];
+				if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
+				{
+					continue; //Don't load projectiles multiple times 
+				}
+				/*		if (projectileName == "HomingMissile")
+						{
+							std::cout << "break\n";
+						}*/
+				int ammo = weapon["ammo"];
+
+				std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
+
+				std::cout << projectilePath << '\n';
+				sol::table projectile;
+				sol::function createProjectile;
+				sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
+				ProjectileData projdata;
+				projdata.name = projectileName;
+				projdata.texture = &_textures[projectile["texture"]];
+				projdata.iconTexture = &_textures[projectile["iconTexture"]];
+				projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
+				projdata.destroySound = tableToSound(projectile["destroySound"]);
+				projdata.iconRect = TableToRect(projectile["iconRect"]);
+				sol::table rects = projectile["rects"];
+				for (int i = 1; i <= rects.size(); i++)
+				{
+					projdata.rects.push_back(TableToRect(rects[i]));
+				}
+				projdata.rectDistribution = std::uniform_int_distribution<int>(0, projdata.rects.size() - 1);
+				projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
+				projdata.speed = projectile["speed"];
+				projdata.damage = projectile["damage"];
+				projdata.fireRate = projectile["fireRate"];
+				projdata.scale = projectile["scale"];
+				projdata.ammoFont = &_fonts[projectile["ammoFont"]];
+				projdata.ammoTextSize = projectile["ammoTextSize"];
+				projdata.muzzleScale = projectile["muzzleScale"];
+				projdata.iconScale = projectile["iconScale"];
+				sol::function projstart = projectile["start"];
+				if (projstart)
+				{
+					projdata.start = projstart;
+				}
+				projdata.create = createProjectile;
+
+				float muzzleMinPitch = projectile["muzzleMinPitch"];
+				float muzzleMaxPitch = projectile["muzzleMaxPitch"];
+				float muzzleMinVolumeFactor = projectile["muzzleMinVolumeFactor"];
+				float muzzleMaxVolumeFactor = projectile["muzzleMaxVolumeFactor"];
+				projdata.muzzleVolumeGenerator = std::uniform_real_distribution<float>(muzzleMinVolumeFactor, muzzleMaxVolumeFactor);
+				projdata.muzzlePitchGenerator = std::uniform_real_distribution<float>(muzzleMinPitch, muzzleMaxPitch);
+
+				float destroyMinPitch = projectile["destroyMinPitch"];
+				float destroyMaxPitch = projectile["destroyMaxPitch"];
+				float destroyMinVolumeFactor = projectile["destroyMinVolumeFactor"];
+				float destroyMaxVolumeFactor = projectile["destroyMaxVolumeFactor"];
+				projdata.destroyVolumeGenerator = std::uniform_real_distribution<float>(destroyMinVolumeFactor, destroyMaxVolumeFactor);
+				projdata.destroyPitchGenerator = std::uniform_real_distribution<float>(destroyMinPitch, destroyMaxPitch);
+
+
+				projdata.spreadAngle = projectile["spreadAngle"];
+				projdata.rng = std::mt19937(randDevice());
+				projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
+
+				sol::function onCollision = projectile["onCollision"];
+				sol::function fixedUpdate = projectile["fixedUpdate"];
+				sol::function update = projectile["update"];
+				sol::function onDestroy = projectile["onDestroy"];
+				if (fixedUpdate)
+				{
+					projdata.fixedUpdate = fixedUpdate;
+				}
+				if (update)
+				{
+					projdata.update = update;
+				}
+				if (onDestroy)
+				{
+					projdata.onDestroy = onDestroy;
+				}
+				if (onCollision)
+				{
+					projdata.onCollision = onCollision;
+				}
+
+				_projectileDataDict.insert(std::make_pair(projectileName,
+					projdata));
+				apdata.weapons.push_back(&_projectileDataDict[projectileName]);
+				apdata.ammo.push_back(ammo);
 			}
-	/*		if (projectileName == "HomingMissile")
-			{
-				std::cout << "break\n";
-			}*/
-			int ammo = weapon["ammo"];
 
-			std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
-
-			std::cout << projectilePath << '\n';
-			sol::table projectile;
-			sol::function createProjectile;
-			sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
-			ProjectileData projdata;
-			projdata.name = projectileName;
-			projdata.texture = &_textures[projectile["texture"]];
-			projdata.iconTexture = &_textures[projectile["iconTexture"]];
-			projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
-			projdata.destroySound = tableToSound(projectile["destroySound"]);
-			projdata.iconRect = TableToRect(projectile["iconRect"]);
-			sol::table rects = projectile["rects"];
-			for (int i = 1; i <= rects.size(); i++)
-			{
-				projdata.rects.push_back(TableToRect(rects[i]));
-			}
-			projdata.rectDistribution = std::uniform_int_distribution<int>(0, projdata.rects.size() - 1);
-			projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
-			projdata.speed = projectile["speed"];
-			projdata.damage = projectile["damage"];
-			projdata.fireRate = projectile["fireRate"];
-			projdata.scale = projectile["scale"];
-			projdata.ammoFont = &_fonts[projectile["ammoFont"]];
-			projdata.ammoTextSize = projectile["ammoTextSize"];
-			projdata.muzzleScale = projectile["muzzleScale"];
-			projdata.iconScale = projectile["iconScale"];
-			projdata.start = projectile["start"];
-			projdata.create = createProjectile;
-
-			float muzzleMinPitch = projectile["muzzleMinPitch"];
-			float muzzleMaxPitch = projectile["muzzleMaxPitch"];
-			float muzzleMinVolumeFactor = projectile["muzzleMinVolumeFactor"];
-			float muzzleMaxVolumeFactor = projectile["muzzleMaxVolumeFactor"];
-			projdata.muzzleVolumeGenerator = std::uniform_real_distribution<float>(muzzleMinVolumeFactor, muzzleMaxVolumeFactor);
-			projdata.muzzlePitchGenerator = std::uniform_real_distribution<float>(muzzleMinPitch, muzzleMaxPitch);
-
-			float destroyMinPitch = projectile["destroyMinPitch"];
-			float destroyMaxPitch = projectile["destroyMaxPitch"];
-			float destroyMinVolumeFactor = projectile["destroyMinVolumeFactor"];
-			float destroyMaxVolumeFactor = projectile["destroyMaxVolumeFactor"];
-			projdata.destroyVolumeGenerator = std::uniform_real_distribution<float>(destroyMinVolumeFactor, destroyMaxVolumeFactor);
-			projdata.destroyPitchGenerator = std::uniform_real_distribution<float>(destroyMinPitch, destroyMaxPitch);
-
-
-			projdata.spreadAngle = projectile["spreadAngle"];
-			projdata.rng = std::mt19937(randDevice());
-			projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
-
-			projdata.onCollision = projectile["onCollision"];
-			sol::function fixedUpdate = projectile["fixedUpdate"];
-			sol::function update = projectile["update"];
-			sol::function onDestroy = projectile["onDestroy"];
-			if (fixedUpdate)
-			{
-				projdata.fixedUpdate = fixedUpdate;
-			}
-			if (update)
-			{
-				projdata.update = update;
-			}
-			if (onDestroy)
-			{
-				projdata.onDestroy = onDestroy;
-			}
-
-			_projectileDataDict.insert(std::make_pair(projectileName,
-				projdata));
-			apdata.weapons.push_back(&_projectileDataDict[projectileName]);
-			apdata.ammo.push_back(ammo);
 		}
-
 		//Load drops
 		sol::table drops = plane["drops"];
 		for (int i = 1; i <= drops.size(); i++)

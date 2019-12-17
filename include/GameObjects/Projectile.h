@@ -30,10 +30,10 @@ struct ProjectileData
 	float spreadAngle;
 	sol::optional<sol::function> fixedUpdate;
 	sol::optional<sol::function> update;
-	sol::function onCollision;
-	sol::optional<sol::function> onDestroy;
+	sol::optional<sol::function> onCollision;
+	sol::optional<sol::function> onDestroy; //WIP
 	sol::function create;
-	sol::function start;
+	sol::optional<sol::function> start;
 
 
 	int ammoTextSize;

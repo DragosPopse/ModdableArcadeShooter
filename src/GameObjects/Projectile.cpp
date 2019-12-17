@@ -55,7 +55,10 @@ void Projectile::Start(Scene* scene)
 	_velocity = _direction * _data->speed;
 	setRotation(randomAngle + 90);
 
-	_data->start(_luaObject, this);
+	if (_data->start.has_value())
+	{
+		_data->start.value()(_luaObject, this);
+	}
 
 	float defaultVolume = _level->GetContext()->player->GetSfxVolume();
 	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);
@@ -164,7 +167,10 @@ sf::FloatRect Projectile::GetBoundingRect() const
 void Projectile::OnCollision(Airplane* airplane)
 {
 	_collided = true;
-	_data->onCollision(_luaObject, this, airplane);
+	if (_data->onCollision.has_value())
+	{
+		_data->onCollision.value()(_luaObject, this, airplane);
+	}
 }
 
 
