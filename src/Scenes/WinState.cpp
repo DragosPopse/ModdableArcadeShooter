@@ -232,7 +232,7 @@ bool WinState::Update(float dt)
 
 		if (_score->GetCurrentState() == NumberIncrementAnimation::StateID::None)
 		{
-			_infoText->SetString("Press Space to Continue");
+			_infoText->SetString(_context->player->Parse("Press {Fire} to Continue"));
 		}
 	}
 
@@ -297,7 +297,7 @@ bool WinState::HandleEvent(const sf::Event& ev)
 	}
 	else if (ev.type == sf::Event::KeyPressed)
 	{
-		if (ev.key.code == sf::Keyboard::Space)
+		if (ev.key.code == _context->player->GetKey(Player::Fire))
 		{
 			if (!_backgroundFading)
 			{
