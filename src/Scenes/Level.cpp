@@ -186,7 +186,7 @@ Level::Level(Context* context, const std::string& path) :
 		sol::table plane = _context->lua->do_file(path);
 
 		AirplaneData apdata;
-		apdata.name = name;
+		apdata.name = plane["name"];
 		apdata.score = plane["score"];
 		apdata.hitpoints = plane["hitpoints"];
 		apdata.idleRect = TableToRect(plane["idleRect"]);
