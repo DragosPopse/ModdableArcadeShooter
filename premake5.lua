@@ -40,7 +40,11 @@ project "ArcadeAirship"
             "_USE_MATH_DEFINES"
         }
 
-        postbuildcommands {"copy %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll"}
+        postbuildcommands 
+        {
+            "copy %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll",
+            "Xcopy /E /I assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\assets"
+        }
 
     filter "platforms:Win32"
         architecture "x86"
