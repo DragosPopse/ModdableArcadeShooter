@@ -13,7 +13,7 @@ SceneManager::SceneManager(Context* context) :
 void SceneManager::PushScene(std::shared_ptr<Scene> scene)
 {
 	scene->_manager = this;
-	_pendingChanges.push(PendingChange(ChangeType::Push, scene));
+	_pendingChanges.push(PendingChange(ChangeType::Push, std::move(scene)));
 }
 
 
@@ -100,7 +100,7 @@ void SceneManager::ApplyChanges()
 			{
 				std::shared_ptr<Scene> ptr(change.scene);
 				ptr->Enable();
-				_stack.emplace_back(std::move(ptr));
+				_stack.push_back(std::move(ptr));
 			}
 			break;
 
