@@ -69,6 +69,7 @@ void LocalMenu::Enable()
 	_music.openFromFile(_level->_menuSoundtrack);
 	_music.setVolume(0.f);
 	_music.setPitch(_lowestPitch);
+	_music.setLoop(true);
 	_music.play();
 	SetVisible(true);
 	StartPushingState();
