@@ -42,8 +42,8 @@ project "ArcadeAirship"
 
         postbuildcommands 
         {
-            "copy %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll",
-            "Xcopy /E /I assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\assets"
+            "copy /y %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll",
+            "Xcopy /E /I /y assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\assets"
         }
 
     filter "platforms:Win32"
