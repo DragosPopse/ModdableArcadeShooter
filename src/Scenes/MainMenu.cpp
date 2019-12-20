@@ -7,7 +7,7 @@
 #include "Scenes/LevelSelector.h"
 #include "Context.h"
 #include "Scenes/SettingsPanel.h"
-
+#include "Scenes/ErrorScene.h"
 
 MainMenu::MainMenu(Context* context, bool firstTime) :
 	Scene(context),
@@ -140,6 +140,12 @@ bool MainMenu::HandleEvent(const sf::Event& ev)
 	if (ev.type == sf::Event::Closed)
 	{
 		RequestClear();
+	}
+
+	else if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::X)
+	{
+		std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "TEST", "MESSAGETEST"));
+		RequestPush(std::move(error));
 	}
 
 	return false;

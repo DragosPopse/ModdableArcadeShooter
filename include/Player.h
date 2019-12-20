@@ -38,6 +38,7 @@ public:
 
 	void AssignKey(ActionType action, sf::Keyboard::Key key);
 	sf::Keyboard::Key GetKey(ActionType action);
+	bool Contains(sf::Keyboard::Key key);
 
 	void LoadSettings();
 	void SaveSettings();
