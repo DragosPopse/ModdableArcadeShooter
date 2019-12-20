@@ -1,0 +1,77 @@
+Panel.Panel {
+    Position = ((&.size / 2) - (size / 2), (&.size / 2) - (size / 2));
+    Size = (90%, 90%);
+
+    Renderer {
+        backgroundcolor = #B4B4B4D5;
+        texturebackground = None;
+    }
+
+    TextBox.Message {
+        HorizontalScrollbarPolicy = Never;
+        MaximumCharacters = 9999;
+        Position = ((&.size / 2) - (size / 2), 82.7431);
+        Size = (&.size, 327.257);
+        Text = MESSAGE;
+        TextSize = 13;
+
+        Renderer {
+            backgroundcolor = #FFFFFF00;
+            bordercolor = black;
+            borders = (1, 1, 1, 1);
+            caretcolor = black;
+            caretwidth = 1;
+            padding = (0, 0, 0, 0);
+            selectedtextbackgroundcolor = #006EFF;
+            selectedtextcolor = white;
+            textcolor = #3C3C3C;
+            texturebackground = None;
+        }
+    }
+
+    Label.Title {
+        HorizontalAlignment = Center;
+        ScrollbarPolicy = Never;
+        Size = (717.2, 80.9032);
+        Text = TITLE;
+        TextSize = 13;
+        VerticalAlignment = Center;
+
+        Renderer {
+            backgroundcolor = transparent;
+            bordercolor = #3C3C3C;
+            borders = (0, 0, 0, 0);
+            textcolor = #3C3C3C;
+            texturebackground = None;
+        }
+    }
+
+    Button.ConfirmButton {
+        Position = ((&.size / 2) - (size / 2), 450);
+        Size = (170, 62.3333);
+        Text = Confirm;
+        TextSize = 13;
+
+        Renderer {
+            backgroundcolor = #F5F5F5;
+            backgroundcolordisabled = #E6E6E6;
+            backgroundcolordown = #EBEBEB;
+            backgroundcolorhover = white;
+            bordercolor = #3C3C3C;
+            bordercolordisabled = #7D7D7D;
+            bordercolordown = black;
+            bordercolorfocused = #1E1EB4;
+            bordercolorhover = black;
+            borders = (1, 1, 1, 1);
+            textcolor = #3C3C3C;
+            textcolordisabled = #7D7D7D;
+            textcolordown = black;
+            textcolorhover = black;
+            texture = None;
+            texturedisabled = None;
+            texturedown = None;
+            texturefocused = None;
+            texturehover = None;
+        }
+    }
+}
