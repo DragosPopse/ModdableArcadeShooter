@@ -355,3 +355,16 @@ std::string Player::Parse(const std::string& str)
 
 	return result.str();
 }
+
+
+bool Player::Contains(sf::Keyboard::Key key)
+{
+	for (const auto& pair : _keyBinding)
+	{
+		if (pair.first == key)
+		{
+			return true;
+		}
+	}
+	return false;
+}

@@ -1,5 +1,6 @@
 #include "Scenes/KeyBindingPanel.h"
 #include "Utility.h"
+#include "Scenes/ErrorScene.h"
 
 
 KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const tgui::Font& font, const sf::SoundBuffer& clickSound) :
@@ -96,13 +97,24 @@ bool KeyBindingPanel::HandleEvent(const sf::Event& ev)
 	if (_assigningKey && ev.type == sf::Event::KeyPressed)
 	{
 		_assigningKey = false;
-		_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(ev.key.code)));
 		for (int i = 0; i < _keyButtons.size(); i++)
 		{
 			_keyButtons[i]->setEnabled(true);
 		}
 		_confirmButton->setEnabled(true);
-		_context->player->AssignKey(_actionToBind, ev.key.code);
+
+		if (_context->player->Contains(ev.key.code))
+		{
+			_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(_context->player->GetKey(_actionToBind))));
+			std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Invalid Key", 
+				BuildString(ToString(ev.key.code), " is already assigned to other action. Please choose another key. ")));
+			RequestPush(std::move(error));
+		}
+		else
+		{
+			_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(ev.key.code)));
+			_context->player->AssignKey(_actionToBind, ev.key.code);
+		}
 	}
 
 	if (ev.type == sf::Event::Closed)
