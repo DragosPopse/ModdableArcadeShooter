@@ -35,7 +35,7 @@ local HomingMissile = {
     ammoFont = 'Pixel',
     ammoTextSize = 20,
 
-    start = function (lthis, this)
+    start = function (this)
         lthis.timer = 0
         local smoke = engine.ParticleSystem.new()
         
@@ -59,6 +59,8 @@ local HomingMissile = {
         smoke.system:addAffector(fadeAffector)
 
         this:addChild(smoke)
+
+        return { }
     end,
 
     fixedUpdate = function (lthis, this, dt)
@@ -140,9 +142,4 @@ local HomingMissile = {
     end
 }
 
-
-local function create()
-    return { }
-end
-
-return HomingMissile, create
+return HomingMissile

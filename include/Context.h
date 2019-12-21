@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace sol
 {
 	class state;
@@ -16,14 +18,7 @@ class Player;
 struct Context
 {
 	sf::RenderWindow* window;
-	sol::state* lua;
+	std::unique_ptr<sol::state>* lua;
 	sf::Music* music;
 	Player* player;
-
-	Context(
-		sf::RenderWindow* w,
-		sol::state* l,
-		sf::Music* m,
-		Player* p
-	);
 };

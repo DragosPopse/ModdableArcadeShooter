@@ -51,6 +51,39 @@ namespace
 	{
 		return lhs.GetBoundingRect().intersects(rhs.GetBoundingRect());
 	}
+
+	template <class T>
+	T& ProtectedGet(sol::table& from, const std::string& name)
+	{
+		auto result = from[name];
+		if (!result.valid())
+		{
+			throw sol::error(result);
+		}
+		return result;
+	}
+
+	template <class T>
+	T& ProtectedGet(sol::table& from, int index)
+	{
+		auto result = from[index];
+		if (!result.valid())
+		{
+			throw sol::error(result);
+		}
+		return result;
+	}
+
+	template <class ReturnType, class ParamType>
+	ReturnType Protect(ParamType result)
+	{
+		if (!result.valid())
+		{
+			sol::error err = result;
+			throw err;
+		}
+		return result;
+	}
 }
 
 Level::Level(Context* context, const std::string& path) :
@@ -82,12 +115,11 @@ Level::Level(Context* context, const std::string& path) :
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
 	_shaker.SetSeed(randDevice());
-	(*_context->lua)["_level_seed"] = randDevice();
-	_context->lua->do_string("math.randomseed(_level_seed)");
+	(**_context->lua)["_level_seed"] = randDevice();
+	(*_context->lua)->do_string("math.randomseed(_level_seed)");
 
-	sol::table level = _context->lua->do_file(path);
-
-	_saveFile = level["saveFile"];
+	sol::table level = Protect<sol::table>((*_context->lua)->do_file(path));
+	_saveFile = Protect<std::string>(level["saveFile"]);
 	std::ifstream save(_saveFile);
 	if (save.good())
 	{
@@ -97,26 +129,26 @@ Level::Level(Context* context, const std::string& path) :
 		_highScore = document["HighScore"].GetInt();
 	}
 
-	_defaultFont = level["defaultFont"];
+	_defaultFont = Protect<std::string>(level["defaultFont"]);
 	
 	//Load required textures
-	sol::table usedTextures = level["usedTextures"];
+	sol::table usedTextures = Protect<sol::table>(level["usedTextures"]);
 	for (int i = 1; i <= usedTextures.size(); i++)
 	{
 		sol::table texture = usedTextures[i];
-		std::string id = texture[1];
-		std::string file = texture[2];
+		std::string id = Protect<std::string>(texture[1]);
+		std::string file = Protect<std::string>(texture[2]);
 		_textures.Load(id, file);
 		std::cout << id << " :: " << path << '\n';
 	}
 
 	//Load required fonts
-	sol::table usedFonts = level["usedFonts"];
+	sol::table usedFonts = Protect<sol::table>(level["usedFonts"]);
 	for (int i = 1; i <= usedFonts.size(); i++)
 	{
-		sol::table font = usedFonts[i];
-		std::string id = font[1];
-		std::string file = font[2];
+		sol::table font = Protect<sol::table>(usedFonts[i]);
+		std::string id = Protect<std::string>(font[1]);
+		std::string file = Protect<std::string>(font[2]);
 		_fonts.Load(id, file);
 	}
 
@@ -124,13 +156,13 @@ Level::Level(Context* context, const std::string& path) :
 	sol::table usedSounds = level["usedSounds"];
 	for (int i = 1; i <= usedSounds.size(); i++)
 	{
-		sol::table sound = usedSounds[i];
-		std::string id = sound[1];
-		std::string file = sound[2];
+		sol::table sound = Protect<sol::table>(usedSounds[i]);
+		std::string id = Protect<std::string>(sound[1]);
+		std::string file = Protect<std::string>(sound[2]);
 		_sounds.Load(id, file);
 	}
 
-	std::string backgroundTexture = level["backgroundTexture"];
+	std::string backgroundTexture = Protect<std::string>(level["backgroundTexture"]);
 	//bool repeatBackground = level["repeatBackground"];
 	//_textures[backgroundTexture].setRepeated(repeatBackground);
 	//std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
@@ -138,10 +170,10 @@ Level::Level(Context* context, const std::string& path) :
 	_background.push_back(new SpriteObject());
 	//backgroundPtr->SetTexture(_textures[backgroundTexture]);
 	
-	_scrollSpeed = level["scrollSpeed"];
-	_levelLength = level["length"];
-	_scale = level["scale"];
-	_borderSize = level["borderSize"];
+	_scrollSpeed = Protect<float>(level["scrollSpeed"]);
+	_levelLength = Protect<float>(level["length"]);
+	_scale = Protect<float>(level["scale"]);
+	_borderSize = Protect<float>(level["borderSize"]);
 	//backgroundPtr->setScale(_scale, _scale);
 	_background[0]->setScale(_scale, _scale);
 	_background[1]->setScale(_scale, _scale);
@@ -149,90 +181,92 @@ Level::Level(Context* context, const std::string& path) :
 	_background[1]->SetTexture(_textures[backgroundTexture]);
 	
 	//Load Pickups
-	sol::table pickups = level["usedPickups"];
+	sol::table pickups = Protect<sol::table>(level["usedPickups"]);
 	for (int i = 1; i <= pickups.size(); i++)
 	{
-		std::string pickupName = pickups[i];
+		std::string pickupName = Protect<std::string>(pickups[i]);
 		std::string pickupPath = BuildString("assets/scripts/pickups/", pickupName, ".lua");
-		sol::table pickup = _context->lua->do_file(pickupPath);
+		sol::table pickup = Protect<sol::table>((*_context->lua)->do_file(pickupPath));
 		PickupData pickupData;
-		pickupData.texture = &_textures[pickup["texture"]];
-		pickupData.firstRect = TableToRect(pickup["firstRect"]);//pickup["firstRect"];
-		pickupData.frames = pickup["frames"];
-		pickupData.frameDuration = pickup["frameDuration"];
-		pickupData.scale = pickup["scale"];
-		pickupData.onPickup = pickup["onPickup"];
-		sol::table destroyPickup = pickup["destroyAnimation"];
-		pickupData.destroyTexture = &_textures[destroyPickup["texture"]];
-		pickupData.destroyFirstRect = TableToRect(destroyPickup["firstRect"]);
-		pickupData.destroyFrames = destroyPickup["frames"];
-		pickupData.destroyFrameDuration = destroyPickup["frameDuration"];
-		pickupData.destroyScale = destroyPickup["scale"];
+		pickupData.texture = &_textures[Protect<std::string>(pickup["texture"])];
+		pickupData.firstRect = TableToRect(Protect<sol::table>(pickup["firstRect"]));//pickup["firstRect"];
+		pickupData.frames = Protect<int>(pickup["frames"]);
+		pickupData.frameDuration = Protect<float>(pickup["frameDuration"]);
+		pickupData.scale = Protect<float>(pickup["scale"]);
+		pickupData.onPickup = Protect<sol::function>(pickup["onPickup"]);
+		sol::table destroyPickup = Protect<sol::table>(pickup["destroyAnimation"]);
+		pickupData.destroyTexture = &_textures[Protect<std::string>(destroyPickup["texture"])];
+		pickupData.destroyFirstRect = TableToRect(Protect<sol::table>(destroyPickup["firstRect"]));
+		pickupData.destroyFrames = Protect<int>(destroyPickup["frames"]);
+		pickupData.destroyFrameDuration = Protect<float>(destroyPickup["frameDuration"]);
+		pickupData.destroyScale = Protect<float>(destroyPickup["scale"]);
 		pickupData.rng = std::mt19937(randDevice());
-		pickupData.onPickupSound = tableToSound(pickup["onPickupSound"]);
+		pickupData.onPickupSound = tableToSound(Protect<sol::table>(pickup["onPickupSound"]));
 		
 		_pickupDataDict.insert(std::make_pair(pickupName, pickupData));
 	}
 
 	//Load AirplaneData
-	sol::table planes = level["usedAirplanes"];
+	sol::table planes = Protect<sol::table>(level["usedAirplanes"]);
 	for (int i = 1; i <= planes.size(); i++)
 	{
-		std::string name = planes[i];
+		std::string name = Protect<std::string>(planes[i]);
 		std::string path = BuildString("assets/scripts/airplanes/", name, ".lua");
 		std::cout << path << '\n';
-		_enemiesDowned[name] = 0;
-
-		sol::table plane = _context->lua->do_file(path);
+		sol::table plane = Protect<sol::table>((*_context->lua)->do_file(path));
 
 		AirplaneData apdata;
-		apdata.name = plane["name"];
-		apdata.score = plane["score"];
-		apdata.hitpoints = plane["hitpoints"];
-		apdata.idleRect = TableToRect(plane["idleRect"]);
-		apdata.rightRect = TableToRect(plane["rightRect"]);
-		apdata.leftRect = TableToRect(plane["leftRect"]);
-		apdata.texture = &_textures[plane["texture"]];
-		apdata.speed = plane["speed"];
-		apdata.healthFont = &_fonts[plane["healthFont"]];
-		apdata.healthTextCharSize = plane["healthCharSize"];
-		apdata.scale = plane["scale"];
+		apdata.name = Protect<std::string>(plane["name"]);
+		_enemiesDowned[apdata.name] = 0;
+		apdata.score = Protect<int>(plane["score"]);
+		apdata.hitpoints = Protect<int>(plane["hitpoints"]);
+		apdata.idleRect = TableToRect(Protect<sol::table>(plane["idleRect"]));
+		apdata.rightRect = TableToRect(Protect<sol::table>(plane["rightRect"]));
+		apdata.leftRect = TableToRect(Protect<sol::table>(plane["leftRect"]));
+		apdata.texture = &_textures[Protect<std::string>(plane["texture"])];
+		apdata.speed = Protect<float>(plane["speed"]);
+		apdata.healthFont = &_fonts[Protect<std::string>(plane["healthFont"])];
+		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
+		apdata.scale = Protect<float>(plane["scale"]);
 		apdata.rng = std::mt19937(randDevice());
-		sol::function onDestroy = plane["onDestroy"];
+		sol::optional<sol::function> onDestroy = plane["onDestroy"];
 
 		if (onDestroy)
 		{
 			apdata.onDestroy = onDestroy;
 		}
 
-		sol::table explosionData = plane["explosionData"];
-		apdata.explosionSize = sf::Vector2i(explosionData["frameSize"][1], explosionData["frameSize"][2]);
-		apdata.framesPerExplosion = explosionData["framesPerAnimation"];
-		apdata.numberOfExplosions = explosionData["numberOfAnimations"];
-		apdata.explosionFrameDuration = explosionData["frameDuration"];
-		apdata.explosionsTexture = &_textures[explosionData["texture"]];
-		apdata.explosionMaxScale = explosionData["maxScale"];
-		apdata.explosionMinScale = explosionData["minScale"];
-		sol::table explosionSounds = explosionData["sounds"];
-		apdata.switchSound = tableToSound(plane["switchSound"]);
+		sol::table explosionData = Protect<sol::table>(plane["explosionData"]);
+		sol::table explosionSizeTable = Protect<sol::table>(explosionData["frameSize"]);
+		int explosionSizeX = Protect<int>(explosionSizeTable[1]);
+		int explosionSizeY = Protect<int>(explosionSizeTable[2]);
+		apdata.explosionSize = sf::Vector2i(explosionSizeX, explosionSizeY);
+		apdata.framesPerExplosion = Protect<int>(explosionData["framesPerAnimation"]);
+		apdata.numberOfExplosions = Protect<int>(explosionData["numberOfAnimations"]);
+		apdata.explosionFrameDuration = Protect<float>(explosionData["frameDuration"]);
+		apdata.explosionsTexture = &_textures[Protect<std::string>(explosionData["texture"])];
+		apdata.explosionMaxScale = Protect<float>(explosionData["maxScale"]);
+		apdata.explosionMinScale = Protect<float>(explosionData["minScale"]);
+		sol::table explosionSounds = Protect<sol::table>(explosionData["sounds"]);
+		apdata.switchSound = tableToSound(Protect<sol::table>(plane["switchSound"]));
 		for (int i = 1; i <= explosionSounds.size(); i++)
 		{
-			RandomizedSound explosionSound = tableToSound(explosionSounds[i]);
+			RandomizedSound explosionSound = tableToSound(Protect<sol::table>(explosionSounds[i]));
 			apdata.explosionSounds.push_back(explosionSound);
 		}
 		apdata.explosionSoundDistribution = std::uniform_int_distribution<int>(0, apdata.explosionSounds.size() - 1);
-		apdata.explosionMaxRotation = explosionData["maxRotation"];
+		apdata.explosionMaxRotation = Protect<float>(explosionData["maxRotation"]);
 		apdata.scaleDistribution = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
 		apdata.explosionSpriteDistribution = std::uniform_int_distribution(0, apdata.numberOfExplosions - 1);
 
 		
 
-		sol::table directions = plane["aiPattern"];
+		sol::table directions = Protect<sol::table>(plane["aiPattern"]);
 		for (int i = 1; i <= directions.size(); i++)
 		{
 			AiDirection d;
-			d.angle = directions[i][1];
-			d.distance = directions[i][2];
+			d.angle = Protect<float>(directions[i][1]);
+			d.distance = Protect<float>(directions[i][2]);
 			apdata.directions.push_back(d);
 		}
 
@@ -243,13 +277,13 @@ Level::Level(Context* context, const std::string& path) :
 			sol::table weapons = optionalWeapons;
 			for (int i = 1; i <= weapons.size(); i++)
 			{
-				sol::table weapon = weapons[i];
-				std::string projectileName = weapon["projectile"];
+				sol::table weapon = Protect<sol::table>(weapons[i]);
+				std::string projectileName = Protect<std::string>(weapon["projectile"]);
 				if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
 				{
 					std::cout << "AIRPLANE: " << name << ' ' << projectileName << '\n';
 					apdata.weapons.push_back(&_projectileDataDict[projectileName]);
-					int ammo = weapon["ammo"];
+					int ammo = Protect<int>(weapon["ammo"]);
 					apdata.ammo.push_back(ammo);
 					continue; //Don't load projectiles multiple times 
 				}
@@ -257,66 +291,54 @@ Level::Level(Context* context, const std::string& path) :
 						{
 							std::cout << "break\n";
 						}*/
-				int ammo = weapon["ammo"];
+				int ammo = Protect<int>(weapon["ammo"]);
 
 				std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
 
 				std::cout << projectilePath << '\n';
-				sol::table projectile;
-				sol::function createProjectile;
-				sol::tie(projectile, createProjectile) = _context->lua->do_file(projectilePath);
+				sol::table projectile = Protect<sol::table>((*_context->lua)->do_file(projectilePath));
+	
 				ProjectileData projdata;
 				projdata.name = projectileName;
-				projdata.texture = &_textures[projectile["texture"]];
-				projdata.iconTexture = &_textures[projectile["iconTexture"]];
-				projdata.muzzleSound = tableToSound(projectile["muzzleSound"]);
-				projdata.destroySound = tableToSound(projectile["destroySound"]);
-				projdata.iconRect = TableToRect(projectile["iconRect"]);
-				sol::table rects = projectile["rects"];
+				projdata.texture = &_textures[Protect<std::string>(projectile["texture"])];
+				projdata.iconTexture = &_textures[Protect<std::string>(projectile["iconTexture"])];
+				projdata.muzzleSound = tableToSound(Protect<sol::table>(projectile["muzzleSound"]));
+				projdata.destroySound = tableToSound(Protect<sol::table>(projectile["destroySound"]));
+				projdata.iconRect = TableToRect(Protect<sol::table>(projectile["iconRect"]));
+				sol::table rects = Protect<sol::table>(projectile["rects"]);
 				for (int i = 1; i <= rects.size(); i++)
 				{
-					projdata.rects.push_back(TableToRect(rects[i]));
+					projdata.rects.push_back(TableToRect(Protect<sol::table>(rects[i])));
 				}
 				projdata.rectDistribution = std::uniform_int_distribution<int>(0, projdata.rects.size() - 1);
-				projdata.muzzleRect = TableToRect(projectile["muzzleRect"]);
-				projdata.speed = projectile["speed"];
-				projdata.damage = projectile["damage"];
-				projdata.fireRate = projectile["fireRate"];
-				projdata.scale = projectile["scale"];
-				projdata.ammoFont = &_fonts[projectile["ammoFont"]];
-				projdata.ammoTextSize = projectile["ammoTextSize"];
-				projdata.muzzleScale = projectile["muzzleScale"];
-				projdata.iconScale = projectile["iconScale"];
-				sol::function projstart = projectile["start"];
-				if (projstart)
-				{
-					projdata.start = projstart;
-				}
-				projdata.create = createProjectile;
-
-				float muzzleMinPitch = projectile["muzzleMinPitch"];
-				float muzzleMaxPitch = projectile["muzzleMaxPitch"];
-				float muzzleMinVolumeFactor = projectile["muzzleMinVolumeFactor"];
-				float muzzleMaxVolumeFactor = projectile["muzzleMaxVolumeFactor"];
-				projdata.muzzleVolumeGenerator = std::uniform_real_distribution<float>(muzzleMinVolumeFactor, muzzleMaxVolumeFactor);
-				projdata.muzzlePitchGenerator = std::uniform_real_distribution<float>(muzzleMinPitch, muzzleMaxPitch);
-
-				float destroyMinPitch = projectile["destroyMinPitch"];
-				float destroyMaxPitch = projectile["destroyMaxPitch"];
-				float destroyMinVolumeFactor = projectile["destroyMinVolumeFactor"];
-				float destroyMaxVolumeFactor = projectile["destroyMaxVolumeFactor"];
-				projdata.destroyVolumeGenerator = std::uniform_real_distribution<float>(destroyMinVolumeFactor, destroyMaxVolumeFactor);
-				projdata.destroyPitchGenerator = std::uniform_real_distribution<float>(destroyMinPitch, destroyMaxPitch);
+				projdata.muzzleRect = TableToRect(Protect<sol::table>(projectile["muzzleRect"]));
+				projdata.speed = Protect<float>(projectile["speed"]);
+				projdata.damage = Protect<int>(projectile["damage"]);
+				projdata.fireRate = Protect<float>(projectile["fireRate"]);
+				projdata.scale = Protect<float>(projectile["scale"]);
+				projdata.ammoFont = &_fonts[Protect<std::string>(projectile["ammoFont"])];
+				projdata.ammoTextSize = Protect<int>(projectile["ammoTextSize"]);
+				projdata.muzzleScale = Protect<float>(projectile["muzzleScale"]);
+				projdata.iconScale = Protect<float>(projectile["iconScale"]);
+				projdata.start = Protect<sol::function>(projectile["start"]);
 
 
-				projdata.spreadAngle = projectile["spreadAngle"];
+				projdata.muzzleSound = tableToSound(Protect<sol::table>(projectile["muzzleSound"]));
+				projdata.destroySound = tableToSound(Protect<sol::table>(projectile["destroySound"]));
+
+				projdata.spreadAngle = Protect<float>(projectile["spreadAngle"]);
 				projdata.rng = std::mt19937(randDevice());
-				projdata.generator = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
-
-				sol::function onCollision = projectile["onCollision"];
+				projdata.angleDistribution = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
+				
+				sol::function onCollision = projectile["onCollision"];	
 				sol::function fixedUpdate = projectile["fixedUpdate"];
 				sol::function update = projectile["update"];
 				sol::function onDestroy = projectile["onDestroy"];
+
+				if (onCollision)
+				{
+					projdata.onCollision = onCollision;
+				}
 				if (fixedUpdate)
 				{
 					projdata.fixedUpdate = fixedUpdate;
@@ -329,11 +351,7 @@ Level::Level(Context* context, const std::string& path) :
 				{
 					projdata.onDestroy = onDestroy;
 				}
-				if (onCollision)
-				{
-					projdata.onCollision = onCollision;
-				}
-
+				
 				_projectileDataDict.insert(std::make_pair(projectileName,
 					projdata));
 				apdata.weapons.push_back(&_projectileDataDict[projectileName]);
@@ -342,13 +360,13 @@ Level::Level(Context* context, const std::string& path) :
 
 		}
 		//Load drops
-		sol::table drops = plane["drops"];
+		sol::table drops = Protect<sol::table>(plane["drops"]);
 		for (int i = 1; i <= drops.size(); i++)
 		{
 			sol::table drop = drops[i];
 			DropData dropData;
-			dropData.dropRate = drop["dropRate"];
-			std::string dropName = drop["pickup"];
+			dropData.dropRate = Protect<int>(drop["dropRate"]);
+			std::string dropName = Protect<std::string>(drop["pickup"]);
 			dropData.pickup = &_pickupDataDict[dropName];
 
 			apdata.drops.push_back(dropData);
@@ -374,12 +392,12 @@ Level::Level(Context* context, const std::string& path) :
 	}
 
 	//Create player
-	sol::table playerTable = level["player"];
+	sol::table playerTable = Protect<sol::table>(level["player"]);
 	//_playerSpawn.x = playerTable["spawnPoint"][1];
 	//_playerSpawn.y = playerTable["spawnPoint"][2];
 	_playerSpawn.x = _context->window->getSize().x / 2;
 	_playerSpawn.y = _levelLength - _worldView.getSize().y / 2;
-	std::string playerPlane = playerTable["airplane"];
+	std::string playerPlane = Protect<std::string>(playerTable["airplane"]);
 
 	_worldView.setCenter(_playerSpawn);
 	_actualViewPosition = _worldView.getCenter().y;
@@ -429,17 +447,18 @@ Level::Level(Context* context, const std::string& path) :
 
 
 	//Add environment animations and sprites 
-	sol::table animations = level["animations"];
+	sol::table animations = Protect<sol::table>(level["animations"]);
 	for (int i = 1; i <= animations.size(); i++)
 	{
 		sol::table animationData = animations[i];
-		std::string animationTexture = animationData["texture"];
-		int animationFrames = animationData["frames"];
-		sf::IntRect animationFirstRect = TableToRect(animationData["firstRect"]);
-		float animationFrameDuration = animationData["frameDuration"];
+		std::string animationTexture = Protect<std::string>(animationData["texture"]);
+		int animationFrames = Protect<int>(animationData["frames"]);
+		sf::IntRect animationFirstRect = TableToRect(Protect<sol::table>(animationData["firstRect"]));
+		float animationFrameDuration = Protect<float>(animationData["frameDuration"]);
 		sf::Vector2f animationPosition;
-		animationPosition.x = animationData["position"][1];
-		animationPosition.y = animationData["position"][2];
+		sol::table animationPositionTable = Protect<sol::table>(animationData["position"]);
+		animationPosition.x = Protect<float>(animationPositionTable[1]);
+		animationPosition.y = Protect<float>(animationPositionTable[2]);
 		animationPosition.x += _playerSpawn.x;
 		animationPosition.y = _levelLength - animationPosition.y;
 
@@ -460,13 +479,13 @@ Level::Level(Context* context, const std::string& path) :
 
 
 	//Add Spawn Positions
-	sol::table spawnPoints = level["spawnPoints"];
+	sol::table spawnPoints = Protect<sol::table>(level["spawnPoints"]);
 	for (int i = 1; i <= spawnPoints.size(); i++)
 	{
 		AirplaneSpawnPosition spawn;
-		std::string id = spawnPoints[i][1];
-		spawn.x = spawnPoints[i][2];
-		spawn.y = spawnPoints[i][3];
+		std::string id = Protect<std::string>(spawnPoints[i][1]);
+		spawn.x = Protect<float>(spawnPoints[i][2]);
+		spawn.y = Protect<float>(spawnPoints[i][3]);
 		spawn.y = _levelLength - spawn.y;
 		spawn.x += _playerSpawn.x;
 		spawn.data = &_airplaneDataDict[id];
@@ -474,18 +493,18 @@ Level::Level(Context* context, const std::string& path) :
 	}
 
 	//Add texts
-	sol::table texts = level["texts"];
+	sol::table texts = Protect<sol::table>(level["texts"]);
 	for (int i = 1; i <= texts.size(); i++)
 	{
 		TextAnimationData tdata;
-		sol::table text = texts[i];
-		tdata.str = _context->player->Parse(text["text"]);
-		tdata.y = text["y"];
+		sol::table text = Protect<sol::table>(texts[i]);
+		tdata.str = _context->player->Parse(Protect<std::string>(text["text"]));
+		tdata.y = Protect<float>(text["y"]);
 		tdata.y = _levelLength - tdata.y;
-		tdata.timePerLetter = text["timePerLetter"];
-		tdata.timeBeforeDestroy = text["timeBeforeDestroy"];
-		tdata.charSize = text["charSize"];
-		tdata.font = text["font"];
+		tdata.timePerLetter = Protect<float>(text["timePerLetter"]);
+		tdata.timeBeforeDestroy = Protect<float>(text["timeBeforeDestroy"]);
+		tdata.charSize = Protect<int>(text["charSize"]);
+		tdata.font = Protect<std::string>(text["font"]);
 		_texts.push_back(tdata);
 	}
 	
@@ -516,8 +535,8 @@ Level::Level(Context* context, const std::string& path) :
 	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
 	_root->Start(this);
 
-	_soundtrack = level["soundtrack"];
-	_menuSoundtrack = level["menuSoundtrack"];
+	_soundtrack = Protect<std::string>(level["soundtrack"]);
+	_menuSoundtrack = Protect<std::string>(level["menuSoundtrack"]);
 	_context->music->openFromFile(_soundtrack);
 	_context->music->setVolume(_context->player->GetMusicVolume());
 	_context->music->play();

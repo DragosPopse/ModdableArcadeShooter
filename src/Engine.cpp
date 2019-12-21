@@ -34,28 +34,27 @@ namespace
 Engine::Engine() : 
 	_fixedDeltaTime(1.f / 60.f),
 	_deltaTime(0.f),
-	_context(
-		&_window,
-		&_lua,
-		&_music,
-		&_player
-	),
+	_lua(new sol::state()),
 	_sceneManager(&_context)
 {
 	srand(time(0));
-	LuaInit_Base(_lua);
-	LuaInit_SFML(_lua);
-	LuaInit_Thor(_lua);
-	LuaInit_Game(_lua);
+	LuaInit_Base(*_lua);
+	LuaInit_SFML(*_lua);
+	LuaInit_Thor(*_lua);
+	LuaInit_Game(*_lua);
 	_window.create(sf::VideoMode(800, 800), "Test", sf::Style::Close);
-	TestLua(_lua);
+	TestLua(*_lua);
+
+	_context.lua = &_lua;
+	_context.music = &_music;
+	_context.player = &_player;
+	_context.window = &_window;
 }
 
 
 void Engine::Run()
 {
 	float timeSinceLastFrame = 0.f;
-
 	_textures.Load("Eagle", "assets/textures/Eagle.png");
 		
 	_theme.load("assets/textures/DefaultTheme.txt");
@@ -113,4 +112,10 @@ void Engine::Render()
 	_window.clear();
 	_sceneManager.Render();
 	_window.display();
+}
+
+
+void Engine::ResetLua()
+{
+	//_lua.reset(new sol::state());
 }

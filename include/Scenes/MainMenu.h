@@ -25,6 +25,8 @@ class MainMenu :
 	float _scrollSpeed;
 	sf::Sprite _parts[2];
 
+	bool _firstTime;
+
 	int _firstIndex;
 	int _nextIndex;
 
@@ -52,6 +54,7 @@ public:
 	bool HandleEvent(const sf::Event& ev) override;
 	bool Update(float dt) override;
 	bool Render() override;
+	void Enable() override;
 
 	void SetVisible(bool visible) override;
 

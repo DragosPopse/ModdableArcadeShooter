@@ -32,27 +32,18 @@ struct ProjectileData
 	sol::optional<sol::function> update;
 	sol::optional<sol::function> onCollision;
 	sol::optional<sol::function> onDestroy; //WIP
-	sol::function create;
-	sol::optional<sol::function> start;
+	sol::function start;
 
 
 	int ammoTextSize;
 	sf::Font* ammoFont;
 
 	std::mt19937 rng;
-	std::uniform_real_distribution<float> generator;
+	std::uniform_real_distribution<float> angleDistribution;
 	std::uniform_int_distribution<int> rectDistribution;
 
 	RandomizedSound muzzleSound;
-	std::uniform_real_distribution<float> muzzleVolumeGenerator;
-	std::uniform_real_distribution<float> muzzlePitchGenerator;
-
-
-
 	RandomizedSound destroySound;
-	std::uniform_real_distribution<float> destroyVolumeGenerator;
-	std::uniform_real_distribution<float> destroyPitchGenerator;
-
 };
 
 

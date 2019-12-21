@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
+#include "Engine.h"
 
 
 SceneManager::SceneManager(Context* context) :
@@ -130,4 +131,16 @@ void SceneManager::ApplyChanges()
 const Scene* SceneManager::Top() const
 {
 	return _stack.back().get();
+}
+
+
+void SceneManager::SetEngine(Engine* engine)
+{
+	_engine = engine;
+}
+
+
+void SceneManager::ResetLua()
+{
+	_engine->ResetLua();
 }

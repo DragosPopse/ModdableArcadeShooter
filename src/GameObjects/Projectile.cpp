@@ -20,7 +20,6 @@ Projectile::Projectile(ProjectileData* data) :
 	_rectChanged(false),
 	_collided(false)
 {
-	_luaObject = _data->create();
 }
 
 
@@ -34,7 +33,7 @@ void Projectile::Start(Scene* scene)
 
 	_clock.restart();
 
-	float randomAngle = _data->generator(_data->rng);
+	float randomAngle = _data->angleDistribution(_data->rng);
 	if (_playerControlled)
 	{
 		randomAngle -= 90;
@@ -55,10 +54,8 @@ void Projectile::Start(Scene* scene)
 	_velocity = _direction * _data->speed;
 	setRotation(randomAngle + 90);
 
-	if (_data->start.has_value())
-	{
-		_data->start.value()(_luaObject, this);
-	}
+	_luaObject = _data->start(this);
+	
 
 	float defaultVolume = _level->GetContext()->player->GetSfxVolume();
 	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);

@@ -18,7 +18,8 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_fade(0.9, 0),
 	_elapsedTime(0),
 	_fadeDuration(0.5f),
-	_textSize(30)
+	_textSize(30),
+	_firstTime(firstTime)
 {
 	if (_context->player->HasSettings())
 	{
@@ -109,18 +110,21 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_gui.add(_panel);
 
 	_levelSelector.reset(new LevelSelector(_context, this));
-	if (!firstTime)
-	{
-		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
-		_context->music->setVolume(_context->player->GetMusicVolume());
-		_context->music->play();
-	}
+
 
 	SetVisible(true);
 }
 
 
-
+void MainMenu::Enable()
+{
+	if (!_firstTime)
+	{
+		_context->music->openFromFile("assets/audio/music/MainMenu.wav");
+		_context->music->setVolume(_context->player->GetMusicVolume());
+		_context->music->play();
+	}
+}
 
 
 
