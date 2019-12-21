@@ -36,8 +36,8 @@ local Bullet = {
     ammoFont = 'Pixel',
     ammoTextSize = 30,
 
-    start = function (lthis, this)
-        
+    start = function (this)
+        return { }
     end,
 
     onCollision = function (lthis, this, airplane)

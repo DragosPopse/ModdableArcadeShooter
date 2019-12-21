@@ -1,5 +1,7 @@
 #include "Scenes/LevelLoader.h"
 #include "Utility.h"
+#include "Scenes/ErrorScene.h"
+#include "Scenes/MainMenu.h"
 
 
 LevelLoader::LevelLoader(Context* context, const std::string& fileName) :
@@ -27,9 +29,19 @@ bool LevelLoader::Update(float dt)
 {
 	if (IsFinished())
 	{
-		RequestClear();
-		std::shared_ptr<Scene> ptr(_result);
-		RequestPush(ptr);
+		if (!_error)
+		{
+			RequestClear();
+			std::shared_ptr<Scene> ptr(_result);
+			RequestPush(std::move(ptr));
+		}
+		else
+		{
+			ResetLua();
+			std::shared_ptr<MainMenu> mainMenu(new MainMenu(_context, false));
+			std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Lua Error", _errorMessage, std::move(mainMenu)));
+			RequestPush(std::move(error));
+		}
 	}
 	else
 	{
@@ -49,21 +61,30 @@ bool LevelLoader::Update(float dt)
 bool LevelLoader::Render()
 {
 	_context->window->draw(_sprite);
-	return false;
+	return true;
 }
 
 
 void LevelLoader::RunTask()
 {
-	_result = new Level(_context, _fileName);
-	sf::Clock clock;
-	clock.restart();
+	
+	//sf::Clock clock;
+	//clock.restart();
 	//while (clock.getElapsedTime().asSeconds() < 3.f)
 	//{
 	//	//Dummy loop just for testing multithreading 
 	//}
 	
-
+	try
+	{
+		_result = new Level(_context, _fileName);
+	}
+	catch(sol::error& err)
+	{
+		_error = true;
+		_errorMessage = err.what();
+	}
+	
 	{
 		sf::Lock lock(_mutex);
 		_finished = true;

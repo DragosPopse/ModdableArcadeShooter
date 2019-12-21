@@ -11,6 +11,8 @@ class LevelLoader :
 	sf::Thread _thread;
 	sf::Mutex _mutex;
 	bool _finished;
+	std::string _errorMessage;
+	bool _error = false;
 
 	sf::Sprite _sprite;
 	TextureHolder _textures;

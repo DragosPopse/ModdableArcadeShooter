@@ -6,6 +6,8 @@
 #include "Scene.h"
 #include <queue>
 
+class Engine;
+
 
 class SceneManager
 {
@@ -30,6 +32,7 @@ class SceneManager
 	std::list<std::shared_ptr<Scene>> _stack;
 	Context* _context;
 	std::queue<PendingChange> _pendingChanges;
+	Engine* _engine;
 
 public:
 	SceneManager(Context* context);
@@ -37,6 +40,9 @@ public:
 	void PushScene(std::shared_ptr<Scene> scene);
 	void PopScene();
 	void Clear();
+
+	void ResetLua();
+	void SetEngine(Engine* engine);
 
 	bool IsEmpty() const { return _stack.empty(); }
 
@@ -46,6 +52,7 @@ public:
 	void Update(float dt);
 	void FixedUpdate(float dt);
 	void Render();
+
 
 	const Scene* Top() const;
 

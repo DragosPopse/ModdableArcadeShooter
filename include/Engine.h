@@ -7,11 +7,12 @@
 #include "Player.h"
 #include <TGUI/TGUI.hpp>
 #include <SFML/Audio.hpp>
+#include <memory>
 
 class Engine
 {
 	sf::RenderWindow _window;
-	sol::state _lua;
+	std::unique_ptr<sol::state> _lua;
 	sf::Clock _clock;
 	float _deltaTime;
 	float _fixedDeltaTime;
@@ -30,6 +31,8 @@ public:
 	Engine();
 
 	void Run();
+
+	void ResetLua();
 
 private:
 	void HandleEvents();

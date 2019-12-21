@@ -7,7 +7,7 @@ SplashScreen::SplashScreen(Context* context) :
 	Scene(context),
 	_animation(0.30, 0.50),
 	_elapsedTime(0),
-	_mainMenu(new MainMenu(context))
+	_mainMenu(new MainMenu(context, true))
 {
 	_textures.Load("Logo", "assets/textures/Logo.png");
 	_splash.setTexture(_textures["Logo"]);
