@@ -54,7 +54,7 @@ void Projectile::Start(Scene* scene)
 	_velocity = _direction * _data->speed;
 	setRotation(randomAngle + 90);
 
-	_luaObject = _data->start(this);
+	_luaObject = Protect<sol::table>(_data->start(this));
 	
 
 	float defaultVolume = _level->GetContext()->player->GetSfxVolume();
@@ -79,7 +79,7 @@ void Projectile::Update(float dt)
 
 	if (_data->update.has_value())
 	{
-		_data->update.value().call(_luaObject, this, dt);
+		Protect(_data->update.value().call(_luaObject, this, dt));
 	}
 	GameObject::Update(dt);
 }
@@ -90,7 +90,7 @@ void Projectile::FixedUpdate(float dt)
 
 	if (_data->fixedUpdate.has_value())
 	{
-		_data->fixedUpdate.value().call(_luaObject, this, dt);
+		Protect(_data->fixedUpdate.value().call(_luaObject, this, dt));
 	}
 	move(_velocity * dt);
 	GameObject::FixedUpdate(dt);

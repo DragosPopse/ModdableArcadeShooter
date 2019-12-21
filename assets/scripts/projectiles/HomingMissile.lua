@@ -70,7 +70,6 @@ local HomingMissile = {
         local target = nil
         local closestDistance = 999999
         local planesRoot
-        
         local command = engine.Command.new()
         if this:isPlayerControlled() then
             command.category = engine.GameObject.ENEMY_AIRPLANE

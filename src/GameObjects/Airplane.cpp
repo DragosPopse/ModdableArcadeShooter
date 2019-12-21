@@ -248,7 +248,7 @@ void Airplane::Damage(int hp)
 
 		if (_data->onDestroy.has_value())
 		{
-			_data->onDestroy.value()(this);
+			Protect(_data->onDestroy.value()(this));
 		}
 	}
 	else
