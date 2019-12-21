@@ -21,6 +21,8 @@
 #include <SFML/Audio.hpp>
 #include "Scenes/LoseState.h"
 #include "Scenes/WinState.h"
+#include "Scenes/ErrorScene.h"
+#include "Scenes/MainMenu.h"
 
 #include <rapidjson/writer.h>
 #include <rapidjson/document.h>
@@ -52,38 +54,8 @@ namespace
 		return lhs.GetBoundingRect().intersects(rhs.GetBoundingRect());
 	}
 
-	template <class T>
-	T& ProtectedGet(sol::table& from, const std::string& name)
-	{
-		auto result = from[name];
-		if (!result.valid())
-		{
-			throw sol::error(result);
-		}
-		return result;
-	}
 
-	template <class T>
-	T& ProtectedGet(sol::table& from, int index)
-	{
-		auto result = from[index];
-		if (!result.valid())
-		{
-			throw sol::error(result);
-		}
-		return result;
-	}
 
-	template <class ReturnType, class ParamType>
-	ReturnType Protect(ParamType result)
-	{
-		if (!result.valid())
-		{
-			sol::error err = result;
-			throw err;
-		}
-		return result;
-	}
 }
 
 Level::Level(Context* context, const std::string& path) :
@@ -579,13 +551,24 @@ bool Level::FixedUpdate(float dt)
 		RequestPush(win);
 		_win = true;
 	}
-	SpawnObjects();
-	_context->player->HandleRealtimeInput(_commands);
-	while (!_commands.IsEmpty())
+	try
 	{
-		_root->OnCommand(_commands.Pop(), dt);
+		SpawnObjects();
+		_context->player->HandleRealtimeInput(_commands);
+		while (!_commands.IsEmpty())
+		{
+			_root->OnCommand(_commands.Pop(), dt);
+		}
+		_root->FixedUpdate(dt);
 	}
-	_root->FixedUpdate(dt);
+	catch (sol::error& ex)
+	{
+		std::shared_ptr<MainMenu> mainMenu(new MainMenu(_context, false));
+		std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Lua Error", ex.what(),
+			std::move(mainMenu)));
+
+		RequestPush(std::move(error));
+	}
 
 	if (_playerAirplane)
 	{
@@ -669,7 +652,18 @@ bool Level::Update(float dt)
 	}
 
 	dt *= _timeScale;
-	_root->Update(dt);
+	try
+	{
+		_root->Update(dt);
+	}
+	catch (sol::error& ex)
+	{
+		std::shared_ptr<MainMenu> mainMenu(new MainMenu(_context, false));
+		std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Lua Error", ex.what(), 
+			std::move(mainMenu)));
+
+		RequestPush(std::move(error));
+	}
 	_uiRoot->Update(dt);
 	return false;
 }

@@ -58,7 +58,7 @@ void Pickup::OnPickup(Airplane& player)
 {
 	RandomizedSoundResult sound = _data->onPickupSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
 	_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
-	_data->onPickup(player);
+	Protect(_data->onPickup(player));
 	
 	_animation->SetTexture(*_data->destroyTexture);
 	_animation->SetFirstRect(_data->destroyFirstRect);

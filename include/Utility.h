@@ -8,6 +8,7 @@
 #include <functional>
 #include <Thor/Animations.hpp>
 #include <Thor/Particles.hpp>
+#include <sol/error.hpp>
 
 
 void CenterOrigin(sf::Sprite& sprite);
@@ -219,6 +220,28 @@ public:
 		return { x, y };
 	}
 };
+
+
+template <class ReturnType, class ParamType>
+ReturnType Protect(ParamType result)
+{
+	if (!result.valid())
+	{
+		sol::error err = result;
+		throw err;
+	}
+	return result;
+}
+
+template<class ParamType>
+void Protect(ParamType result)
+{
+	if (!result.valid())
+	{
+		sol::error err = result;
+		throw err;
+	}
+}
 
 
 
