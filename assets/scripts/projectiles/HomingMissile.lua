@@ -36,6 +36,7 @@ local HomingMissile = {
     ammoTextSize = 20,
 
     start = function (this)
+        local lthis = { }
         lthis.timer = 0
         local smoke = engine.ParticleSystem.new()
         
@@ -60,7 +61,7 @@ local HomingMissile = {
 
         this:addChild(smoke)
 
-        return { }
+        return lthis
     end,
 
     fixedUpdate = function (lthis, this, dt)
