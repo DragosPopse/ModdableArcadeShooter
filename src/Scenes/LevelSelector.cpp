@@ -40,7 +40,7 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	for (const auto& entry : fs::directory_iterator(LEVELS_PATH))
 	{
 		std::string file = entry.path().string();
-		sol::table level = (*_context->lua)->do_file(file);
+		sol::table level = _context->lua->do_file(file);
 		std::string title = level["title"];
 		std::string previewImage = level["previewImage"];
 		std::string saveFile = level["saveFile"];

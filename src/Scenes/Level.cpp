@@ -87,10 +87,10 @@ Level::Level(Context* context, const std::string& path) :
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
 	_shaker.SetSeed(randDevice());
-	(**_context->lua)["_level_seed"] = randDevice();
-	(*_context->lua)->do_string("math.randomseed(_level_seed)");
+	(*_context->lua)["_level_seed"] = randDevice();
+	_context->lua->do_string("math.randomseed(_level_seed)");
 
-	sol::table level = Protect<sol::table>((*_context->lua)->do_file(path));
+	sol::table level = Protect<sol::table>(_context->lua->do_file(path));
 	_saveFile = Protect<std::string>(level["saveFile"]);
 	std::ifstream save(_saveFile);
 	if (save.good())
@@ -158,7 +158,7 @@ Level::Level(Context* context, const std::string& path) :
 	{
 		std::string pickupName = Protect<std::string>(pickups[i]);
 		std::string pickupPath = BuildString("assets/scripts/pickups/", pickupName, ".lua");
-		sol::table pickup = Protect<sol::table>((*_context->lua)->do_file(pickupPath));
+		sol::table pickup = Protect<sol::table>(_context->lua->do_file(pickupPath));
 		PickupData pickupData;
 		pickupData.texture = &_textures[Protect<std::string>(pickup["texture"])];
 		pickupData.firstRect = TableToRect(Protect<sol::table>(pickup["firstRect"]));//pickup["firstRect"];
@@ -185,7 +185,7 @@ Level::Level(Context* context, const std::string& path) :
 		std::string name = Protect<std::string>(planes[i]);
 		std::string path = BuildString("assets/scripts/airplanes/", name, ".lua");
 		std::cout << path << '\n';
-		sol::table plane = Protect<sol::table>((*_context->lua)->do_file(path));
+		sol::table plane = Protect<sol::table>(_context->lua->do_file(path));
 
 		AirplaneData apdata;
 		apdata.name = Protect<std::string>(plane["name"]);
@@ -268,7 +268,7 @@ Level::Level(Context* context, const std::string& path) :
 				std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
 
 				std::cout << projectilePath << '\n';
-				sol::table projectile = Protect<sol::table>((*_context->lua)->do_file(projectilePath));
+				sol::table projectile = Protect<sol::table>(_context->lua->do_file(projectilePath));
 	
 				ProjectileData projdata;
 				projdata.name = projectileName;

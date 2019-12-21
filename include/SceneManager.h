@@ -32,7 +32,6 @@ class SceneManager
 	std::list<std::shared_ptr<Scene>> _stack;
 	Context* _context;
 	std::queue<PendingChange> _pendingChanges;
-	Engine* _engine;
 
 public:
 	SceneManager(Context* context);
@@ -41,8 +40,6 @@ public:
 	void PopScene();
 	void Clear();
 
-	void ResetLua();
-	void SetEngine(Engine* engine);
 
 	bool IsEmpty() const { return _stack.empty(); }
 

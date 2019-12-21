@@ -18,7 +18,7 @@ class Player;
 struct Context
 {
 	sf::RenderWindow* window;
-	std::unique_ptr<sol::state>* lua;
+	sol::state* lua;
 	sf::Music* music;
 	Player* player;
 };

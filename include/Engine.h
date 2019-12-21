@@ -12,7 +12,7 @@
 class Engine
 {
 	sf::RenderWindow _window;
-	std::unique_ptr<sol::state> _lua;
+	sol::state _lua;
 	sf::Clock _clock;
 	float _deltaTime;
 	float _fixedDeltaTime;
@@ -31,8 +31,6 @@ public:
 	Engine();
 
 	void Run();
-
-	void ResetLua();
 
 private:
 	void HandleEvents();

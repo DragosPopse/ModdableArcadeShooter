@@ -36,9 +36,3 @@ bool Scene::OnTop() const
 {
 	return _manager->Top() == this;
 }
-
-
-void Scene::ResetLua()
-{
-	_manager->ResetLua();
-}

@@ -37,7 +37,6 @@ public:
 	void RequestPop();
 	void RequestClear();
 	bool OnTop() const;
-	void ResetLua();
 
 	Context* GetContext() const { return _context; }
 	TextureHolder& GetTextures() { return _textures; }

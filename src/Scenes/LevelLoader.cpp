@@ -37,7 +37,6 @@ bool LevelLoader::Update(float dt)
 		}
 		else
 		{
-			ResetLua();
 			std::shared_ptr<MainMenu> mainMenu(new MainMenu(_context, false));
 			std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Lua Error", _errorMessage, std::move(mainMenu)));
 			RequestPush(std::move(error));
