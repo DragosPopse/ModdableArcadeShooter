@@ -39,10 +39,6 @@
 #include "Utility.h"
 
 
-
-
-
-
 namespace rjs = rapidjson;
 
 
@@ -342,16 +338,20 @@ Level::Level(Context* context, const std::string& path) :
 
 		}
 		//Load drops
-		sol::table drops = Protect<sol::table>(plane["drops"]);
-		for (int i = 1; i <= drops.size(); i++)
+		sol::object optionalDrops = plane["drops"];
+		if (optionalDrops != sol::nil)
 		{
-			sol::table drop = drops[i];
-			DropData dropData;
-			dropData.dropRate = Protect<int>(drop["dropRate"]);
-			std::string dropName = Protect<std::string>(drop["pickup"]);
-			dropData.pickup = &_pickupDataDict[dropName];
+			sol::table drops = Protect<sol::table>(plane["drops"]);
+			for (int i = 1; i <= drops.size(); i++)
+			{
+				sol::table drop = drops[i];
+				DropData dropData;
+				dropData.dropRate = Protect<int>(drop["dropRate"]);
+				std::string dropName = Protect<std::string>(drop["pickup"]);
+				dropData.pickup = &_pickupDataDict[dropName];
 
-			apdata.drops.push_back(dropData);
+				apdata.drops.push_back(dropData);
+			}
 		}
 		
 		std::sort(apdata.drops.begin(), apdata.drops.end(), 
@@ -360,7 +360,6 @@ Level::Level(Context* context, const std::string& path) :
 				return lhs.dropRate < rhs.dropRate;
 			});
 
-		std::cout << "DROPCHANCE: " << apdata.drops[0].dropRate << '\n';
 		for (int i = 1; i < apdata.drops.size(); i++)
 		{
 			apdata.drops[i].dropRate += apdata.drops[i - 1].dropRate;
