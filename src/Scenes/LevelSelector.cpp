@@ -39,21 +39,42 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	namespace fs = std::filesystem;
 	for (const auto& entry : fs::directory_iterator(LEVELS_PATH))
 	{
+		bool good = true;
 		std::string file = entry.path().string();
-		sol::table level = _context->lua->do_file(file);
-		std::string title = level["title"];
-		std::string previewImage = level["previewImage"];
-		std::string saveFile = level["saveFile"];
+		sol::table level;
+		std::string title;
+		std::string previewImage;
+		std::string saveFile;
 		int highScore = 0;
-		std::ifstream in(saveFile);
-		if (in.good())
+		try
 		{
-			rjs::IStreamWrapper wrapper(in);
-			rjs::Document document;
-			document.ParseStream(wrapper);
-			highScore = document["HighScore"].GetInt();
+			level = Protect<sol::table>(_context->lua->do_file(file));
+			title = Protect<std::string>(level["title"]);
+			previewImage = Protect<std::string>(level["previewImage"]);
+			saveFile = Protect<std::string>(level["saveFile"]);
 		}
-		_levelData.emplace_back(file, title, previewImage, highScore);
+		catch (sol::error& err)
+		{
+			good = false;
+		}
+		if (good)
+		{
+			std::ifstream in(saveFile);
+			if (in.good())
+			{
+				rjs::IStreamWrapper wrapper(in);
+				rjs::Document document;
+				document.ParseStream(wrapper);
+				highScore = document["HighScore"].GetInt();
+			}
+			
+		}
+		else
+		{
+			title = file;
+			previewImage = "assets/textures/levels/Level1.png";
+		}
+		_levelData.emplace_back(file, title, previewImage, highScore, good);
 
 		_textures.Load(title, previewImage);
 	}
@@ -140,7 +161,11 @@ void LevelSelector::UpdateDisplay()
 	auto& level = _levelData[_currentIndex];
 	_levelImage.setTexture(_textures[level.title]);
 	_levelTitle.setString(level.title);
-	if (level.highScore != 0)
+	if (!level.good)
+	{
+		_levelScore.setString("Lua Error");
+	}
+	else if (level.highScore != 0)
 	{
 		_levelScore.setString(BuildString("High Score: ", level.highScore));
 	}
