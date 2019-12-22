@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Scene.h"
+#include "GuiMenu.h"
+
+#include <memory>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <TGUI/TGUI.hpp>
-#include "Player.h"
 #include <Thor/Animations.hpp>
-#include <memory>
-#include "GuiMenu.h"
 
+#include "Player.h"
 #include "Scenes/LevelSelector.h"
 
 class SettingsPanel;

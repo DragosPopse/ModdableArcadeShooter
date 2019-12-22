@@ -2,11 +2,13 @@
 
 #include "Scene.h"
 #include "GuiMenu.h"
-#include "Player.h"
+
+#include <string>
 
 #include <TGUI/TGUI.hpp>
 #include <SFML/Audio.hpp>
-#include <string>
+
+#include "Player.h"
 
 
 class KeyBindingPanel :

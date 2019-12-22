@@ -1,11 +1,14 @@
 #pragma once
 
 #include "GameObject.h"
+
+#include <optional>
+#include <random>
+
 #include <SFML/Graphics.hpp>
 #include  <SFML/Audio.hpp>
 #include <sol/sol.hpp>
-#include <optional>
-#include <random>
+
 #include "RandomizedSound.h"
 
 class Level;

@@ -9,10 +9,9 @@ the explosion is a generic Animation that is not supposed to store an sf::Sound
 
 #pragma once
 
-#include <SFML/Audio.hpp>
 #include <list> 
-//#include <vector>
 
+#include <SFML/Audio.hpp>
 
 class SoundQueue
 {

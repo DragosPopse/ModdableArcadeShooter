@@ -1,9 +1,12 @@
 #pragma once
 
 #include "GameObject.h"
+
+#include <random>
+
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
-#include <random>
+
 #include "GameObjects/Animation.h"
 #include "RandomizedSound.h"
 

@@ -1,20 +1,25 @@
 #include "LuaInit.h"
+
+#include <functional>
+
 #include <sol/sol.hpp>
 #include <SFML/Graphics.hpp>
-
-#include "GameObject.h"
-#include "GameObjects/Projectile.h"
-#include "GameObjects/Airplane.h"
-#include "Utility.h"
-#include <functional>
-#include "Command.h"
-#include "Scenes/Level.h"
-#include "GameObjects/ParticleSystemObject.h"
 #include <Thor/Particles.hpp>
 #include <Thor/Math.hpp>
 #include <Thor/Input.hpp>
 #include <Thor/Graphics.hpp>
 #include <Thor/Animations.hpp>
+
+#include "GameObject.h"
+#include "GameObjects/Projectile.h"
+#include "GameObjects/Airplane.h"
+#include "GameObjects/ParticleSystemObject.h"
+
+#include "Scenes/Level.h"
+
+#include "Utility.h"
+#include "Command.h"
+
 
 
 void LuaInit_Base(sol::state& lua)

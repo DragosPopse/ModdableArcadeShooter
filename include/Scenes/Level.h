@@ -1,25 +1,29 @@
 #pragma once
 
 #include "Scene.h"
+
+#include <deque>
 #include <string>
-#include "Context.h"
-#include "GameObjects/Airplane.h"
-#include "GameObjects/Projectile.h"
 #include <vector>
 #include <map>
-#include <deque>
+#include <memory>
+
+#include <Thor/Animations.hpp>
+#include <sol/sol.hpp>
+
+#include "Context.h"
 #include "Player.h"
 #include "CommandQueue.h"
-#include "GameObjects/Animation.h"
-#include "GameObjects/ParticleSystemObject.h"
-#include <sol/sol.hpp>
-#include <GameObjects/TextAnimation.h>
-#include <Thor/Animations.hpp>
-#include <memory>
-#include "LocalMenu.h"
-#include "GameObjects/Pickup.h"
 #include "SoundQueue.h"
 #include "ViewShaker.h"
+#include "LocalMenu.h"
+
+#include "GameObjects/Airplane.h"
+#include "GameObjects/Projectile.h"
+#include "GameObjects/Animation.h"
+#include "GameObjects/ParticleSystemObject.h"
+#include "GameObjects/TextAnimation.h"
+#include "GameObjects/Pickup.h"
 
 class Airplane;
 class Projectile;

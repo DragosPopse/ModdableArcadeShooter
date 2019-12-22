@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Scene.h"
+
 #include <memory>
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
+
+#include <SFML/Graphics.hpp>
 
 class MainMenu;
 

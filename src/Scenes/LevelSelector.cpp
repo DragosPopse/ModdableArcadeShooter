@@ -1,11 +1,7 @@
 #include "Scenes/LevelSelector.h"
-#include "Scenes/MainMenu.h"
+
 #include <filesystem>
-#include "Utility.h"
-#include <sol/sol.hpp>
-#include "Context.h"
-#include "Scenes/LevelLoader.h"
-#include "Scenes/Level.h"
+#include <fstream>
 
 #include <rapidjson/writer.h>
 #include <rapidjson/document.h>
@@ -15,11 +11,23 @@
 #include <rapidjson/filewritestream.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
-#include <fstream>
+
+#include <sol/sol.hpp>
+
+
+#include "Scenes/MainMenu.h"
+#include "Scenes/LevelLoader.h"
+#include "Scenes/Level.h"
+
+#include "Utility.h"
+#include "Context.h"
+
 
 #define LEVELS_PATH "assets/scripts/levels/"
 
+
 namespace rjs = rapidjson;
+
 
 LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	Scene(context),

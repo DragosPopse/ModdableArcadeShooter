@@ -1,15 +1,15 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <Thor/Math.hpp>
 #include <string>
 #include <sstream>
 #include <random>
 #include <functional>
+
+#include <SFML/Graphics.hpp>
+#include <Thor/Math.hpp>
 #include <Thor/Animations.hpp>
 #include <Thor/Particles.hpp>
 #include <sol/error.hpp>
-
 
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);

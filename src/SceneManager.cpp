@@ -1,7 +1,7 @@
 #include "SceneManager.h"
+
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
-#include "Engine.h"
 
 
 SceneManager::SceneManager(Context* context) :

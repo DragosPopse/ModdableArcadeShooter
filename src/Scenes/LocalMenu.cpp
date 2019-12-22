@@ -1,5 +1,7 @@
 #include "Scenes/LocalMenu.h"
+
 #include <iostream>
+
 #include "Scenes/Level.h"
 #include "Scenes/MainMenu.h"
 

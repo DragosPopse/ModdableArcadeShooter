@@ -2,10 +2,12 @@
 
 
 #include "Scene.h"
+#include "GuiMenu.h"
+
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
+
 #include "Utility.h"
-#include "GuiMenu.h"
 #include "SettingsPanel.h"
 
 class Level;

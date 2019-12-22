@@ -1,7 +1,9 @@
 #include "GameObjects/Pickup.h"
-#include "GameObjects/Airplane.h"
-#include "Scenes/Level.h"
+
 #include "GameObjects/Animation.h"
+#include "GameObjects/Airplane.h"
+
+#include "Scenes/Level.h"
 
 
 Pickup::Pickup(PickupData* data) :

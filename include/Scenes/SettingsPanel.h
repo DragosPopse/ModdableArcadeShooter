@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Scene.h"
-#include "TGUI/TGUI.hpp"
-#include <SFML/Audio.hpp>
-#include <memory>
-
 #include "GuiMenu.h"
 
-class KeyBindingPanel;
+#include <memory>
 
+#include <TGUI/TGUI.hpp>
+#include <SFML/Audio.hpp>
+
+class KeyBindingPanel;
 
 class SettingsPanel :
 	public Scene,

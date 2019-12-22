@@ -2,7 +2,9 @@
 
 #include <map>
 #include <string>
+
 #include <SFML/Window/Keyboard.hpp>
+
 #include "Command.h"
 
 namespace sf

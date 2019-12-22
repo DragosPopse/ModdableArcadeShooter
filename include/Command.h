@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <cassert>
+
 #include <sol/sol.hpp>
 
 class GameObject;

@@ -1,10 +1,11 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <map>
 #include <string>
 #include <memory>
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 template <class Key, class Resource>
 class ResourceHolder

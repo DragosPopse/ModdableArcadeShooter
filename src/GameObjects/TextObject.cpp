@@ -1,6 +1,8 @@
 #include "GameObjects/TextObject.h"
-#include "Utility.h"
+
 #include <iostream>
+
+#include "Utility.h"
 
 
 TextObject::TextObject()

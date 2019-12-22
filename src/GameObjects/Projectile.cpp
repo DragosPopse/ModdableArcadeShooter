@@ -1,15 +1,21 @@
 #include "GameObjects/Projectile.h"
+
+#include <cmath>
+#include <random>
+
+#include <sol/sol.hpp>
+#include <SFML/Graphics.hpp>
+#include <Thor/Math.hpp>
+
 #include "Scene.h"
 #include "Scenes/Level.h"
-#include <SFML/Graphics.hpp>
-#include "Utility.h"
-#include "GameObjects/Airplane.h"
-#include <sol/sol.hpp>
-#include <random>
-#include "Utility.h"
-#include <cmath>
+
 #include "GameObjects/ParticleSystemObject.h"
-#include <Thor/Math.hpp>
+#include "GameObjects/Airplane.h"
+
+#include "Utility.h"
+
+
 
 
 Projectile::Projectile(ProjectileData* data) :

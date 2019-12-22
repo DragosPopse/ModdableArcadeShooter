@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Scene.h"
+
+#include <string>
+
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
-#include <string>
+
 
 class ErrorScene :
 	public Scene

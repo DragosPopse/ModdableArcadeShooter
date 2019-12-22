@@ -1,7 +1,11 @@
 #include "GameObjects/TextAnimation.h"
-#include "Utility.h"
-#include "Scenes/Level.h"
+
 #include <iostream>
+
+#include "Scenes/Level.h"
+#include "Utility.h"
+
+
 
 
 TextAnimation::TextAnimation(const std::string& finalStr) :
