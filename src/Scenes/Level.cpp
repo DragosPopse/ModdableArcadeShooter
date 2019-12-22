@@ -342,6 +342,7 @@ Level::Level(Context* context, const std::string& path) :
 		if (optionalDrops != sol::nil)
 		{
 			sol::table drops = Protect<sol::table>(plane["drops"]);
+			int percentage = 0;
 			for (int i = 1; i <= drops.size(); i++)
 			{
 				sol::table drop = drops[i];
@@ -351,6 +352,16 @@ Level::Level(Context* context, const std::string& path) :
 				dropData.pickup = &_pickupDataDict[dropName];
 
 				apdata.drops.push_back(dropData);
+				percentage += dropData.dropRate;
+				if (dropData.dropRate < 0)
+				{
+					throw sol::error(BuildString(name, ".lua: dropRate cannot be negative. "));
+				}
+			}
+
+			if (percentage > 100)
+			{
+				throw sol::error(BuildString(name, ".lua: drop rates exceed 100. The sum of all dropRates should be 100. "));
 			}
 		}
 		

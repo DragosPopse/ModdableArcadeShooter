@@ -66,7 +66,7 @@ local Eagle = {
     drops = {
         {
             pickup = 'SmallHealth',
-            dropRate = 50
+            dropRate = 51
         },
 
         {
