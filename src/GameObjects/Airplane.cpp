@@ -1,17 +1,22 @@
 #include "GameObjects/Airplane.h"
-#include "Scene.h"
-#include "Scenes/Level.h"
-#include <SFML/Graphics.hpp>
-#include "Utility.h"
-#include "GameObjects/TextObject.h"
-#include "GameObjects/ParticleSystemObject.h"
-#include <Thor/Math.hpp>
-#include <Thor/Animations.hpp>
-#include "GameObjects/Pickup.h"
+
 #include <iostream>
 
+#include <Thor/Math.hpp>
+#include <Thor/Animations.hpp>
+#include <SFML/Graphics.hpp>
 
-namespace
+#include "Scene.h"
+#include "Scenes/Level.h"
+
+#include "GameObjects/TextObject.h"
+#include "GameObjects/ParticleSystemObject.h"
+#include "GameObjects/Pickup.h"
+
+#include "Utility.h"
+
+
+namespace //[REMOVE] 
 {
 	std::uniform_real_distribution<float> g_randomRotation(0, 1);
 	std::mt19937 g_rng;

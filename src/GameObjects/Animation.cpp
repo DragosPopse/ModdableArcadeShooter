@@ -1,6 +1,8 @@
 #include "GameObjects/Animation.h"
-#include "Utility.h"
+
 #include <iostream>
+
+#include "Utility.h"
 
 
 Animation::Animation() :

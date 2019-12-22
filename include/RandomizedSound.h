@@ -1,8 +1,8 @@
 #pragma once
 
+#include <random>
 
 #include <SFML/Audio.hpp>
-#include <random>
 
 struct RandomizedSoundResult
 {

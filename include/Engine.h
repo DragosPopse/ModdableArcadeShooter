@@ -1,13 +1,17 @@
 #pragma once
 
+#include <memory>
+
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
-#include "SceneManager.h"
-#include "ResourceHolder.h"
-#include "Player.h"
 #include <TGUI/TGUI.hpp>
 #include <SFML/Audio.hpp>
-#include <memory>
+
+#include "SceneManager.h"
+#include "ResourceHolder.h"
+
+#include "Player.h"
+
 
 class Engine
 {

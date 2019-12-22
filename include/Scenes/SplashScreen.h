@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Scene.h"
-#include <SFML/Graphics.hpp>
-#include <Thor/Animations.hpp>
-#include "Scenes/MainMenu.h"
+
 #include <memory>
 
+#include <SFML/Graphics.hpp>
+#include <Thor/Animations.hpp>
+
+#include "Scenes/MainMenu.h"
 
 class SplashScreen :
 	public Scene

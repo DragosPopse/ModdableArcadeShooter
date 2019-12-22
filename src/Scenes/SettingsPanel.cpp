@@ -1,6 +1,8 @@
 #include "Scenes/SettingsPanel.h"
+
 #include "Context.h"
 #include "Player.h"
+
 #include "Scenes/KeyBindingPanel.h"
 
 

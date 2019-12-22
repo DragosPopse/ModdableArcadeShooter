@@ -1,11 +1,13 @@
 #pragma once
 
 #include "GameObject.h"
-#include "GameObjects/TextObject.h"
-#include <SFML/Graphics.hpp>
+
 #include <string>
 #include <sstream>
 
+#include <SFML/Graphics.hpp>
+
+#include "GameObjects/TextObject.h"
 
 class TextAnimation :
 	public GameObject

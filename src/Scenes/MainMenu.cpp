@@ -1,13 +1,18 @@
 #include "Scenes/MainMenu.h"
+
 #include <iostream>
-#include <SFML/Audio.hpp>
-#include "Scenes/LevelLoader.h"
 #include <string>
-#include "Utility.h"
+
+#include <SFML/Audio.hpp>
+
 #include "Scenes/LevelSelector.h"
-#include "Context.h"
 #include "Scenes/SettingsPanel.h"
 #include "Scenes/ErrorScene.h"
+#include "Scenes/LevelLoader.h"
+
+#include "Utility.h"
+#include "Context.h"
+
 
 MainMenu::MainMenu(Context* context, bool firstTime) :
 	Scene(context),

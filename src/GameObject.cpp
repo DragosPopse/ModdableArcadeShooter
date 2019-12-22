@@ -1,16 +1,18 @@
 #include "GameObject.h"
+
 #include <cassert>
-#include "Scene.h"
 #include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iostream>
-#include "Command.h"
+
+#include <sol/sol.hpp>
 
 #include "GameObjects/Airplane.h"
 #include "GameObjects/Projectile.h"
 
-#include <sol/sol.hpp>
+#include "Scene.h"
+#include "Command.h"
 
 
 GameObject::GameObject() :

@@ -1,28 +1,11 @@
 ﻿#include "Scenes/Level.h"
-#include <string>
-#include <iostream>
-#include <fstream>
-#include "Context.h"
-#include <sol/sol.hpp>
-#include "Engine.h"
-#include <SFML/Graphics.hpp>
-#include "GameObject.h"
-#include "GameObjects/Animation.h"
-#include "GameObjects/Airplane.h"
-#include "GameObjects/SpriteObject.h"
-#include "GameObjects/Projectile.h"
-#include "GameObjects/TextObject.h"
-#include "RandomizedSound.h"
-#include <sol/sol.hpp>
-#include "Utility.h"
+
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include <SFML/Audio.hpp>
-#include "Scenes/LoseState.h"
-#include "Scenes/WinState.h"
-#include "Scenes/ErrorScene.h"
-#include "Scenes/MainMenu.h"
+#include <string>
+#include <iostream>
+#include <fstream>
 
 #include <rapidjson/writer.h>
 #include <rapidjson/document.h>
@@ -32,6 +15,33 @@
 #include <rapidjson/filewritestream.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
+
+#include <sol/sol.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+#include "Scenes/LoseState.h"
+#include "Scenes/WinState.h"
+#include "Scenes/ErrorScene.h"
+#include "Scenes/MainMenu.h"
+
+#include "GameObject.h"
+#include "GameObjects/Animation.h"
+#include "GameObjects/Airplane.h"
+#include "GameObjects/SpriteObject.h"
+#include "GameObjects/Projectile.h"
+#include "GameObjects/TextObject.h"
+
+
+#include "Context.h"
+#include "Engine.h"
+#include "RandomizedSound.h"
+#include "Utility.h"
+
+
+
+
+
 
 namespace rjs = rapidjson;
 

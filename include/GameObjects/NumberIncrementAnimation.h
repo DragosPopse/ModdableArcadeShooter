@@ -6,10 +6,10 @@
 
 #pragma once
 
-
-#include "GameObject.h"
 #include "TextObject.h"
+
 #include <vector>
+
 
 
 class NumberIncrementAnimation :

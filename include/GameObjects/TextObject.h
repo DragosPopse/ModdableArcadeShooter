@@ -1,8 +1,10 @@
 #pragma once
 
 #include "GameObject.h"
-#include <SFML/Graphics.hpp>
+
 #include <string>
+
+#include <SFML/Graphics.hpp>
 
 
 class TextObject :

@@ -1,11 +1,8 @@
 #include "Scenes/LoseState.h"
-#include "Scenes/Level.h"
-#include "Context.h"
-#include "Utility.h"
-#include <iostream>
-#include "Scenes/MainMenu.h"
 
+#include <iostream>
 #include <fstream>
+
 #include <rapidjson/writer.h>
 #include <rapidjson/document.h>
 #include <rapidjson/prettywriter.h>
@@ -15,7 +12,15 @@
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 
+#include "Scenes/Level.h"
+#include "Scenes/MainMenu.h"
+
+#include "Context.h"
+#include "Utility.h"
+
+
 namespace rjs = rapidjson;
+
 
 LoseState::LoseState(Context* context, Level* level) :
 	Scene(context),

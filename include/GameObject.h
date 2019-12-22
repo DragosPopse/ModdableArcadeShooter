@@ -2,8 +2,10 @@
 
 #include <vector>
 #include <memory>
+
 #include <SFML/Graphics.hpp>
 #include <sol/sol.hpp>
+
 #include "Context.h"
 
 class Scene;

@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Scene.h"
-#pragma once
 
-#include "Scene.h"
+#include <memory>
+
 #include <TGUI/TGUI.hpp>
 #include <Thor/Animations.hpp>
-#include "Utility.h"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
 #include "GameObjects/NumberIncrementAnimation.h"
 #include "GameObjects/TextObject.h"
 #include "GameObjects/TextAnimation.h"
-#include <memory>
+
+#include "Utility.h"
 
 class Level;
-
 
 class WinState :
 	public Scene

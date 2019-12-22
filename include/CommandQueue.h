@@ -1,9 +1,8 @@
 #pragma once
 
-
 #include "Command.h"
-#include <queue>
 
+#include <queue>
 
 class CommandQueue
 {

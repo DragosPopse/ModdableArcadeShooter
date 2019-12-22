@@ -1,18 +1,18 @@
-#include <iostream>
-
 #include "Engine.h"
-#include "LuaInit.h"
-#include "Context.h"
-#include "Scene.h"
-#include "GameObject.h"
 
+#include <iostream>
+#include <ctime>
+
+#include "Scene.h"
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
 #include "Scenes/SplashScreen.h"
 #include "GameObjects/Airplane.h"
 #include "GameObjects/Projectile.h"
 
-#include <ctime>
+#include "LuaInit.h"
+#include "Context.h"
+#include "GameObject.h"
 
 
 namespace

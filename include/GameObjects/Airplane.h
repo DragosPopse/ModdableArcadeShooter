@@ -1,14 +1,18 @@
 #pragma once
 
 #include "GameObject.h"
+
 #include <string>
 #include <vector>
-#include <SFML/Graphics.hpp>
-#include "GameObjects/SpriteObject.h"
 #include <random>
+
+#include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
+
+#include "GameObjects/SpriteObject.h"
 #include "GameObjects/CircleCooldown.h"
 #include "GameObjects/TextObject.h"
+
 #include "RandomizedSound.h"
 
 class Level;

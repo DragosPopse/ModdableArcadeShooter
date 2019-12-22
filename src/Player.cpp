@@ -1,15 +1,12 @@
 #include "Player.h"
-#include <SFML/Graphics.hpp>
-#include "CommandQueue.h"
-#include "GameObject.h"
-#include "GameObjects/Airplane.h"
+
 #include <functional>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
-#include "Utility.h"
+#include <SFML/Graphics.hpp>
 
-#include <fstream>
 #include <rapidjson/writer.h>
 #include <rapidjson/document.h>
 #include <rapidjson/prettywriter.h>
@@ -18,6 +15,13 @@
 #include <rapidjson/filewritestream.h>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
+
+#include "GameObject.h"
+#include "GameObjects/Airplane.h"
+
+#include "CommandQueue.h"
+#include "Utility.h"
+
 
 #define CONFIG_PATH "assets/config/"
 
