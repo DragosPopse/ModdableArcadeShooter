@@ -14,12 +14,14 @@ struct LevelData
 	std::string title;
 	std::string previewImage;
 	int highScore;
+	bool good;
 
-	LevelData(const std::string& f, const std::string& t, const std::string& p, int hs) :
+	LevelData(const std::string& f, const std::string& t, const std::string& p, int hs, bool g) :
 		file(f),
 		title(t),
 		previewImage(p),
-		highScore(hs)
+		highScore(hs),
+		good(g)
 	{
 	}
 };
