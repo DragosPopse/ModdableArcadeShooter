@@ -342,6 +342,10 @@ void Airplane::PreviousWeapon()
 
 void Airplane::Fire()
 {
+	if (_blockShooting)
+	{
+		return;
+	}
 	if ((_ammo[_currentWeaponIndex] > 0 || _ammo[_currentWeaponIndex] < 0) && _cooldown > _data->weapons[_currentWeaponIndex]->fireRate)
 	{
 		_cooldown = 0;
@@ -499,4 +503,10 @@ void Airplane::AddAmmo(const std::string& projectile, int n)
 			break;
 		}
 	}
+}
+
+
+void Airplane::SetBlockShooting(bool block)
+{
+	_blockShooting = block;
 }

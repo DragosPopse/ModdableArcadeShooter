@@ -135,6 +135,8 @@ class Level :
 	ViewShaker _shaker;
 	float _actualViewPosition; //so that the shaker doesn't desync the view
 
+	bool _gameOver = false;
+
 public:
 	Level(Context* context, const std::string& fileName);
 

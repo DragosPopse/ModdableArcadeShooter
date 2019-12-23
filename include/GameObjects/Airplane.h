@@ -110,6 +110,8 @@ class Airplane :
 	const sf::Texture* _texture;
 	sf::Shader* _shader;
 
+	bool _blockShooting = false;
+
 public:
 	Airplane(AirplaneData* data);
 
@@ -124,6 +126,8 @@ public:
 
 	void MoveX(int x);
 	void MoveY(int y);
+
+	void SetBlockShooting(bool block);
 
 	void Fire();
 	void NextWeapon();

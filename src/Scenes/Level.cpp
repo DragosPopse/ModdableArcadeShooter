@@ -554,15 +554,25 @@ bool Level::FixedUpdate(float dt)
 	if (_playerAirplane && _playerAirplane->IsDestroyed())
 	{
 		_playerAirplane = nullptr;
+		_gameOver = true;
 		std::shared_ptr<LoseState> lose(new LoseState(_context, this));
 		if (!OnTop()) // LocalMenu is up
 		{
 			RequestPop();
 		}
 		RequestPush(lose);
+		Command blockShooting;
+		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
+		blockShooting.action = DeriveAction<Airplane>(
+			[](Airplane& airplane, float dt)
+			{
+				airplane.SetBlockShooting(true);
+			});
+		_root->OnCommand(blockShooting, dt);
 	}
 	else if (_playerAirplane && !_win && _worldView.getCenter().y < _playerSpawn.y - _levelLength)
 	{
+		_gameOver = true;
 		std::shared_ptr<WinState> win(new WinState(_context, this));
 		if (!OnTop()) // LocalMenu is up
 		{
@@ -570,6 +580,14 @@ bool Level::FixedUpdate(float dt)
 		}
 		RequestPush(win);
 		_win = true;
+		Command blockShooting;
+		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
+		blockShooting.action = DeriveAction<Airplane>(
+			[](Airplane& airplane, float dt)
+			{
+				airplane.SetBlockShooting(true);
+			});
+		_root->OnCommand(blockShooting, dt);
 	}
 	try
 	{
@@ -784,6 +802,10 @@ void Level::SpawnObjects()
 			airplanePtr->SetPlayerControlled(false);
 			airplanePtr->setRotation(180);
 			airplanePtr->Start(this);
+			if (_gameOver)
+			{
+				airplanePtr->SetBlockShooting(true);
+			}
 			_enemyAirplanesRoot->AddChild(std::move(airplanePtr));
 
 			_enemySpawns.pop_front();
