@@ -66,6 +66,7 @@ struct AirplaneData
 	
 	std::mt19937 rng;
 	std::uniform_real_distribution<float> scaleDistribution;
+	std::uniform_real_distribution<float> rotationDistribution;
 	std::uniform_int_distribution<int> dropDistribution;
 	std::uniform_int_distribution<int> explosionSpriteDistribution;
 	std::uniform_int_distribution<int> explosionSoundDistribution;

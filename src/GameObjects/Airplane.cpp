@@ -16,13 +16,6 @@
 #include "Utility.h"
 
 
-namespace //[REMOVE] 
-{
-	std::uniform_real_distribution<float> g_randomRotation(0, 1);
-	std::mt19937 g_rng;
-}
-
-
 Airplane::Airplane(AirplaneData* data) :
 	_level(nullptr),
 	_data(data),
@@ -228,7 +221,7 @@ void Airplane::Damage(int hp)
 		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _level->GetContext()->player->GetSfxVolume());
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
-		float randomRotation = g_randomRotation(g_rng) * _data->explosionMaxRotation;
+		float randomRotation = _data->rotationDistribution(_data->rng) * _data->explosionMaxRotation;
 		explosion->setRotation(randomRotation);
 		_level->AddExplosion(explosion);
 
