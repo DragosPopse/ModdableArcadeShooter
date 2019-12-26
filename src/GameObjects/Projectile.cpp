@@ -1,7 +1,6 @@
 #include "GameObjects/Projectile.h"
 
 #include <cmath>
-#include <random>
 
 #include <sol/sol.hpp>
 #include <SFML/Graphics.hpp>
@@ -14,6 +13,7 @@
 #include "GameObjects/Airplane.h"
 
 #include "Utility.h"
+#include "Random.h"
 
 
 
@@ -39,7 +39,7 @@ void Projectile::Start(Scene* scene)
 
 	_clock.restart();
 
-	float randomAngle = _data->angleDistribution(_data->rng);
+	float randomAngle = RandReal(-_data->spreadAngle, _data->spreadAngle);
 	if (_playerControlled)
 	{
 		randomAngle -= 90;
@@ -64,7 +64,7 @@ void Projectile::Start(Scene* scene)
 	
 
 	float defaultVolume = _level->GetContext()->player->GetSfxVolume();
-	RandomizedSoundResult randSound = _data->muzzleSound(_data->rng, defaultVolume);
+	RandomizedSoundResult randSound = _data->muzzleSound(defaultVolume);
 
 	_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
@@ -77,7 +77,7 @@ void Projectile::Update(float dt)
 	if (!_rectChanged && _clock.getElapsedTime().asSeconds() > 0.02f)
 	{
 		_rectChanged = true;
-		int randRect = _data->rectDistribution(_data->rng);
+		int randRect = RandInt(0, (int)_data->rects.size() - 1);
 		//std::cout << randRect << '\n';
 		SetTextureRect(_data->rects[randRect]);
 		setScale(_data->scale, _data->scale);
@@ -182,7 +182,7 @@ void Projectile::MarkForDestroy()
 	if (_collided)
 	{
 		float defaultVolume = _level->GetContext()->player->GetSfxVolume();
-		RandomizedSoundResult randSound = _data->destroySound(_data->rng, defaultVolume);
+		RandomizedSoundResult randSound = _data->destroySound(defaultVolume);
 
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 	}

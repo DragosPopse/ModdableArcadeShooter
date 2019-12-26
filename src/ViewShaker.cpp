@@ -1,5 +1,7 @@
 #include "ViewShaker.h"
 
+#include "Random.h"
+
 
 ViewShaker::ViewShaker() :
 	_shaking(false),
@@ -39,7 +41,7 @@ void ViewShaker::Update(float dt)
 		_elapsedTime += dt;
 		if (_elapsedTime < _duration)
 		{
-			sf::Vector2f displacement = _distribution(_rng) * _amplitude;
+			sf::Vector2f displacement = _distribution(g_RNG) * _amplitude;
 			_view->move(displacement);
 		}
 		else
@@ -47,10 +49,4 @@ void ViewShaker::Update(float dt)
 			_shaking = false;
 		}
 	}
-}
-
-
-void ViewShaker::SetSeed(unsigned int seed)
-{
-	_rng.seed(seed);
 }

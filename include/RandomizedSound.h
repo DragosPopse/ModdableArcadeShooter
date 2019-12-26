@@ -1,7 +1,5 @@
 #pragma once
 
-#include <random>
-
 #include <SFML/Audio.hpp>
 
 struct RandomizedSoundResult
@@ -14,8 +12,10 @@ struct RandomizedSoundResult
 class RandomizedSound
 {
 	sf::SoundBuffer* _buffer;
-	std::uniform_real_distribution<float> _volumeDistribution;
-	std::uniform_real_distribution<float> _pitchDistribution;
+	float _minVolumeFactor;
+	float _maxVolumeFactor;
+	float _minPitch;
+	float _maxPitch;
 	
 public:
 	RandomizedSound();
@@ -24,14 +24,5 @@ public:
 	void SetPitchDistribution(float min, float max);
 	void SetBuffer(sf::SoundBuffer* buffer);
 
-	template <class Engine>
-	RandomizedSoundResult operator()(Engine& engine, float defaultVolume)
-	{
-		RandomizedSoundResult result;
-		result.buffer = _buffer;
-		result.volume = _volumeDistribution(engine) * defaultVolume;
-		result.pitch = _pitchDistribution(engine);
-
-		return result;
-	}
+	RandomizedSoundResult operator()(float defaultVolume);
 };

@@ -3,7 +3,6 @@
 #include "GameObject.h"
 
 #include <optional>
-#include <random>
 
 #include <SFML/Graphics.hpp>
 #include  <SFML/Audio.hpp>
@@ -40,10 +39,6 @@ struct ProjectileData
 
 	int ammoTextSize;
 	sf::Font* ammoFont;
-
-	std::mt19937 rng;
-	std::uniform_real_distribution<float> angleDistribution;
-	std::uniform_int_distribution<int> rectDistribution;
 
 	RandomizedSound muzzleSound;
 	RandomizedSound destroySound;

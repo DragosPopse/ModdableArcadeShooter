@@ -1,4 +1,5 @@
 #include "RandomizedSound.h"
+#include "Random.h"
 
 
 RandomizedSound::RandomizedSound() :
@@ -9,17 +10,30 @@ RandomizedSound::RandomizedSound() :
 
 void RandomizedSound::SetVolumeFactorDistribution(float min, float max)
 {
-	_volumeDistribution = std::uniform_real_distribution<float>(min, max);
+	_minVolumeFactor = min;
+	_maxVolumeFactor = max;
 }
 
 
 void RandomizedSound::SetPitchDistribution(float min, float max)
 {
-	_pitchDistribution = std::uniform_real_distribution<float>(min, max);
+	_minPitch = min;
+	_maxPitch = max;
 }
 
 
 void RandomizedSound::SetBuffer(sf::SoundBuffer* buffer)
 {
 	_buffer = buffer;
+}
+
+
+RandomizedSoundResult RandomizedSound::operator()(float defaultVolume)
+{
+	RandomizedSoundResult result;
+	result.buffer = _buffer;
+	result.volume = RandReal(_minVolumeFactor, _maxVolumeFactor) * defaultVolume;
+	result.pitch = RandReal(_minPitch, _maxPitch);
+
+	return result;
 }

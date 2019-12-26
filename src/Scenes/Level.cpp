@@ -88,14 +88,9 @@ Level::Level(Context* context, const std::string& path) :
 		return sound;
 	};
 	std::cout << "BEGIN_LEVEL_LOAD\n";
-	std::random_device randDevice;
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
-	_shaker.SetSeed(randDevice());
-	(*_context->lua)["_level_seed"] = randDevice();
-	_context->lua->do_string("math.randomseed(_level_seed)");
-
 	sol::table level = Protect<sol::table>(_context->lua->do_file(path));
 	_saveFile = Protect<std::string>(level["saveFile"]);
 	std::ifstream save(_saveFile);
@@ -178,7 +173,6 @@ Level::Level(Context* context, const std::string& path) :
 		pickupData.destroyFrames = Protect<int>(destroyPickup["frames"]);
 		pickupData.destroyFrameDuration = Protect<float>(destroyPickup["frameDuration"]);
 		pickupData.destroyScale = Protect<float>(destroyPickup["scale"]);
-		pickupData.rng = std::mt19937(randDevice());
 		pickupData.onPickupSound = tableToSound(Protect<sol::table>(pickup["onPickupSound"]));
 		
 		_pickupDataDict.insert(std::make_pair(pickupName, pickupData));
@@ -206,7 +200,6 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthFont = &_fonts[Protect<std::string>(plane["healthFont"])];
 		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
 		apdata.scale = Protect<float>(plane["scale"]);
-		apdata.rng = std::mt19937(randDevice());
 		sol::optional<sol::function> onDestroy = plane["onDestroy"];
 
 		if (onDestroy)
@@ -225,6 +218,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.explosionsTexture = &_textures[Protect<std::string>(explosionData["texture"])];
 		apdata.explosionMaxScale = Protect<float>(explosionData["maxScale"]);
 		apdata.explosionMinScale = Protect<float>(explosionData["minScale"]);
+		apdata.explosionMaxRotation = Protect<float>(explosionData["maxRotation"]);
 		sol::table explosionSounds = Protect<sol::table>(explosionData["sounds"]);
 		apdata.switchSound = tableToSound(Protect<sol::table>(plane["switchSound"]));
 		for (int i = 1; i <= explosionSounds.size(); i++)
@@ -232,10 +226,6 @@ Level::Level(Context* context, const std::string& path) :
 			RandomizedSound explosionSound = tableToSound(Protect<sol::table>(explosionSounds[i]));
 			apdata.explosionSounds.push_back(explosionSound);
 		}
-		apdata.explosionSoundDistribution = std::uniform_int_distribution<int>(0, apdata.explosionSounds.size() - 1);
-		apdata.explosionMaxRotation = Protect<float>(explosionData["maxRotation"]);
-		apdata.scaleDistribution = std::uniform_real_distribution<float>(apdata.explosionMinScale, apdata.explosionMaxScale);
-		apdata.explosionSpriteDistribution = std::uniform_int_distribution(0, apdata.numberOfExplosions - 1);
 
 		
 
@@ -288,7 +278,6 @@ Level::Level(Context* context, const std::string& path) :
 				{
 					projdata.rects.push_back(TableToRect(Protect<sol::table>(rects[i])));
 				}
-				projdata.rectDistribution = std::uniform_int_distribution<int>(0, projdata.rects.size() - 1);
 				projdata.muzzleRect = TableToRect(Protect<sol::table>(projectile["muzzleRect"]));
 				projdata.speed = Protect<float>(projectile["speed"]);
 				projdata.damage = Protect<int>(projectile["damage"]);
@@ -305,8 +294,6 @@ Level::Level(Context* context, const std::string& path) :
 				projdata.destroySound = tableToSound(Protect<sol::table>(projectile["destroySound"]));
 
 				projdata.spreadAngle = Protect<float>(projectile["spreadAngle"]);
-				projdata.rng = std::mt19937(randDevice());
-				projdata.angleDistribution = std::uniform_real_distribution<float>(-projdata.spreadAngle, projdata.spreadAngle);
 				
 				sol::function onCollision = projectile["onCollision"];	
 				sol::function fixedUpdate = projectile["fixedUpdate"];
@@ -376,8 +363,6 @@ Level::Level(Context* context, const std::string& path) :
 			apdata.drops[i].dropRate += apdata.drops[i - 1].dropRate;
 			std::cout << "DROPCHANCE: " << apdata.drops[i].dropRate << '\n';
 		}
-
-		apdata.dropDistribution = std::uniform_int_distribution<int>(1, 100);
 
 		_airplaneDataDict.insert(std::make_pair(name,
 			apdata));

@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-#include <random>
 
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
@@ -64,13 +63,6 @@ struct AirplaneData
 
 	std::vector<DropData> drops;
 	
-	std::mt19937 rng;
-	std::uniform_real_distribution<float> scaleDistribution;
-	std::uniform_real_distribution<float> rotationDistribution;
-	std::uniform_int_distribution<int> dropDistribution;
-	std::uniform_int_distribution<int> explosionSpriteDistribution;
-	std::uniform_int_distribution<int> explosionSoundDistribution;
-
 	sol::optional<sol::function> onDestroy;
 
 	int score;
