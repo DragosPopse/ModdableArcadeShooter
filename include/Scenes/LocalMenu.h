@@ -7,7 +7,7 @@
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "Utility.h"
+#include "Utility/Animations.h"
 #include "SettingsPanel.h"
 
 class Level;

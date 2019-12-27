@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Utility.h"
+#include "Random.h"
 
 class ViewShaker
 {

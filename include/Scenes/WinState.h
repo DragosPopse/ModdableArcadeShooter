@@ -14,7 +14,8 @@
 #include "GameObjects/TextObject.h"
 #include "GameObjects/TextAnimation.h"
 
-#include "Utility.h"
+#include "Utility/Animations.h"
+
 
 class Level;
 

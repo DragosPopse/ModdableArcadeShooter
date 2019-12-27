@@ -1,6 +1,6 @@
 #include "GameObjects/NumberIncrementAnimation.h"
 
-#include "Utility.h"
+#include "Utility/Math.h"
 
 
 NumberIncrementAnimation::NumberIncrementAnimation() :

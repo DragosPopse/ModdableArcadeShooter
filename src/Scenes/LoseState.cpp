@@ -16,7 +16,8 @@
 #include "Scenes/MainMenu.h"
 
 #include "Context.h"
-#include "Utility.h"
+#include "Utility/String.h"
+#include "Utility/Math.h"
 
 
 namespace rjs = rapidjson;

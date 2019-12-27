@@ -19,8 +19,10 @@
 #include "Scenes/LevelLoader.h"
 #include "Scenes/Level.h"
 
-#include "Utility.h"
 #include "Context.h"
+#include "Utility/Sol.h"
+#include "Utility/String.h"
+#include "Utility/Math.h"
 
 
 #define LEVELS_PATH "assets/scripts/levels/"

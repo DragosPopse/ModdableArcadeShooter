@@ -5,6 +5,8 @@
 #include "Scenes/Level.h"
 #include "Scenes/MainMenu.h"
 
+#include "Utility/Math.h"
+
 
 LocalMenu::LocalMenu(Context* context) :
 	Scene(context),

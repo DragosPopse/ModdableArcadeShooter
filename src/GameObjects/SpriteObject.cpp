@@ -1,6 +1,6 @@
 #include "GameObjects/SpriteObject.h"
 
-#include "Utility.h"
+#include "Utility/Math.h"
 
 
 SpriteObject::SpriteObject()

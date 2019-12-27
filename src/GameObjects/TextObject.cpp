@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Utility.h"
+#include "Utility/Math.h"
 
 
 TextObject::TextObject()

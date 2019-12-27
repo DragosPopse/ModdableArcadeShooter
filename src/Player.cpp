@@ -20,7 +20,7 @@
 #include "GameObjects/Airplane.h"
 
 #include "CommandQueue.h"
-#include "Utility.h"
+#include "Utility/String.h"
 
 
 #define CONFIG_PATH "assets/config/"

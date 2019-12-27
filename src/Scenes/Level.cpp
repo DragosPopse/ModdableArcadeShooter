@@ -36,7 +36,9 @@
 #include "Context.h"
 #include "Engine.h"
 #include "RandomizedSound.h"
-#include "Utility.h"
+
+#include "Utility/Sol.h"
+#include "Utility/String.h"
 
 
 namespace rjs = rapidjson;

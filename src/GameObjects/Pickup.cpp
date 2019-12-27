@@ -5,6 +5,8 @@
 
 #include "Scenes/Level.h"
 
+#include "Utility/Sol.h"
+
 
 Pickup::Pickup(PickupData* data) :
 	_data(data),
