@@ -17,7 +17,9 @@
 
 #include "Scenes/Level.h"
 
-#include "Utility.h"
+#include "Random.h"
+#include "Utility/Math.h"
+#include "Utility/Animations.h"
 #include "Command.h"
 
 

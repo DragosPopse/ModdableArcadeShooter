@@ -1,6 +1,6 @@
 #include "Scenes/LevelLoader.h"
 
-#include "Utility.h"
+#include "Utility/Math.h"
 
 #include "Scenes/ErrorScene.h"
 #include "Scenes/MainMenu.h"

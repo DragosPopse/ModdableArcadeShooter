@@ -19,7 +19,8 @@
 #include "GameObjects/Airplane.h"
 
 #include "Context.h"
-#include "Utility.h"
+#include "Utility/Math.h"
+#include "Utility/String.h"
 
 
 

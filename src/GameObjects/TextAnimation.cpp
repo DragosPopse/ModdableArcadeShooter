@@ -3,9 +3,7 @@
 #include <iostream>
 
 #include "Scenes/Level.h"
-#include "Utility.h"
-
-
+#include "Utility/Math.h"
 
 
 TextAnimation::TextAnimation(const std::string& finalStr) :

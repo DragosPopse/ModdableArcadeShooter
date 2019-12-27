@@ -10,7 +10,6 @@
 #include "Scenes/ErrorScene.h"
 #include "Scenes/LevelLoader.h"
 
-#include "Utility.h"
 #include "Context.h"
 
 

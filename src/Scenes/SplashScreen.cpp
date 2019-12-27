@@ -1,8 +1,7 @@
 #include "Scenes/SplashScreen.h"
 
 #include <SFML/Audio.hpp>
-
-#include "Utility.h"
+#include "Utility/Math.h"
 
 
 SplashScreen::SplashScreen(Context* context) :

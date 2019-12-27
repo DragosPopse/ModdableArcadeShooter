@@ -12,7 +12,8 @@
 #include "GameObjects/ParticleSystemObject.h"
 #include "GameObjects/Airplane.h"
 
-#include "Utility.h"
+#include "Utility/Math.h"
+#include "Utility/Sol.h"
 #include "Random.h"
 
 

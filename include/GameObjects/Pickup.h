@@ -12,6 +12,7 @@
 
 class Airplane;
 class Level;
+class Animation;
 
 struct PickupData
 {

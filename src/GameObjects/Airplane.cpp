@@ -12,8 +12,11 @@
 #include "GameObjects/TextObject.h"
 #include "GameObjects/ParticleSystemObject.h"
 #include "GameObjects/Pickup.h"
+#include "GameObjects/Animation.h"
 
-#include "Utility.h"
+#include "Utility/Math.h"
+#include "Utility/Sol.h"
+#include "Utility/String.h"
 #include "Random.h"
 
 
