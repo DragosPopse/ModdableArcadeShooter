@@ -12,14 +12,12 @@ class ViewShaker
 	float _elapsedTime;
 	float _amplitude;
 	float _duration;
-	std::mt19937 _rng; //should seed this
 	UniformCircleDistribution _distribution;
 
 public:
 	ViewShaker();
 
 	void SetView(sf::View* view);
-	void SetSeed(unsigned int seed);
 
 	void Update(float dt);
 

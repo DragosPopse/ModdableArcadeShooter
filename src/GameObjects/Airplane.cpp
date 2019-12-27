@@ -14,6 +14,7 @@
 #include "GameObjects/Pickup.h"
 
 #include "Utility.h"
+#include "Random.h"
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -209,25 +210,25 @@ void Airplane::Damage(int hp)
 		firstRect.width = _data->explosionSize.x;
 		firstRect.height = _data->explosionSize.y;
 		firstRect.left = 0;
-		randN = _data->explosionSpriteDistribution(_data->rng);
+		randN = RandInt(0, _data->numberOfExplosions);
 		firstRect.top = firstRect.height * randN;
 		explosion->SetFirstRect(firstRect);
 		explosion->SetDestroyOnFinish(true);
 		explosion->SetLoopable(false);
 		explosion->SetNumberOfFrames(_data->framesPerExplosion);
 		explosion->SetTimePerFrame(_data->explosionFrameDuration);
-		float randomScale = _data->scaleDistribution(_data->rng);
+		float randomScale = RandReal(_data->explosionMinScale, _data->explosionMaxScale);
 		explosion->setScale(randomScale, randomScale);
-		RandomizedSoundResult randSound = _data->explosionSounds[_data->explosionSoundDistribution(_data->rng)](_data->rng, _level->GetContext()->player->GetSfxVolume());
+		RandomizedSoundResult randSound = _data->explosionSounds[RandInt(0, (int)_data->explosionSounds.size() - 1)](_level->GetContext()->player->GetSfxVolume());
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 
-		float randomRotation = _data->rotationDistribution(_data->rng) * _data->explosionMaxRotation;
+		float randomRotation = RandReal(0.f, _data->explosionMaxRotation);
 		explosion->setRotation(randomRotation);
 		_level->AddExplosion(explosion);
 
 
 		//Spawn pickup if RNG is in your favor
-		randN = _data->dropDistribution(_data->rng);
+		randN = RandInt(1, 100);
 		for (int i = 0; i < _data->drops.size(); i++)
 		{
 			if (randN <= _data->drops[i].dropRate)
@@ -308,7 +309,7 @@ void Airplane::NextWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
-		RandomizedSoundResult sound = _data->switchSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+		RandomizedSoundResult sound = _data->switchSound(_level->GetContext()->player->GetSfxVolume());
 		_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}
@@ -326,7 +327,7 @@ void Airplane::PreviousWeapon()
 	if (_playerControlled)
 	{
 		UpdateWeaponDisplay();
-		RandomizedSoundResult sound = _data->switchSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+		RandomizedSoundResult sound = _data->switchSound(_level->GetContext()->player->GetSfxVolume());
 		_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 		UpdateCooldownDisplay();
 	}

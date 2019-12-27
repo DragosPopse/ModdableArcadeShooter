@@ -13,6 +13,7 @@
 #include "LuaInit.h"
 #include "Context.h"
 #include "GameObject.h"
+#include "Random.h"
 
 
 namespace
@@ -43,6 +44,8 @@ Engine::Engine() :
 	LuaInit_Game(_lua);
 	_window.create(sf::VideoMode(800, 800), "Test", sf::Style::Close);
 	TestLua(_lua);
+	SeedLua(_lua);
+	
 
 	_context.lua = &_lua;
 	_context.music = &_music;

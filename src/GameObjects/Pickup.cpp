@@ -58,7 +58,7 @@ void Pickup::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Pickup::OnPickup(Airplane& player)
 {
-	RandomizedSoundResult sound = _data->onPickupSound(_data->rng, _level->GetContext()->player->GetSfxVolume());
+	RandomizedSoundResult sound = _data->onPickupSound(_level->GetContext()->player->GetSfxVolume());
 	_level->PlaySound(*sound.buffer, sound.volume, sound.pitch);
 	Protect(_data->onPickup(player));
 	
