@@ -1,6 +1,8 @@
 //https://www.youtube.com/watch?v=caQZKeAYgD8
 //modified to be more customizable and support colored vignette, with the help of https://stackoverflow.com/questions/30122743/colored-vignette-shader-the-outer-part-libgdx
 
+#version 120
+
 uniform sampler2D u_texture;
 uniform vec2 u_resolution;
 uniform vec4 u_vignetteColor = vec4(0., 1., 0., 1.);
@@ -18,7 +20,7 @@ void main()
 
     float opacity = smoothstep(u_innerRadius, u_outerRadius, len) * u_intensity;
 
-    color.rgb = mix(color.rgb, u_vignetteColor, opacity);
+    color.rgba = mix(color.rgba, u_vignetteColor, opacity);
     
     gl_FragColor = color;
 }
