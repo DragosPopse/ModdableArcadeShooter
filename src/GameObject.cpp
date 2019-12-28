@@ -14,6 +14,8 @@
 #include "Scene.h"
 #include "Command.h"
 
+#include "Utility/Sol.h"
+
 
 GameObject::GameObject() :
 	_parent(nullptr),
@@ -187,11 +189,11 @@ void GameObject::OnCommand(const Command& command, float dt)
 		command.action(*this, dt);
 	}
 
-	for (int i = 0; i < _children.size(); i++)
+	for (int i = 0; i < static_cast<int>(_children.size()); i++)
 	{
 		_children[i]->OnCommand(command, dt);
 	}
-	for (int i = 0; i < _unownedChildren.size(); i++)
+	for (int i = 0; i < static_cast<int>(_unownedChildren.size()); i++)
 	{
 		_unownedChildren[i].as<GameObject>().OnCommand(command, dt);
 	}
@@ -204,23 +206,23 @@ void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
 	{
 		if ((Type::PlayerAirplane | Type::EnemyAirplane) & GetCategory())
 		{
-			command.action(static_cast<Airplane*>(this), dt);
+			Protect(command.action(static_cast<Airplane*>(this), dt));
 		}
 		else if ((Type::EnemyProjectile | Type::PlayerProjectile) & GetCategory())
 		{
-			command.action(static_cast<Projectile*>(this), dt);
+			Protect(command.action(static_cast<Projectile*>(this), dt));
 		}
 		else
 		{
-			command.action(this, dt);
+			Protect(command.action(this, dt));
 		}
 	}
 
-	for (int i = 0; i < _children.size(); i++)
+	for (int i = 0; i < static_cast<int>(_children.size()); i++)
 	{
 		_children[i]->OnLuaCommand(command, dt);
 	}
-	for (int i = 0; i < _unownedChildren.size(); i++)
+	for (int i = 0; i < static_cast<int>(_unownedChildren.size()); i++)
 	{
 		_unownedChildren[i].as<GameObject>().OnLuaCommand(command, dt);
 	}
