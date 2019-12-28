@@ -7,6 +7,11 @@ This is my programming assignment for the Breda University Creative Media and Ga
 ## Purpose
 The main purpose of this project is to experiment with creating a Modding API in Lua for a C++ game. Another concept that I try to get familiar with while creating this game is makefiles and building from multiple PCs, thing that I do using Premake5.
 
+## Build 
+1) Click on one of the setup.bat's that matches your compiler (vs2019 or vs2017).
+2) Once the solution is created, select the architecture and configuration (x86/x64 and Debug/Release)
+3) Build 
+
 ## Controls
 *Note: all controls can be customized in-game*
 * Movement: WASD
