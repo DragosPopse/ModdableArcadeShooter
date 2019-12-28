@@ -48,6 +48,7 @@ struct AirplaneData
 	std::vector<ProjectileData*> weapons;
 	std::vector<int> ammo;
 	int healthTextCharSize;
+	sol::optional<sf::Color> healthTextColor;
 
 	sf::Vector2i explosionSize;
 	int framesPerExplosion;

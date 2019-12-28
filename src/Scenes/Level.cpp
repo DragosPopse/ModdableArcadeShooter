@@ -49,10 +49,10 @@ namespace
 	sf::IntRect TableToRect(const sol::table& table)
 	{
 		sf::IntRect result;
-		result.left = table[1];
-		result.top = table[2];
-		result.width = table[3];
-		result.height = table[4];
+		result.left = Protect<int>(table[1]);
+		result.top = Protect<int>(table[2]);
+		result.width = Protect<int>(table[3]);
+		result.height = Protect<int>(table[4]);
 		return result;
 	}
 	
@@ -63,7 +63,16 @@ namespace
 	}
 
 
+	sf::Color TableToColor(const sol::table& table)
+	{
+		sf::Color color;
+		color.a = 255;
+		color.r = Protect<int>(table[1]);
+		color.g = Protect<int>(table[2]);
+		color.b = Protect<int>(table[3]);
 
+		return color;
+	}
 }
 
 Level::Level(Context* context, const std::string& path) :
@@ -203,7 +212,11 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
 		apdata.scale = Protect<float>(plane["scale"]);
 		sol::optional<sol::function> onDestroy = plane["onDestroy"];
-
+		sol::optional<sol::table> textColor = plane["textColor"];
+		if (textColor)
+		{
+			apdata.healthTextColor = TableToColor(textColor.value());
+		}
 		if (onDestroy)
 		{
 			apdata.onDestroy = onDestroy;
