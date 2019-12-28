@@ -1,7 +1,7 @@
 //https://www.youtube.com/watch?v=caQZKeAYgD8
 //modified to be more customizable and support colored vignette, with the help of https://stackoverflow.com/questions/30122743/colored-vignette-shader-the-outer-part-libgdx
 
-#version 120
+#version 120 //needs to be this version to work with integrated graphics card, mix isn't supported it seems
 
 uniform sampler2D u_texture;
 uniform vec2 u_resolution;
