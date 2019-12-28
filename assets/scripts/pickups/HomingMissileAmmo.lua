@@ -1,6 +1,6 @@
 local pickup = {
     texture = 'Projectiles',
-    firstRect = {50, 94, 19, 19},
+    firstRect = {68, 94, 19, 19},
     frames = 7,
     frameDuration = 0.1,
     scale = 2,

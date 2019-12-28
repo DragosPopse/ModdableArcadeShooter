@@ -36,6 +36,7 @@ struct TextAnimationData
 	unsigned int charSize;
 	std::string str;
 	std::string font;
+	sol::optional<sf::Color> color;
 };
 
 struct AirplaneSpawnPosition
