@@ -55,6 +55,10 @@ void Airplane::Start(Scene* scene)
 	_healthText = new TextObject();
 	_healthText->SetFont(*_data->healthFont);
 	_healthText->SetCharSize(_data->healthTextCharSize);
+	if (_data->healthTextColor)
+	{
+		_healthText->SetColor(_data->healthTextColor.value());
+	}
 
 	auto bounds = GetBoundingRect();
 	_healthText->setPosition(0, bounds.height / 2 + _data->healthTextCharSize / 2);
