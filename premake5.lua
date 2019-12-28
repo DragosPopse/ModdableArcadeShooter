@@ -46,6 +46,9 @@ project "ArcadeAirship"
             "Xcopy /E /I /y assets bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\assets"
         }
 
+        buildoptions { "/MP" }
+        warnings "Extra"
+
     filter "platforms:Win32"
         architecture "x86"
         links
