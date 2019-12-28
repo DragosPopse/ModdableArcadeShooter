@@ -40,6 +40,8 @@ public:
 	void SetFinalString(const std::string& finalStr);
 	void Skip();
 
+	void SetColor(const sf::Color& color);
+
 private:
 	void SetString(const std::string& str);
 };

@@ -127,3 +127,9 @@ void TextAnimation::SetCharSize(unsigned int n)
 {
 	_text.setCharacterSize(n);
 }
+
+
+void TextAnimation::SetColor(const sf::Color& color)
+{
+	_text.setColor(color);
+}

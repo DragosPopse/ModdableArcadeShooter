@@ -19,7 +19,7 @@ level.defaultFont = 'Pixel'
 
 
 level.usedTextures = {
-    {'Eagle',  'assets/textures/Eagle.png'},
+    {'Airplanes',  'assets/textures/Airplanes.png'},
     {'Island', 'assets/textures/Island.png'}, 
     {'Projectiles', 'assets/textures/Projectiles.png'},
     {'Explosions', 'assets/textures/Explosions.png'},
