@@ -1,7 +1,7 @@
 local level = { }
 local spawn = dofile('assets/scripts/utility/Spawn.lua')
 
-level.title = 'Christmas'
+level.title = 'Christmas (WIP)'
 level.backgroundTexture = 'Map'
 level.repeatBackground = true
 --level.scrollSpeed = 60
