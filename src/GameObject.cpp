@@ -152,7 +152,7 @@ bool GameObject::IsDestroyed() const
 
 void GameObject::RemoveDestroyedChilldren()
 {
-	for (auto& it = _children.begin(); it != _children.end(); )
+	for (auto it = _children.begin(); it != _children.end(); )
 	{
 		if ((*it)->IsDestroyed())
 		{
@@ -165,7 +165,7 @@ void GameObject::RemoveDestroyedChilldren()
 		}
 	}
 
-	for (auto& it = _unownedChildren.begin(); it != _unownedChildren.end(); )
+	for (auto it = _unownedChildren.begin(); it != _unownedChildren.end(); )
 	{
 		if ((*it).as<GameObject>().IsDestroyed())
 		{

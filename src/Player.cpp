@@ -34,7 +34,7 @@ namespace
 	{
 		int dirX;
 
-		AircraftMoverX(float x) :
+		AircraftMoverX(int x) :
 			dirX(x)
 		{
 		}
