@@ -134,19 +134,19 @@ WinState::WinState(Context* context, Level* level) :
 	_infoText->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y - _infoText->GetCharSize()));
 
 	int currentScore = 0;
-	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
+	for (const auto& pair : _level->_enemiesDowned)
 	{
-		if (it->second != 0)
+		if (pair.second != 0)
 		{
-			currentScore += _level->_airplaneDataDict[it->first].score * it->second;
+			currentScore += _level->_airplaneDataDict[pair.first].score * pair.second;
 			_score->AddIncrement(currentScore);
-			if (it->second == 1)
+			if (pair.second == 1)
 			{
-				_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplane"));
+				_summaries.push_back(BuildString("You Downed ", pair.second, " ", pair.first, " Airplane"));
 			}
 			else
 			{
-				_summaries.push_back(BuildString("You Downed ", it->second, " ", it->first, " Airplanes"));
+				_summaries.push_back(BuildString("You Downed ", pair.second, " ", pair.first, " Airplanes"));
 			}
 		}
 	}
