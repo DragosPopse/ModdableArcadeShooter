@@ -40,10 +40,10 @@ namespace sol {
 			const char* format_string;
 			std::array<const char*, 4> args_strings;
 
-			error_result() : results(0), format_string(nullptr) {
+			error_result() : args_strings(), results(0), format_string(nullptr) {
 			}
 
-			error_result(int results) : results(results), format_string(nullptr) {
+			error_result(int results) : args_strings(), results(results), format_string(nullptr) {
 			}
 
 			error_result(const char* fmt, const char* msg) : results(0), format_string(fmt) {
