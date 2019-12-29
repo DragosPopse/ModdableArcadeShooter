@@ -179,10 +179,10 @@ void LuaInit_Game(sol::state& lua)
 
 	engineTable.new_usertype<GameObject>("GameObject",
 		"onCommand", &GameObject::OnLuaCommand);
-	engineTable.get<sol::table>("GameObject").set("PLAYER_AIRPLANE", GameObject::PlayerAirplane);
-	engineTable.get<sol::table>("GameObject").set("ENEMY_AIRPLANE", GameObject::EnemyAirplane);
-	engineTable.get<sol::table>("GameObject").set("PLAYER_PROJECTILE", GameObject::PlayerProjectile);
-	engineTable.get<sol::table>("GameObject").set("ENEMY_PROJECTILE", GameObject::EnemyProjectile);
+	engineTable.get<sol::table>("GameObject").set("PLAYER_AIRPLANE", static_cast<unsigned int>(GameObject::Type::PlayerAirplane));
+	engineTable.get<sol::table>("GameObject").set("ENEMY_AIRPLANE", static_cast<unsigned int>(GameObject::Type::EnemyAirplane));
+	engineTable.get<sol::table>("GameObject").set("PLAYER_PROJECTILE", static_cast<unsigned int>(GameObject::Type::PlayerProjectile));
+	engineTable.get<sol::table>("GameObject").set("ENEMY_PROJECTILE", static_cast<unsigned int>(GameObject::Type::EnemyProjectile));
 
 	engineTable.new_usertype<Level>("Level",
 		"getEnemyProjectilesRoot", &Level::GetEnemyProjectilesRoot,

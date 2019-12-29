@@ -17,17 +17,17 @@ class Animation;
 struct PickupData
 {
 	sol::function onPickup;
-	sf::Texture* texture;
+	sf::Texture* texture = nullptr;
 	sf::IntRect firstRect;
-	int frames;
-	float frameDuration;
-	float scale; //WIP
+	int frames = 0;
+	float frameDuration = 0;
+	float scale = 0; //WIP
 
-	sf::Texture* destroyTexture;
+	sf::Texture* destroyTexture = nullptr;
 	sf::IntRect destroyFirstRect;
-	int destroyFrames;
-	float destroyFrameDuration;
-	float destroyScale;
+	int destroyFrames = 0;
+	float destroyFrameDuration = 0;
+	float destroyScale = 0;
 
 	std::mt19937 rng;
 	RandomizedSound onPickupSound;
@@ -53,7 +53,7 @@ public:
 
 	void OnPickup(Airplane& player);
 
-	unsigned int GetCategory() const override { return GameObject::PickupItem; }
+	unsigned int GetCategory() const override { return static_cast<unsigned int>(Type::Pickup); }
 
 	sf::FloatRect GetBoundingRect() const override { return _animation->GetBoundingRect(); }
 

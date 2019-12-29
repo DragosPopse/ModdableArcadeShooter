@@ -119,37 +119,37 @@ Player::Player() :
 	_keyBinding[sf::Keyboard::Escape] = ActionType::Exit;
 
 	Command moveLeft;
-	moveLeft.category = GameObject::PlayerAirplane;
+	moveLeft.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	moveLeft.action = DeriveAction<Airplane>(AircraftMoverX(-1));
 	_actionBinding[ActionType::MoveLeft] = moveLeft;
 
 	Command moveRight;
-	moveRight.category = GameObject::PlayerAirplane;
+	moveRight.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	moveRight.action = DeriveAction<Airplane>(AircraftMoverX(1));
 	_actionBinding[ActionType::MoveRight] = moveRight;
 
 	Command moveUp;
-	moveUp.category = GameObject::PlayerAirplane;
+	moveUp.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	moveUp.action = DeriveAction<Airplane>(AircraftMoverY(-1));
 	_actionBinding[ActionType::MoveUp] = moveUp;
 
 	Command moveDown;
-	moveDown.category = GameObject::PlayerAirplane;
+	moveDown.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	moveDown.action = DeriveAction<Airplane>(AircraftMoverY(1));
 	_actionBinding[ActionType::MoveDown] = moveDown;
 
 	Command fire;
-	fire.category = GameObject::PlayerAirplane;
+	fire.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	fire.action = DeriveAction<Airplane>(AirplaneFire);
 	_actionBinding[ActionType::Fire] = fire;
 
 	Command nextWeapon;
-	nextWeapon.category = GameObject::PlayerAirplane;
+	nextWeapon.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	nextWeapon.action = DeriveAction<Airplane>(AirplaneNextWeapon);
 	_actionBinding[ActionType::NextWeapon] = nextWeapon;
 
 	Command previousWeapon;
-	previousWeapon.category = GameObject::PlayerAirplane;
+	previousWeapon.category = static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 	previousWeapon.action = DeriveAction<Airplane>(AirplanePreviousWeapon);
 	_actionBinding[ActionType::PreviousWeapon] = previousWeapon;
 }
