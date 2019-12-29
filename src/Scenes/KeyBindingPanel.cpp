@@ -16,14 +16,14 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 
 	_confirmButton = tgui::Button::create("Confirm");
 
-	_moveLeftButton = tgui::Button::create(BuildString("Move Left: ", ToString(_context->player->GetKey(Player::MoveLeft))));
-	_moveRightButton = tgui::Button::create(BuildString("Move Right: ", ToString(_context->player->GetKey(Player::MoveRight))));
-	_moveUpButton = tgui::Button::create(BuildString("Move Up: ", ToString(_context->player->GetKey(Player::MoveUp))));
-	_moveDownButton = tgui::Button::create(BuildString("Move Down: ", ToString(_context->player->GetKey(Player::MoveDown))));
-	_fireButton = tgui::Button::create(BuildString("Fire: ", ToString(_context->player->GetKey(Player::Fire))));
-	_nextWeaponButton = tgui::Button::create(BuildString("Next Weapon: ", ToString(_context->player->GetKey(Player::NextWeapon))));
-	_previousWeaponButton = tgui::Button::create(BuildString("Previous Weapon: ", ToString(_context->player->GetKey(Player::PreviousWeapon))));
-	_pauseButton = tgui::Button::create(BuildString("Exit/Pause: ", ToString(_context->player->GetKey(Player::Exit))));
+	_moveLeftButton = tgui::Button::create(BuildString("Move Left: ", ToString(_context->player->GetKey(Player::ActionType::MoveLeft))));
+	_moveRightButton = tgui::Button::create(BuildString("Move Right: ", ToString(_context->player->GetKey(Player::ActionType::MoveRight))));
+	_moveUpButton = tgui::Button::create(BuildString("Move Up: ", ToString(_context->player->GetKey(Player::ActionType::MoveUp))));
+	_moveDownButton = tgui::Button::create(BuildString("Move Down: ", ToString(_context->player->GetKey(Player::ActionType::MoveDown))));
+	_fireButton = tgui::Button::create(BuildString("Fire: ", ToString(_context->player->GetKey(Player::ActionType::Fire))));
+	_nextWeaponButton = tgui::Button::create(BuildString("Next Weapon: ", ToString(_context->player->GetKey(Player::ActionType::NextWeapon))));
+	_previousWeaponButton = tgui::Button::create(BuildString("Previous Weapon: ", ToString(_context->player->GetKey(Player::ActionType::PreviousWeapon))));
+	_pauseButton = tgui::Button::create(BuildString("Exit/Pause: ", ToString(_context->player->GetKey(Player::ActionType::Exit))));
 
 
 	_keyButtons.push_back(_moveLeftButton);
@@ -49,14 +49,14 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 		_actionToBind = action;
 	};
 
-	_moveLeftButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveLeftButton, "Move Left", Player::MoveLeft); });
-	_moveRightButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveRightButton, "Move Right", Player::MoveRight); });
-	_moveUpButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveUpButton, "Move Up", Player::MoveUp); });
-	_moveDownButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveDownButton, "Move Down", Player::MoveDown); });
-	_fireButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_fireButton, "Fire", Player::Fire); });
-	_previousWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::PreviousWeapon); });
-	_nextWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::NextWeapon); });
-	_pauseButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_pauseButton, "Exit/Pause", Player::Exit); });
+	_moveLeftButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveLeftButton, "Move Left", Player::ActionType::MoveLeft); });
+	_moveRightButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveRightButton, "Move Right", Player::ActionType::MoveRight); });
+	_moveUpButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveUpButton, "Move Up", Player::ActionType::MoveUp); });
+	_moveDownButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_moveDownButton, "Move Down", Player::ActionType::MoveDown); });
+	_fireButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_fireButton, "Fire", Player::ActionType::Fire); });
+	_previousWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_previousWeaponButton, "Previous Weapon", Player::ActionType::PreviousWeapon); });
+	_nextWeaponButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_nextWeaponButton, "Next Weapon", Player::ActionType::NextWeapon); });
+	_pauseButton->connect("pressed", [this, assignKey]() {_click.setVolume(_context->player->GetSfxVolume()); _click.play(); assignKey(_pauseButton, "Exit/Pause", Player::ActionType::Exit); });
 
 
 	_confirmButton->connect("pressed",

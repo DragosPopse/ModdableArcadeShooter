@@ -302,9 +302,9 @@ unsigned int Airplane::GetCategory() const
 {
 	if (_playerControlled)
 	{
-		return Type::PlayerAirplane;
+		return static_cast<unsigned int>(Type::PlayerAirplane);
 	}
-	return Type::EnemyAirplane;
+	return static_cast<unsigned int>(Type::EnemyAirplane);
 }
 
 

@@ -22,16 +22,16 @@ class GameObject :
 	GameObject* _parent;
 	
 public:
-	enum Type
+	enum class Type
 	{
 		None = 0,
 		PlayerAirplane = 1 << 0,
 		EnemyAirplane = 1 << 1,
 		PlayerProjectile = 1 << 2,
 		EnemyProjectile = 1 << 3,
-		PickupItem = 1 << 4,
-		AnimationType = 1 << 5,
-		TextType = 1 << 6
+		Pickup = 1 << 4,
+		Animation = 1 << 5,
+		Text = 1 << 6
 	};
 
 	GameObject();
@@ -65,7 +65,7 @@ public:
 
 	bool IsDestroyed() const;
 
-	virtual unsigned int GetCategory() const { return None; }
+	virtual unsigned int GetCategory() const { return static_cast<unsigned int>(Type::None); }
 
 	virtual sf::FloatRect GetBoundingRect() const { return sf::FloatRect(0, 0, 0, 0); }
 };

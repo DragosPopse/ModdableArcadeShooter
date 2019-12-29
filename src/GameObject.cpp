@@ -90,7 +90,7 @@ void GameObject::FixedUpdate(float dt)
 
 void GameObject::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if (GetCategory() == None)
+	if (GetCategory() == static_cast<int>(Type::None))
 	{
 		states.transform *= getTransform();
 	}
@@ -167,9 +167,9 @@ void GameObject::RemoveDestroyedChilldren()
 		}
 	}
 
-	for (auto& object : _unownedChildren)
+	for (auto it = _unownedChildren.begin(); it != _unownedChildren.end(); )
 	{
-		if (object.as<GameObject>().IsDestroyed())
+		if ((*it).as<GameObject>().IsDestroyed())
 		{
 			it = _unownedChildren.erase(it);
 		}
@@ -204,11 +204,11 @@ void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
 {
 	if (command.category & GetCategory())
 	{
-		if ((Type::PlayerAirplane | Type::EnemyAirplane) & GetCategory())
+		if ((static_cast<unsigned int>(Type::PlayerAirplane) | static_cast<unsigned int>(Type::EnemyAirplane)) & GetCategory())
 		{
 			Protect(command.action(static_cast<Airplane*>(this), dt));
 		}
-		else if ((Type::EnemyProjectile | Type::PlayerProjectile) & GetCategory())
+		else if ((static_cast<unsigned int>(Type::EnemyProjectile) | static_cast<unsigned int>(Type::PlayerProjectile)) & GetCategory())
 		{
 			Protect(command.action(static_cast<Projectile*>(this), dt));
 		}

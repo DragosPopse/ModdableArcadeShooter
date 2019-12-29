@@ -28,5 +28,5 @@ public:
 
 	sf::Color GetColor() const;
 
-	unsigned int GetCategory() const override { return TextType; }
+	unsigned int GetCategory() const override { return static_cast<unsigned int>(Type::Text); }
 };

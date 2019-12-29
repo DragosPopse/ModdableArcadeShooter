@@ -567,7 +567,7 @@ bool Level::FixedUpdate(float dt)
 		}
 		RequestPush(lose);
 		Command blockShooting;
-		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
+		blockShooting.category = static_cast<unsigned int>(GameObject::Type::EnemyAirplane) | static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 		blockShooting.action = DeriveAction<Airplane>(
 			[](Airplane& airplane, float)
 			{
@@ -586,7 +586,7 @@ bool Level::FixedUpdate(float dt)
 		RequestPush(win);
 		_win = true;
 		Command blockShooting;
-		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
+		blockShooting.category = static_cast<unsigned int>(GameObject::Type::EnemyAirplane) | static_cast<unsigned int>(GameObject::Type::PlayerAirplane);
 		blockShooting.action = DeriveAction<Airplane>(
 			[](Airplane& airplane, float)
 			{
@@ -750,7 +750,7 @@ bool Level::HandleEvent(const sf::Event& ev)
 
 	case sf::Event::KeyPressed:
 		_context->player->HandleEvent(ev, _commands);
-		if (ev.key.code == _context->player->GetKey(Player::Exit) && OnTop())
+		if (ev.key.code == _context->player->GetKey(Player::ActionType::Exit) && OnTop())
 		{
 			RequestPush(_localMenu);
 		}
@@ -843,13 +843,13 @@ void Level::RemoveOffScreenObjects(float dt)
 	Command remover;
 	auto viewSize = _worldView.getSize();
 	auto viewCenter = _worldView.getCenter();
-	remover.category = GameObject::EnemyAirplane | GameObject::EnemyProjectile |
-		GameObject::PlayerProjectile | GameObject::PickupItem;
+	remover.category = static_cast<unsigned int>(GameObject::Type::EnemyAirplane) | static_cast<unsigned int>(GameObject::Type::EnemyProjectile) |
+		static_cast<unsigned int>(GameObject::Type::PlayerProjectile) | static_cast<unsigned int>(GameObject::Type::Pickup);
 	remover.action = [this, viewSize, viewCenter](GameObject& obj, float)
 	{
 		auto objPosition = obj.GetWorldPosition();
 
-		if (obj.GetCategory() == GameObject::PlayerProjectile)
+		if (obj.GetCategory() == static_cast<unsigned int>(GameObject::Type::PlayerProjectile))
 		{
 			if (objPosition.y < viewCenter.y - viewSize.y ||
 				objPosition.y > viewCenter.y + viewSize.y ||
@@ -870,7 +870,7 @@ void Level::RemoveOffScreenObjects(float dt)
 
 	_root->OnCommand(remover, dt);
 	Command envRemover;
-	envRemover.category = GameObject::AnimationType;
+	envRemover.category = static_cast<unsigned int>(GameObject::Type::Animation);
 	envRemover.action = [this, viewSize, viewCenter](GameObject& obj, float)
 	{
 		if (obj.GetWorldPosition().y > viewCenter.y + viewSize.y + 100)
@@ -890,7 +890,7 @@ void Level::HandleCollisions(float dt)
 	}
 	sf::FloatRect playerRect = _playerAirplane->GetBoundingRect();
 	Command enemyProjectileCollector;
-	enemyProjectileCollector.category = GameObject::EnemyProjectile;
+	enemyProjectileCollector.category = static_cast<unsigned int>(GameObject::Type::EnemyProjectile);
 	enemyProjectileCollector.action = DeriveAction<Projectile>([this, playerRect](Projectile& proj, float)
 	{
 		if (proj.GetBoundingRect().intersects(playerRect))
@@ -901,7 +901,7 @@ void Level::HandleCollisions(float dt)
 	_enemyProjectilesRoot->OnCommand(enemyProjectileCollector, dt);
 
 	Command pickupCollector;
-	pickupCollector.category = GameObject::PickupItem;
+	pickupCollector.category = static_cast<unsigned int>(GameObject::Type::Pickup);
 	pickupCollector.action = DeriveAction<Pickup>(
 		[this, playerRect](Pickup& pickup, float)
 		{
@@ -916,7 +916,7 @@ void Level::HandleCollisions(float dt)
 	_pickupsRoot->OnCommand(pickupCollector, dt);
 
 	Command enemyCollector;
-	enemyCollector.category = GameObject::EnemyAirplane;
+	enemyCollector.category = static_cast<unsigned int>(GameObject::Type::EnemyAirplane);
 	enemyCollector.action = DeriveAction<Airplane>(
 		[this, playerRect](Airplane& obj, float dt)
 		{
@@ -929,7 +929,7 @@ void Level::HandleCollisions(float dt)
 			else
 			{
 				Command playerProjectileCollector;
-				playerProjectileCollector.category = GameObject::PlayerProjectile;
+				playerProjectileCollector.category = static_cast<unsigned int>(GameObject::Type::PlayerProjectile);
 				playerProjectileCollector.action = DeriveAction<Projectile>(
 					[this, enemyRect, &obj](Projectile& proj, float)
 					{

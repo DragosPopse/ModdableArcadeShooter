@@ -96,10 +96,10 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 void LevelSelector::Enable()
 {
 	_infoText.setString(_context->player->Parse("Press {MoveLeft}/{MoveRight} to change level, \n{Fire} to confirm and {Exit} to go back."));
-	_leftKey = _context->player->GetKey(Player::MoveLeft);
-	_rightKey = _context->player->GetKey(Player::MoveRight);
-	_fireKey = _context->player->GetKey(Player::Fire);
-	_exitKey = _context->player->GetKey(Player::Exit);
+	_leftKey = _context->player->GetKey(Player::ActionType::MoveLeft);
+	_rightKey = _context->player->GetKey(Player::ActionType::MoveRight);
+	_fireKey = _context->player->GetKey(Player::ActionType::Fire);
+	_exitKey = _context->player->GetKey(Player::ActionType::Exit);
 	CenterOrigin(_infoText);
 }
 

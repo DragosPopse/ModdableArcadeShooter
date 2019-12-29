@@ -156,9 +156,9 @@ unsigned int Projectile::GetCategory() const
 {
 	if (_playerControlled)
 	{
-		return Type::PlayerProjectile;
+		return static_cast<unsigned int>(Type::PlayerProjectile);
 	}
-	return Type::EnemyProjectile;
+	return static_cast<unsigned int>(Type::EnemyProjectile);
 }
 
 

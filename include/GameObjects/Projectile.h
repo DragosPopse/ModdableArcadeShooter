@@ -17,19 +17,19 @@ struct ProjectileData
 {
 	std::string name;
 
-	float scale;
-	float muzzleScale;
-	float iconScale;
+	float scale = 0.f;
+	float muzzleScale = 0.f;
+	float iconScale = 0.f;
 
-	sf::Texture* texture;
-	sf::Texture* iconTexture;
+	sf::Texture* texture = nullptr;
+	sf::Texture* iconTexture = nullptr;
 	sf::IntRect iconRect;
 	std::vector<sf::IntRect> rects;
 	sf::IntRect muzzleRect;
-	float speed;
-	int damage;
-	float fireRate;
-	float spreadAngle;
+	float speed = 0.f;
+	int damage = 0;
+	float fireRate = 0.f;
+	float spreadAngle = 0.f;
 	sol::optional<sol::function> fixedUpdate;
 	sol::optional<sol::function> update;
 	sol::optional<sol::function> onCollision;
@@ -37,8 +37,8 @@ struct ProjectileData
 	sol::function start;
 
 
-	int ammoTextSize;
-	sf::Font* ammoFont;
+	int ammoTextSize = 0;
+	sf::Font* ammoFont = nullptr;
 
 	RandomizedSound muzzleSound;
 	RandomizedSound destroySound;

@@ -10,14 +10,14 @@ class GameObject;
 struct Command
 {
 	std::function<void(GameObject&, float)> action;
-	unsigned int category;
+	unsigned int category = 0u;
 };
 
 
 struct LuaCommand
 {
 	sol::function action;
-	unsigned int category;
+	unsigned int category = 0u;
 };
 
 
