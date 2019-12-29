@@ -40,7 +40,7 @@ namespace
 		}
 
 
-		void operator()(Airplane& airplane, float dt) const
+		void operator()(Airplane& airplane, float) const
 		{
 			airplane.MoveX(dirX);
 		}
@@ -51,29 +51,29 @@ namespace
 	{
 		int dirY;
 
-		AircraftMoverY(float y) :
+		AircraftMoverY(int y) :
 			dirY(y)
 		{
 		}
 
 
-		void operator()(Airplane& airplane, float dt) const
+		void operator()(Airplane& airplane, float) const
 		{
 			airplane.MoveY(dirY);
 		}
 	};
 
-	void AirplaneFire(Airplane& airplane, float dt)
+	void AirplaneFire(Airplane& airplane, float)
 	{
 		airplane.Fire();
 	}
 
-	void AirplaneNextWeapon(Airplane& airplane, float dt)
+	void AirplaneNextWeapon(Airplane& airplane, float)
 	{
 		airplane.NextWeapon();
 	}
 
-	void AirplanePreviousWeapon(Airplane& airplane, float dt)
+	void AirplanePreviousWeapon(Airplane& airplane, float)
 	{
 		airplane.PreviousWeapon();
 	}
@@ -287,24 +287,24 @@ std::string Player::Parse(const std::string& str)
 	std::stringstream result;
 
 	int i = 0;
-	while (i < str.size())
+	while (i < static_cast<int>(str.size()))
 	{
 		if (str[i] == '{')
 		{
 			std::stringstream param;
 			int j = i + 1;
-			if (j >= str.size())
+			if (j >= static_cast<int>(str.size()))
 			{
 				throw std::invalid_argument("Invalid Format");
 			}
 
-			while (str[j] != '}' && j < str.size())
+			while (str[j] != '}' && j < static_cast<int>(str.size()))
 			{
 				param << str[j];
 				j++;
 			}
 
-			if (j == str.size())
+			if (j == static_cast<int>(str.size()))
 			{
 				throw std::invalid_argument("Invalid Format");
 			}

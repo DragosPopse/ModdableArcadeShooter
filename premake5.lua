@@ -35,11 +35,6 @@ project "ArcadeAirship"
         staticruntime "off"
         systemversion "latest"
 
-        defines
-        {
-            "_USE_MATH_DEFINES"
-        }
-
         postbuildcommands 
         {
             "copy /y %{cfg.architecture}\\*.dll bin\\%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}\\ArcadeAirship\\*.dll",

@@ -23,14 +23,14 @@ void TextObject::SetString(const sf::String& str)
 }
 
 
-void TextObject::SetCharSize(size_t size)
+void TextObject::SetCharSize(unsigned int size)
 {
 	_text.setCharacterSize(size);
 	CenterOrigin(_text);
 }
 
 
-size_t TextObject::GetCharSize() const
+unsigned int TextObject::GetCharSize() const
 {
 	return _text.getCharacterSize();
 }

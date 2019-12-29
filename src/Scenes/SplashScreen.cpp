@@ -6,7 +6,7 @@
 
 SplashScreen::SplashScreen(Context* context) :
 	Scene(context),
-	_animation(0.30, 0.50),
+	_animation(0.30f, 0.50f),
 	_elapsedTime(0),
 	_mainMenu(new MainMenu(context, true))
 {
@@ -14,7 +14,7 @@ SplashScreen::SplashScreen(Context* context) :
 	_splash.setTexture(_textures["Logo"]);
 	_splash.setScale(sf::Vector2f(0.25, 0.25));
 	CenterOrigin(_splash);
-	_splash.setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
+	_splash.setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y) / 2.f);
 	_context->music->openFromFile("assets/audio/music/MainMenu.wav");
 	_context->music->setLoop(true);
 	_context->music->setVolume(_context->player->GetMusicVolume());

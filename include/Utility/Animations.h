@@ -43,11 +43,11 @@ public:
 
 		if (progress < _inRatio)
 		{
-			color.a = (_defaultAlpha + 1) * progress / _inRatio;
+			color.a = static_cast<sf::Uint8>(static_cast<float>(_defaultAlpha + 1) * progress / _inRatio);
 		}
 		else if (progress > 1.f - _outRatio)
 		{
-			color.a = (_defaultAlpha + 1) * (1.f - progress) / _outRatio;
+			color.a = static_cast<sf::Uint8>(static_cast<float>(_defaultAlpha + 1) * (1.f - progress) / _outRatio);
 		}
 
 		_setColor(target, color);
@@ -104,7 +104,7 @@ public:
 		{
 			if (progress <= 0.5f)
 			{
-				currentSize = Lerp(_beginCharSize, _finalCharSize, progress);
+				currentSize = static_cast<int>(Lerp(static_cast<float>(_beginCharSize), static_cast<float>(_finalCharSize), progress));
 			}
 			else
 			{
@@ -116,11 +116,11 @@ public:
 		{
 			if (progress <= 1.f)
 			{
-				currentSize = Lerp(_finalCharSize, _beginCharSize, progress);
+				currentSize = static_cast<int>(Lerp(static_cast<float>(_finalCharSize), static_cast<float>(_beginCharSize), progress));
 			}
 			else
 			{
-				currentSize = _beginCharSize;
+				currentSize = static_cast<int>(_beginCharSize);
 				if (_loop)
 				{
 					Reset();

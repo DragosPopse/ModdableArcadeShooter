@@ -67,9 +67,9 @@ namespace
 	{
 		sf::Color color;
 		color.a = 255;
-		color.r = Protect<int>(table[1]);
-		color.g = Protect<int>(table[2]);
-		color.b = Protect<int>(table[3]);
+		color.r = static_cast<sf::Uint8>(Protect<int>(table[1]));
+		color.g = static_cast<sf::Uint8>(Protect<int>(table[2]));
+		color.b = static_cast<sf::Uint8>(Protect<int>(table[3]));
 
 		return color;
 	}
@@ -117,7 +117,7 @@ Level::Level(Context* context, const std::string& path) :
 	
 	//Load required textures
 	sol::table usedTextures = Protect<sol::table>(level["usedTextures"]);
-	for (int i = 1; i <= usedTextures.size(); i++)
+	for (int i = 1; i <= static_cast<int>(usedTextures.size()); i++)
 	{
 		sol::table texture = usedTextures[i];
 		std::string id = Protect<std::string>(texture[1]);
@@ -128,7 +128,7 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Load required fonts
 	sol::table usedFonts = Protect<sol::table>(level["usedFonts"]);
-	for (int i = 1; i <= usedFonts.size(); i++)
+	for (int i = 1; i <= static_cast<int>(usedFonts.size()); i++)
 	{
 		sol::table font = Protect<sol::table>(usedFonts[i]);
 		std::string id = Protect<std::string>(font[1]);
@@ -138,7 +138,7 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Load required sounds
 	sol::table usedSounds = level["usedSounds"];
-	for (int i = 1; i <= usedSounds.size(); i++)
+	for (int i = 1; i <= static_cast<int>(usedSounds.size()); i++)
 	{
 		sol::table sound = Protect<sol::table>(usedSounds[i]);
 		std::string id = Protect<std::string>(sound[1]);
@@ -166,7 +166,7 @@ Level::Level(Context* context, const std::string& path) :
 	
 	//Load Pickups
 	sol::table pickups = Protect<sol::table>(level["usedPickups"]);
-	for (int i = 1; i <= pickups.size(); i++)
+	for (int i = 1; i <= static_cast<int>(pickups.size()); i++)
 	{
 		std::string pickupName = Protect<std::string>(pickups[i]);
 		std::string pickupPath = BuildString("assets/scripts/pickups/", pickupName, ".lua");
@@ -191,12 +191,12 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Load AirplaneData
 	sol::table planes = Protect<sol::table>(level["usedAirplanes"]);
-	for (int i = 1; i <= planes.size(); i++)
+	for (int i = 1; i <= static_cast<int>(planes.size()); i++)
 	{
 		std::string name = Protect<std::string>(planes[i]);
-		std::string path = BuildString("assets/scripts/airplanes/", name, ".lua");
-		std::cout << path << '\n';
-		sol::table plane = Protect<sol::table>(_context->lua->do_file(path));
+		std::string planePath = BuildString("assets/scripts/airplanes/", name, ".lua");
+		std::cout << planePath << '\n';
+		sol::table plane = Protect<sol::table>(_context->lua->do_file(planePath));
 
 		AirplaneData apdata;
 		apdata.name = Protect<std::string>(plane["name"]);
@@ -236,20 +236,20 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.explosionMaxRotation = Protect<float>(explosionData["maxRotation"]);
 		sol::table explosionSounds = Protect<sol::table>(explosionData["sounds"]);
 		apdata.switchSound = tableToSound(Protect<sol::table>(plane["switchSound"]));
-		for (int i = 1; i <= explosionSounds.size(); i++)
+		for (int j = 1; j <= static_cast<int>(explosionSounds.size()); j++)
 		{
-			RandomizedSound explosionSound = tableToSound(Protect<sol::table>(explosionSounds[i]));
+			RandomizedSound explosionSound = tableToSound(Protect<sol::table>(explosionSounds[j]));
 			apdata.explosionSounds.push_back(explosionSound);
 		}
 
 		
 
 		sol::table directions = Protect<sol::table>(plane["aiPattern"]);
-		for (int i = 1; i <= directions.size(); i++)
+		for (int j = 1; j <= static_cast<int>(directions.size()); j++)
 		{
 			AiDirection d;
-			d.angle = Protect<float>(directions[i][1]);
-			d.distance = Protect<float>(directions[i][2]);
+			d.angle = Protect<float>(directions[j][1]);
+			d.distance = Protect<float>(directions[j][2]);
 			apdata.directions.push_back(d);
 		}
 
@@ -258,9 +258,9 @@ Level::Level(Context* context, const std::string& path) :
 		if (optionalWeapons != sol::nil)
 		{
 			sol::table weapons = optionalWeapons;
-			for (int i = 1; i <= weapons.size(); i++)
+			for (int j = 1; j <= static_cast<int>(weapons.size()); j++)
 			{
-				sol::table weapon = Protect<sol::table>(weapons[i]);
+				sol::table weapon = Protect<sol::table>(weapons[j]);
 				std::string projectileName = Protect<std::string>(weapon["projectile"]);
 				if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
 				{
@@ -289,9 +289,9 @@ Level::Level(Context* context, const std::string& path) :
 				projdata.destroySound = tableToSound(Protect<sol::table>(projectile["destroySound"]));
 				projdata.iconRect = TableToRect(Protect<sol::table>(projectile["iconRect"]));
 				sol::table rects = Protect<sol::table>(projectile["rects"]);
-				for (int i = 1; i <= rects.size(); i++)
+				for (int k = 1; k <= static_cast<int>(rects.size()); k++)
 				{
-					projdata.rects.push_back(TableToRect(Protect<sol::table>(rects[i])));
+					projdata.rects.push_back(TableToRect(Protect<sol::table>(rects[k])));
 				}
 				projdata.muzzleRect = TableToRect(Protect<sol::table>(projectile["muzzleRect"]));
 				projdata.speed = Protect<float>(projectile["speed"]);
@@ -313,7 +313,7 @@ Level::Level(Context* context, const std::string& path) :
 				sol::function onCollision = projectile["onCollision"];	
 				sol::function fixedUpdate = projectile["fixedUpdate"];
 				sol::function update = projectile["update"];
-				sol::function onDestroy = projectile["onDestroy"];
+				sol::function projOnDestroy = projectile["onDestroy"];
 
 				if (onCollision)
 				{
@@ -327,9 +327,9 @@ Level::Level(Context* context, const std::string& path) :
 				{
 					projdata.update = update;
 				}
-				if (onDestroy)
+				if (projOnDestroy)
 				{
-					projdata.onDestroy = onDestroy;
+					projdata.onDestroy = projOnDestroy;
 				}
 				
 				_projectileDataDict.insert(std::make_pair(projectileName,
@@ -345,9 +345,9 @@ Level::Level(Context* context, const std::string& path) :
 		{
 			sol::table drops = Protect<sol::table>(plane["drops"]);
 			int percentage = 0;
-			for (int i = 1; i <= drops.size(); i++)
+			for (int j = 1; j <= static_cast<int>(drops.size()); j++)
 			{
-				sol::table drop = drops[i];
+				sol::table drop = drops[j];
 				DropData dropData;
 				dropData.dropRate = Protect<int>(drop["dropRate"]);
 				std::string dropName = Protect<std::string>(drop["pickup"]);
@@ -373,10 +373,10 @@ Level::Level(Context* context, const std::string& path) :
 				return lhs.dropRate < rhs.dropRate;
 			});
 
-		for (int i = 1; i < apdata.drops.size(); i++)
+		for (int j = 1; j < static_cast<int>(apdata.drops.size()); j++)
 		{
-			apdata.drops[i].dropRate += apdata.drops[i - 1].dropRate;
-			std::cout << "DROPCHANCE: " << apdata.drops[i].dropRate << '\n';
+			apdata.drops[j].dropRate += apdata.drops[j - 1].dropRate;
+			std::cout << "DROPCHANCE: " << apdata.drops[j].dropRate << '\n';
 		}
 
 		_airplaneDataDict.insert(std::make_pair(name,
@@ -387,7 +387,7 @@ Level::Level(Context* context, const std::string& path) :
 	sol::table playerTable = Protect<sol::table>(level["player"]);
 	//_playerSpawn.x = playerTable["spawnPoint"][1];
 	//_playerSpawn.y = playerTable["spawnPoint"][2];
-	_playerSpawn.x = _context->window->getSize().x / 2;
+	_playerSpawn.x = static_cast<float>(_context->window->getSize().x) / 2.f;
 	_playerSpawn.y = _levelLength - _worldView.getSize().y / 2;
 	std::string playerPlane = Protect<std::string>(playerTable["airplane"]);
 
@@ -440,7 +440,7 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Add environment animations and sprites 
 	sol::table animations = Protect<sol::table>(level["animations"]);
-	for (int i = 1; i <= animations.size(); i++)
+	for (int i = 1; i <= static_cast<int>(animations.size()); i++)
 	{
 		sol::table animationData = animations[i];
 		std::string animationTexture = Protect<std::string>(animationData["texture"]);
@@ -472,7 +472,7 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Add Spawn Positions
 	sol::table spawnPoints = Protect<sol::table>(level["spawnPoints"]);
-	for (int i = 1; i <= spawnPoints.size(); i++)
+	for (int i = 1; i <= static_cast<int>(spawnPoints.size()); i++)
 	{
 		AirplaneSpawnPosition spawn;
 		std::string id = Protect<std::string>(spawnPoints[i][1]);
@@ -486,7 +486,7 @@ Level::Level(Context* context, const std::string& path) :
 
 	//Add texts
 	sol::table texts = Protect<sol::table>(level["texts"]);
-	for (int i = 1; i <= texts.size(); i++)
+	for (int i = 1; i <= static_cast<int>(texts.size()); i++)
 	{
 		TextAnimationData tdata;
 		sol::table text = Protect<sol::table>(texts[i]);
@@ -529,7 +529,7 @@ Level::Level(Context* context, const std::string& path) :
 	_flashShader.loadFromFile("assets/shaders/tint.frag", sf::Shader::Fragment);
 	_vignetteShader.loadFromFile("assets/shaders/vignette.frag", sf::Shader::Fragment);
 	_renderTexture.create(_context->window->getSize().x, _context->window->getSize().y);
-	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_vignetteShader.setUniform("u_resolution", sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 	_root->Start(this);
 
 	_soundtrack = Protect<std::string>(level["soundtrack"]);
@@ -542,7 +542,7 @@ Level::Level(Context* context, const std::string& path) :
 
 Level::~Level()
 {
-	for (int i = 0; i < _environmentSpawns.size(); i++)
+	for (int i = 0; i < static_cast<int>(_environmentSpawns.size()); i++)
 	{
 		delete _environmentSpawns[i];
 	}
@@ -569,7 +569,7 @@ bool Level::FixedUpdate(float dt)
 		Command blockShooting;
 		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
 		blockShooting.action = DeriveAction<Airplane>(
-			[](Airplane& airplane, float dt)
+			[](Airplane& airplane, float)
 			{
 				airplane.SetBlockShooting(true);
 			});
@@ -588,7 +588,7 @@ bool Level::FixedUpdate(float dt)
 		Command blockShooting;
 		blockShooting.category = GameObject::EnemyAirplane | GameObject::PlayerAirplane;
 		blockShooting.action = DeriveAction<Airplane>(
-			[](Airplane& airplane, float dt)
+			[](Airplane& airplane, float)
 			{
 				airplane.SetBlockShooting(true);
 			});
@@ -845,7 +845,7 @@ void Level::RemoveOffScreenObjects(float dt)
 	auto viewCenter = _worldView.getCenter();
 	remover.category = GameObject::EnemyAirplane | GameObject::EnemyProjectile |
 		GameObject::PlayerProjectile | GameObject::PickupItem;
-	remover.action = [this, viewSize, viewCenter](GameObject& obj, float dt)
+	remover.action = [this, viewSize, viewCenter](GameObject& obj, float)
 	{
 		auto objPosition = obj.GetWorldPosition();
 
@@ -871,7 +871,7 @@ void Level::RemoveOffScreenObjects(float dt)
 	_root->OnCommand(remover, dt);
 	Command envRemover;
 	envRemover.category = GameObject::AnimationType;
-	envRemover.action = [this, viewSize, viewCenter](GameObject& obj, float dt)
+	envRemover.action = [this, viewSize, viewCenter](GameObject& obj, float)
 	{
 		if (obj.GetWorldPosition().y > viewCenter.y + viewSize.y + 100)
 		{
@@ -891,7 +891,7 @@ void Level::HandleCollisions(float dt)
 	sf::FloatRect playerRect = _playerAirplane->GetBoundingRect();
 	Command enemyProjectileCollector;
 	enemyProjectileCollector.category = GameObject::EnemyProjectile;
-	enemyProjectileCollector.action = DeriveAction<Projectile>([this, playerRect](Projectile& proj, float dt)
+	enemyProjectileCollector.action = DeriveAction<Projectile>([this, playerRect](Projectile& proj, float)
 	{
 		if (proj.GetBoundingRect().intersects(playerRect))
 		{
@@ -903,7 +903,7 @@ void Level::HandleCollisions(float dt)
 	Command pickupCollector;
 	pickupCollector.category = GameObject::PickupItem;
 	pickupCollector.action = DeriveAction<Pickup>(
-		[this, playerRect](Pickup& pickup, float dt)
+		[this, playerRect](Pickup& pickup, float)
 		{
 			if (pickup.GetBoundingRect().intersects(playerRect))
 			{
@@ -931,7 +931,7 @@ void Level::HandleCollisions(float dt)
 				Command playerProjectileCollector;
 				playerProjectileCollector.category = GameObject::PlayerProjectile;
 				playerProjectileCollector.action = DeriveAction<Projectile>(
-					[this, enemyRect, &obj](Projectile& proj, float dt)
+					[this, enemyRect, &obj](Projectile& proj, float)
 					{
 						if (proj.GetBoundingRect().intersects(enemyRect))
 						{
@@ -980,7 +980,7 @@ void Level::AddExplosion(Animation* explosion)
 }
 
 
-void Level::AddParticles(ParticleSystemObject* p)
+void Level::AddParticles(ParticleSystemObject*)
 {
 	//p->Start(this);
 	//std::unique_ptr<ParticleSystemObject> ptr(p);
@@ -1027,13 +1027,13 @@ void Level::PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, floa
 	_vignetteShader.setUniform("u_vignetteColor", _vignetteColor);
 	_vignetteShader.setUniform("u_innerRadius", _vignetteInnerRadius);
 	_vignetteShader.setUniform("u_outerRadius", _vignetteOuterRadius);
-	_vignetteShader.setUniform("u_resolution", sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_vignetteShader.setUniform("u_resolution", sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 }
 
 
 void Level::SwitchBackground()
 {
-	_background[_currentBgIndex]->setPosition(_context->window->getSize().x / 2, _background[_currentBgIndex]->getPosition().y - _background[_currentBgIndex]->GetBoundingRect().height * 2);
+	_background[_currentBgIndex]->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, _background[_currentBgIndex]->getPosition().y - _background[_currentBgIndex]->GetBoundingRect().height * 2.f);
 
 	if (_currentBgIndex == 0)
 	{

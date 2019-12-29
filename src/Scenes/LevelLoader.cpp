@@ -21,7 +21,7 @@ LevelLoader::LevelLoader(Context* context, const std::string& fileName) :
 	
 	_windowSize = _context->window->getSize();
 
-	_sprite.setPosition(_windowSize.x + _sprite.getLocalBounds().width / 2, _windowSize.y / 2);
+	_sprite.setPosition(static_cast<float>(_windowSize.x) + _sprite.getLocalBounds().width / 2.f, static_cast<float>(_windowSize.y) / 2.f);
 
 	_thread.launch();
 }
@@ -49,7 +49,7 @@ bool LevelLoader::Update(float dt)
 		_sprite.move(-_speed * dt, 0);
 		if (_sprite.getPosition().x + _sprite.getLocalBounds().width < 0)
 		{
-			_sprite.setPosition(_windowSize.x + _sprite.getLocalBounds().width / 2, _windowSize.y / 2);
+			_sprite.setPosition(static_cast<float>(_windowSize.x) + static_cast<float>(_sprite.getLocalBounds().width) / 2.f, static_cast<float>(_windowSize.y) / 2.f);
 		}
 	}
 

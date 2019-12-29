@@ -42,7 +42,7 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 		_buttonText = text;
 		_currentKeyButton->setText(BuildString(text, ": ..."));
 		_confirmButton->setEnabled(false);
-		for (int i = 0; i < _keyButtons.size(); i++)
+		for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
 		{
 			_keyButtons[i]->setEnabled(false);
 		}
@@ -71,12 +71,12 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 
 	_panel->setSize("70%");
 	_panel->setPosition("(&.size - size) / 2");
-	for (int i = 0; i < _keyButtons.size(); i++)
+	for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
 	{
 		_keyButtons[i]->setTextSize(_textSize);
 		_keyButtons[i]->setInheritedFont(font);
 		_panel->add(_keyButtons[i]);
-		_panel->addSpace(0.1);
+		_panel->addSpace(0.1f);
 	}
 	_confirmButton->setTextSize(_textSize);
 	_confirmButton->setInheritedFont(font);
@@ -98,7 +98,7 @@ bool KeyBindingPanel::HandleEvent(const sf::Event& ev)
 	if (_assigningKey && ev.type == sf::Event::KeyPressed)
 	{
 		_assigningKey = false;
-		for (int i = 0; i < _keyButtons.size(); i++)
+		for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
 		{
 			_keyButtons[i]->setEnabled(true);
 		}
@@ -127,7 +127,7 @@ bool KeyBindingPanel::HandleEvent(const sf::Event& ev)
 }
 
 
-bool KeyBindingPanel::Update(float dt)
+bool KeyBindingPanel::Update(float)
 {
 	return true;
 }

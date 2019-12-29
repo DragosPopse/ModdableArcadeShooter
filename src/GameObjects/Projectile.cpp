@@ -134,7 +134,7 @@ float Projectile::GetSpeed() const
 }
 
 
-float Projectile::GetDamage() const
+int Projectile::GetDamage() const
 {
 	return _data->damage;
 }

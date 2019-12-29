@@ -31,7 +31,7 @@ void ParticleSystemObject::Update(float dt)
 }
 
 
-void ParticleSystemObject::FixedUpdate(float dt)
+void ParticleSystemObject::FixedUpdate(float)
 {
 	//GameObject::FixedUpdate(dt);
 }

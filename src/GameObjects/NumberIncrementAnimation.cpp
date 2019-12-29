@@ -12,7 +12,7 @@ NumberIncrementAnimation::NumberIncrementAnimation() :
 }
 
 
-void NumberIncrementAnimation::Start(Scene* scene) 
+void NumberIncrementAnimation::Start(Scene*) 
 {
 	_currentState = &_incrementState; 
 	_currentIncrement = _increments.cbegin();
@@ -108,7 +108,7 @@ void NumberIncrementAnimation::IncrementState::Update(float dt)
 
 		if (progress <= 1.f && !_skip)
 		{
-			_currentNumber = Lerp(_beginNumber, _targetNumber, progress);
+			_currentNumber = static_cast<int>(Lerp(static_cast<float>(_beginNumber), static_cast<float>(_targetNumber), progress));
 		}
 		else
 		{
@@ -129,7 +129,7 @@ void NumberIncrementAnimation::ScaleState::Update(float dt)
 	{
 		if (progress <= 1.f)
 		{
-			_currentCharSize = Lerp(_beginCharSize, _endCharSize, progress);
+			_currentCharSize = static_cast<size_t>(Lerp(static_cast<float>(_beginCharSize), static_cast<float>(_endCharSize), progress));
 		}
 		else
 		{
@@ -142,7 +142,7 @@ void NumberIncrementAnimation::ScaleState::Update(float dt)
 	{
 		if (progress <= 1.f)
 		{
-			_currentCharSize = Lerp(_endCharSize, _beginCharSize, progress);
+			_currentCharSize = static_cast<size_t>(Lerp(static_cast<float>(_endCharSize), static_cast<float>(_beginCharSize), progress));
 		}
 		else
 		{

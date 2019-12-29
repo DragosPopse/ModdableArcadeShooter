@@ -37,3 +37,27 @@ bool Scene::OnTop() const
 {
 	return _manager->Top() == this;
 }
+
+
+bool Scene::HandleEvent(const sf::Event&)
+{
+	return false;
+}
+
+
+bool Scene::Update(float)
+{
+	return false;
+}
+
+
+bool Scene::FixedUpdate(float)
+{
+	return false;
+}
+
+
+bool Scene::Render()
+{
+	return false;
+}

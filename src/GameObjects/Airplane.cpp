@@ -34,9 +34,13 @@ Airplane::Airplane(AirplaneData* data) :
 	_currentPatternIndex(0),
 	_startDmgAnimation(false),
 	_dmgAnimationActive(false),
-	_elapsedTime(0)
+	_elapsedTime(0),
+	_ammoDisplay(nullptr),
+	_cooldownDisplay(nullptr),
+	_currentPatternAngle(0.f),
+	_currentPatternDistance(0.f)
 {
-	for (int i = 0; i < _data->ammo.size(); i++)
+	for (int i = 0; i < static_cast<int>(_data->ammo.size()); i++)
 	{
 		_ammo.push_back(_data->ammo[i]);
 	}
@@ -46,7 +50,6 @@ Airplane::Airplane(AirplaneData* data) :
 void Airplane::Start(Scene* scene)
 {
 	_level = static_cast<Level*>(scene);
-	auto& textures = _level->GetTextures();
 	
 	setScale(_data->scale, _data->scale);
 	SetTexture(*_data->texture);
@@ -129,7 +132,7 @@ void Airplane::FixedUpdate(float dt)
 		{
 			_distanceMoved = 0;
 			_currentPatternIndex++;
-			if (_currentPatternIndex >= _data->directions.size())
+			if (_currentPatternIndex >= static_cast<int>(_data->directions.size()))
 			{
 				_currentPatternIndex = 0;
 			}
@@ -174,7 +177,7 @@ void Airplane::FixedUpdate(float dt)
 
 		if (_moved)
 		{
-			sf::Vector2f velocity = Normalize(sf::Vector2f(_moveX, _moveY)) * _data->speed * dt;
+			sf::Vector2f velocity = Normalize(sf::Vector2f(static_cast<float>(_moveX), static_cast<float>(_moveY))) * _data->speed * dt;
 			move(velocity);
 
 		}
@@ -236,7 +239,7 @@ void Airplane::Damage(int hp)
 
 		//Spawn pickup if RNG is in your favor
 		randN = RandInt(1, 100);
-		for (int i = 0; i < _data->drops.size(); i++)
+		for (int i = 0; i < static_cast<int>(_data->drops.size()); i++)
 		{
 			if (randN <= _data->drops[i].dropRate)
 			{
@@ -309,7 +312,7 @@ void Airplane::NextWeapon()
 {
 	_cooldown = 0;
 	_currentWeaponIndex++;
-	if (_currentWeaponIndex >= _ammo.size())
+	if (_currentWeaponIndex >= static_cast<int>(_ammo.size()))
 	{
 		_currentWeaponIndex = 0;
 	}
@@ -329,7 +332,7 @@ void Airplane::PreviousWeapon()
 	_currentWeaponIndex--;
 	if (_currentWeaponIndex < 0)
 	{
-		_currentWeaponIndex = _ammo.size() - 1;
+		_currentWeaponIndex = static_cast<int>(_ammo.size()) - 1;
 	}
 	if (_playerControlled)
 	{
@@ -426,11 +429,10 @@ void Airplane::UpdateAmmoDisplay()
 	{
 		std::string text("8");
 		_ammoDisplay->SetString(text);
-		int chars = text.size();
 		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
 
-		int ammoX = _weaponDisplay->getPosition().x;
-		int ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2 - charSize / 2;
+		float ammoX = _weaponDisplay->getPosition().x;
+		float ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2.f - charSize / 2.f;
 
 		_ammoDisplay->setRotation(90);
 		_ammoDisplay->setPosition(ammoX, ammoY);
@@ -442,8 +444,8 @@ void Airplane::UpdateAmmoDisplay()
 		_ammoDisplay->SetString(text);
 		int charSize = _data->weapons[_currentWeaponIndex]->ammoTextSize;
 
-		int ammoX = _weaponDisplay->getPosition().x;
-		int ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2 - charSize / 2;
+		float ammoX = _weaponDisplay->getPosition().x;
+		float ammoY = _weaponDisplay->getPosition().y - _weaponDisplay->GetBoundingRect().height / 2.f - charSize / 2.f;
 
 		_ammoDisplay->setRotation(0);
 		_ammoDisplay->setPosition(ammoX, ammoY);
@@ -468,7 +470,7 @@ void Airplane::SetShader(sf::Shader* shader)
 {
 	_shader = shader;
 	_shader->setUniform("u_texture", *_texture);
-	_shader->setUniform("u_flashColor", sf::Glsl::Vec4(1, 1, 1, 0.7));
+	_shader->setUniform("u_flashColor", sf::Glsl::Vec4(1.f, 1.f, 1.f, 0.7f));
 	_shader = shader;
 }
 
@@ -495,7 +497,7 @@ void Airplane::AddHealth(int n)
 
 void Airplane::AddAmmo(const std::string& projectile, int n)
 {
-	for (int i = 0; i < _data->weapons.size(); i++)
+	for (int i = 0; i < static_cast<int>(_data->weapons.size()); i++)
 	{
 		if (projectile == _data->weapons[i]->name)
 		{

@@ -1,8 +1,9 @@
 #include "GameObjects/CircleCooldown.h"
 
 #include <algorithm>
-#include <cmath>
 #include <iostream>
+
+#include "Utility/Math.h"
 
 
 CircleCooldown::CircleCooldown() :
@@ -53,7 +54,7 @@ void CircleCooldown::Update(float dt)
 			_progress = 0;
 			_animationRunning = false;
 		}
-		float angle = M_PI * 2 * _progress - M_PI / 2;
+		float angle = PIf * 2.f * _progress - PIf / 2.f;
 		float x = cos(angle);
 		float y = sin(angle);
 		float l = std::max(abs(x), abs(y));
@@ -68,7 +69,7 @@ void CircleCooldown::Update(float dt)
 
 		_vertices.append(sf::Vertex(sf::Vector2f(_center.x + x * (_bottomRight.x - _topLeft.x) / 2, _center.y + y * (_bottomRight.y - _topLeft.y) / 2)));
 
-		for (int i = 0; i < _vertices.getVertexCount(); i++)
+		for (int i = 0; i < static_cast<int>(_vertices.getVertexCount()); i++)
 		{
 			_vertices[i].color = sf::Color(0, 0, 0, 100);
 		}

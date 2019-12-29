@@ -19,7 +19,7 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_scrollSpeed(60),
 	_firstIndex(1),
 	_nextIndex(0),
-	_fade(0.9, 0),
+	_fade(0.9f, 0),
 	_elapsedTime(0),
 	_fadeDuration(0.5f),
 	_textSize(30),
@@ -72,11 +72,11 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_panel->setSize("40%");
 	_panel->setPosition("(&.size - size) / 2");
 	_panel->add(_playButton);
-	_panel->addSpace(0.1);
+	_panel->addSpace(0.1f);
 	_panel->add(_settingsButton);
-	_panel->addSpace(0.1);
+	_panel->addSpace(0.1f);
 	_panel->add(_creditsButton);
-	_panel->addSpace(0.1);
+	_panel->addSpace(0.1f);
 	_panel->add(_exitButton);
 
 	_exitButton->connect("pressed",
