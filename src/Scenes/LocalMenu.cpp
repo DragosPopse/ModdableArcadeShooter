@@ -395,7 +395,7 @@ void LocalMenu::IdleState::HandleEvent(const sf::Event& ev)
 		_menu->RequestClear();
 		break;
 	case sf::Event::KeyPressed:
-		if (ev.key.code == _menu->_context->player->GetKey(Player::Exit))
+		if (ev.key.code == _menu->_context->player->GetKey(Player::ActionType::Exit))
 		{
 			_menu->StartPoppingState();
 		}

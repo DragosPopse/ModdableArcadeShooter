@@ -216,7 +216,7 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 	}
 	else if (ev.type == sf::Event::KeyPressed)
 	{
-		if (ev.key.code == _context->player->GetKey(Player::Fire))
+		if (ev.key.code == _context->player->GetKey(Player::ActionType::Fire))
 		{
 			if (!_backgroundFading)
 			{

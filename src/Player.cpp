@@ -109,49 +109,49 @@ Player::Player() :
 	_musicVolume(100),
 	_sfxVolume(100)
 {
-	_keyBinding[sf::Keyboard::A] = MoveLeft;
-	_keyBinding[sf::Keyboard::D] = MoveRight;
-	_keyBinding[sf::Keyboard::W] = MoveUp;
-	_keyBinding[sf::Keyboard::S] = MoveDown;
-	_keyBinding[sf::Keyboard::Space] = Fire;
-	_keyBinding[sf::Keyboard::Q] = PreviousWeapon;
-	_keyBinding[sf::Keyboard::E] = NextWeapon;
-	_keyBinding[sf::Keyboard::Escape] = Exit;
+	_keyBinding[sf::Keyboard::A] = ActionType::MoveLeft;
+	_keyBinding[sf::Keyboard::D] = ActionType::MoveRight;
+	_keyBinding[sf::Keyboard::W] = ActionType::MoveUp;
+	_keyBinding[sf::Keyboard::S] = ActionType::MoveDown;
+	_keyBinding[sf::Keyboard::Space] = ActionType::Fire;
+	_keyBinding[sf::Keyboard::Q] = ActionType::PreviousWeapon;
+	_keyBinding[sf::Keyboard::E] = ActionType::NextWeapon;
+	_keyBinding[sf::Keyboard::Escape] = ActionType::Exit;
 
 	Command moveLeft;
 	moveLeft.category = GameObject::PlayerAirplane;
 	moveLeft.action = DeriveAction<Airplane>(AircraftMoverX(-1));
-	_actionBinding[MoveLeft] = moveLeft;
+	_actionBinding[ActionType::MoveLeft] = moveLeft;
 
 	Command moveRight;
 	moveRight.category = GameObject::PlayerAirplane;
 	moveRight.action = DeriveAction<Airplane>(AircraftMoverX(1));
-	_actionBinding[MoveRight] = moveRight;
+	_actionBinding[ActionType::MoveRight] = moveRight;
 
 	Command moveUp;
 	moveUp.category = GameObject::PlayerAirplane;
 	moveUp.action = DeriveAction<Airplane>(AircraftMoverY(-1));
-	_actionBinding[MoveUp] = moveUp;
+	_actionBinding[ActionType::MoveUp] = moveUp;
 
 	Command moveDown;
 	moveDown.category = GameObject::PlayerAirplane;
 	moveDown.action = DeriveAction<Airplane>(AircraftMoverY(1));
-	_actionBinding[MoveDown] = moveDown;
+	_actionBinding[ActionType::MoveDown] = moveDown;
 
 	Command fire;
 	fire.category = GameObject::PlayerAirplane;
 	fire.action = DeriveAction<Airplane>(AirplaneFire);
-	_actionBinding[Fire] = fire;
+	_actionBinding[ActionType::Fire] = fire;
 
 	Command nextWeapon;
 	nextWeapon.category = GameObject::PlayerAirplane;
 	nextWeapon.action = DeriveAction<Airplane>(AirplaneNextWeapon);
-	_actionBinding[NextWeapon] = nextWeapon;
+	_actionBinding[ActionType::NextWeapon] = nextWeapon;
 
 	Command previousWeapon;
 	previousWeapon.category = GameObject::PlayerAirplane;
 	previousWeapon.action = DeriveAction<Airplane>(AirplanePreviousWeapon);
-	_actionBinding[PreviousWeapon] = previousWeapon;
+	_actionBinding[ActionType::PreviousWeapon] = previousWeapon;
 }
 
 
@@ -159,8 +159,8 @@ bool Player::IsRealtime(Player::ActionType action) const
 {
 	switch (action)
 	{
-	case PreviousWeapon:
-	case NextWeapon:
+	case ActionType::PreviousWeapon:
+	case ActionType::NextWeapon:
 		return false;
 	default:
 		return true;
@@ -168,7 +168,7 @@ bool Player::IsRealtime(Player::ActionType action) const
 }
 
 
-void Player::AssignKey(ActionType action, sf::Keyboard::Key key)
+void Player::AssignKey(ActionType action, const sf::Keyboard::Key& key)
 {
 	//remove current binding for the action
 	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); )
@@ -207,14 +207,14 @@ void Player::LoadSettings()
 	rjs::Document document;
 	document.ParseStream(wrapper);
 
-	_keyBinding[(sf::Keyboard::Key)document["MoveLeft"].GetInt()] = MoveLeft;
-	_keyBinding[(sf::Keyboard::Key)document["MoveRight"].GetInt()] = MoveRight;
-	_keyBinding[(sf::Keyboard::Key)document["MoveUp"].GetInt()] = MoveUp;
-	_keyBinding[(sf::Keyboard::Key)document["MoveDown"].GetInt()] = MoveDown;
-	_keyBinding[(sf::Keyboard::Key)document["Fire"].GetInt()] = Fire;
-	_keyBinding[(sf::Keyboard::Key)document["NextWeapon"].GetInt()] = NextWeapon;
-	_keyBinding[(sf::Keyboard::Key)document["PreviousWeapon"].GetInt()] = PreviousWeapon;
-	_keyBinding[(sf::Keyboard::Key)document["Exit"].GetInt()] = Exit;
+	_keyBinding[(sf::Keyboard::Key)document["MoveLeft"].GetInt()] = ActionType::MoveLeft;
+	_keyBinding[(sf::Keyboard::Key)document["MoveRight"].GetInt()] = ActionType::MoveRight;
+	_keyBinding[(sf::Keyboard::Key)document["MoveUp"].GetInt()] = ActionType::MoveUp;
+	_keyBinding[(sf::Keyboard::Key)document["MoveDown"].GetInt()] = ActionType::MoveDown;
+	_keyBinding[(sf::Keyboard::Key)document["Fire"].GetInt()] = ActionType::Fire;
+	_keyBinding[(sf::Keyboard::Key)document["NextWeapon"].GetInt()] = ActionType::NextWeapon;
+	_keyBinding[(sf::Keyboard::Key)document["PreviousWeapon"].GetInt()] = ActionType::PreviousWeapon;
+	_keyBinding[(sf::Keyboard::Key)document["Exit"].GetInt()] = ActionType::Exit;
 
 	_sfxVolume = document["SfxVolume"].GetFloat();
 	_musicVolume = document["MusicVolume"].GetFloat();
@@ -234,35 +234,35 @@ void Player::SaveSettings()
 	{
 		switch (pair.second)
 		{
-		case MoveLeft:
+		case ActionType::MoveLeft:
 			document.AddMember("MoveLeft", pair.first, allocator);
 			break;
 
-		case MoveRight:		
+		case ActionType::MoveRight:
 			document.AddMember("MoveRight", pair.first, allocator);
 			break;
 
-		case MoveUp:	
+		case ActionType::MoveUp:
 			document.AddMember("MoveUp", pair.first, allocator);
 			break;
 
-		case MoveDown:			
+		case ActionType::MoveDown:
 			document.AddMember("MoveDown", pair.first, allocator);
 			break;
 
-		case Fire:
+		case ActionType::Fire:
 			document.AddMember("Fire", pair.first, allocator);
 			break;
 
-		case NextWeapon:
+		case ActionType::NextWeapon:
 			document.AddMember("NextWeapon", pair.first, allocator);
 			break;
 
-		case PreviousWeapon:
+		case ActionType::PreviousWeapon:
 			document.AddMember("PreviousWeapon", pair.first, allocator);
 			break;
 
-		case Exit:
+		case ActionType::Exit:
 			document.AddMember("Exit", pair.first, allocator);
 			break;
 		}
@@ -315,35 +315,35 @@ std::string Player::Parse(const std::string& str)
 			
 			if (sub.compare("MoveLeft") == 0)
 			{
-				result << ToString(GetKey(MoveLeft));
+				result << ToString(GetKey(ActionType::MoveLeft));
 			}
 			else if (sub.compare("MoveRight") == 0)
 			{
-				result << ToString(GetKey(MoveRight));
+				result << ToString(GetKey(ActionType::MoveRight));
 			}
 			else if (sub.compare("MoveUp") == 0)
 			{
-				result << ToString(GetKey(MoveUp));
+				result << ToString(GetKey(ActionType::MoveUp));
 			}
 			else if (sub.compare("MoveDown") == 0)
 			{
-				result << ToString(GetKey(MoveDown));
+				result << ToString(GetKey(ActionType::MoveDown));
 			}
 			else if (sub.compare("Fire") == 0)
 			{
-				result << ToString(GetKey(Fire));
+				result << ToString(GetKey(ActionType::Fire));
 			}
 			else if (sub.compare("NextWeapon") == 0)
 			{
-				result << ToString(GetKey(NextWeapon));
+				result << ToString(GetKey(ActionType::NextWeapon));
 			}
 			else if (sub.compare("PreviousWeapon") == 0)
 			{
-				result << ToString(GetKey(PreviousWeapon));
+				result << ToString(GetKey(ActionType::PreviousWeapon));
 			}
 			else if (sub.compare("Exit") == 0)
 			{
-				result << ToString(GetKey(Exit));
+				result << ToString(GetKey(ActionType::Exit));
 			}
 			else
 			{
@@ -361,7 +361,7 @@ std::string Player::Parse(const std::string& str)
 }
 
 
-bool Player::Contains(sf::Keyboard::Key key)
+bool Player::Contains(const sf::Keyboard::Key& key)
 {
 	for (const auto& pair : _keyBinding)
 	{

@@ -16,7 +16,7 @@ class CommandQueue;
 class Player
 {
 public:
-	enum ActionType
+	enum class ActionType
 	{
 		None,
 		MoveLeft,
@@ -38,9 +38,9 @@ private:
 public:
 	Player();
 
-	void AssignKey(ActionType action, sf::Keyboard::Key key);
+	void AssignKey(ActionType action, const sf::Keyboard::Key& key);
 	sf::Keyboard::Key GetKey(ActionType action);
-	bool Contains(sf::Keyboard::Key key);
+	bool Contains(const sf::Keyboard::Key& key);
 
 	void LoadSettings();
 	void SaveSettings();
