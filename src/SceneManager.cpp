@@ -118,9 +118,9 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Clear:
 			if (!_stack.empty())
 			{
-				for (auto it = _stack.rbegin(); it != _stack.rend(); it++)
+				for (auto& scene : ReverseFor(_stack))
 				{
-					(*it)->Disable();
+					scene->Disable();
 				}
 				_stack.clear();
 			}
