@@ -56,14 +56,14 @@ namespace sol {
 		}
 		unsafe_function_result(const unsafe_function_result&) = default;
 		unsafe_function_result& operator=(const unsafe_function_result&) = default;
-		unsafe_function_result(unsafe_function_result&& o)
+		unsafe_function_result(unsafe_function_result&& o) noexcept
 			: L(o.L), index(o.index), returncount(o.returncount) {
 			// Must be manual, otherwise destructor will screw us
 			// return count being 0 is enough to keep things clean
 			// but will be thorough
 			o.abandon();
 		}
-		unsafe_function_result& operator=(unsafe_function_result&& o) {
+		unsafe_function_result& operator=(unsafe_function_result&& o) noexcept {
 			L = o.L;
 			index = o.index;
 			returncount = o.returncount;
