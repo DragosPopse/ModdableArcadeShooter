@@ -41,7 +41,7 @@ void ViewShaker::Update(float dt)
 		_elapsedTime += dt;
 		if (_elapsedTime < _duration)
 		{
-			sf::Vector2f displacement = _distribution(g_RNG) * _amplitude;
+			sf::Vector2f displacement = _distribution(RNG) * _amplitude;
 			_view->move(displacement);
 		}
 		else

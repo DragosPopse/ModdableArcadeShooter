@@ -37,7 +37,7 @@ Engine::Engine() :
 	_deltaTime(0.f),
 	_sceneManager(&_context)
 {
-	srand(time(0));
+	srand(static_cast<unsigned int>(time(static_cast<time_t>(0))));
 	LuaInit_Base(_lua);
 	LuaInit_SFML(_lua);
 	LuaInit_Thor(_lua);

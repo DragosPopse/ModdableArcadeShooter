@@ -32,13 +32,13 @@ sf::Vector2f Normalize(const sf::Vector2f& vector)
 
 float ToDegree(float radian)
 {
-	return 180.f / M_PI * radian;
+	return 180.f / PIf * radian;
 }
 
 
 float ToRadian(float degree)
 {
-	return M_PI / 180.f * degree;
+	return PIf / 180.f * degree;
 }
 
 

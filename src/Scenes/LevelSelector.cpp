@@ -37,13 +37,13 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 	_currentIndex(0)
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 100));
-	_background.setPosition(0, 0);
-	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_background.setPosition(0.f, 0.f);
+	_background.setSize(sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 	_levelTitle.setFont(_menu->_fonts["Menu"]);
 	_levelScore.setFont(_menu->_fonts["Menu"]);
-	_levelTitle.setCharacterSize(40);
-	_levelScore.setCharacterSize(30);
-	_infoText.setCharacterSize(20);
+	_levelTitle.setCharacterSize(40u);
+	_levelScore.setCharacterSize(30u);
+	_infoText.setCharacterSize(20u);
 	_infoText.setFont(_menu->_fonts["Menu"]);
 
 	namespace fs = std::filesystem;
@@ -63,7 +63,7 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 			previewImage = Protect<std::string>(level["previewImage"]);
 			saveFile = Protect<std::string>(level["saveFile"]);
 		}
-		catch (sol::error& err)
+		catch (sol::error&)
 		{
 			good = false;
 		}
@@ -136,7 +136,7 @@ bool LevelSelector::HandleEvent(const sf::Event& ev)
 		else if (ev.key.code == _rightKey)
 		{
 			_currentIndex++;
-			if (_currentIndex >= _levelData.size())
+			if (_currentIndex >= static_cast<int>(_levelData.size()))
 			{
 				_currentIndex = 0;
 			}
@@ -160,7 +160,7 @@ bool LevelSelector::Render()
 }
 
 
-bool LevelSelector::Update(float dt)
+bool LevelSelector::Update(float)
 {
 	return true;
 }
@@ -189,10 +189,10 @@ void LevelSelector::UpdateDisplay()
 	CenterOrigin(_levelTitle);
 	CenterOrigin(_levelImage);
 	CenterOrigin(_levelScore);
-	_levelImage.setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
-	_levelScore.setPosition(_context->window->getSize().x / 2,
-		_context->window->getSize().y / 2 - _levelImage.getGlobalBounds().height / 2 - _levelTitle.getCharacterSize());
-	_levelTitle.setPosition(_context->window->getSize().x / 2, _levelScore.getPosition().y - _levelScore.getCharacterSize() / 2 - _levelTitle.getCharacterSize());
-	_infoText.setPosition(_context->window->getSize().x / 2, 
-		_context->window->getSize().y / 2 + _levelImage.getGlobalBounds().height / 2 + _infoText.getCharacterSize());
+	_levelImage.setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y) / 2.f);
+	_levelScore.setPosition(static_cast<float>(_context->window->getSize().x) / 2.f,
+		static_cast<float>(_context->window->getSize().y) / 2.f - _levelImage.getGlobalBounds().height / 2.f - static_cast<float>(_levelTitle.getCharacterSize()));
+	_levelTitle.setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_levelScore.getPosition().y) - static_cast<float>(_levelScore.getCharacterSize()) / 2.f - static_cast<float>(_levelTitle.getCharacterSize()));
+	_infoText.setPosition(_context->window->getSize().x / 2.f, 
+		static_cast<float>(_context->window->getSize().y) / 2.f + _levelImage.getGlobalBounds().height / 2.f + static_cast<float>(_infoText.getCharacterSize()));
 }

@@ -77,9 +77,9 @@ SettingsPanel::SettingsPanel(Context* context, GuiMenu* mainPanel, const tgui::F
 	_panel->add(_sfxSlider);
 	_panel->add(_musicLabel);
 	_panel->add(_musicSlider);
-	_panel->addSpace(0.1);
+	_panel->addSpace(0.1f);
 	_panel->add(_keyBindingsButton);
-	_panel->addSpace(0.1);
+	_panel->addSpace(0.1f);
 	_panel->add(_confirmSettingsButton);
 
 	_gui.add(_panel);
@@ -104,13 +104,13 @@ bool SettingsPanel::HandleEvent(const sf::Event& ev)
 }
 
 
-bool SettingsPanel::Update(float dt)
+bool SettingsPanel::Update(float)
 {
 	return true;
 }
 
 
-bool SettingsPanel::FixedUpdate(float dt)
+bool SettingsPanel::FixedUpdate(float)
 {
 	return true;
 }

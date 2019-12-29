@@ -11,6 +11,10 @@ namespace sf
 	class Text;
 }
 
+constexpr long double PIld = 3.141592653589793238L;
+constexpr double PId = 3.141592653589793;
+constexpr float PIf = 3.1415927f;
+
 void CenterOrigin(sf::Sprite& sprite);
 void CenterOrigin(sf::Text& text);
 

@@ -5,19 +5,21 @@
 #include <SFML/System/Vector2.hpp>
 #include <Thor/Math/Distribution.hpp>
 
+#include "Utility/Math.h"
+
 
 namespace sol
 {
 	class state;
 }
 
-extern thread_local std::mt19937 g_RNG;
+extern thread_local std::mt19937 RNG;
 
 template <class RealType, class GeneratorType = std::mt19937>
 RealType RandReal(RealType min, RealType max)
 {
 	static thread_local std::uniform_real_distribution<RealType> distribution;
-	return distribution(g_RNG, decltype(distribution)::param_type(min, max));
+	return distribution(RNG, decltype(distribution)::param_type(min, max));
 }
 
 
@@ -25,7 +27,7 @@ template <class IntegerType, class GeneratorType = std::mt19937>
 IntegerType RandInt(IntegerType min, IntegerType max)
 {
 	static thread_local std::uniform_int_distribution<IntegerType> distribution;
-	return distribution(g_RNG, decltype(distribution)::param_type(min, max));
+	return distribution(RNG, decltype(distribution)::param_type(min, max));
 }
 
 
@@ -68,7 +70,7 @@ public:
 	template <class Generator>
 	sf::Vector2f operator()(Generator& generator)
 	{
-		float a = _distribution(generator) * 2.f * M_PI;
+		float a = _distribution(generator) * 2.f * PIf;
 		float r = sqrt(_distribution(generator));
 
 		float x = r * cos(a);

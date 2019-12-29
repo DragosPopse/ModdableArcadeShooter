@@ -6,13 +6,13 @@
 #include <SFML/Graphics.hpp>
 
 static thread_local std::random_device s_rd;
-thread_local std::mt19937 g_RNG(s_rd());
+thread_local std::mt19937 RNG(s_rd());
 
 
 void SeedLua(sol::state& lua)
 {
 	lua["_cpp_seed"] = s_rd();
-	lua.do_string(std::string("math.randomseed(_cpp_seed)"));
+	auto result = lua.do_string(std::string("math.randomseed(_cpp_seed)"));
 	lua["_cpp_seed"] = sol::nil;
 }
 

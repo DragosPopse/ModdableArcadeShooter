@@ -77,7 +77,7 @@ LoseState::LoseState(Context* context, Level* level) :
 {
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
-	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_background.setSize(sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 
 	_summaryText->SetTimePerLetter(_letterDuration);
 	_highScoreAnimation.SetBeginCharSize(_charSize);
@@ -91,7 +91,7 @@ LoseState::LoseState(Context* context, Level* level) :
 	_summaryText->SetFont(_level->GetDefaultFontID()); //Inconsistency in design
 	_summaryText->Start(_level); //Inconsistency in design
 	_summaryText->SetCharSize(15);
-	_summaryText->setPosition(_context->window->getSize().x / 2, _charSize);
+	_summaryText->setPosition(_context->window->getSize().x / 2.f, static_cast<float>(_charSize));
 
 	_yourScore->SetFont(_level->GetDefaultFont());
 	_score->SetFont(_level->GetDefaultFont());
@@ -111,11 +111,11 @@ LoseState::LoseState(Context* context, Level* level) :
 	_score->SetFinalCharSize(_finalCharSize);
 	_score->SetIncrementDuration(_incrementDuration);
 	_score->SetScaleDuration(_scaleDuration);
-	_yourScore->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y / 2);
-	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
+	_yourScore->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y) / 2.f);
+	_score->setPosition(0.f, static_cast<float>(_yourScore->GetCharSize()) / 2.f + static_cast<float>(_score->GetCharSize()));
 	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + _score->GetCharSize() * 2);
-	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
-	_infoText->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y - _infoText->GetCharSize());
+	_highScore->setPosition(0.f, static_cast<float>(_highScoreText->GetCharSize()) / 2.f + static_cast<float>(_highScore->GetCharSize()));
+	_infoText->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y) - static_cast<float>(_infoText->GetCharSize()));
 	 
 	int currentScore = 0;
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)
@@ -247,7 +247,7 @@ bool LoseState::HandleEvent(const sf::Event& ev)
 }
 
 
-bool LoseState::FixedUpdate(float dt)
+bool LoseState::FixedUpdate(float)
 {
 	return true;
 }

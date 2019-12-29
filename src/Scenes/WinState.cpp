@@ -83,9 +83,9 @@ WinState::WinState(Context* context, Level* level) :
 	_vignetteOuter(0.4f),
 	_currentZoomFactor(1.f),
 	_fixedElapsedTime(0.f),
-	_zoomDuration(1.5),
-	_vignetteDuration(1.5),
-	_zoomFactor(0.99)
+	_zoomDuration(1.5f),
+	_vignetteDuration(1.5f),
+	_zoomFactor(0.99f)
 {
 	_vignette = _level->GetVignette();
 
@@ -93,7 +93,7 @@ WinState::WinState(Context* context, Level* level) :
 
 	_background.setFillColor(sf::Color(0, 0, 0, 0));
 	_background.setPosition(0.f, 0.f);
-	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_background.setSize(sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 
 	_summaryText->SetTimePerLetter(_letterDuration);
 	_highScoreAnimation.SetBeginCharSize(_charSize);
@@ -107,7 +107,7 @@ WinState::WinState(Context* context, Level* level) :
 	_summaryText->SetFont(_level->GetDefaultFontID()); //Inconsistency in design
 	_summaryText->Start(_level); //Inconsistency in design
 	_summaryText->SetCharSize(15);
-	_summaryText->setPosition(_context->window->getSize().x / 2, _charSize);
+	_summaryText->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_charSize));
 
 	_yourScore->SetFont(_level->GetDefaultFont());
 	_score->SetFont(_level->GetDefaultFont());
@@ -127,11 +127,11 @@ WinState::WinState(Context* context, Level* level) :
 	_score->SetFinalCharSize(_finalCharSize);
 	_score->SetIncrementDuration(_incrementDuration);
 	_score->SetScaleDuration(_scaleDuration);
-	_yourScore->setPosition(_context->window->getSize().x / 2, _summaryText->getPosition().y + _yourScore->GetCharSize());
-	_score->setPosition(0.f, _yourScore->GetCharSize() / 2 + _score->GetCharSize());
-	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + _score->GetCharSize() * 2);
-	_highScore->setPosition(0.f, _highScoreText->GetCharSize() / 2 + _highScore->GetCharSize());
-	_infoText->setPosition(_context->window->getSize().x / 2, _context->window->getSize().y - _infoText->GetCharSize());
+	_yourScore->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, _summaryText->getPosition().y + static_cast<float>(_yourScore->GetCharSize()));
+	_score->setPosition(0.f, static_cast<float>(_yourScore->GetCharSize()) / 2.f + static_cast<float>(_score->GetCharSize()));
+	_highScoreText->setPosition(_score->GetWorldPosition().x, _score->GetWorldPosition().y + static_cast<float>(_score->GetCharSize()) * 2.f);
+	_highScore->setPosition(0.f, static_cast<float>(_highScoreText->GetCharSize()) / 2.f + static_cast<float>(_highScore->GetCharSize()));
+	_infoText->setPosition(static_cast<float>(_context->window->getSize().x) / 2.f, static_cast<float>(_context->window->getSize().y - _infoText->GetCharSize()));
 
 	int currentScore = 0;
 	for (auto it = _level->_enemiesDowned.cbegin(); it != _level->_enemiesDowned.cend(); ++it)

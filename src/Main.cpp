@@ -3,14 +3,14 @@
 #include "Engine.h"
 
 
-int main(int argc, char** argv)
+int main()
 {
 	try
 	{
 		Engine engine;
 		engine.Run();
 	}
-	catch (std::exception e)
+	catch (std::exception& e)
 	{
 		std::cout << e.what();
 	}

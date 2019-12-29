@@ -27,10 +27,10 @@ public:
 
 	virtual ~Scene();
 
-	virtual bool HandleEvent(const sf::Event& ev) { return false; }
-	virtual bool Update(float dt) { return false; }
-	virtual bool FixedUpdate(float dt) { return false; }
-	virtual bool Render() { return false; }
+	virtual bool HandleEvent(const sf::Event& ev);
+	virtual bool Update(float dt);
+	virtual bool FixedUpdate(float dt);
+	virtual bool Render();
 	virtual void Enable() { } //Called when pushing
 	virtual void Disable() { } //Called when popping
 

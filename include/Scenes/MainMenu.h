@@ -48,7 +48,7 @@ class MainMenu :
 	std::shared_ptr<SettingsPanel> _settingsPanel;
 
 	sf::Sound _clickSound;
-	size_t _textSize;
+	unsigned int _textSize;
 
 public:
 	MainMenu(Context* context, bool firstTime = false);

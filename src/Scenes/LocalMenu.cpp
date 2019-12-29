@@ -15,10 +15,11 @@ LocalMenu::LocalMenu(Context* context) :
 	_push(this),
 	_pop(this),
 	_idle(this),
-	_highestAlpha(100)
+	_highestAlpha(100),
+	_level(nullptr)
 {
 	_background.setPosition(0.f, 0.f);
-	_background.setSize(sf::Vector2f(_context->window->getSize().x, _context->window->getSize().y));
+	_background.setSize(sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
 
 	_fonts.Load("Menu", "assets/fonts/pcsenior.ttf");
 	_sounds.Load("Click", "assets/audio/sfx/Click.wav");
@@ -39,7 +40,7 @@ bool LocalMenu::HandleEvent(const sf::Event& ev)
 }
 
 
-bool LocalMenu::Update(float dt)
+bool LocalMenu::Update(float)
 {
 	//_currentState->Update(dt);
 	if (_currentState != &_idle)
@@ -123,6 +124,7 @@ LocalMenu::LocalMenuState::LocalMenuState(LocalMenu* menu) :
 
 LocalMenu::PushingState::PushingState(LocalMenu* menu) :
 	LocalMenuState(menu),
+	_elapsedTime(0.f),
 	_fadeInAnimation(1.f, 0.f,
 		[](sf::RectangleShape& animated, const sf::Color& color)
 		{
@@ -206,6 +208,7 @@ LocalMenu::IdleState::IdleState(LocalMenu* menu) :
 
 LocalMenu::PoppingState::PoppingState(LocalMenu* menu) :
 	LocalMenuState(menu),
+	_elapsedTime(0.f),
 	_fadeOutAnimation(0.f, 1.f,
 		[](sf::RectangleShape& animated, const sf::Color& color)
 		{
@@ -244,7 +247,7 @@ void LocalMenu::PushingState::Start()
 
 void LocalMenu::IdleState::Start()
 {
-	_menu->_background.setFillColor(sf::Color(0, 0, 0, _menu->_highestAlpha));
+	_menu->_background.setFillColor(sf::Color(0, 0, 0, static_cast<sf::Uint8>(_menu->_highestAlpha)));
 }
 
 
@@ -311,7 +314,7 @@ void LocalMenu::PushingState::Update(float dt)
 }
 
 
-void LocalMenu::IdleState::Update(float dt)
+void LocalMenu::IdleState::Update(float)
 {
 	_menu->_music.setVolume(_menu->_context->player->GetMusicVolume()); //in case volume changed in settings
 }

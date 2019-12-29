@@ -19,8 +19,8 @@ public:
 
 	void SetString(const sf::String& str);
 
-	void SetCharSize(size_t size);
-	size_t GetCharSize() const;
+	void SetCharSize(unsigned int size);
+	unsigned int GetCharSize() const;
 
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

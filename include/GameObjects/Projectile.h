@@ -81,7 +81,7 @@ public:
 	void SetTextureRect(const sf::IntRect& rect);
 
 	float GetSpeed() const;
-	float GetDamage() const;
+	int GetDamage() const;
 
 	Level* GetLevel() { return _level; }
 

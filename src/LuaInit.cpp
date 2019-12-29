@@ -97,7 +97,7 @@ void LuaInit_Thor(sol::state& lua)
 	thor::Connection(thor::ParticleSystem::*addEmitter2)(std::function<void(thor::EmissionInterface&, sf::Time)>) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addEmitter1)(std::function<void(thor::EmissionInterface&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addAffector1)(std::function<void(thor::Particle&, sf::Time)>) = &thor::ParticleSystem::addAffector;
-	thor::Connection(thor::ParticleSystem::*addAffector2)(std::function<void(thor::Particle&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addAffector;
+	//thor::Connection(thor::ParticleSystem::*addAffector2)(std::function<void(thor::Particle&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addAffector;
 
 
 	thorTable.new_usertype<thor::ParticleSystem>("ParticleSystem",

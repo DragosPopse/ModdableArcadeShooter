@@ -38,7 +38,7 @@ class KeyBindingPanel :
 
 	sf::Sound _click;
 
-	size_t _textSize;
+	unsigned int _textSize;
 
 	tgui::Gui _gui;
 

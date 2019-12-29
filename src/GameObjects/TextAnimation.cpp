@@ -14,7 +14,7 @@ TextAnimation::TextAnimation(const std::string& finalStr) :
 	_currentLetter(0)
 {
 	SetString(_currentStr.str());
-	_strSize = _finalStr.size();
+	_strSize = static_cast<int>(_finalStr.size());
 }
 
 
@@ -26,7 +26,7 @@ void TextAnimation::SetFinalString(const std::string& finalStr)
 	_finished = false;
 	_currentLetter = 0;
 	_elapsedTime = 0.f;
-	_strSize = _finalStr.size();
+	_strSize = static_cast<int>(_finalStr.size());
 }
 
 
@@ -131,5 +131,5 @@ void TextAnimation::SetCharSize(unsigned int n)
 
 void TextAnimation::SetColor(const sf::Color& color)
 {
-	_text.setColor(color);
+	_text.setFillColor(color);
 }
