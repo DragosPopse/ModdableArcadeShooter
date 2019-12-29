@@ -167,9 +167,9 @@ void GameObject::RemoveDestroyedChilldren()
 		}
 	}
 
-	for (auto it = _unownedChildren.begin(); it != _unownedChildren.end(); )
+	for (auto& object : _unownedChildren)
 	{
-		if ((*it).as<GameObject>().IsDestroyed())
+		if (object.as<GameObject>().IsDestroyed())
 		{
 			it = _unownedChildren.erase(it);
 		}

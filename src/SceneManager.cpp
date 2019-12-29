@@ -3,6 +3,8 @@
 #include "Scenes/Level.h"
 #include "Scenes/LevelLoader.h"
 
+#include "Utility/RangeFor.h"
+
 
 SceneManager::SceneManager(Context* context) :
 	_context(context)
@@ -39,9 +41,9 @@ Context* SceneManager::GetContext() const
 void SceneManager::Update(float dt)
 {
 	ApplyChanges();
-	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	for (auto& scene : ReverseFor(_stack))
 	{
-		if (!(*it)->Update(dt))
+		if (!scene->Update(dt))
 		{
 			return;
 		}
@@ -52,9 +54,9 @@ void SceneManager::Update(float dt)
 void SceneManager::FixedUpdate(float dt)
 {
 	ApplyChanges();
-	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	for (auto& scene : ReverseFor(_stack))
 	{
-		if (!(*it)->FixedUpdate(dt))
+		if (!scene->FixedUpdate(dt))
 		{
 			return;
 		}
@@ -64,9 +66,9 @@ void SceneManager::FixedUpdate(float dt)
 
 void SceneManager::Render()
 {
-	for (auto it = _stack.begin(); it != _stack.end(); ++it)
+	for (auto& scene : _stack)
 	{
-		if (!(*it)->Render())
+		if (!scene->Render())
 		{
 			return;
 		}
@@ -77,9 +79,9 @@ void SceneManager::Render()
 void SceneManager::HandleEvent(const sf::Event& ev)
 {
 	ApplyChanges();
-	for (auto it = _stack.rbegin(); it != _stack.rend(); ++it)
+	for (auto& scene : ReverseFor(_stack))
 	{
-		if (!(*it)->HandleEvent(ev))
+		if (!scene->HandleEvent(ev))
 		{
 			return;
 		}
@@ -116,9 +118,9 @@ void SceneManager::ApplyChanges()
 		case ChangeType::Clear:
 			if (!_stack.empty())
 			{
-				for (auto it = _stack.rbegin(); it != _stack.rend(); it++)
+				for (auto& scene : ReverseFor(_stack))
 				{
-					(*it)->Disable();
+					scene->Disable();
 				}
 				_stack.clear();
 			}

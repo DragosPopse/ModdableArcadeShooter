@@ -95,11 +95,11 @@ void Player::HandleEvent(const sf::Event& ev, CommandQueue& commands)
 
 void Player::HandleRealtimeInput(CommandQueue& commands)
 {
-	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); it++)
+	for (const auto& pair : _keyBinding)
 	{
-		if (IsRealtime(it->second) && sf::Keyboard::isKeyPressed(it->first))
+		if (IsRealtime(pair.second) && sf::Keyboard::isKeyPressed(pair.first))
 		{
-			commands.Push(_actionBinding[it->second]);
+			commands.Push(_actionBinding[pair.second]);
 		}
 	}
 }
@@ -230,40 +230,40 @@ void Player::SaveSettings()
 	auto& allocator = document.GetAllocator();
 	document.AddMember("SfxVolume", _sfxVolume, allocator);
 	document.AddMember("MusicVolume", _musicVolume, allocator);
-	for (auto it = _keyBinding.begin(); it != _keyBinding.end(); ++it)
+	for (const auto& pair : _keyBinding)
 	{
-		switch (it->second)
+		switch (pair.second)
 		{
 		case MoveLeft:
-			document.AddMember("MoveLeft", it->first, allocator);
+			document.AddMember("MoveLeft", pair.first, allocator);
 			break;
 
 		case MoveRight:		
-			document.AddMember("MoveRight", it->first, allocator);
+			document.AddMember("MoveRight", pair.first, allocator);
 			break;
 
 		case MoveUp:	
-			document.AddMember("MoveUp", it->first, allocator);
+			document.AddMember("MoveUp", pair.first, allocator);
 			break;
 
 		case MoveDown:			
-			document.AddMember("MoveDown", it->first, allocator);
+			document.AddMember("MoveDown", pair.first, allocator);
 			break;
 
 		case Fire:
-			document.AddMember("Fire", it->first, allocator);
+			document.AddMember("Fire", pair.first, allocator);
 			break;
 
 		case NextWeapon:
-			document.AddMember("NextWeapon", it->first, allocator);
+			document.AddMember("NextWeapon", pair.first, allocator);
 			break;
 
 		case PreviousWeapon:
-			document.AddMember("PreviousWeapon", it->first, allocator);
+			document.AddMember("PreviousWeapon", pair.first, allocator);
 			break;
 
 		case Exit:
-			document.AddMember("Exit", it->first, allocator);
+			document.AddMember("Exit", pair.first, allocator);
 			break;
 		}
 	}
