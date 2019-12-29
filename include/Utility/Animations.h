@@ -58,17 +58,19 @@ public:
 template <class Animated>
 class TextCharScaleAnimation
 {
-	std::function<void(Animated&, size_t)> _setCharSize;
-	size_t _finalCharSize;
-	size_t _beginCharSize;
+	std::function<void(Animated&, unsigned int)> _setCharSize;
+	unsigned int _finalCharSize;
+	unsigned int _beginCharSize;
 	bool _upscaling;
 	bool _loop;
 
 public:
-	TextCharScaleAnimation(std::function<void(Animated&, size_t)> setCharSize) :
+	TextCharScaleAnimation(std::function<void(Animated&, unsigned int)> setCharSize) :
 		_setCharSize(setCharSize),
 		_upscaling(true),
-		_loop(false)
+		_loop(false),
+		_beginCharSize(0),
+		_finalCharSize(0)
 	{
 	}
 
@@ -79,13 +81,13 @@ public:
 	}
 
 
-	void SetFinalCharSize(size_t size)
+	void SetFinalCharSize(unsigned int size)
 	{
 		_finalCharSize = size;
 	}
 
 
-	void SetBeginCharSize(size_t size)
+	void SetBeginCharSize(unsigned int size)
 	{
 		_beginCharSize = size;
 	}

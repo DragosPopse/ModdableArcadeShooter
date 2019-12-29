@@ -48,14 +48,22 @@ NumberIncrementAnimation::AnimationState::AnimationState(NumberIncrementAnimatio
 NumberIncrementAnimation::IncrementState::IncrementState(NumberIncrementAnimation* animation) :
 	AnimationState(animation),
 	_elapsedTime(0.f),
-	_currentNumber(0)
+	_currentNumber(0),
+	_beginNumber(0),
+	_targetNumber(0),
+	_incrementDuration(0)
 {
 }
 
 
 NumberIncrementAnimation::ScaleState::ScaleState(NumberIncrementAnimation* animation) :
 	AnimationState(animation),
-	_elapsedTime(0.f)
+	_elapsedTime(0.f),
+	_beginCharSize(0),
+	_currentCharSize(0),
+	_endCharSize(0),
+	_scaleDuration(0),
+	_upscaling(true)
 {
 }
 
@@ -195,13 +203,13 @@ void NumberIncrementAnimation::IncrementState::SetIncrementDuration(float t)
 }
 
 
-void NumberIncrementAnimation::SetFinalCharSize(size_t size)
+void NumberIncrementAnimation::SetFinalCharSize(unsigned int size)
 {
 	_scaleState.SetFinalCharSize(size);
 }
 
 
-void NumberIncrementAnimation::ScaleState::SetFinalCharSize(size_t size)
+void NumberIncrementAnimation::ScaleState::SetFinalCharSize(unsigned int size)
 {
 	_endCharSize = size;
 }

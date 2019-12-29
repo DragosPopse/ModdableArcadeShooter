@@ -41,8 +41,8 @@ class LoseState :
 	float _scaleDuration;
 	float _incrementDuration;
 	bool _upscaling;
-	size_t _charSize;
-	size_t _finalCharSize;
+	unsigned int _charSize;
+	unsigned int _finalCharSize;
 
 	std::unique_ptr<TextObject> _yourScore;
 	NumberIncrementAnimation* _score;

@@ -36,28 +36,28 @@ struct AirplaneData
 {
 	std::string name;
 
-	float scale;
-	int hitpoints;
-	float speed;
-	sf::Texture* texture;
-	sf::Font* healthFont;
+	float scale = 0;
+	int hitpoints = 0;
+	float speed = 0;
+	sf::Texture* texture = nullptr;
+	sf::Font* healthFont = nullptr;
 	sf::IntRect idleRect;
 	sf::IntRect leftRect;
 	sf::IntRect rightRect;
 	std::vector<AiDirection> directions;
 	std::vector<ProjectileData*> weapons;
 	std::vector<int> ammo;
-	int healthTextCharSize;
+	int healthTextCharSize = 0;
 	sol::optional<sf::Color> healthTextColor;
 
 	sf::Vector2i explosionSize;
-	int framesPerExplosion;
-	int numberOfExplosions;
-	sf::Texture* explosionsTexture;
-	float explosionFrameDuration;
-	float explosionMinScale;
-	float explosionMaxScale;
-	float explosionMaxRotation;
+	int framesPerExplosion = 0;
+	int numberOfExplosions = 0;
+	sf::Texture* explosionsTexture = nullptr;
+	float explosionFrameDuration = 0;
+	float explosionMinScale = 0;
+	float explosionMaxScale = 0;
+	float explosionMaxRotation = 0;
 
 	std::vector<RandomizedSound> explosionSounds;
 	RandomizedSound switchSound;
@@ -66,7 +66,7 @@ struct AirplaneData
 	
 	sol::optional<sol::function> onDestroy;
 
-	int score;
+	int score = 0;
 };
 
 

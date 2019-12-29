@@ -66,7 +66,7 @@ WinState::WinState(Context* context, Level* level) :
 	_charSize(30u),
 	_finalCharSize(50u),
 	_highScoreAnimation(
-		[](TextObject& animated, size_t size)
+		[](TextObject& animated, unsigned int size)
 		{
 			animated.SetCharSize(size);
 		}),

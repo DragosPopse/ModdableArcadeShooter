@@ -31,7 +31,7 @@ class SettingsPanel :
 
 	sf::Sound _click;
 
-	size_t _textSize;
+	unsigned int _textSize;
 
 	std::shared_ptr<KeyBindingPanel> _keyBindingPanel;
 

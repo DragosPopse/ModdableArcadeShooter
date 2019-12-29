@@ -25,6 +25,8 @@ namespace rjs = rapidjson;
 
 LoseState::LoseState(Context* context, Level* level) :
 	Scene(context),
+	_animateHighScore(false),
+	_upscaling(true),
 	_level(level),
 	_elapsedTime(0.f),
 	_backgroundAnimation(1.f, 0.f, 
@@ -62,7 +64,7 @@ LoseState::LoseState(Context* context, Level* level) :
 	_scaleDuration(0.2f),
 	_charSize(30u),
 	_finalCharSize(50u),
-	_highScoreAnimation([](TextObject& animated, size_t size)
+	_highScoreAnimation([](TextObject& animated, unsigned int size)
 	{
 			animated.SetCharSize(size);
 	}),

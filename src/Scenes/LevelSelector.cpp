@@ -129,7 +129,7 @@ bool LevelSelector::HandleEvent(const sf::Event& ev)
 			_currentIndex--;
 			if (_currentIndex < 0)
 			{
-				_currentIndex = _levelData.size() - 1;
+				_currentIndex = static_cast<int>(_levelData.size()) - 1;
 			}
 			UpdateDisplay();
 		}

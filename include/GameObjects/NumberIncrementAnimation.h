@@ -76,9 +76,9 @@ private:
 		public AnimationState
 	{
 		float _scaleDuration;
-		size_t _endCharSize;
-		size_t _beginCharSize;
-		size_t _currentCharSize;
+		unsigned int _endCharSize;
+		unsigned int _beginCharSize;
+		unsigned int _currentCharSize;
 		float _elapsedTime;
 		bool _upscaling;
 
@@ -91,7 +91,7 @@ private:
 
 		StateID GetStateID() const override;
 
-		void SetFinalCharSize(size_t size);
+		void SetFinalCharSize(unsigned int size);
 		void SetScaleDuration(float t);
 	};
 
@@ -112,7 +112,7 @@ public:
 	//Animation initialization
 	void SetIncrementDuration(float t);
 	void SetScaleDuration(float t); // where t equals 0.5 of the animation since the animation involves both upscaling and downscaling
-	void SetFinalCharSize(size_t size);
+	void SetFinalCharSize(unsigned int size);
 	void AddIncrement(int n);
 
 	//Overrides from GameObject
