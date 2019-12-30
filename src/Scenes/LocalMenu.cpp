@@ -125,15 +125,10 @@ LocalMenu::LocalMenuState::LocalMenuState(LocalMenu* menu) :
 LocalMenu::PushingState::PushingState(LocalMenu* menu) :
 	LocalMenuState(menu),
 	_elapsedTime(0.f),
-	_fadeInAnimation(1.f, 0.f,
-		[](sf::RectangleShape& animated, const sf::Color& color)
-		{
-			animated.setFillColor(color);
-		},
-		[](const sf::RectangleShape& animated)
-		{
-			return animated.getFillColor();
-		}),
+	_fadeInAnimation(
+		1.f, 0.f,
+		&sf::RectangleShape::setFillColor,
+		&sf::RectangleShape::getFillColor),
 	_transitionDuration(1.f)
 {
 	_fadeInAnimation.SetHighestAlpha(_menu->_highestAlpha);
@@ -210,14 +205,8 @@ LocalMenu::PoppingState::PoppingState(LocalMenu* menu) :
 	LocalMenuState(menu),
 	_elapsedTime(0.f),
 	_fadeOutAnimation(0.f, 1.f,
-		[](sf::RectangleShape& animated, const sf::Color& color)
-		{
-			animated.setFillColor(color);
-		},
-		[](const sf::RectangleShape& animated)
-		{
-			return animated.getFillColor();
-		}),
+		&sf::RectangleShape::setFillColor,
+		&sf::RectangleShape::getFillColor),
 	_transitionDuration(3.f)	
 {
 	_fadeOutAnimation.SetHighestAlpha(_menu->_highestAlpha);

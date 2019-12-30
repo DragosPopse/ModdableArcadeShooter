@@ -26,7 +26,7 @@ public:
 
 	void SetColor(const sf::Color& color);
 
-	sf::Color GetColor() const;
+	const sf::Color& GetColor() const;
 
 	unsigned int GetCategory() const override { return static_cast<unsigned int>(Type::Text); }
 };
