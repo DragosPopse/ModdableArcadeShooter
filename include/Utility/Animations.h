@@ -16,15 +16,16 @@ class GenericFadeAnimation
 {
 	float _inRatio;
 	float _outRatio;
-	std::function<void(Animated&, const sf::Color&)> _setColor;
-	std::function<sf::Color(const Animated&)> _getColor;
 	int _highestAlpha;
 	int _lowestAlpha;
 
+	void (Animated::* _setColor)(const sf::Color&);
+	const sf::Color& (Animated::* _getColor)() const;
+
 public:
 	GenericFadeAnimation(float in, float out,
-		std::function<void(Animated&, const sf::Color&)> setColor,
-		std::function<sf::Color(const Animated&)> getColor) :
+		decltype(_setColor) setColor,
+		decltype(_getColor) getColor) :
 		_inRatio(in),
 		_outRatio(out),
 		_setColor(setColor),
@@ -49,7 +50,7 @@ public:
 
 	void operator()(Animated& target, float progress) const
 	{
-		sf::Color color = _getColor(target);
+		sf::Color color = std::mem_fn(_getColor)(target);
 
 		if (progress < _inRatio)
 		{
@@ -60,9 +61,10 @@ public:
 			color.a = static_cast<sf::Uint8>(Lerp(static_cast<float>(_lowestAlpha), static_cast<float>(_highestAlpha), (1.f - progress) / _outRatio));
 		}
 
-		_setColor(target, color);
+		std::mem_fn(_setColor)(target, color);
 	}
 };
+
 
 
 template <class Animated>

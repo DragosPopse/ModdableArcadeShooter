@@ -53,7 +53,7 @@ void TextObject::SetColor(const sf::Color& color)
 }
 
 
-sf::Color TextObject::GetColor() const
+const sf::Color& TextObject::GetColor() const
 {
 	return _text.getFillColor();
 }

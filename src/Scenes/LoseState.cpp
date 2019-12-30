@@ -30,34 +30,17 @@ LoseState::LoseState(Context* context, Level* level) :
 	_level(level),
 	_elapsedTime(0.f),
 	_backgroundAnimation(1.f, 0.f, 
-		[](sf::RectangleShape& animated, const sf::Color& color)
-		{
-			animated.setFillColor(color);
-		},
-		[](const sf::RectangleShape& animated)
-		{
-			return animated.getFillColor();
-		}),
+		&sf::RectangleShape::setFillColor,
+		&sf::RectangleShape::getFillColor),
 	_backgroundFading(true),
 	_animationDuration(3.f),
 	_textAnimation(1.f, 0.f, 
-		[](TextObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const TextObject& animated)
-		{
-			return animated.GetColor();
-		}),
-	_flickerAnimation(0.1f, 0.1f, 
-		[](TextObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const TextObject& animated)
-		{
-			return animated.GetColor();
-		}),
+		&TextObject::SetColor,
+		&TextObject::GetColor),
+	_flickerAnimation(
+		0.1f, 0.1f, 
+		&TextObject::SetColor,
+		&TextObject::GetColor),
 	_yourScore(new TextObject()),
 	_score(new NumberIncrementAnimation()),
 	_incrementDuration(2.5f),

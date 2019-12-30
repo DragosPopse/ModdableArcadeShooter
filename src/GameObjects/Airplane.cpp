@@ -25,64 +25,28 @@ namespace
 {
 	GenericFadeAnimation<SpriteObject> _spriteFadeIn(
 		1.f, 0.f, 
-		[](SpriteObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const SpriteObject& animated)
-		{
-			return animated.GetColor();
-		});
+		&SpriteObject::SetColor,
+		&SpriteObject::GetColor);
 	GenericFadeAnimation<SpriteObject> _spriteFadeOut(
 		0.f, 1.f,
-		[](SpriteObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const SpriteObject& animated)
-		{
-			return animated.GetColor();
-		});
-	GenericFadeAnimation<TextObject> _textFadeIn(
-		1.f, 0.f,
-		[](TextObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const TextObject& animated)
-		{
-			return animated.GetColor();
-		});
-	GenericFadeAnimation<TextObject> _textFadeOut(
-		0.f, 1.f,
-		[](TextObject& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const TextObject& animated)
-		{
-			return animated.GetColor();
-		});
+		&SpriteObject::SetColor,
+		&SpriteObject::GetColor);
 	GenericFadeAnimation<CircleCooldown> _cooldownFadeIn(
 		1.f, 0.f,
-		[](CircleCooldown& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const CircleCooldown& animated)
-		{
-			return animated.GetColor();
-		});
+		&CircleCooldown::SetColor,
+		&CircleCooldown::GetColor);
 	GenericFadeAnimation<CircleCooldown> _cooldownFadeOut(
 		0.f, 1.f,
-		[](CircleCooldown& animated, const sf::Color& color)
-		{
-			animated.SetColor(color);
-		},
-		[](const CircleCooldown& animated)
-		{
-			return animated.GetColor();
-		});
+		&CircleCooldown::SetColor,
+		&CircleCooldown::GetColor);
+	GenericFadeAnimation<TextObject> _textFadeIn(
+		1.f, 0.f,
+		&TextObject::SetColor,
+		&TextObject::GetColor);
+	GenericFadeAnimation<TextObject> _textFadeOut(
+		0.f, 1.f,
+		&TextObject::SetColor,
+		&TextObject::GetColor);
 }
 
 
