@@ -6,7 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 static thread_local std::random_device s_rd;
-thread_local std::mt19937 RNG(s_rd());
+thread_local std::mt19937 RNG;
 
 
 void SeedLua(sol::state& lua)

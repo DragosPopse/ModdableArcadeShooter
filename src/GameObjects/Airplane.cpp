@@ -165,13 +165,6 @@ void Airplane::FixedUpdate(float dt)
 		{
 			Fire();
 		}
-		else
-		{
-			if (_data->name == "XXX")
-			{
-				std::cout << '\n';
-			}
-		}
 		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
 		{
 			_distanceMoved = 0;
@@ -266,7 +259,7 @@ void Airplane::Damage(int hp)
 		firstRect.width = _data->explosionSize.x;
 		firstRect.height = _data->explosionSize.y;
 		firstRect.left = 0;
-		randN = RandInt(0, _data->numberOfExplosions);
+		randN = RandInt(0, _data->numberOfExplosions - 1);
 		firstRect.top = firstRect.height * randN;
 		explosion->SetFirstRect(firstRect);
 		explosion->SetDestroyOnFinish(true);
@@ -281,7 +274,6 @@ void Airplane::Damage(int hp)
 		float randomRotation = RandReal(0.f, _data->explosionMaxRotation);
 		explosion->setRotation(randomRotation);
 		_level->AddExplosion(explosion);
-
 
 		//Spawn pickup if RNG is in your favor
 		randN = RandInt(1, 100);
