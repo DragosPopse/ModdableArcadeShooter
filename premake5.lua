@@ -23,7 +23,8 @@ project "ArcadeAirship"
     {
         "%{prj.location}/src/**.cpp",
         "%{prj.location}/include/**.h",
-        "%{prj.location}/include/**.hpp"
+        "%{prj.location}/include/**.hpp",
+        "%{prj.location}/rsc/resources.rc"
     }
     includedirs
     {
