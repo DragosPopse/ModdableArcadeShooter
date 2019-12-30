@@ -17,7 +17,73 @@
 #include "Utility/Math.h"
 #include "Utility/Sol.h"
 #include "Utility/String.h"
+#include "Utility/Animations.h"
 #include "Random.h"
+
+
+namespace
+{
+	GenericFadeAnimation<SpriteObject> _spriteFadeIn(
+		1.f, 0.f, 
+		[](SpriteObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const SpriteObject& animated)
+		{
+			return animated.GetColor();
+		});
+	GenericFadeAnimation<SpriteObject> _spriteFadeOut(
+		0.f, 1.f,
+		[](SpriteObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const SpriteObject& animated)
+		{
+			return animated.GetColor();
+		});
+	GenericFadeAnimation<TextObject> _textFadeIn(
+		1.f, 0.f,
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		});
+	GenericFadeAnimation<TextObject> _textFadeOut(
+		0.f, 1.f,
+		[](TextObject& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const TextObject& animated)
+		{
+			return animated.GetColor();
+		});
+	GenericFadeAnimation<CircleCooldown> _cooldownFadeIn(
+		1.f, 0.f,
+		[](CircleCooldown& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const CircleCooldown& animated)
+		{
+			return animated.GetColor();
+		});
+	GenericFadeAnimation<CircleCooldown> _cooldownFadeOut(
+		0.f, 1.f,
+		[](CircleCooldown& animated, const sf::Color& color)
+		{
+			animated.SetColor(color);
+		},
+		[](const CircleCooldown& animated)
+		{
+			return animated.GetColor();
+		});
+}
 
 
 Airplane::Airplane(AirplaneData* data) :
@@ -38,7 +104,13 @@ Airplane::Airplane(AirplaneData* data) :
 	_ammoDisplay(nullptr),
 	_cooldownDisplay(nullptr),
 	_currentPatternAngle(0.f),
-	_currentPatternDistance(0.f)
+	_currentPatternDistance(0.f),
+	_weaponDisplay(nullptr),
+	_texture(nullptr),
+	_shader(nullptr),
+	_healthText(nullptr),
+	_weaponVisibilityElapsedTime(0.f),
+	_fadingIn(true)
 {
 	for (int i = 0; i < static_cast<int>(_data->ammo.size()); i++)
 	{
@@ -81,6 +153,14 @@ void Airplane::Start(Scene* scene)
 		_level->AddUiElement(_cooldownDisplay);
 		_level->AddUiElement(_ammoDisplay);
 		
+		_spriteFadeIn.SetLowestAlpha(125);
+		_spriteFadeOut.SetLowestAlpha(125);
+		_textFadeIn.SetLowestAlpha(125);
+		_textFadeOut.SetLowestAlpha(125);
+		_cooldownFadeIn.SetHighestAlpha(_cooldownDisplay->GetColor().a);
+		_cooldownFadeOut.SetHighestAlpha(_cooldownDisplay->GetColor().a);
+		_cooldownFadeIn.SetLowestAlpha(_cooldownDisplay->GetColor().a / 2);
+		_cooldownFadeOut.SetLowestAlpha(_cooldownDisplay->GetColor().a / 2);
 	}
 
 	std::unique_ptr<TextObject> textPtr(_healthText);
@@ -185,6 +265,8 @@ void Airplane::FixedUpdate(float dt)
 		_moveY = 0;
 		_moved = false;
 		UpdateCooldownVertices();
+
+		UpdateWeaponVisibility(dt);
 	}
 	GameObject::FixedUpdate(dt);
 }
@@ -512,4 +594,60 @@ void Airplane::AddAmmo(const std::string& projectile, int n)
 void Airplane::SetBlockShooting(bool block)
 {
 	_blockShooting = block;
+}
+
+
+void Airplane::UpdateWeaponVisibility(float dt)
+{
+	if (GetBoundingRect().intersects(_weaponDisplay->GetBoundingRect()))
+	{
+		if (_fadingIn)
+		{
+			_fadingIn = false;
+			_weaponVisibilityElapsedTime = 0.f;
+		}
+		else
+		{
+			_weaponVisibilityElapsedTime += dt;
+			float progress = _weaponVisibilityElapsedTime / 0.5f;
+			if (progress < 1.f)
+			{
+				_spriteFadeOut(*_weaponDisplay, progress);
+				_textFadeOut(*_ammoDisplay, progress);
+				_cooldownFadeOut(*_cooldownDisplay, progress);
+
+			}
+			else
+			{
+				_spriteFadeOut(*_weaponDisplay, 1.f);
+				_textFadeOut(*_ammoDisplay, 1.f);
+				_cooldownFadeOut(*_cooldownDisplay, 1.f);
+			}
+		}
+	}
+	else
+	{
+		if (!_fadingIn)
+		{
+			_fadingIn = true;
+			_weaponVisibilityElapsedTime = 0.f;
+		}
+		else
+		{
+			_weaponVisibilityElapsedTime += dt;
+			float progress = _weaponVisibilityElapsedTime / 0.5f;
+			if (progress < 1.f)
+			{
+				_spriteFadeIn(*_weaponDisplay, progress);
+				_textFadeIn(*_ammoDisplay, progress);
+				_cooldownFadeIn(*_cooldownDisplay, progress);
+			}
+			else
+			{
+				_spriteFadeIn(*_weaponDisplay, 1.f);
+				_textFadeIn(*_ammoDisplay, 1.f);
+				_cooldownFadeIn(*_cooldownDisplay, 1.f);
+			}
+		}
+	}
 }

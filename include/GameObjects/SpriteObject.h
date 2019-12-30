@@ -14,6 +14,8 @@ public:
 
 	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);
+	void SetColor(const sf::Color& color);
+	const sf::Color& GetColor() const;
 
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

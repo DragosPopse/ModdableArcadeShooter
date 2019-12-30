@@ -36,3 +36,15 @@ sf::FloatRect SpriteObject::GetBoundingRect() const
 {
 	return GetWorldTransform().transformRect(_sprite.getGlobalBounds());
 }
+
+
+void SpriteObject::SetColor(const sf::Color& color)
+{
+	_sprite.setColor(color);
+}
+
+
+const sf::Color& SpriteObject::GetColor() const
+{
+	return _sprite.getColor();
+}
