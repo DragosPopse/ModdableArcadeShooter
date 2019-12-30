@@ -10,7 +10,9 @@ Animation::Animation() :
 	_destroyOnFinish(false),
 	_finished(false),
 	_currentIndex(0),
-	_elapsedTime(0)
+	_elapsedTime(0),
+	_numberOfFrames(0),
+	_timePerFrame(0.f)
 {
 
 }
