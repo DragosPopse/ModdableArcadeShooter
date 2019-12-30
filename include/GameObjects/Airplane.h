@@ -106,6 +106,9 @@ class Airplane :
 
 	bool _blockShooting = false;
 
+	float _weaponVisibilityElapsedTime;
+	bool _fadingIn;
+
 public:
 	Airplane(AirplaneData* data);
 
@@ -151,4 +154,6 @@ private:
 	void UpdateCooldownDisplay();
 	void UpdateCooldownVertices();
 	void UpdateAmmoDisplay();
+
+	void UpdateWeaponVisibility(float dt);
 };

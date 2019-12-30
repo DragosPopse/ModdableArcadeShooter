@@ -10,7 +10,8 @@ CircleCooldown::CircleCooldown() :
 	_elapsedTime(2),
 	_duration(1),
 	_animationRunning(false),
-	_vertices(sf::TrianglesFan)
+	_vertices(sf::TrianglesFan),
+	_color(0, 0, 0, 100)
 {
 }
 
@@ -71,7 +72,7 @@ void CircleCooldown::Update(float dt)
 
 		for (int i = 0; i < static_cast<int>(_vertices.getVertexCount()); i++)
 		{
-			_vertices[i].color = sf::Color(0, 0, 0, 100);
+			_vertices[i].color = _color;
 		}
 	}
 }
@@ -82,4 +83,16 @@ void CircleCooldown::BeginAnimation(float duration)
 	_duration = duration;
 	_elapsedTime = 0;
 	_animationRunning = true;
+}
+
+
+void CircleCooldown::SetColor(const sf::Color& color)
+{
+	_color = color;
+}
+
+
+const sf::Color& CircleCooldown::GetColor() const
+{
+	return _color;
 }

@@ -20,6 +20,8 @@ class CircleCooldown :
 	float _duration;
 	bool _animationRunning;
 
+	sf::Color _color;
+
 public:
 	CircleCooldown();
 
@@ -33,4 +35,7 @@ public:
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void BeginAnimation(float duration);
 	void StopAnimation() { _animationRunning = false; }
+
+	void SetColor(const sf::Color& color);
+	const sf::Color& GetColor() const;
 };

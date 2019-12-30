@@ -6,6 +6,8 @@
 #include <SFML/System/Time.hpp>
 #include <Thor/Particles/Particle.hpp>
 
+#include "Utility/Math.h"
+
 //This is the same as thor::FadeAnimation but it also generalizes the alpha changing function.
 //Use case: sf::RectangleShape uses getFillColor() and setFillColor() for alpha changing, TextObject uses SetColor and GetColor, sf::Sprite uses setColor and getColor
 //credits: https://github.com/Bromeon/Thor/blob/master/include/Thor/Animations/FadeAnimation.hpp
@@ -16,7 +18,8 @@ class GenericFadeAnimation
 	float _outRatio;
 	std::function<void(Animated&, const sf::Color&)> _setColor;
 	std::function<sf::Color(const Animated&)> _getColor;
-	int _defaultAlpha;
+	int _highestAlpha;
+	int _lowestAlpha;
 
 public:
 	GenericFadeAnimation(float in, float out,
@@ -26,14 +29,21 @@ public:
 		_outRatio(out),
 		_setColor(setColor),
 		_getColor(getColor),
-		_defaultAlpha(255)
+		_highestAlpha(255),
+		_lowestAlpha(0)
 	{
 	}
 
 
 	void SetHighestAlpha(int alpha)
 	{
-		_defaultAlpha = alpha;
+		_highestAlpha = alpha;
+	}
+
+
+	void SetLowestAlpha(int alpha)
+	{
+		_lowestAlpha = alpha;
 	}
 
 
@@ -43,11 +53,11 @@ public:
 
 		if (progress < _inRatio)
 		{
-			color.a = static_cast<sf::Uint8>(static_cast<float>(_defaultAlpha + 1) * progress / _inRatio);
+			color.a = static_cast<sf::Uint8>(Lerp(static_cast<float>(_lowestAlpha), static_cast<float>(_highestAlpha), progress / _inRatio));
 		}
 		else if (progress > 1.f - _outRatio)
 		{
-			color.a = static_cast<sf::Uint8>(static_cast<float>(_defaultAlpha + 1) * (1.f - progress) / _outRatio);
+			color.a = static_cast<sf::Uint8>(Lerp(static_cast<float>(_lowestAlpha), static_cast<float>(_highestAlpha), (1.f - progress) / _outRatio));
 		}
 
 		_setColor(target, color);
