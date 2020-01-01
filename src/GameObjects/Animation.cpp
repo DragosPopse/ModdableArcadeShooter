@@ -20,7 +20,6 @@ Animation::Animation() :
 
 void Animation::Update(float dt)
 {
-	//std::cout << GetWorldPosition().x << ' ' << GetWorldPosition().y << '\n';
 	_elapsedTime += dt;
 	if (_elapsedTime > _timePerFrame)
 	{

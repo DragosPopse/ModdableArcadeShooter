@@ -41,7 +41,6 @@ void TextAnimation::Skip()
 void TextAnimation::SetString(const std::string& str)
 {
 	_text.setString(str);
-	//std::cout << _text.getString().toAnsiString() << '\n';
 	CenterOrigin(_text);
 }
 

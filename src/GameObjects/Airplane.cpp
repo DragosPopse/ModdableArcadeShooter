@@ -195,7 +195,6 @@ void Airplane::FixedUpdate(float dt)
 		sf::Vector2f velocity = direction * _data->speed * dt;
 		_distanceMoved += Magnitude(velocity);
 		move(velocity);
-		//std::cout << Magnitude(velocity) << ' ' << _data->directions[_currentWeaponIndex].distance << '\n';
 	}
 	else
 	{
@@ -494,7 +493,6 @@ void Airplane::UpdateAmmoDisplay()
 void Airplane::UpdateCooldownVertices()
 {
 	sf::FloatRect rect = _weaponDisplay->GetBoundingRect();
-	//std::cout << "RECT: " << rect.left << ' ' << rect.top << ' ' << rect.width << ' ' << rect.height << '\n';
 	_cooldownDisplay->SetVertices(sf::Vector2f(rect.left, rect.top),
 		sf::Vector2f(rect.left + rect.width, rect.top),
 		sf::Vector2f(rect.left + rect.width, rect.top + rect.height),
