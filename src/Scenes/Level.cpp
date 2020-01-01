@@ -98,7 +98,6 @@ Level::Level(Context* context, const std::string& path) :
 		sound.SetPitchDistribution(table["minPitch"], table["maxPitch"]);
 		return sound;
 	};
-	std::cout << "BEGIN_LEVEL_LOAD\n";
 	_localMenu->SetLevel(this);
 	_worldView = _context->window->getDefaultView();
 	_shaker.SetView(&_worldView);
@@ -270,10 +269,6 @@ Level::Level(Context* context, const std::string& path) :
 					apdata.ammo.push_back(ammo);
 					continue; //Don't load projectiles multiple times 
 				}
-				/*		if (projectileName == "HomingMissile")
-						{
-							std::cout << "break\n";
-						}*/
 				int ammo = Protect<int>(weapon["ammo"]);
 
 				std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
@@ -376,7 +371,6 @@ Level::Level(Context* context, const std::string& path) :
 		for (int j = 1; j < static_cast<int>(apdata.drops.size()); j++)
 		{
 			apdata.drops[j].dropRate += apdata.drops[j - 1].dropRate;
-			std::cout << "DROPCHANCE: " << apdata.drops[j].dropRate << '\n';
 		}
 
 		_airplaneDataDict.insert(std::make_pair(name,
@@ -773,7 +767,6 @@ void Level::DisplayText()
 		change = false;
 		if (_texts[0].y > _worldView.getCenter().y)
 		{
-			std::cout << "NEW TEXT: " << _texts[0].y << ' ' << _worldView.getCenter().y << '\n';
 			if (_currentText != nullptr)
 			{
 				_currentText->MarkForDestroy();

@@ -79,7 +79,6 @@ void Projectile::Update(float dt)
 	{
 		_rectChanged = true;
 		int randRect = RandInt(0, (int)_data->rects.size() - 1);
-		//std::cout << randRect << '\n';
 		SetTextureRect(_data->rects[randRect]);
 		setScale(_data->scale, _data->scale);
 	}
