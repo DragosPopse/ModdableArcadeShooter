@@ -1,15 +1,15 @@
-local Eagle = {
-	name = 'Eagle',
+local Kamikaze = {
+	name = 'Kamikaze',
     texture = 'Airplanes',
     hitpoints = 200,
-    leftRect = {0, 147, 27, 47},
-    idleRect = {27, 147, 47, 47},
-    rightRect = {74, 147, 27, 47},
+    leftRect = {0, 56, 42, 44},
+    idleRect = {42, 56, 45, 44},
+    rightRect = {87, 56, 42, 44},
     scale = 1,
-    speed = 400,
+    speed = 200,
     healthFont = 'Mont',
     healthCharSize = 24,
-    score = 20,
+    score = 25,
 
     switchSound = {
         sound = 'Switch',
@@ -39,42 +39,16 @@ local Eagle = {
         }
     },
 
+    aiPattern = { --{angle, distance} 
+        {0, 80}
+    },
+
     onDestroy = function (this)
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
         --end
-    end,
-    
-    aiPattern = { --{angle, distance} 
-        --{45, 80},
-        --{-45, 80},
-        {0, 80}
-    },
-
-    weapons = {
-        {
-            projectile = 'Bullet',
-            ammo = -1
-        },
-
-        {
-            projectile = 'HomingMissile',
-            ammo = 5
-        }
-    },
-
-    drops = {
-        {
-            pickup = 'SmallHealth',
-            dropRate = 50
-        },
-
-        {
-            pickup = 'HomingMissileAmmo',
-            dropRate = 50
-        }
-    }
+    end
 }
 
 
-return Eagle
+return Kamikaze

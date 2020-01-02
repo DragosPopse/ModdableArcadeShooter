@@ -50,14 +50,16 @@ level.player = {
 
 level.usedAirplanes = {
     'Eagle',
-    'EnemyEagle0F',
-    'EnemyEagle0FLeft',
-    'EnemyEagle0FRight',
-    'EnemyEagleFBase',
-    'EnemyEagleFRight',
-    'EnemyEagleFLeft',
-    'EnemyEagleFPatternLeft',
-    'EnemyEagleFPatternRight'
+    'Striker0F',
+    'Striker0FLeft',
+    'Striker0FRight',
+    'Striker',
+    'StrikerFRight',
+    'StrikerFLeft',
+    'StrikerFPatternLeft',
+    'StrikerFPatternRight',
+    'Blood',
+    'Sun'
 }
 
 level.usedPickups = {
@@ -74,267 +76,267 @@ level.spawnPoints = {
 
 -- WAVE 1 --
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 5, {-350, 1940}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Striker0F', 5, {-350, 1940}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {0, 2100}, 90, 150)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {0, 2100}, 90, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-200, 2100}, 105, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {-200, 2100}, 105, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {200, 2100}, 75, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {200, 2100}, 75, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-350, 2500}, 40, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {-350, 2500}, 40, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {350, 2500}, 140, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {350, 2500}, 140, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {0, 2800}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {0, 2800}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {100, 2850}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 2850}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {-100, 2850}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {-100, 2850}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {200, 2900}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {200, 2900}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {-200, 2900}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {-200, 2900}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {-350, 3100}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {-350, 3100}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {100, 3100}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 3100}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-300, 3300}, 0, 300)) do
+for i, v in ipairs(spawn.wall('Striker0F', 3, {-300, 3300}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {-350, 3500}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {-350, 3500}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {100, 3500}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 3500}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-300, 3550}, 0, 300)) do
+for i, v in ipairs(spawn.wall('Striker0F', 3, {-300, 3550}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
 -- WAVE 2 --
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-300, 4550}, 0, 300)) do
+for i, v in ipairs(spawn.wall('Striker', 3, {-300, 4550}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 3, {-200, 4750}, 0, 300)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 3, {-200, 4750}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFLeft', 3, {-400, 4850}, 0, 300)) do
+for i, v in ipairs(spawn.wall('StrikerFLeft', 3, {-400, 4850}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 4, {400, 4950}, 90, 250)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 4, {400, 4950}, 90, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFLeft', 4, {-400, 5010}, 90, 250)) do
+for i, v in ipairs(spawn.wall('StrikerFLeft', 4, {-400, 5010}, 90, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {0, 5800}, 135, 100)) do
+for i, v in ipairs(spawn.wall('Striker', 5, {0, 5800}, 135, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 4, {71, 5871}, 45, 100)) do
+for i, v in ipairs(spawn.wall('Striker', 4, {71, 5871}, 45, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {-350, 6200}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Striker', 5, {-350, 6200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
 -- WAVE 3 --
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-350, 7190}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker0F', 3, {-350, 7190}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 2, {-175, 7310}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker', 2, {-175, 7310}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-350, 7430}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker', 3, {-350, 7430}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternLeft', 7, {-350, 7600}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternLeft', 7, {-350, 7600}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternRight', 7, {350, 7600}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternRight', 7, {350, 7600}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
 -- WAVE 4 --
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 8, {-350, 9810}, 0, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 8, {-350, 9810}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0FRight', 4, {350, 9920}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0FRight', 4, {350, 9920}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0FLeft', 4, {-350, 9920}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0FLeft', 4, {-350, 9920}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 4, {350, 10020}, 90, 200)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 4, {350, 10020}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFLeft', 4, {-350, 10020}, 90, 200)) do
+for i, v in ipairs(spawn.wall('StrikerFLeft', 4, {-350, 10020}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 4, {0, 9950}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker', 4, {0, 9950}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {-350, 11200}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Striker', 5, {-350, 11200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 2, {-175, 11300}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker', 2, {-175, 11300}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-350, 11400}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker', 3, {-350, 11400}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {-350, 11500}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Striker', 5, {-350, 11500}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
 -- WAVE 5 --
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 8, {-350, 12400}, 0, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 8, {-350, 12400}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 3, {-350, 12520}, 180, 100)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 3, {-350, 12520}, 180, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 3, {350, 12520}, 0, 100)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 3, {350, 12520}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-100, 12600}, 0, 100)) do
+for i, v in ipairs(spawn.wall('Striker', 3, {-100, 12600}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternLeft', 5, {-350, 12700}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternLeft', 5, {-350, 12700}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternRight', 5, {350, 12700}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternRight', 5, {350, 12700}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {0, 12900}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {0, 12900}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-200, 12900}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {-200, 12900}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {200, 12900}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {200, 12900}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0FLeft', 8, {-350, 13200}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0FLeft', 8, {-350, 13200}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0FRight', 8, {350, 13300}, 90, 200)) do
+for i, v in ipairs(spawn.wall('Striker0FRight', 8, {350, 13300}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 3, {-200, 13500}, 0, 200)) do
+for i, v in ipairs(spawn.wall('Striker', 3, {-200, 13500}, 0, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 4, {-300, 13850}, 0, 200)) do
+for i, v in ipairs(spawn.wall('Striker', 4, {-300, 13850}, 0, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 5, {-350, 14200}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Striker', 5, {-350, 14200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFBase', 2, {-175, 14450}, 0, 350)) do
+for i, v in ipairs(spawn.wall('Striker', 2, {-175, 14450}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFRight', 3, {350, 14700}, 0, 150)) do
+for i, v in ipairs(spawn.wall('StrikerFRight', 3, {350, 14700}, 0, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFLeft', 3, {-350, 14700}, 0, 150)) do
+for i, v in ipairs(spawn.wall('StrikerFLeft', 3, {-350, 14700}, 0, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternLeft', 5, {-350, 14900}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternLeft', 5, {-350, 14900}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagleFPatternRight', 5, {350, 14900}, 90, 175)) do
+for i, v in ipairs(spawn.wall('StrikerFPatternRight', 5, {350, 14900}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 5, {0, 15300}, 135, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 5, {0, 15300}, 135, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {71, 15371}, 45, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {71, 15371}, 45, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 3, {-200, 15600}, 0, 200)) do
+for i, v in ipairs(spawn.wall('Striker0F', 3, {-200, 15600}, 0, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 4, {-300, 15700}, 0, 150)) do
+for i, v in ipairs(spawn.wall('Striker0F', 4, {-300, 15700}, 0, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('EnemyEagle0F', 2, {-50, 15900}, 0, 100)) do
+for i, v in ipairs(spawn.wall('Striker0F', 2, {-50, 15900}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 

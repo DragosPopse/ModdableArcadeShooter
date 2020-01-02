@@ -1,10 +1,10 @@
-local Eagle = {
-	name = 'Eagle',
+local Striker = {
+	name = 'Striker',
     texture = 'Airplanes',
     hitpoints = 200,
-    leftRect = {0, 147, 27, 47},
-    idleRect = {27, 147, 47, 47},
-    rightRect = {74, 147, 27, 47},
+    leftRect = {0, 0, 54, 56},
+    idleRect = {54, 0, 56, 56},
+    rightRect = {110, 0, 54, 56},
     scale = 1,
     speed = 400,
     healthFont = 'Mont',
@@ -77,4 +77,4 @@ local Eagle = {
 }
 
 
-return Eagle
+return Striker
