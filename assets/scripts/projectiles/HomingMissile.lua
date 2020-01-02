@@ -74,19 +74,28 @@ local HomingMissile = {
         if this:isPlayerControlled() then
             command.category = engine.GameObject.ENEMY_AIRPLANE
             planesRoot = this:getLevel():getEnemyAirplanesRoot()
+            command.action = function (plane, dt) 
+                local planePosition = plane:getWorldPosition()
+                local currentDistance = engine.distance(thisPosition, planePosition)
+                if (currentDistance < closestDistance) and (planePosition.y < this:getLevel():getPlayerAirplane():getWorldPosition().y) then -- Ensures that only airplanes in front of you are targeted
+                    closestDistance = currentDistance
+                    target = plane
+                end
+            end
         else
             command.category = engine.GameObject.PLAYER_AIRPLANE
             planesRoot = this:getLevel():getPlayerAirplane()
-        end
-
-        command.action = function (plane, dt) 
-            local planePosition = plane:getWorldPosition()
-            local currentDistance = engine.distance(thisPosition, planePosition)
-            if currentDistance < closestDistance then
-                closestDistance = currentDistance
-                target = plane
+            command.action = function (plane, dt) 
+                local planePosition = plane:getWorldPosition()
+                local currentDistance = engine.distance(thisPosition, planePosition)
+                if currentDistance < closestDistance then
+                    closestDistance = currentDistance
+                    target = plane
+                end
             end
         end
+
+        
 
         planesRoot:onCommand(command, dt)
 
