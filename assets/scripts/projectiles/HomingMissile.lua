@@ -77,7 +77,7 @@ local HomingMissile = {
             command.action = function (plane, dt) 
                 local planePosition = plane:getWorldPosition()
                 local currentDistance = engine.distance(thisPosition, planePosition)
-                if (currentDistance < closestDistance) and (planePosition.y < thisPosition.y) then
+                if (currentDistance < closestDistance) and (planePosition.y < this:getLevel():getPlayerAirplane():getWorldPosition().y) then -- Ensures that only airplanes in front of you are targeted
                     closestDistance = currentDistance
                     target = plane
                 end
