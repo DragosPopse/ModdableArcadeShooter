@@ -1,10 +1,10 @@
-local Blood = {
-	name = 'Blood',
+local Striker = {
+	name = 'Striker',
     texture = 'Airplanes',
     hitpoints = 200,
-    leftRect = {0, 100, 43, 47},
-    idleRect = {43, 100, 57, 47},
-    rightRect = {100, 100, 43, 47},
+    leftRect = {0, 0, 54, 56},
+    idleRect = {54, 0, 56, 56},
+    rightRect = {110, 0, 54, 56},
     scale = 1,
     speed = 400,
     healthFont = 'Mont',
@@ -43,8 +43,38 @@ local Blood = {
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
         --end
-    end
+    end,
+    
+    aiPattern = { --{angle, distance} 
+        --{45, 80},
+        --{-45, 80},
+        {0, 80}
+    },
+
+    weapons = {
+        {
+            projectile = 'Bullet',
+            ammo = -1
+        },
+
+        {
+            projectile = 'HomingMissile',
+            ammo = 5
+        }
+    },
+
+    drops = {
+        {
+            pickup = 'SmallHealth',
+            dropRate = 50
+        },
+
+        {
+            pickup = 'HomingMissileAmmo',
+            dropRate = 50
+        }
+    }
 }
 
 
-return Eagle
+return Striker

@@ -1,15 +1,15 @@
-local Eagle = {
-	name = 'Eagle',
+local Overlord = {
+	name = 'Overlord',
     texture = 'Airplanes',
     hitpoints = 200,
-    leftRect = {0, 147, 27, 47},
-    idleRect = {27, 147, 47, 47},
-    rightRect = {74, 147, 27, 47},
+    leftRect = {0, 100, 43, 47},
+    idleRect = {43, 100, 57, 47},
+    rightRect = {100, 100, 43, 47},
     scale = 1,
-    speed = 400,
+    speed = 200,
     healthFont = 'Mont',
     healthCharSize = 24,
-    score = 20,
+    score = 30,
 
     switchSound = {
         sound = 'Switch',
@@ -39,42 +39,16 @@ local Eagle = {
         }
     },
 
-    onDestroy = function (this)
-        --if math.random() < 0.5 then
-        this:getLevel():shakeScreen(10, 0.2)
-        --end
-    end,
-    
     aiPattern = { --{angle, distance} 
-        --{45, 80},
-        --{-45, 80},
         {0, 80}
     },
 
-    weapons = {
-        {
-            projectile = 'Bullet',
-            ammo = -1
-        },
-
-        {
-            projectile = 'HomingMissile',
-            ammo = 5
-        }
-    },
-
-    drops = {
-        {
-            pickup = 'SmallHealth',
-            dropRate = 50
-        },
-
-        {
-            pickup = 'HomingMissileAmmo',
-            dropRate = 50
-        }
-    }
+    onDestroy = function (this)
+        --if math.random() < 0.5 then
+        this:getLevel():shakeScreen(20, 0.4)
+        --end
+    end
 }
 
 
-return Eagle
+return Overlord
