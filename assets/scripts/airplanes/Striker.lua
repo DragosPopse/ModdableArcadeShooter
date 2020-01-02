@@ -53,7 +53,7 @@ local Striker = {
 
     weapons = {
         {
-            projectile = 'Bullet',
+            projectile = 'EnemyBullet',
             ammo = -1
         },
 

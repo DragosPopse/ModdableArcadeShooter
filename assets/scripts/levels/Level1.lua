@@ -58,8 +58,8 @@ level.usedAirplanes = {
     'StrikerFLeft',
     'StrikerFPatternLeft',
     'StrikerFPatternRight',
-    'Blood',
-    'Sun'
+    'Overlord',
+    'Kamikaze'
 }
 
 level.usedPickups = {
