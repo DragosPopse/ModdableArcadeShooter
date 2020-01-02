@@ -26,7 +26,7 @@ local Jellybean = {
     },
 
 
-    scale = 1.1,
+    scale = 2,
     iconScale = 2,
     muzzleScale = 2,
     damage = 20,

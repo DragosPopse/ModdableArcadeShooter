@@ -11,6 +11,9 @@ local Sled = {
     healthCharSize = 24,
     score = 20,
 
+    healthTextColor = {0, 255, 0},
+    ammoTextColor = {255, 0, 0},
+
     switchSound = {
         sound = 'Switch',
         minPitch = 1,
