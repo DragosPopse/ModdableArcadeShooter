@@ -5,7 +5,7 @@ level.title = 'Christmas (WIP)'
 level.backgroundTexture = 'Map'
 level.repeatBackground = true
 --level.scrollSpeed = 60
-level.scrollSpeed = 120
+level.scrollSpeed = 100
 level.scale = 850 / 258
 --level.scale = 4
 level.borderSize = 40
@@ -19,9 +19,9 @@ level.defaultFont = 'Pixel'
 
 
 level.usedTextures = {
-    {'Airplanes',  'assets/textures/Airplanes.png'},
+    {'Airplanes',  'assets/textures/ChristmasAirplanes.png'},
     {'Map', 'assets/textures/ChristmasMap.png'}, 
-    {'Projectiles', 'assets/textures/Projectiles.png'},
+    {'Projectiles', 'assets/textures/ChristmasProjectiles.png'},
     {'Explosions', 'assets/textures/Explosions.png'},
     {'Fragments', 'assets/textures/Fragments.png'},
     {'Vortex', 'assets/textures/Vortex.png'},
@@ -45,19 +45,11 @@ level.usedSounds = {
 }
 
 level.player = {
-    airplane = 'Eagle'
+    airplane = 'Sled'
 }
 
 level.usedAirplanes = {
-    'Eagle',
-    'EnemyEagle0F',
-    'EnemyEagle0FLeft',
-    'EnemyEagle0FRight',
-    'EnemyEagleFBase',
-    'EnemyEagleFRight',
-    'EnemyEagleFLeft',
-    'EnemyEagleFPatternLeft',
-    'EnemyEagleFPatternRight'
+    'Sled'
 }
 
 level.usedPickups = {
@@ -95,8 +87,17 @@ level.animations = {
 
 level.texts = {
     {
-        y = 800,
+        y = 0,
         text = 'Christmas',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 1,
+        charSize = 40,
+        font = 'Pixel',
+        color = {0, 255, 0}
+    },
+    {
+        y = 700,
+        text = 'Wave 1',
         timePerLetter = 0.2,
         timeBeforeDestroy = 2,
         charSize = 40,
