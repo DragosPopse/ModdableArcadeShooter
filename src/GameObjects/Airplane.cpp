@@ -111,6 +111,10 @@ void Airplane::Start(Scene* scene)
 		_weaponDisplay = new SpriteObject();
 		_ammoDisplay = new TextObject();
 		_cooldownDisplay = new CircleCooldown();
+		if (_data->ammoTextColor)
+		{
+			_ammoDisplay->SetColor(_data->ammoTextColor.value());
+		}
 		UpdateWeaponDisplay();
 		
 		_level->AddUiElement(_weaponDisplay);

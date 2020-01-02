@@ -211,14 +211,19 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
 		apdata.scale = Protect<float>(plane["scale"]);
 		sol::optional<sol::function> onDestroy = plane["onDestroy"];
-		sol::optional<sol::table> textColor = plane["textColor"];
-		if (textColor)
+		sol::optional<sol::table> healthTextColor = plane["healthTextColor"];
+		sol::optional<sol::table> ammoTextColor = plane["ammoTextColor"];
+		if (healthTextColor)
 		{
-			apdata.healthTextColor = TableToColor(textColor.value());
+			apdata.healthTextColor = TableToColor(healthTextColor.value());
 		}
 		if (onDestroy)
 		{
 			apdata.onDestroy = onDestroy;
+		}
+		if (ammoTextColor)
+		{
+			apdata.ammoTextColor = TableToColor(ammoTextColor.value());
 		}
 
 		sol::table explosionData = Protect<sol::table>(plane["explosionData"]);

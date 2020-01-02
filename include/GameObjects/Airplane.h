@@ -49,6 +49,7 @@ struct AirplaneData
 	std::vector<int> ammo;
 	int healthTextCharSize = 0;
 	sol::optional<sf::Color> healthTextColor;
+	sol::optional<sf::Color> ammoTextColor;
 
 	sf::Vector2i explosionSize;
 	int framesPerExplosion = 0;

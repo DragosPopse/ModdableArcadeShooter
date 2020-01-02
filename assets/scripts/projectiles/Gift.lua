@@ -1,4 +1,4 @@
-local Bullet = {
+local Gift = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
@@ -66,7 +66,16 @@ local Bullet = {
         end
         this:getLevel():addParticles(pso)
     end,
+
+    onDestroy = function (lthis, this, reason) 
+        if (reason == DestroyReasons.CollidedWithEnemy) then
+            this:playAnimation('Explode')
+            return true --return true if you want to destroy after the animation finishes
+        end
+
+        return false --return false if you want to destroy after this function is called
+    end
 }
 
 
-return Bullet
+return Gift
