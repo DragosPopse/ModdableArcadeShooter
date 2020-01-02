@@ -491,10 +491,10 @@ Level::Level(Context* context, const std::string& path) :
 		tdata.timeBeforeDestroy = Protect<float>(text["timeBeforeDestroy"]);
 		tdata.charSize = Protect<int>(text["charSize"]);
 		tdata.font = Protect<std::string>(text["font"]);
-		sol::optional<sf::Color> optionalColor = text["color"];
+		sol::optional<sol::table> optionalColor = text["color"];
 		if (optionalColor)
 		{
-			tdata.color = optionalColor.value();
+			tdata.color = TableToColor(optionalColor.value());
 		}
 		_texts.push_back(tdata);
 	}
@@ -779,6 +779,7 @@ void Level::DisplayText()
 			_currentText->Start(this);
 			if (_texts[0].color)
 			{
+				std::cout << "COLOR\n";
 				_currentText->SetColor(_texts[0].color.value());
 			}
 			std::unique_ptr<TextAnimation> ptr(_currentText);
