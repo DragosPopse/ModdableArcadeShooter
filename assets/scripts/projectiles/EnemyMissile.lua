@@ -1,6 +1,6 @@
 local EnemyMissile = dofile('assets/scripts/projectiles/HomingMissile.lua')
 
-EnemyMissile.speed = 100
+EnemyMissile.speed = 200
 
 EnemyMissile.start = function (this)
     local lthis = { }
@@ -12,13 +12,13 @@ EnemyMissile.start = function (this)
     smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
     smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
     smokeEmitter:setEmissionRate(40)
-    smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.2)))
+    smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(2)))
 
     for i = 0, 4 do
         smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
     end
 
-    local fade = thor.FadeAnimation.new(0, 0.5)
+    local fade = thor.FadeAnimation.new(0, 1)
     local fadeAffector = thor.AnimationAffector.new(fade)
 
     
@@ -32,7 +32,7 @@ EnemyMissile.start = function (this)
 end
 
 EnemyMissile.fixedUpdate = function (lthis, this, dt)
-    local approachRate = 1000
+    local approachRate = 500
     local thisPosition = this:getWorldPosition()
     local target = nil
     local closestDistance = 999999
@@ -50,6 +50,7 @@ EnemyMissile.fixedUpdate = function (lthis, this, dt)
 
     lthis.timer = lthis.timer + dt
     if (lthis.timer > 3) then
+        this:playDestroySound()
         this:destroy()
     end
 end

@@ -112,7 +112,9 @@ local HomingMissile = {
     onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
+    end,
 
+    onDestroy = function (lthis, this) 
         local pso = engine.ParticleSystem.new()
         pso:setPosition(this:getWorldPosition())
         local em = thor.UniversalEmitter.new()
@@ -138,10 +140,6 @@ local HomingMissile = {
         local fade = thor.FadeAnimation.new(0.5, 0.5)
 
         this:getLevel():addParticles(pso)
-    end,
-
-    onDestroy = function (lthis, this, reason) 
-        
     end
 }
 
