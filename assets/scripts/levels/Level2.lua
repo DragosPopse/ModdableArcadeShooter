@@ -103,6 +103,42 @@ level.texts = {
         charSize = 40,
         font = 'Pixel',
         color = {0, 255, 0}
+    },
+    {
+        y = 3200,
+        text = 'Wave 2',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel',
+        color = {0, 255, 0}
+    },
+    {
+        y = 6400,
+        text = 'Wave 3',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel',
+        color = {0, 255, 0}
+    },
+    {
+        y = 9600,
+        text = 'Wave 4',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel',
+        color = {0, 255, 0}
+    },
+    {
+        y = 12000,
+        text = 'Wave 5',
+        timePerLetter = 0.2,
+        timeBeforeDestroy = 2,
+        charSize = 40,
+        font = 'Pixel',
+        color = {0, 255, 0}
     }
 }
 
