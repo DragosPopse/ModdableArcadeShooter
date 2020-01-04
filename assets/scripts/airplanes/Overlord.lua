@@ -47,7 +47,14 @@ local Overlord = {
 
     start = function (this)
         return { }
-    end
+    end,
+
+    weapons = {
+        {
+            projectile = 'EnemyMissile',
+            ammo = 1
+        }
+    }
 }
 
 

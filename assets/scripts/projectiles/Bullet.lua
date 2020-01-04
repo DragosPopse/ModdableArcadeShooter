@@ -43,7 +43,9 @@ local Bullet = {
     onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
+    end,
 
+    onDestroy = function (lthis, this)
         local pso = engine.ParticleSystem.new()
         pso:setPosition(this:getWorldPosition())
         local em = thor.UniversalEmitter.new()
@@ -65,7 +67,7 @@ local Bullet = {
             pso.system:addTextureRect(rect)
         end
         this:getLevel():addParticles(pso)
-    end,
+    end
 }
 
 

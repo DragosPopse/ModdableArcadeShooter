@@ -25,7 +25,7 @@ Projectile::Projectile(ProjectileData* data) :
 	_playerControlled(false),
 	_firstFrame(true),
 	_rectChanged(false),
-	_collided(false)
+	_playDestroySound(false)
 {
 }
 
@@ -169,7 +169,7 @@ sf::FloatRect Projectile::GetBoundingRect() const
 
 void Projectile::OnCollision(Airplane* airplane)
 {
-	_collided = true;
+	_playDestroySound = true;
 	if (_data->onCollision.has_value())
 	{
 		_data->onCollision.value()(_luaObject, this, airplane);
@@ -179,13 +179,22 @@ void Projectile::OnCollision(Airplane* airplane)
 
 void Projectile::MarkForDestroy()
 {
-	if (_collided)
+	if (_data->onDestroy)
+	{
+		_data->onDestroy.value()(_luaObject, this);
+	}
+	if (_playDestroySound)
 	{
 		float defaultVolume = _level->GetContext()->player->GetSfxVolume();
 		RandomizedSoundResult randSound = _data->destroySound(defaultVolume);
 
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 	}
-
 	GameObject::MarkForDestroy();
+}
+
+
+void Projectile::PlayDestroySound()
+{
+	_playDestroySound = true;
 }

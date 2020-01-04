@@ -33,7 +33,7 @@ struct ProjectileData
 	sol::optional<sol::function> fixedUpdate;
 	sol::optional<sol::function> update;
 	sol::optional<sol::function> onCollision;
-	sol::optional<sol::function> onDestroy; //WIP
+	sol::optional<sol::function> onDestroy; 
 	sol::function start;
 
 
@@ -65,7 +65,7 @@ class Projectile :
 
 	sol::table _luaObject;
 
-	bool _collided;
+	bool _playDestroySound;
 
 public:
 
@@ -98,4 +98,6 @@ public:
 	void OnCollision(Airplane* airplane);
 
 	void MarkForDestroy() override;
+
+	void PlayDestroySound();
 };

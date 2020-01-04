@@ -159,7 +159,8 @@ void LuaInit_Game(sol::state& lua)
 		"isPlayerControlled", &Projectile::IsPlayerControlled,
 		"getWorldPosition", &Projectile::GetWorldPosition,
 		"getLevel", &Projectile::GetLevel,
-		"addChild", &Projectile::AddUnownedChild
+		"addChild", &Projectile::AddUnownedChild,
+		"playDestroySound", &Projectile::PlayDestroySound
 		);
 
 	engineTable.new_usertype<Airplane>("Airplane",

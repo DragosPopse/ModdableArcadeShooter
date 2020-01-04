@@ -71,79 +71,79 @@ level.usedPickups = {
  -- SPAWNS --
 
 level.spawnPoints = { 
-  
+    {'Overlord', 0, 800}
 }
 
 -- WAVE 1 --
-
-for i, v in ipairs(spawn.wall('Striker0F', 5, {-350, 1940}, 0, 175)) do
+--[[
+for i, v in ipairs(spawn.wall('Kamikaze', 5, {-350, 1940}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 4, {0, 2100}, 90, 150)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {0, 2100}, 90, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 4, {-200, 2100}, 105, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {-200, 2100}, 105, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 4, {200, 2100}, 75, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {200, 2100}, 75, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 4, {-350, 2500}, 40, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {-350, 2500}, 40, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 4, {350, 2500}, 140, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {350, 2500}, 140, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {0, 2800}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {0, 2800}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 2850}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {100, 2850}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {-100, 2850}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {-100, 2850}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {200, 2900}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {200, 2900}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {-200, 2900}, 90, 50)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {-200, 2900}, 90, 50)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {-350, 3100}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {-350, 3100}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 3100}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {100, 3100}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 3, {-300, 3300}, 0, 300)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 3, {-300, 3300}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {-350, 3500}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {-350, 3500}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 2, {100, 3500}, 0, 250)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 2, {100, 3500}, 0, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker0F', 3, {-300, 3550}, 0, 300)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 3, {-300, 3550}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
-
+--]]
 -- WAVE 2 --
 
 for i, v in ipairs(spawn.wall('Striker', 3, {-300, 4550}, 0, 300)) do
@@ -166,15 +166,15 @@ for i, v in ipairs(spawn.wall('StrikerFLeft', 4, {-400, 5010}, 90, 250)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker', 5, {0, 5800}, 135, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 5, {0, 5800}, 135, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker', 4, {71, 5871}, 45, 100)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 4, {71, 5871}, 45, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.wall('Striker', 5, {-350, 6200}, 0, 175)) do
+for i, v in ipairs(spawn.wall('Kamikaze', 5, {-350, 6200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
@@ -244,6 +244,9 @@ end
 
 -- WAVE 5 --
 
+
+
+--[[
 for i, v in ipairs(spawn.wall('Striker0F', 8, {-350, 12400}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -340,7 +343,7 @@ for i, v in ipairs(spawn.wall('Striker0F', 2, {-50, 15900}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-
+]]--
 -- //SPAWNS --
 
 level.animations = {

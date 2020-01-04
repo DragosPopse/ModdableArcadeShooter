@@ -37,7 +37,6 @@ local HomingMissile = {
 
     start = function (this)
         local lthis = { }
-        lthis.timer = 0
         local smoke = engine.ParticleSystem.new()
         
         smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
@@ -113,7 +112,9 @@ local HomingMissile = {
     onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
+    end,
 
+    onDestroy = function (lthis, this) 
         local pso = engine.ParticleSystem.new()
         pso:setPosition(this:getWorldPosition())
         local em = thor.UniversalEmitter.new()
@@ -139,15 +140,6 @@ local HomingMissile = {
         local fade = thor.FadeAnimation.new(0.5, 0.5)
 
         this:getLevel():addParticles(pso)
-    end,
-
-    onDestroy = function (lthis, this, reason) 
-        if (reason == DestroyReasons.CollidedWithEnemy) then
-            this:playAnimation('Explode')
-            return true --return true if you want to destroy after the animation finishes
-        end
-
-        return false --return false if you want to destroy after this function is called
     end
 }
 
