@@ -210,9 +210,12 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthFont = &_fonts[Protect<std::string>(plane["healthFont"])];
 		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
 		apdata.scale = Protect<float>(plane["scale"]);
+		apdata.start = Protect<sol::function>(plane["start"]);
 		sol::optional<sol::function> onDestroy = plane["onDestroy"];
 		sol::optional<sol::table> healthTextColor = plane["healthTextColor"];
 		sol::optional<sol::table> ammoTextColor = plane["ammoTextColor"];
+		sol::optional<sol::function> optionalOnDamage = plane["onDamage"];
+		sol::optional<sol::function> optionalOnHeal = plane["onHeal"];
 		if (healthTextColor)
 		{
 			apdata.healthTextColor = TableToColor(healthTextColor.value());
@@ -224,6 +227,14 @@ Level::Level(Context* context, const std::string& path) :
 		if (ammoTextColor)
 		{
 			apdata.ammoTextColor = TableToColor(ammoTextColor.value());
+		}
+		if (optionalOnDamage)
+		{
+			apdata.onDamage = optionalOnDamage.value();
+		}
+		if (optionalOnHeal)
+		{
+			apdata.onHeal = optionalOnHeal.value();
 		}
 
 		sol::table explosionData = Protect<sol::table>(plane["explosionData"]);
@@ -248,13 +259,17 @@ Level::Level(Context* context, const std::string& path) :
 
 		
 
-		sol::table directions = Protect<sol::table>(plane["aiPattern"]);
-		for (int j = 1; j <= static_cast<int>(directions.size()); j++)
+		sol::optional<sol::table> optionalDirections = plane["aiPattern"];
+		if (optionalDirections)
 		{
-			AiDirection d;
-			d.angle = Protect<float>(directions[j][1]);
-			d.distance = Protect<float>(directions[j][2]);
-			apdata.directions.push_back(d);
+			sol::table directions = optionalDirections.value();
+			for (int j = 1; j <= static_cast<int>(directions.size()); j++)
+			{
+				AiDirection d;
+				d.angle = Protect<float>(directions[j][1]);
+				d.distance = Protect<float>(directions[j][2]);
+				apdata.directions.push_back(d);
+			}
 		}
 
 		//Load weapons for airplane
