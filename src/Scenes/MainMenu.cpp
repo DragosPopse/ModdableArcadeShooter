@@ -166,6 +166,11 @@ bool MainMenu::Update(float dt)
 		_fade(_parts[0], _elapsedTime / _fadeDuration);
 		_fade(_parts[1], _elapsedTime / _fadeDuration);
 	}
+	else
+	{
+		_fade(_parts[0], 1.f);
+		_fade(_parts[1], 1.f);
+	}
 	_view.move(0, -_scrollSpeed * dt);
 	if (_view.getCenter().y < _parts[_firstIndex].getPosition().y + _parts[_firstIndex].getGlobalBounds().height / 2)
 	{
