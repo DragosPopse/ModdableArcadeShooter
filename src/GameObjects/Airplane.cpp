@@ -137,10 +137,8 @@ void Airplane::Start(Scene* scene)
 	
 	SetShader(_level->GetFlashShader());
 
-	if (_data->start)
-	{
-		_data->start.value()(this);
-	}
+	_luaObject = _data->start(this);
+
 	GameObject::Start(scene);
 }
 
@@ -321,6 +319,11 @@ void Airplane::Damage(int hp)
 		_startDmgAnimation = true;
 		_elapsedTime = 0;
 	}
+
+	if (_data->onDamage)
+	{
+		Protect(_data->onDamage.value()(_luaObject, this));
+	}
 	UpdateHealthDisplay();
 }
 
@@ -328,6 +331,7 @@ void Airplane::Damage(int hp)
 void Airplane::Repair(int hp)
 {
 	_hitpoints += hp;
+
 	UpdateHealthDisplay();
 }
 
@@ -545,6 +549,10 @@ void Airplane::UpdateCooldownDisplay()
 void Airplane::AddHealth(int n)
 {
 	_hitpoints += n;
+	if (_data->onHeal)
+	{
+		Protect(_data->onHeal.value()(_luaObject, this));
+	}
 	UpdateHealthDisplay();
 }
 

@@ -45,6 +45,10 @@ local Striker = {
         --end
     end,
 
+    start = function (this)
+        return { }
+    end,
+
     weapons = {
         {
             projectile = 'EnemyBullet',

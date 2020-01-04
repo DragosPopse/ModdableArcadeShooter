@@ -40,9 +40,47 @@ local Eagle = {
     },
 
     onDestroy = function (this)
-        --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
-        --end
+    end,
+
+    start = function (this)
+        local lthis = { }
+        lthis.isDamaged = false
+        lthis.particleSystem = engine.ParticleSystem.new()
+        lthis.particleSystem.system:setTexture(this:getLevel():getTexture('Smoke'))
+        lthis.emitter = thor.UniversalEmitter.new()
+        lthis.emitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
+        lthis.emitter:setParticleScale(engine.UniformVector2fDistribution.create(1, 1.5))
+        lthis.emitter:setEmissionRate(40)
+        lthis.emitter:setParticleVelocity(thor.Distributions.deflect(sf.Vector2f.new(0, 200), 10))
+        lthis.emitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(1)))
+
+        for i = 0, 4 do
+            lthis.particleSystem.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
+        end
+
+        local fade = thor.FadeAnimation.new(0, 0.5)
+        lthis.fadeAffector = thor.AnimationAffector.new(fade)
+
+        lthis.particleSystem.system:addAffector(lthis.fadeAffector)
+        this:addChild(lthis.particleSystem)
+    
+        return lthis
+    end,
+
+    onDamage = function (lthis, this)
+        if (not lthis.isDamaged and this:getHealth() < 50) then
+            lthis.particleSystem:addEmitter(lthis.emitter, sf.seconds(0), 0, 25)
+            lthis.isDamaged = true
+        end
+    end,
+
+    onHeal = function (lthis, this)
+        print('HEAL\n')
+        if (lthis.isDamaged and this:getHealth() > 50) then
+            lthis.particleSystem.system:clearEmitters()
+            lthis.isDamaged = false
+        end
     end,
 
     weapons = {

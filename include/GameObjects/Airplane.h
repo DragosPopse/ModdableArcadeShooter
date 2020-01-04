@@ -66,7 +66,9 @@ struct AirplaneData
 	std::vector<DropData> drops;
 	
 	sol::optional<sol::function> onDestroy;
-	sol::optional<sol::function> start;
+	sol::function start;
+	sol::optional<sol::function> onDamage;
+	sol::optional<sol::function> onHeal;
 
 	int score = 0;
 };
@@ -110,6 +112,8 @@ class Airplane :
 
 	float _weaponVisibilityElapsedTime;
 	bool _fadingIn;
+
+	sol::table _luaObject;
 
 public:
 	Airplane(AirplaneData* data);

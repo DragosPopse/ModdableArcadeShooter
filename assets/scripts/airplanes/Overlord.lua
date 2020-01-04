@@ -43,6 +43,10 @@ local Overlord = {
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(20, 0.4)
         --end
+    end,
+
+    start = function (this)
+        return { }
     end
 }
 
