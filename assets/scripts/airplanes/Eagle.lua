@@ -44,12 +44,6 @@ local Eagle = {
         this:getLevel():shakeScreen(10, 0.2)
         --end
     end,
-    
-    aiPattern = { --{angle, distance} 
-        --{45, 80},
-        --{-45, 80},
-        {0, 80}
-    },
 
     weapons = {
         {

@@ -39,10 +39,6 @@ local Overlord = {
         }
     },
 
-    aiPattern = { --{angle, distance} 
-        {0, 80}
-    },
-
     onDestroy = function (this)
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(20, 0.4)

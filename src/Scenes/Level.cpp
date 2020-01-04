@@ -248,13 +248,17 @@ Level::Level(Context* context, const std::string& path) :
 
 		
 
-		sol::table directions = Protect<sol::table>(plane["aiPattern"]);
-		for (int j = 1; j <= static_cast<int>(directions.size()); j++)
+		sol::optional<sol::table> optionalDirections = plane["aiPattern"];
+		if (optionalDirections)
 		{
-			AiDirection d;
-			d.angle = Protect<float>(directions[j][1]);
-			d.distance = Protect<float>(directions[j][2]);
-			apdata.directions.push_back(d);
+			sol::table directions = optionalDirections.value();
+			for (int j = 1; j <= static_cast<int>(directions.size()); j++)
+			{
+				AiDirection d;
+				d.angle = Protect<float>(directions[j][1]);
+				d.distance = Protect<float>(directions[j][2]);
+				apdata.directions.push_back(d);
+			}
 		}
 
 		//Load weapons for airplane

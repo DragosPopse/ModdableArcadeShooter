@@ -39,10 +39,6 @@ local Kamikaze = {
         }
     },
 
-    aiPattern = { --{angle, distance} 
-        {0, 80}
-    },
-
     onDestroy = function (this)
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
