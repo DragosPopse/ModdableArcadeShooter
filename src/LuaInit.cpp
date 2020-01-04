@@ -93,7 +93,6 @@ void LuaInit_Thor(sol::state& lua)
 		"setParticleTextureIndex", &thor::UniversalEmitter::setParticleTextureIndex,
 		"setParticleScale", &thor::UniversalEmitter::setParticleScale,
 		"setParticleColor", &thor::UniversalEmitter::setParticleColor);
-
 	thor::Connection(thor::ParticleSystem::*addEmitter2)(std::function<void(thor::EmissionInterface&, sf::Time)>) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addEmitter1)(std::function<void(thor::EmissionInterface&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addAffector1)(std::function<void(thor::Particle&, sf::Time)>) = &thor::ParticleSystem::addAffector;
@@ -104,7 +103,9 @@ void LuaInit_Thor(sol::state& lua)
 		"addEmitter", sol::overload(addEmitter1, addEmitter2),
 		"setTexture", &thor::ParticleSystem::setTexture,
 		"addTextureRect", &thor::ParticleSystem::addTextureRect,
-		"addAffector", sol::overload(addAffector1));
+		"addAffector", sol::overload(addAffector1),
+		"clearEmitters", &thor::ParticleSystem::clearEmitters,
+		"clearAffectors", &thor::ParticleSystem::clearAffectors);
 
 	sol::table distTable = thorTable.create_named("Distributions");
 	
