@@ -169,36 +169,46 @@ void Airplane::FixedUpdate(float dt)
 		{
 			Fire();
 		}
-		if (_distanceMoved > _data->directions[_currentWeaponIndex].distance)
+		if (!_data->directions.empty())
 		{
-			_distanceMoved = 0;
-			_currentPatternIndex++;
-			if (_currentPatternIndex >= static_cast<int>(_data->directions.size()))
+			if (_distanceMoved > _data->directions[_currentPatternIndex].distance)
 			{
-				_currentPatternIndex = 0;
+				_distanceMoved = 0;
+				_currentPatternIndex++;
+				if (_currentPatternIndex >= static_cast<int>(_data->directions.size()))
+				{
+					_currentPatternIndex = 0;
+				}
 			}
-		}
-		float angle = _data->directions[_currentPatternIndex].angle;
-		float radian = ToRadian(angle + 90);
-		float x = _data->speed * cos(radian);
-		float y = _data->speed * sin(radian);
-		if (x > 0.01)
-		{
-			SetTextureRect(_data->leftRect);
-		}
-		else if (x < -0.01)
-		{
-			SetTextureRect(_data->rightRect);
+			float angle = _data->directions[_currentPatternIndex].angle;
+			float radian = ToRadian(angle + 90);
+			float x = _data->speed * cos(radian);
+			float y = _data->speed * sin(radian);
+			if (x > 0.01)
+			{
+				SetTextureRect(_data->leftRect);
+			}
+			else if (x < -0.01)
+			{
+				SetTextureRect(_data->rightRect);
+			}
+			else
+			{
+				SetTextureRect(_data->idleRect);
+			}
+			sf::Vector2f direction(x, y);
+			direction = Normalize(direction);
+			sf::Vector2f velocity = direction * _data->speed * dt;
+			_distanceMoved += Magnitude(velocity);
+			move(velocity);
 		}
 		else
 		{
+			move({0.f, _data->speed * dt});
 			SetTextureRect(_data->idleRect);
 		}
-		sf::Vector2f direction(x, y);
-		direction = Normalize(direction);
-		sf::Vector2f velocity = direction * _data->speed * dt;
-		_distanceMoved += Magnitude(velocity);
-		move(velocity);
+		
+
 	}
 	else
 	{
