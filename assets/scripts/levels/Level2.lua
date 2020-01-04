@@ -13,7 +13,7 @@ level.length = 16000
 --level.length = 1000
 level.previewImage = 'assets/textures/levels/Level1.png'
 level.soundtrack = 'assets/audio/music/Level2.wav'
-level.menuSoundtrack = 'assets/audio/music/MainMenu.wav'
+level.menuSoundtrack = 'assets/audio/music/Level2Menu.wav'
 level.saveFile = 'assets/config/saves/Level2.json'
 level.defaultFont = 'Pixel'
 
