@@ -103,8 +103,11 @@ bool KeyBindingPanel::HandleEvent(const sf::Event& ev)
 			_keyButtons[i]->setEnabled(true);
 		}
 		_confirmButton->setEnabled(true);
-
-		if (_context->player->Contains(ev.key.code))
+		if (ev.key.code == _context->player->GetKey(_actionToBind))
+		{
+			_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(_context->player->GetKey(_actionToBind))));
+		}
+		else if (_context->player->Contains(ev.key.code))
 		{
 			_currentKeyButton->setText(BuildString(_buttonText, ": ", ToString(_context->player->GetKey(_actionToBind))));
 			std::shared_ptr<ErrorScene> error(new ErrorScene(_context, "Invalid Key", 
