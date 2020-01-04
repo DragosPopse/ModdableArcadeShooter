@@ -9,8 +9,6 @@ function spawn.wall(planeType, amount, firstPosition, angle, distanceBetween)
     
     result[i] = {planeType, x, y}
   end
-
-  print('Final: ' .. #result .. '\n')
   return result
 end
 
