@@ -76,7 +76,6 @@ local Eagle = {
     end,
 
     onHeal = function (lthis, this)
-        print('HEAL\n')
         if (lthis.isDamaged and this:getHealth() > 50) then
             lthis.particleSystem.system:clearEmitters()
             lthis.isDamaged = false
