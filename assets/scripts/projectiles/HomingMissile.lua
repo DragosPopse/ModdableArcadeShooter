@@ -37,7 +37,6 @@ local HomingMissile = {
 
     start = function (this)
         local lthis = { }
-        lthis.timer = 0
         local smoke = engine.ParticleSystem.new()
         
         smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
@@ -142,12 +141,7 @@ local HomingMissile = {
     end,
 
     onDestroy = function (lthis, this, reason) 
-        if (reason == DestroyReasons.CollidedWithEnemy) then
-            this:playAnimation('Explode')
-            return true --return true if you want to destroy after the animation finishes
-        end
-
-        return false --return false if you want to destroy after this function is called
+        
     end
 }
 
