@@ -66,6 +66,7 @@ struct AirplaneData
 	std::vector<DropData> drops;
 	
 	sol::optional<sol::function> onDestroy;
+	sol::optional<sol::function> start;
 
 	int score = 0;
 };

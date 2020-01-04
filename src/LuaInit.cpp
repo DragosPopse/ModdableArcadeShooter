@@ -171,7 +171,8 @@ void LuaInit_Game(sol::state& lua)
 		"addChild", &Airplane::AddUnownedChild,
 		"addHealth", &Airplane::AddHealth,
 		"addAmmo", &Airplane::AddAmmo,
-		"getLevel", &Airplane::GetLevel);
+		"getLevel", &Airplane::GetLevel,
+		"addChild", &Airplane::AddUnownedChild);
 
 	engineTable.new_usertype<LuaCommand>("Command",
 		"action", &LuaCommand::action,

@@ -137,6 +137,10 @@ void Airplane::Start(Scene* scene)
 	
 	SetShader(_level->GetFlashShader());
 
+	if (_data->start)
+	{
+		_data->start.value()(this);
+	}
 	GameObject::Start(scene);
 }
 
