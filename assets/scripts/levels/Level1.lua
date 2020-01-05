@@ -59,7 +59,9 @@ level.usedAirplanes = {
     'StrikerFPatternLeft',
     'StrikerFPatternRight',
     'Overlord',
-    'Kamikaze'
+    'Kamikaze',
+    'OverlordPattern',
+    'OverlordPattern2'
 }
 
 level.usedPickups = {
@@ -71,11 +73,11 @@ level.usedPickups = {
  -- SPAWNS --
 
 level.spawnPoints = { 
-    {'Overlord', 0, 800}
+
 }
 
 -- WAVE 1 --
---[[
+
 for i, v in ipairs(spawn.wall('Kamikaze', 5, {-350, 1940}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -143,7 +145,7 @@ end
 for i, v in ipairs(spawn.wall('Kamikaze', 3, {-300, 3550}, 0, 300)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
---]]
+
 -- WAVE 2 --
 
 for i, v in ipairs(spawn.wall('Striker', 3, {-300, 4550}, 0, 300)) do
@@ -178,8 +180,9 @@ for i, v in ipairs(spawn.wall('Kamikaze', 5, {-350, 6200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
--- WAVE 3 --
+-- WAVE 3 -- 7190
 
+--[[
 for i, v in ipairs(spawn.wall('Striker0F', 3, {-350, 7190}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -191,6 +194,9 @@ end
 for i, v in ipairs(spawn.wall('Striker', 3, {-350, 7430}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
+--]]
+
+level.spawnPoints[#level.spawnPoints + 1] = {'Overlord', 0, 7190}
 
 for i, v in ipairs(spawn.wall('StrikerFPatternLeft', 7, {-350, 7600}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
@@ -242,7 +248,7 @@ for i, v in ipairs(spawn.wall('Striker', 5, {-350, 11500}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
--- WAVE 5 --
+-- WAVE 5 -- 12400
 
 
 
@@ -262,6 +268,10 @@ end
 for i, v in ipairs(spawn.wall('Striker', 3, {-100, 12600}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
+--]]
+
+level.spawnPoints[#level.spawnPoints + 1] = {'OverlordPattern', -350, 12400}
+level.spawnPoints[#level.spawnPoints + 1] = {'OverlordPattern2', 350, 12400}
 
 for i, v in ipairs(spawn.wall('StrikerFPatternLeft', 5, {-350, 12700}, 90, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
@@ -290,7 +300,7 @@ end
 for i, v in ipairs(spawn.wall('Striker0FRight', 8, {350, 13300}, 90, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
-
+--[[
 for i, v in ipairs(spawn.wall('Striker', 3, {-200, 13500}, 0, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -302,7 +312,7 @@ end
 for i, v in ipairs(spawn.wall('Striker', 5, {-350, 14200}, 0, 175)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
-
+--]]
 for i, v in ipairs(spawn.wall('Striker', 2, {-175, 14450}, 0, 350)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -326,7 +336,7 @@ end
 for i, v in ipairs(spawn.wall('Striker0F', 5, {0, 15300}, 135, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
-
+--[[
 for i, v in ipairs(spawn.wall('Striker0F', 4, {71, 15371}, 45, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -334,7 +344,7 @@ end
 for i, v in ipairs(spawn.wall('Striker0F', 3, {-200, 15600}, 0, 200)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
-
+--]]
 for i, v in ipairs(spawn.wall('Striker0F', 4, {-300, 15700}, 0, 150)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
@@ -343,7 +353,7 @@ for i, v in ipairs(spawn.wall('Striker0F', 2, {-50, 15900}, 0, 100)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-]]--
+
 -- //SPAWNS --
 
 level.animations = {

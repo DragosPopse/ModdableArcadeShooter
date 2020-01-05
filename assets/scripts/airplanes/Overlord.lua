@@ -1,7 +1,7 @@
 local Overlord = {
 	name = 'Overlord',
     texture = 'Airplanes',
-    hitpoints = 200,
+    hitpoints = 500,
     leftRect = {0, 100, 43, 47},
     idleRect = {43, 100, 57, 47},
     rightRect = {100, 100, 43, 47},
@@ -53,7 +53,7 @@ local Overlord = {
     weapons = {
         {
             projectile = 'EnemyMissile',
-            ammo = 1
+            ammo = 2
         }
     }
 }
