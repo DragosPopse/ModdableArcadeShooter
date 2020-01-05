@@ -16,21 +16,6 @@
 #include "Random.h"
 
 
-namespace
-{
-	void TestLua(sol::state& lua)
-	{
-		std::cout << "=====LUA TEST=====\n";
-		lua.do_file("assets/scripts/test.lua");
-		AirplaneData data;
-		data.hitpoints = 200;
-		Airplane *plane = new Airplane(&data);
-		lua["ptrTest"](plane);
-		//std::cout << plane->GetHealth();
-		delete plane;
-		std::cout << "=====TEST END=====\n";
-	}
-}
 
 Engine::Engine() : 
 	_fixedDeltaTime(1.f / 60.f),
@@ -43,7 +28,6 @@ Engine::Engine() :
 	LuaInit_Thor(_lua);
 	LuaInit_Game(_lua);
 	_window.create(sf::VideoMode(800, 800), "Test", sf::Style::Close);
-	TestLua(_lua);
 	SeedLua(_lua);
 	
 
@@ -57,7 +41,6 @@ Engine::Engine() :
 void Engine::Run()
 {
 	float timeSinceLastFrame = 0.f;
-	_textures.Load("Eagle", "assets/textures/Eagle.png");
 		
 	_theme.load("assets/textures/DefaultTheme.txt");
 
