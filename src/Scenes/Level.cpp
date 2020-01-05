@@ -211,6 +211,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.healthTextCharSize = Protect<int>(plane["healthCharSize"]);
 		apdata.scale = Protect<float>(plane["scale"]);
 		apdata.start = Protect<sol::function>(plane["start"]);
+		apdata.collisionDamage = Protect<int>(plane["collisionDamage"]);
 		sol::optional<sol::function> onDestroy = plane["onDestroy"];
 		sol::optional<sol::table> healthTextColor = plane["healthTextColor"];
 		sol::optional<sol::table> ammoTextColor = plane["ammoTextColor"];
@@ -938,7 +939,7 @@ void Level::HandleCollisions(float dt)
 			if (enemyRect.intersects(playerRect))
 			{
 				obj.Damage(99999);
-				_playerAirplane->Damage(100);
+				_playerAirplane->Damage(obj.GetCollisionDamage());
 			}
 			else
 			{

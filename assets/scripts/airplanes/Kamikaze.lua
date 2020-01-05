@@ -10,6 +10,7 @@ local Kamikaze = {
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 25,
+    collisionDamage = 50,
 
     switchSound = {
         sound = 'Switch',

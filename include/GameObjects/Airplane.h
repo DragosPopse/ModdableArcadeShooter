@@ -39,6 +39,7 @@ struct AirplaneData
 	float scale = 0;
 	int hitpoints = 0;
 	float speed = 0;
+	int collisionDamage = 0;
 	sf::Texture* texture = nullptr;
 	sf::Font* healthFont = nullptr;
 	sf::IntRect idleRect;
@@ -153,6 +154,7 @@ public:
 
 	void AddAmmo(const std::string& projectile, int n);
 
+	int GetCollisionDamage() const { return _data->collisionDamage; }
 
 private:
 	void UpdateHealthDisplay();

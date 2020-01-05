@@ -10,6 +10,7 @@ local Overlord = {
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 30,
+    collisionDamage = 100,
 
     switchSound = {
         sound = 'Switch',
