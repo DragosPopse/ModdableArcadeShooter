@@ -310,7 +310,7 @@ void Airplane::Damage(int hp)
 
 		if (_data->onDestroy.has_value())
 		{
-			Protect(_data->onDestroy.value()(this));
+			Protect(_data->onDestroy.value()(_luaObject, this));
 		}
 	}
 	else
@@ -630,4 +630,15 @@ void Airplane::UpdateWeaponVisibility(float dt)
 			}
 		}
 	}
+}
+
+
+void Airplane::MarkForDestroy()
+{
+	for (auto& userdata : _unownedChildren)
+	{
+		_level->GetRoot()->AddUnownedChild(std::move(userdata));
+	}
+	_unownedChildren.clear();
+	GameObject::MarkForDestroy();
 }
