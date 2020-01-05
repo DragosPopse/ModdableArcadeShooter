@@ -156,6 +156,8 @@ public:
 
 	int GetCollisionDamage() const { return _data->collisionDamage; }
 
+	void MarkForDestroy() override;
+
 private:
 	void UpdateHealthDisplay();
 	void UpdateWeaponDisplay();

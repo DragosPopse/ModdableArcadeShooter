@@ -40,7 +40,7 @@ local Overlord = {
         }
     },
 
-    onDestroy = function (this)
+    onDestroy = function (lthis, this)
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(20, 0.4)
         --end

@@ -40,7 +40,7 @@ local Eagle = {
         }
     },
 
-    onDestroy = function (this)
+    onDestroy = function (lthis, this)
         this:getLevel():shakeScreen(10, 0.2)
         lthis.particleSystem:setRemoveAfterLifetime(3)
     end,
