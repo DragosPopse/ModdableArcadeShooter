@@ -10,6 +10,7 @@ local Sled = {
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 20,
+    collisionDamage = 100,
 
     healthTextColor = {0, 255, 0},
     ammoTextColor = {255, 0, 0},
