@@ -37,9 +37,9 @@ local HomingMissile = {
 
     start = function (this)
         local lthis = { }
-        local smoke = engine.ParticleSystem.new()
+        lthis.smoke = engine.ParticleSystem.new()
         
-        smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
+        lthis.smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
         local smokeEmitter = thor.UniversalEmitter.new()
         smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
         smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
@@ -47,18 +47,18 @@ local HomingMissile = {
         smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.2)))
 
         for i = 0, 4 do
-            smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
+            lthis.smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
         end
 
         local fade = thor.FadeAnimation.new(0, 0.5)
         local fadeAffector = thor.AnimationAffector.new(fade)
 
         
-        smoke:addEmitter(smokeEmitter, sf.seconds(0), 0, 22)
+        lthis.smoke:addEmitter(smokeEmitter, sf.seconds(0), 0, 22)
 
-        smoke.system:addAffector(fadeAffector)
+        lthis.smoke.system:addAffector(fadeAffector)
 
-        this:addChild(smoke)
+        this:addChild(lthis.smoke)
 
         return lthis
     end,
@@ -140,6 +140,8 @@ local HomingMissile = {
         local fade = thor.FadeAnimation.new(0.5, 0.5)
 
         this:getLevel():addParticles(pso)
+
+        lthis.smoke:setRemoveAfterLifetime(3)
     end
 }
 

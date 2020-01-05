@@ -190,6 +190,11 @@ void Projectile::MarkForDestroy()
 
 		_level->PlaySound(*randSound.buffer, randSound.volume, randSound.pitch);
 	}
+	for (auto& userdata : _unownedChildren)
+	{
+		_level->GetRoot()->AddUnownedChild(userdata);
+	}
+	_unownedChildren.clear();
 	GameObject::MarkForDestroy();
 }
 
