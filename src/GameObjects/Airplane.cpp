@@ -104,7 +104,7 @@ void Airplane::Start(Scene* scene)
 	if (!_playerControlled)
 	{
 		_healthText->setRotation(180);
-
+		_cooldown = 100000.f; //Start firing instantly
 	}
 	else
 	{

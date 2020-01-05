@@ -1,6 +1,9 @@
 local EnemyMissile = dofile('assets/scripts/projectiles/HomingMissile.lua')
 
-EnemyMissile.speed = 200
+EnemyMissile.speed = 300
+EnemyMissile.spreadAngle = 0
+EnemyMissile.fireRate = 3.5
+EnemyMissile.damage = 40
 
 EnemyMissile.start = function (this)
     local lthis = { }
@@ -32,7 +35,7 @@ EnemyMissile.start = function (this)
 end
 
 EnemyMissile.fixedUpdate = function (lthis, this, dt)
-    local approachRate = 500
+    local approachRate = 700
     local thisPosition = this:getWorldPosition()
     local target = nil
     local closestDistance = 999999
@@ -49,7 +52,7 @@ EnemyMissile.fixedUpdate = function (lthis, this, dt)
     end
 
     lthis.timer = lthis.timer + dt
-    if (lthis.timer > 3) then
+    if (lthis.timer > 7) then
         this:playDestroySound()
         this:destroy()
     end
