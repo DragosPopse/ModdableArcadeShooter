@@ -8,9 +8,9 @@ EnemyMissile.damage = 40
 EnemyMissile.start = function (this)
     local lthis = { }
     lthis.timer = 0
-    local smoke = engine.ParticleSystem.new()
+    lthis.smoke = engine.ParticleSystem.new()
     
-    smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
+    lthis.smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
     local smokeEmitter = thor.UniversalEmitter.new()
     smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
     smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
@@ -18,18 +18,18 @@ EnemyMissile.start = function (this)
     smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(2)))
 
     for i = 0, 4 do
-        smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
     end
 
     local fade = thor.FadeAnimation.new(0, 1)
     local fadeAffector = thor.AnimationAffector.new(fade)
 
     
-    smoke:addEmitter(smokeEmitter, sf.seconds(0), 0, 22)
+    lthis.smoke:addEmitter(smokeEmitter, sf.seconds(0), 0, 22)
 
-    smoke.system:addAffector(fadeAffector)
+    lthis.smoke.system:addAffector(fadeAffector)
 
-    this:addChild(smoke)
+    this:addChild(lthis.smoke)
 
     return lthis
 end

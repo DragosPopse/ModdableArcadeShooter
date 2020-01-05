@@ -46,7 +46,14 @@ local Kamikaze = {
 
     start = function (this)
         return { }
-    end
+    end,
+    
+    drops = {
+        {
+            pickup = 'SmallHealth',
+            dropRate = 100
+        }
+    }
 }
 
 

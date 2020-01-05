@@ -15,6 +15,7 @@ struct LuaCommand;
 class GameObject :
 	public sf::Transformable
 {
+protected:
 	bool _active;
 	bool _markedForDestroy;
 	std::vector<std::unique_ptr<GameObject>> _children;

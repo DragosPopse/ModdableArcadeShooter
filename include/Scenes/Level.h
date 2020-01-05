@@ -186,6 +186,8 @@ public:
 
 	void ShakeScreen(float amplitude, float duration);
 
+	GameObject* GetRoot() { return _root.get(); }
+
 private:
 	void SpawnObjects();
 	void RemoveOffScreenObjects(float dt);
