@@ -192,7 +192,7 @@ void Projectile::MarkForDestroy()
 	}
 	for (auto& userdata : _unownedChildren)
 	{
-		_level->GetRoot()->AddUnownedChild(userdata);
+		_level->GetRoot()->AddUnownedChild(std::move(userdata));
 	}
 	_unownedChildren.clear();
 	GameObject::MarkForDestroy();
