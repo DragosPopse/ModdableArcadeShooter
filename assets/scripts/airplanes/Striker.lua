@@ -40,7 +40,7 @@ local Striker = {
         }
     },
 
-    onDestroy = function (this)
+    onDestroy = function (lthis, this)
         --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
         --end

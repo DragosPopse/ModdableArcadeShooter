@@ -6,4 +6,12 @@ StrikerFPatternLeft.aiPattern = {
 	{-70,5000}
 }
 
+StrikerFPatternLeft.weapons = {
+	{
+		projectile = 'EnemyBullet',
+		ammo = 3
+	}
+}
+
+
 return StrikerFPatternLeft
