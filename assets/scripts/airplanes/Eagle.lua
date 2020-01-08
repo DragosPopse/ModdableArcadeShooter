@@ -1,7 +1,7 @@
 local Eagle = {
 	name = 'Eagle',
     texture = 'Airplanes',
-    hitpoints = 200,
+    hitpoints = 300,
     leftRect = {0, 147, 27, 47},
     idleRect = {27, 147, 47, 47},
     rightRect = {74, 147, 27, 47},
