@@ -1,6 +1,6 @@
 local Sled = {
 	name = 'Sled',
-    texture = 'Airplanes',
+    texture = 'Sled',
     hitpoints = 200,
     leftRect = {0, 0, 55, 48},
     idleRect = {55, 0, 64, 40},
@@ -64,7 +64,7 @@ local Sled = {
         snowflakes.system:addAffector(fadeAffector)
         
         this:addChild(snowflakes)
-        
+        return { } 
     end,
 
     onDestroy = function (lthis, this)
