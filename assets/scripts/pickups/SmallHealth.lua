@@ -6,7 +6,7 @@ local pickup = {
     scale = 2,
 
     onPickupSound = {
-        sound = 'Pickup',
+        sound = 'HealthPickup',
         minPitch = 0.9,
         maxPitch = 1.12,
         minVolumeFactor = 1,
