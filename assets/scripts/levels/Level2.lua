@@ -27,9 +27,9 @@ level.usedTextures = {
     {'Vortex', 'assets/textures/Vortex.png'},
     {'Smoke', 'assets/textures/Smoke.png'},
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
-    {'Health', 'assets/textures/Health.png'},
     {'Ship', 'assets/textures/Ship.png'},
-    {'Snowflakes', 'assets/textures/Snowflakes.png'}
+    {'Snowflakes', 'assets/textures/Snowflakes.png'},
+    {'Sled', 'assets/textures/Sled.png'}
 }
 
 level.usedFonts = {
@@ -45,17 +45,15 @@ level.usedSounds = {
     {'Pickup', 'assets/audio/sfx/RocketPickup.wav'}
 }
 
+level.usedPickups = { }
+
 level.player = {
     airplane = 'Sled'
 }
 
 level.usedAirplanes = {
-    'Sled'
-}
-
-level.usedPickups = {
-    'SmallHealth',
-    'HomingMissileAmmo'
+    'Sled',
+    'NosedStriker'
 }
 
 
@@ -65,6 +63,11 @@ level.spawnPoints = {
     
 }
 
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 1690}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 6400 + 900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 9600 + 900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 12000 + 900}
 
 -- //SPAWNS --
 
