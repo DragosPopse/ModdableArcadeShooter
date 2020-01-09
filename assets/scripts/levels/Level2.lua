@@ -1,7 +1,7 @@
 local level = { }
 local spawn = dofile('assets/scripts/utility/Spawn.lua')
 
-level.title = 'Christmas (WIP)'
+level.title = 'A Merry Retaliation'
 level.backgroundTexture = 'Map'
 level.repeatBackground = true
 --level.scrollSpeed = 60
@@ -11,7 +11,7 @@ level.scale = 850 / 258
 level.borderSize = 40
 level.length = 16000
 --level.length = 1000
-level.previewImage = 'assets/textures/levels/Level1.png'
+level.previewImage = 'assets/textures/levels/Level2.png'
 level.soundtrack = 'assets/audio/music/Level2.wav'
 level.menuSoundtrack = 'assets/audio/music/Level2Menu.wav'
 level.saveFile = 'assets/config/saves/Level2.json'
@@ -92,8 +92,8 @@ level.animations = {
 level.texts = {
     {
         y = 0,
-        text = 'Christmas',
-        timePerLetter = 0.2,
+        text = 'A Merry Retaliation',
+        timePerLetter = 0.1,
         timeBeforeDestroy = 1,
         charSize = 40,
         font = 'Pixel',
