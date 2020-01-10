@@ -63,10 +63,25 @@ level.spawnPoints = {
     
 }
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 1690}
+-- Wave 1 --
+
+-- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', -100, 1690}
+-- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 100, 1690}
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {0, 1690}, 50)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+    print('spawn')
+end
+
+-- Wave 2 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
+
+-- Wave 3 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 6400 + 900}
+
+-- Wave 4 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 9600 + 900}
+
+-- Wave 5 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 12000 + 900}
 
 -- //SPAWNS --
