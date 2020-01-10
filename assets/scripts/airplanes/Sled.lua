@@ -77,6 +77,10 @@ local Sled = {
         {
             projectile = 'Jellybean',
             ammo = -1
+        },
+        {
+            projectile = 'Gift',
+            ammo = 10
         }
     },  
 }

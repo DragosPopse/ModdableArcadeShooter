@@ -92,7 +92,8 @@ void LuaInit_Thor(sol::state& lua)
 		"setParticleRotation", &thor::UniversalEmitter::setParticleRotation,
 		"setParticleTextureIndex", &thor::UniversalEmitter::setParticleTextureIndex,
 		"setParticleScale", &thor::UniversalEmitter::setParticleScale,
-		"setParticleColor", &thor::UniversalEmitter::setParticleColor);
+		"setParticleColor", &thor::UniversalEmitter::setParticleColor,
+		"setParticleRotationSpeed", &thor::UniversalEmitter::setParticleRotationSpeed);
 	thor::Connection(thor::ParticleSystem::*addEmitter2)(std::function<void(thor::EmissionInterface&, sf::Time)>) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addEmitter1)(std::function<void(thor::EmissionInterface&, sf::Time)>, sf::Time) = &thor::ParticleSystem::addEmitter;
 	thor::Connection(thor::ParticleSystem::*addAffector1)(std::function<void(thor::Particle&, sf::Time)>) = &thor::ParticleSystem::addAffector;
@@ -155,6 +156,7 @@ void LuaInit_Game(sol::state& lua)
 		"getVelocity", &Projectile::GetVelocity,
 		"destroy", &Projectile::MarkForDestroy,
 		"setRotation", &Projectile::setRotation,
+		"rotate", &Projectile::rotate,
 		"getRotation", &Projectile::getRotation,
 		"isPlayerControlled", &Projectile::IsPlayerControlled,
 		"getWorldPosition", &Projectile::GetWorldPosition,
