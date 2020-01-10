@@ -3,11 +3,9 @@ local Gift = {
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
     rects = {
-        {14, 57, 9, 22},
-        {22, 56, 9, 22},
-        {31, 56, 9, 22}
+        {55, 56, 24, 18}
     },
-    iconRect = {0 + 56 * 2, 0, 56, 56},
+    iconRect = {56, 0, 56, 56},
 
     muzzleSound = {
         sound = 'Bullet',
@@ -26,54 +24,62 @@ local Gift = {
     },
 
 
-    scale = 1.1,
+    scale = 2,
     iconScale = 2,
     muzzleScale = 2,
     damage = 20,
-    fireRate = 0.05,
-    speed = 1000,
-    spreadAngle = 5,
+    fireRate = 2,
+    speed = 400,
+    spreadAngle = 0,
     ammoFont = 'Pixel',
     ammoTextSize = 30,
 
     start = function (this)
-        return { }
+        local lthis = { }
+        lthis.timer = 0
+        if math.random() < 0.5 then
+            lthis.direction = -1
+        else
+            lthis.direction = 1
+        end
+
+        return lthis
+    end,
+
+    fixedUpdate = function (lthis, this, dt)
+        this:rotate(lthis.direction * 800 * dt)
+
+        lthis.timer = lthis.timer + dt   
+        if lthis.timer > 2 then
+            this:destroy()
+        end
     end,
 
     onCollision = function (lthis, this, airplane)
         airplane:damage(this:getDamage())
         this:destroy()
+    end,
 
+    onDestroy = function (lthis, this)
         local pso = engine.ParticleSystem.new()
         pso:setPosition(this:getWorldPosition())
         local em = thor.UniversalEmitter.new()
-        em:setEmissionRate(20)
-        em:setParticleVelocity(thor.Distributions.circle(sf.Vector2f.new(0, 0), 20))
-        em:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.1)))
+        em:setEmissionRate(40)
+        em:setParticleVelocity(thor.Distributions.circle(sf.Vector2f.new(0, 0), 400))
+        em:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(2.5)))
         em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
-        em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 3))
+        em:setParticleRotationSpeed(thor.Distributions.floatUniform(-800, 800))
+        em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 2))
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 2))
         pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
-        pso.system:setTexture(this:getLevel():getTexture('Fragments'))
-        for i = 1, 4 do 
-            local rect = sf.IntRect.new()
-            rect.left = i * 5
-            rect.top = 0
-            rect.width = 5
-            rect.height = 5
-            pso.system:addTextureRect(rect)
-        end
+        pso.system:setTexture(this:getLevel():getTexture('Projectiles'))
+
+        pso.system:addTextureRect(sf.IntRect.new(13, 56, 10, 21))
+        pso.system:addTextureRect(sf.IntRect.new(23, 56, 8, 23))
+        pso.system:addTextureRect(sf.IntRect.new(31, 56, 8, 24))
+
         this:getLevel():addParticles(pso)
-    end,
-
-    onDestroy = function (lthis, this, reason) 
-        if (reason == DestroyReasons.CollidedWithEnemy) then
-            this:playAnimation('Explode')
-            return true --return true if you want to destroy after the animation finishes
-        end
-
-        return false --return false if you want to destroy after this function is called
     end
 }
 

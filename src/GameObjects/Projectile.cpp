@@ -181,7 +181,7 @@ void Projectile::MarkForDestroy()
 {
 	if (_data->onDestroy)
 	{
-		_data->onDestroy.value()(_luaObject, this);
+		Protect(_data->onDestroy.value()(_luaObject, this));
 	}
 	if (_playDestroySound)
 	{
