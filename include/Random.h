@@ -69,11 +69,11 @@ public:
 	template <class Generator>
 	sf::Vector2f operator()(Generator& generator)
 	{
-		float a = _distribution(generator) * 2.f * PIf;
-		float r = sqrt(_distribution(generator));
+		float theta = _distribution(generator) * 2.f * PIf;
+		float distance = sqrt(_distribution(generator));
 
-		float x = r * cos(a);
-		float y = r * sin(a);
+		float x = distance * cos(theta);
+		float y = distance * sin(theta);
 
 		return { x, y };
 	}
