@@ -1,15 +1,15 @@
-local Striker = {
-	name = 'Nosed Striker',
+local NosedOverlord = {
+	name = 'Nosed Overlord',
     texture = 'Airplanes',
-    hitpoints = 200,
-    leftRect = {0, 0, 54, 60},
-    idleRect = {54, 0, 56, 60},
-    rightRect = {110, 0, 54, 60},
+    hitpoints = 400,
+    leftRect = {0, 107, 43, 51},
+    idleRect = {43, 108, 57, 47},
+    rightRect = {100, 107, 43, 51},
     scale = 1,
-    speed = 200,
+    speed = 140,
     healthFont = 'Mont',
     healthCharSize = 24,
-    score = 20,
+    score = 30,
     collisionDamage = 100,
 
     switchSound = {
@@ -42,14 +42,21 @@ local Striker = {
 
     onDestroy = function (lthis, this)
         --if math.random() < 0.5 then
-        this:getLevel():shakeScreen(10, 0.2)
+        this:getLevel():shakeScreen(20, 0.4)
         --end
     end,
 
     start = function (this)
         return { }
-    end
+    end,
+
+    weapons = {
+        {
+            projectile = 'EnemyMissile',
+            ammo = 2
+        }
+    }
 }
 
 
-return Striker
+return NosedOverlord
