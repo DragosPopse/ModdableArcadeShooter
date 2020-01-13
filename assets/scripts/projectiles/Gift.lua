@@ -51,6 +51,7 @@ local Gift = {
 
         lthis.timer = lthis.timer + dt   
         if lthis.timer > 1.8 then
+            this:playDestroySound()
             this:destroy()
         end
     end,
@@ -80,6 +81,13 @@ local Gift = {
         pso.system:addTextureRect(sf.IntRect.new(31, 56, 8, 24))
 
         this:getLevel():addParticles(pso)
+
+        local command = engine.Command.new()
+        command.category = engine.GameObject.ENEMY_AIRPLANE
+        command.action = function (plane, dt) 
+            plane:damage(this:getDamage()) -- Damage all enemies on the screen
+        end
+        this:getLevel():getEnemyAirplanesRoot():onCommand(command, 0)
     end
 }
 
