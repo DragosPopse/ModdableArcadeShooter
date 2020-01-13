@@ -29,7 +29,6 @@ level.usedTextures = {
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
     {'Ship', 'assets/textures/Ship.png'},
     {'Snowflakes', 'assets/textures/Snowflakes.png'},
-    {'Sled', 'assets/textures/Sled.png'}
 }
 
 level.usedFonts = {
@@ -53,7 +52,10 @@ level.player = {
 
 level.usedAirplanes = {
     'Sled',
-    'NosedStriker'
+    'NosedStriker',
+    'NosedKamikaze',
+    'NosedStrikerWave1Left',
+    'NosedStrikerWave1Right'
 }
 
 
@@ -67,16 +69,64 @@ level.spawnPoints = {
 
 -- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', -100, 1690}
 -- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 100, 1690}
-for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {0, 1690}, 50)) do
+for i, v in ipairs(spawn.star('NosedKamikaze', {0, 1690 + 60})) do
     level.spawnPoints[#level.spawnPoints + 1] = v
-    print('spawn')
 end
 
+for i, v in ipairs(spawn.star('NosedKamikaze', {-300, 2000})) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.star('NosedKamikaze', {300, 2000})) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {0, 2400}, 120)) do
+    if i == 1 then
+        v[1] = 'NosedStrikerWave1Left'
+    elseif i == 3 then
+        v[1] = 'NosedStrikerWave1Right'
+    end
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
 -- Wave 2 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
 
 -- Wave 3 --
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 6400 + 900}
+--level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 6400 + 900}
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 7, {0, 7300}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 6, {0, 7300 + 50 * 1}, 120)) do
+    if i == 2 then
+        v[1] = 'NosedKamikaze'
+    end
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 5, {0, 7300 + 50 * 2}, 120)) do
+    if i == 4 then
+        v[1] = 'NosedKamikaze'
+    end
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 4, {0, 7300 + 50 * 3}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {0, 7300 + 50 * 4}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 2, {0, 7300 + 50 * 5}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedKamikaze', 1, {0, 7300 + 50 * 6}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
 
 -- Wave 4 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 9600 + 900}

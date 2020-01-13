@@ -11,7 +11,7 @@
 Pickup::Pickup(PickupData* data) :
 	_data(data),
 	_playingDestroyAnimation(false)
-{
+{ 
 }
 
 

@@ -1,16 +1,16 @@
-local Striker = {
-	name = 'Nosed Striker',
+local NosedKamikaze = {
+	name = 'Nosed Kamikaze',
     texture = 'Airplanes',
     hitpoints = 200,
-    leftRect = {0, 0, 54, 60},
-    idleRect = {54, 0, 56, 60},
-    rightRect = {110, 0, 54, 60},
+    leftRect = {0, 60, 42, 47},
+    idleRect = {42, 60, 45, 47},
+    rightRect = {87, 60, 42, 47},
     scale = 1,
     speed = 200,
     healthFont = 'Mont',
     healthCharSize = 24,
-    score = 20,
-    collisionDamage = 100,
+    score = 25,
+    collisionDamage = 50,
 
     switchSound = {
         sound = 'Switch',
@@ -41,9 +41,7 @@ local Striker = {
     },
 
     onDestroy = function (lthis, this)
-        --if math.random() < 0.5 then
         this:getLevel():shakeScreen(10, 0.2)
-        --end
     end,
 
     start = function (this)
@@ -51,5 +49,5 @@ local Striker = {
     end
 }
 
-
-return Striker
+    
+return NosedKamikaze

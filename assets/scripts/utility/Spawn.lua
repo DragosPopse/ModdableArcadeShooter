@@ -28,4 +28,15 @@ function spawn.centeredWall(planeType, count, middlePoint, distanceBetween)
 end
 
 
+function spawn.star(planeType, centerPosition) 
+  local result = { }
+  result[#result + 1] = {planeType, centerPosition[1], centerPosition[2] + 20}
+  result[#result + 1] = {planeType, centerPosition[1] + 70, centerPosition[2]}
+  result[#result + 1] = {planeType, centerPosition[1] - 70, centerPosition[2]}
+  result[#result + 1] = {planeType, centerPosition[1] - 50, centerPosition[2] - 20}
+  result[#result + 1] = {planeType, centerPosition[1] + 50, centerPosition[2] - 20}
+  return result
+end
+
+
 return spawn
