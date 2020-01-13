@@ -203,6 +203,9 @@ void LuaInit_Game(sol::state& lua)
 		sol::constructors<UniformVector2fDistribution(float, float)>());
 	engineTable.get<sol::table>("UniformVector2fDistribution").set_function("create", &UniformVector2fDistribution::Create);
 
+	engineTable.new_usertype<AnnulusDistribution>("AnnulusDistribution",
+		sol::constructors<AnnulusDistribution(float, float)>());
+	engineTable.get<sol::table>("AnnulusDistribution").set_function("create", &AnnulusDistribution::Create);
 	void(ParticleSystemObject::*setPosition1)(float, float) = &ParticleSystemObject::setPosition;
 	void(ParticleSystemObject::*setPosition2)(const sf::Vector2f&) = &ParticleSystemObject::setPosition;
 	engineTable.new_usertype<ParticleSystemObject>("ParticleSystem",

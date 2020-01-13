@@ -37,7 +37,6 @@ void SeedLua(sol::state& lua);
 //This converts to a thor::Distribution 
 class UniformVector2fDistribution
 {
-	std::mt19937 _generator;
 	std::uniform_real_distribution<float> _distr;
 public:
 	UniformVector2fDistribution(float min, float max);
@@ -77,5 +76,46 @@ public:
 		float y = r * sin(a);
 
 		return { x, y };
+	}
+};
+
+/*
+	Returns points inside an annulus. 
+	This can be used for particles to specify a Circle Distribution that also has a minimum speed
+	https://stackoverflow.com/questions/13064912/generate-a-uniformly-random-point-within-an-annulus-ring
+*/
+class AnnulusDistribution
+{
+	std::uniform_real_distribution<float> _distribution;
+	float _innerRadius;
+	float _outerRadius;
+
+public:
+	AnnulusDistribution(float innerRadius, float outerRadius) :
+		_distribution(0.f, 1.f),
+		_innerRadius(innerRadius),
+		_outerRadius(outerRadius)
+	{
+	}
+
+	template <class Generator>
+	sf::Vector2f operator()(Generator generator)
+	{
+		float theta = 2.f * PIf * _distribution(generator);
+		float distance = sqrt(_distribution(generator) * (_innerRadius * _innerRadius - _outerRadius * _outerRadius) + _outerRadius * _outerRadius);
+
+		float x = distance * cos(theta);
+		float y = distance * sin(theta);
+		return { x, y };
+	}
+
+	sf::Vector2f operator()()
+	{
+		return operator()(RNG);
+	}
+
+	static thor::Distribution<sf::Vector2f> Create(float innerRadius, float outerRadius)
+	{
+		return AnnulusDistribution(innerRadius, outerRadius);
 	}
 };
