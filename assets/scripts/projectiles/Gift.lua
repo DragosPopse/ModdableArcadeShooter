@@ -28,7 +28,7 @@ local Gift = {
     iconScale = 2,
     muzzleScale = 2,
     damage = 200,
-    fireRate = 1.2,
+    fireRate = 1,
     speed = 400,
     spreadAngle = 0,
     ammoFont = 'Pixel',
@@ -122,7 +122,7 @@ local Gift = {
                         end
                     end
                     this:getLevel():getEnemyAirplanesRoot():onCommand(command, 0)
-                    if closestAirplane and closestDistance < 150 then
+                    if closestAirplane and closestDistance < 200 then
                         print("CLOSE ENEMY: " .. closestDistance)
                         closestAirplane:setAction(this:getAction(), function () 
                             local params = { }
