@@ -123,15 +123,12 @@ local Gift = {
                     end
                     this:getLevel():getEnemyAirplanesRoot():onCommand(command, 0)
                     if closestAirplane and closestDistance < 200 then
-                        print("CLOSE ENEMY: " .. closestDistance)
                         closestAirplane:setAction(this:getAction(), function () 
                             local params = { }
                             params.elapsedTime = 0
                             params.timeUntilDestroy = 0.2
                             return params
                         end)
-                    else
-                        print("NO CLOSE ENEMY: " .. closestDistance)
                     end
                     this:removeAction()
                     this:damage(9999)
