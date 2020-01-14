@@ -49,11 +49,11 @@ local Gift = {
     fixedUpdate = function (lthis, this, dt)
         this:rotate(lthis.direction * 800 * dt)
 
-        lthis.timer = lthis.timer + dt   
-        if lthis.timer > 1.8 then
-            this:playDestroySound()
-            this:destroy()
-        end
+        --lthis.timer = lthis.timer + dt   
+        --if lthis.timer > 1.8 then
+            --this:playDestroySound()
+            --this:destroy()
+        --end
     end,
 
     onCollision = function (lthis, this, airplane)
