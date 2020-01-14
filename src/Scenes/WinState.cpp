@@ -122,7 +122,7 @@ WinState::WinState(Context* context, Level* level) :
 	{
 		if (pair.second != 0)
 		{
-			currentScore += _level->_airplaneDataDict[pair.first].score * pair.second;
+			currentScore += _level->_airplaneScores[pair.first] * pair.second;
 			_score->AddIncrement(currentScore);
 			if (pair.second == 1)
 			{

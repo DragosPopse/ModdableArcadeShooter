@@ -201,6 +201,7 @@ Level::Level(Context* context, const std::string& path) :
 		apdata.name = Protect<std::string>(plane["name"]);
 		_enemiesDowned[apdata.name] = 0;
 		apdata.score = Protect<int>(plane["score"]);
+		_airplaneScores[apdata.name] = apdata.score;
 		apdata.hitpoints = Protect<int>(plane["hitpoints"]);
 		apdata.idleRect = TableToRect(Protect<sol::table>(plane["idleRect"]));
 		apdata.rightRect = TableToRect(Protect<sol::table>(plane["rightRect"]));

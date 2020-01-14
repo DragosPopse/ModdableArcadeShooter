@@ -240,6 +240,11 @@ void Airplane::FixedUpdate(float dt)
 
 		UpdateWeaponVisibility(dt);
 	}
+
+	if (_luaAction)
+	{
+		_luaAction.value()(this, dt, _actionParam);
+	}
 	GameObject::FixedUpdate(dt);
 }
 
@@ -641,4 +646,30 @@ void Airplane::MarkForDestroy()
 	}
 	_unownedChildren.clear();
 	GameObject::MarkForDestroy();
+}
+
+
+void Airplane::SetAction(const sol::function& action, const sol::function& init)
+{
+	_luaAction = action;
+	_actionParam = init();
+	_actionInit = init;
+}
+
+
+void Airplane::RemoveAction()
+{
+	_luaAction.reset();
+}
+
+
+sol::function Airplane::GetAction() const
+{
+	return _luaAction.value();
+}
+
+
+sol::function Airplane::GetActionInit() const
+{
+	return _actionInit;
 }
