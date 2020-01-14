@@ -123,6 +123,7 @@ class Level :
 	int _highScore;
 	
 	std::map<std::string, int> _enemiesDowned;
+	std::map<std::string, int> _airplaneScores;
 	std::string _defaultFont;
 
 	bool _win;

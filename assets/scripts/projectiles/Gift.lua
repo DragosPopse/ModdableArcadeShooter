@@ -28,7 +28,7 @@ local Gift = {
     iconScale = 2,
     muzzleScale = 2,
     damage = 200,
-    fireRate = 1.2,
+    fireRate = 1,
     speed = 400,
     spreadAngle = 0,
     ammoFont = 'Pixel',
@@ -57,7 +57,6 @@ local Gift = {
     end,
 
     onCollision = function (lthis, this, airplane)
-        airplane:damage(this:getDamage())
         this:destroy()
     end,
 
@@ -82,12 +81,65 @@ local Gift = {
 
         this:getLevel():addParticles(pso)
 
+        local closestAirplane = nil
+        local closestDistance = 99999
         local command = engine.Command.new()
         command.category = engine.GameObject.ENEMY_AIRPLANE
         command.action = function (plane, dt) 
-            plane:damage(this:getDamage()) -- Damage all enemies on the screen
+            local distance = engine.distance(plane:getWorldPosition(), this:getWorldPosition())
+            if distance < closestDistance then
+                closestDistance = distance
+                closestAirplane = plane
+            end
         end
+
         this:getLevel():getEnemyAirplanesRoot():onCommand(command, 0)
+
+        if closestAirplane then
+
+            local actionInit = function () 
+                local params = { }
+                params.elapsedTime = 0
+                params.timeUntilDestroy = 0
+                return params
+            end
+
+            local airplaneAction = function (this, dt, params)
+                params.elapsedTime = params.elapsedTime + dt
+                if (params.elapsedTime > params.timeUntilDestroy) then
+                    local thisPosition = this:getWorldPosition()
+                    local closestAirplane = nil
+                    local closestDistance = 99999
+                    local command = engine.Command.new()
+                    command.category = engine.GameObject.ENEMY_AIRPLANE
+                    command.action = function (plane, dt)
+                        if plane ~= this and not plane:isDestroyed() then
+                            local distance = engine.distance(plane:getWorldPosition(), thisPosition)
+                            if distance < closestDistance then
+                                closestDistance = distance
+                                closestAirplane = plane
+                            end
+                        end
+                    end
+                    this:getLevel():getEnemyAirplanesRoot():onCommand(command, 0)
+                    if closestAirplane and closestDistance < 200 then
+                        print("CLOSE ENEMY: " .. closestDistance)
+                        closestAirplane:setAction(this:getAction(), function () 
+                            local params = { }
+                            params.elapsedTime = 0
+                            params.timeUntilDestroy = 0.2
+                            return params
+                        end)
+                    else
+                        print("NO CLOSE ENEMY: " .. closestDistance)
+                    end
+                    this:removeAction()
+                    this:damage(9999)
+                end
+            end
+
+            closestAirplane:setAction(airplaneAction, actionInit)
+        end
     end
 }
 

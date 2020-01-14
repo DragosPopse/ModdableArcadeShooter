@@ -115,6 +115,9 @@ class Airplane :
 	bool _fadingIn;
 
 	sol::table _luaObject;
+	sol::optional<sol::function> _luaAction;
+	sol::table _actionParam;
+	sol::function _actionInit;
 
 public:
 	Airplane(AirplaneData* data);
@@ -157,6 +160,11 @@ public:
 	int GetCollisionDamage() const { return _data->collisionDamage; }
 
 	void MarkForDestroy() override;
+
+	void SetAction(const sol::function& action, const sol::function& init);
+	void RemoveAction();
+	sol::function GetAction() const;
+	sol::function GetActionInit() const;
 
 private:
 	void UpdateHealthDisplay();
