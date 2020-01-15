@@ -78,10 +78,10 @@ void CircleCooldown::Update(float dt)
 }
 
 
-void CircleCooldown::BeginAnimation(float duration)
+void CircleCooldown::BeginAnimation(float duration, float start)
 {
 	_duration = duration;
-	_elapsedTime = 0;
+	_elapsedTime = start;
 	_animationRunning = true;
 }
 

@@ -33,7 +33,7 @@ public:
 
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void BeginAnimation(float duration);
+	void BeginAnimation(float duration, float start = 0.f);
 	void StopAnimation() { _animationRunning = false; }
 
 	void SetColor(const sf::Color& color);
