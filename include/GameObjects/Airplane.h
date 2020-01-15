@@ -87,7 +87,7 @@ class Airplane :
 	std::vector<int> _ammo;
 	int _currentWeaponIndex;
 	bool _playerControlled;
-	float _cooldown;
+	std::vector<float> _cooldowns;
 	
 	int _moveX;
 	int _moveY;

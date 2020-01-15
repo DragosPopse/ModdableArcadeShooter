@@ -56,7 +56,6 @@ Airplane::Airplane(AirplaneData* data) :
 	_hitpoints(data->hitpoints),
 	_currentWeaponIndex(0),
 	_playerControlled(false),
-	_cooldown(0.f),
 	_moveX(0),
 	_moveY(0),
 	_moved(false),
@@ -79,6 +78,7 @@ Airplane::Airplane(AirplaneData* data) :
 	for (int i = 0; i < static_cast<int>(_data->ammo.size()); i++)
 	{
 		_ammo.push_back(_data->ammo[i]);
+		_cooldowns.push_back(_data->weapons[i]->fireRate);
 	}
 }
 
@@ -104,7 +104,6 @@ void Airplane::Start(Scene* scene)
 	if (!_playerControlled)
 	{
 		_healthText->setRotation(180);
-		_cooldown = 100000.f; //Start firing instantly
 	}
 	else
 	{
@@ -145,7 +144,10 @@ void Airplane::Start(Scene* scene)
 
 void Airplane::Update(float dt)
 {
-	_cooldown += dt;
+	for (auto& cooldown : _cooldowns)
+	{
+		cooldown += dt;
+	}
 	if (_startDmgAnimation)
 	{
 		_dmgAnimationActive = true;
@@ -374,7 +376,6 @@ unsigned int Airplane::GetCategory() const
 
 void Airplane::NextWeapon()
 {
-	_cooldown = 0;
 	_currentWeaponIndex++;
 	if (_currentWeaponIndex >= static_cast<int>(_ammo.size()))
 	{
@@ -392,7 +393,6 @@ void Airplane::NextWeapon()
 
 void Airplane::PreviousWeapon()
 {
-	_cooldown = 0;
 	_currentWeaponIndex--;
 	if (_currentWeaponIndex < 0)
 	{
@@ -414,9 +414,9 @@ void Airplane::Fire()
 	{
 		return;
 	}
-	if ((_ammo[_currentWeaponIndex] > 0 || _ammo[_currentWeaponIndex] < 0) && _cooldown > _data->weapons[_currentWeaponIndex]->fireRate)
+	if ((_ammo[_currentWeaponIndex] > 0 || _ammo[_currentWeaponIndex] < 0) && _cooldowns[_currentWeaponIndex] > _data->weapons[_currentWeaponIndex]->fireRate)
 	{
-		_cooldown = 0;
+		_cooldowns[_currentWeaponIndex] = 0.f;
 		_ammo[_currentWeaponIndex]--;
 
 		ProjectileData* projectileData = _data->weapons[_currentWeaponIndex];
@@ -542,7 +542,7 @@ void Airplane::UpdateCooldownDisplay()
 {
 	if (_data->weapons[_currentWeaponIndex]->fireRate > 0.1)
 	{
-		_cooldownDisplay->BeginAnimation(_data->weapons[_currentWeaponIndex]->fireRate);
+		_cooldownDisplay->BeginAnimation(_data->weapons[_currentWeaponIndex]->fireRate, _cooldowns[_currentWeaponIndex]);
 	}
 	else
 	{
