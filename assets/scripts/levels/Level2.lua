@@ -55,7 +55,10 @@ level.usedAirplanes = {
     'NosedStriker',
     'NosedKamikaze',
     'NosedStrikerWave1Left',
-    'NosedStrikerWave1Right'
+    'NosedStrikerWave1Right',
+    'NosedStrikerWave1LeftF',
+    'NosedStrikerWave1RightF',
+    'NosedkamikazeFast'
 }
 
 
@@ -89,6 +92,29 @@ for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {0, 2400}, 120)) do
     end
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {-300, 2700}, 70)) do
+    if i == 3 then
+        v[1] = 'NosedStrikerWave1LeftF'
+    end
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {300, 2700}, 70)) do
+    if i == 1 then
+        v[1] = 'NosedStrikerWave1RightF'
+    end
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedkamikazeFast', 0, 2900}
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStrikerWave1LeftF', -350, 3000}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStrikerWave1RightF', 350, 3000}
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedkamikazeFast', 0, 3400}
+
+
 -- Wave 2 --
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
 
