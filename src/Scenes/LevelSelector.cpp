@@ -82,7 +82,7 @@ LevelSelector::LevelSelector(Context* context, MainMenu* menu) :
 		else
 		{
 			title = file;
-			previewImage = "assets/textures/levels/Level1.png";
+			previewImage = "assets/textures/levels/Error.png";
 		}
 		_levelData.emplace_back(file, title, previewImage, highScore, good);
 

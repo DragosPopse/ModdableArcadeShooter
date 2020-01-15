@@ -1,18 +1,12 @@
-local Jellybean = {
+local Lollipop = {
     texture = 'Projectiles',
     iconTexture = 'Projectiles',
     muzzleRect = {0, 57, 13, 19},
     rects = {
-        {0, 80, 7, 11},
-        {7, 80, 9, 12},
-        {16, 80, 10, 14},
-        {26, 80, 9, 12},
-        {140, 0, 7, 11},
-        {131, 0, 9, 12},
-        {121, 0, 10, 14},
-        {112, 0, 9, 12}
+        {39, 56, 17, 31},
+        {112, 14, 18, 31}
     },
-    iconRect = {147, 0, 56, 56},
+    iconRect = {0, 0, 56, 56},
 
     muzzleSound = {
         sound = 'Bullet',
@@ -31,13 +25,13 @@ local Jellybean = {
     },
 
 
-    scale = 1.7,
+    scale = 1.1,
     iconScale = 2,
     muzzleScale = 2,
-    damage = 25,
-    fireRate = 0.05,
-    speed = 1000,
-    spreadAngle = 5,
+    damage = 20,
+    fireRate = 1.25,
+    speed = 920,
+    spreadAngle = 0,
     ammoFont = 'Pixel',
     ammoTextSize = 30,
 
@@ -52,4 +46,4 @@ local Jellybean = {
 }
 
 
-return Jellybean
+return Lollipop

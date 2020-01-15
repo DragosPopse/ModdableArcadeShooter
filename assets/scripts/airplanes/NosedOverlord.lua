@@ -6,7 +6,7 @@ local NosedOverlord = {
     idleRect = {43, 108, 57, 47},
     rightRect = {100, 107, 43, 51},
     scale = 1,
-    speed = 140,
+    speed = 120,
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 30,
@@ -52,8 +52,8 @@ local NosedOverlord = {
 
     weapons = {
         {
-            projectile = 'EnemyMissile',
-            ammo = 2
+            projectile = 'EnemyTargetedLollipop',
+            ammo = 4
         }
     }
 }
