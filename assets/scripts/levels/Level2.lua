@@ -58,9 +58,31 @@ level.usedAirplanes = {
     'NosedStrikerWave1Right',
     'NosedStrikerWave1LeftF',
     'NosedStrikerWave1RightF',
-    'NosedkamikazeFast'
+    'NosedkamikazeFast',
+    'NosedKamikazeWave2Right',
+    'NosedKamikazeWave2Left',
+    'NosedStrikerWave2F',
+    'NosedOverlord',
+    'NosedStrikerF'
 }
 
+function spawn.smallTree(baseX, baseY)
+    for i, v in ipairs(spawn.centeredWall('NosedStriker', 4, {baseX, baseY}, 90)) do
+        level.spawnPoints[#level.spawnPoints + 1] = v 
+    end
+    
+    for i, v in ipairs(spawn.centeredWall('NosedStriker', 3, {baseX, baseY + 30}, 90)) do
+        level.spawnPoints[#level.spawnPoints + 1] = v 
+    end
+    
+    for i, v in ipairs(spawn.centeredWall('NosedStriker', 2, {baseX, baseY + 60}, 90)) do
+        level.spawnPoints[#level.spawnPoints + 1] = v 
+    end
+    
+    for i, v in ipairs(spawn.centeredWall('NosedKamikaze', 1, {baseX, baseY + 90}, 90)) do
+        level.spawnPoints[#level.spawnPoints + 1] = v 
+    end
+end
 
  -- SPAWNS --
 
@@ -72,7 +94,7 @@ level.spawnPoints = {
 
 -- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', -100, 1690}
 -- level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 100, 1690}
-for i, v in ipairs(spawn.star('NosedKamikaze', {0, 1690 + 60})) do
+for i, v in ipairs(spawn.star('NosedKamikaze', {0, 1690})) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
@@ -116,7 +138,25 @@ level.spawnPoints[#level.spawnPoints + 1] = {'NosedkamikazeFast', 0, 3400}
 
 
 -- Wave 2 --
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
+
+--level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 4100}
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2Left', -350, 4100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2Right', 350, 4100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedkamikazeFast', 0, 4200}
+
+for i, v in ipairs(spawn.centeredWall('NosedStrikerWave2F', 2, {0, 4400}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 2, {0, 4420}, 200)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedOverlord', -350, 4490}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedOverlord', 350, 4520}
+
+
 
 -- Wave 3 --
 --level.spawnPoints[#level.spawnPoints + 1] = {'NosedStriker', 0, 6400 + 900}
@@ -152,6 +192,47 @@ end
 
 for i, v in ipairs(spawn.centeredWall('NosedKamikaze', 1, {0, 7300 + 50 * 6}, 120)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedStriker', 8, {0, 7700}, 90)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v 
+end
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedOverlord', 0, 7800}
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2Left', -200, 7900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2Right', 200, 7900}
+
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 4, {0, 8050}, 120)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v 
+end
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStrikerWave1LeftF', -400, 8200}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStrikerWave1RightF', 400, 8200}
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedStrikerF', 0, 8250}
+
+spawn.smallTree(240, 8350)
+spawn.smallTree(-240, 8450)
+spawn.smallTree(240, 8550)
+spawn.smallTree(-240, 8650)
+spawn.smallTree(240, 8750)
+spawn.smallTree(-240, 8850)
+spawn.smallTree(240, 8950)
+spawn.smallTree(-240, 9050)
+
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedOverlord', 0, 9300}
+
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 4, {-240, 9350}, 70)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v 
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 4, {240, 9350}, 70)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v 
+end
+
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 5, {0, 9750}, 70)) do
+    level.spawnPoints[#level.spawnPoints + 1] = v 
 end
 
 -- Wave 4 --

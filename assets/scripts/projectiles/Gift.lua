@@ -28,7 +28,7 @@ local Gift = {
     iconScale = 2,
     muzzleScale = 2,
     damage = 200,
-    fireRate = 1,
+    fireRate = 0.9,
     speed = 400,
     spreadAngle = 0,
     ammoFont = 'Pixel',
@@ -67,7 +67,7 @@ local Gift = {
             local pso = engine.ParticleSystem.new()
             pso:setPosition(this:getWorldPosition())
             local em = thor.UniversalEmitter.new()
-            em:setEmissionRate(40)
+            em:setEmissionRate(120)
             em:setParticleVelocity(engine.AnnulusDistribution.create(300 ,400))
             em:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(2.5)))
             em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
