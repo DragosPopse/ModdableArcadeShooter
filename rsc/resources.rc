@@ -1,1 +1,7 @@
 id ICON "game.ico"
+MAINICON ICON "game.ico"
+desk1 ICON "game.ico"
+11 ICON "game.ico"
+IDI_ICON1 ICON DISCARDABLE "game.ico"
+#define MAIN_ICON                       102
+MAIN_ICON               ICON                    "game.ico"
