@@ -100,14 +100,14 @@ local Gift = {
     
             if closestAirplane then
     
-                local actionInit = function () 
+                local actionInit = function (lthis, this) 
                     local params = { }
                     params.elapsedTime = 0
                     params.timeUntilDestroy = 0
                     return params
                 end
     
-                local airplaneAction = function (this, dt, params)
+                local airplaneAction = function (lthis, this, dt, params)
                     params.elapsedTime = params.elapsedTime + dt
                     if (params.elapsedTime > params.timeUntilDestroy) then
                         local thisPosition = this:getWorldPosition()

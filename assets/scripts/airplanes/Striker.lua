@@ -10,7 +10,7 @@ local Striker = {
     healthFont = 'Mont',
     healthCharSize = 24,
     score = 20,
-    collisionDamage = 100,
+    collisionDamage = 50,
 
     switchSound = {
         sound = 'Switch',
