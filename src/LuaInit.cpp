@@ -202,7 +202,8 @@ void LuaInit_Game(sol::state& lua)
 		"getTexture", &Level::GetTexture,
 		"addParticles", &Level::AddLuaParticle,
 		"playVignetteAnimation", &Level::PlayVignetteAnimation,
-		"shakeScreen", &Level::ShakeScreen);
+		"shakeScreen", &Level::ShakeScreen,
+		"playSound", &Level::PlaySoundFromLua);
 
 	engineTable.new_usertype<UniformVector2fDistribution>("UniformVector2fDistribution",
 		sol::constructors<UniformVector2fDistribution(float, float)>());

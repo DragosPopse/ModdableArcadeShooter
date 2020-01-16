@@ -189,6 +189,8 @@ public:
 
 	GameObject* GetRoot() { return _root.get(); }
 
+	void PlaySoundFromLua(const sol::table& table);
+
 private:
 	void SpawnObjects();
 	void RemoveOffScreenObjects(float dt);

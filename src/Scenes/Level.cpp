@@ -1072,3 +1072,14 @@ void Level::ShakeScreen(float amplitude, float duration)
 {
 	_shaker.Shake(amplitude, duration);
 }
+
+
+void Level::PlaySoundFromLua(const sol::table& table)
+{
+	RandomizedSound sound;
+	sound.SetBuffer(&_sounds[table["sound"]]);
+	sound.SetPitchDistribution(table["minPitch"], table["maxPitch"]);
+	sound.SetVolumeFactorDistribution(table["minVolumeFactor"], table["maxVolumeFactor"]);
+	auto result = sound(_context->player->GetSfxVolume());
+	PlaySound(*result.buffer, result.volume, result.pitch);
+}
