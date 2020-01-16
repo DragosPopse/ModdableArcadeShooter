@@ -245,7 +245,7 @@ void Airplane::FixedUpdate(float dt)
 
 	if (_luaAction)
 	{
-		_luaAction.value()(this, dt, _actionParam);
+		_luaAction.value()(_luaObject, this, dt, _actionParam);
 	}
 	GameObject::FixedUpdate(dt);
 }
@@ -652,7 +652,7 @@ void Airplane::MarkForDestroy()
 void Airplane::SetAction(const sol::function& action, const sol::function& init)
 {
 	_luaAction = action;
-	_actionParam = init();
+	_actionParam = init(_luaObject, this);
 	_actionInit = init;
 }
 

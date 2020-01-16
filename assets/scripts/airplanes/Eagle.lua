@@ -66,12 +66,31 @@ local Eagle = {
 
         lthis.particleSystem.system:addAffector(lthis.fadeAffector)
         this:addChild(lthis.particleSystem)
+
+
+        lthis.fireSystem = engine.ParticleSystem.new()
+        lthis.fireSystem.system:setTexture(this:getLevel():getTexture('Fire'))
+        lthis.fireEmitter = thor.UniversalEmitter.new()
+        lthis.fireEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
+        lthis.fireEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 2.5))
+        lthis.fireEmitter:setEmissionRate(60)
+        lthis.fireEmitter:setParticleVelocity(thor.Distributions.deflect(sf.Vector2f.new(0, 200), 10))
+        lthis.fireEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(1)))
+
+        for i = 0, 4 do
+            lthis.fireSystem.system:addTextureRect(sf.IntRect.new(i * 4, 12, 4, 4))
+        end
+
+        lthis.fireAffector = thor.AnimationAffector.new(fade)
+
+        lthis.particleSystem.system:addAffector(lthis.fireAffector)
+        this:addChild(lthis.fireSystem)
     
         return lthis
     end,
 
     onDamage = function (lthis, this)
-        if (not lthis.isDamaged and this:getHealth() < 50) then
+        if (not lthis.isDamaged and this:getHealth() < 100) then
             lthis.particleSystem:addEmitter(lthis.emitter, sf.seconds(0), 0, 25)
             lthis.isDamaged = true
         end

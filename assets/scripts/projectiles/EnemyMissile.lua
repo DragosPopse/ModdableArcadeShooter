@@ -3,7 +3,7 @@ local EnemyMissile = dofile('assets/scripts/projectiles/HomingMissile.lua')
 EnemyMissile.speed = 300
 EnemyMissile.spreadAngle = 0
 EnemyMissile.fireRate = 3.5
-EnemyMissile.damage = 40
+EnemyMissile.damage = 30
 
 EnemyMissile.start = function (this)
     local lthis = { }
@@ -56,6 +56,35 @@ EnemyMissile.fixedUpdate = function (lthis, this, dt)
         this:playDestroySound()
         this:destroy()
     end
+end
+
+function EnemyMissile.onCollision(lthis, this, airplane)
+    airplane:damage(this:getDamage())
+    local init = function (lthis, this) 
+        local params = { }
+        params.elapsedTime = 0
+        params.count = 0
+        params.tickDuration = 0.7
+        params.ticks = 4
+        params.tickDamage = 5
+        lthis.fireSystem:addEmitter(lthis.fireEmitter, sf.seconds(0), 0, 25)
+        return params
+    end
+    local action = function (lthis, this, dt, params)
+        params.elapsedTime = params.elapsedTime + dt
+        if params.elapsedTime > params.tickDuration then
+            params.count = params.count + 1
+            this:damage(params.tickDamage)
+            params.elapsedTime = 0     
+            if params.count == params.ticks then
+                lthis.fireSystem.system:clearEmitters()
+                this:removeAction()
+            end
+        end
+    end
+    
+    airplane:setAction(action, init)
+    this:destroy()
 end
 
 
