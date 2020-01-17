@@ -213,7 +213,7 @@ level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 4
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -400, 6500}
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 400, 6500}
 
-for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 5, {0, 6600}, 200)) do
+for i, v in ipairs(spawn.centeredWall('NosedkamikazeFast', 5, {0, 6600}, 120)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
