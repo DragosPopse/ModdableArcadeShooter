@@ -645,6 +645,10 @@ void Airplane::MarkForDestroy()
 		_level->GetRoot()->AddUnownedChild(std::move(userdata));
 	}
 	_unownedChildren.clear();
+	if (_data->clean)
+	{
+		_data->clean.value()(_luaObject, this);
+	}
 	GameObject::MarkForDestroy();
 }
 

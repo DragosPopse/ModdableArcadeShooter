@@ -66,6 +66,8 @@ level.usedAirplanes = {
     'NosedStrikerF',
     'NosedKamikazeWave4',
     'NosedKamikazeWave4Left',
+    'NosedKamikazeWave4Left0P',
+    'NosedKamikazeWave4Right0P',
     'NosedKamikazeWave4Right',
     'NosedKamikazeWave4PatternLeft',
     'NosedKamikazeWave4PatternRight',
@@ -187,8 +189,8 @@ for i, v in ipairs(spawn.centeredWall('NosedKamikazeFast', 2, {0, 5300}, 100)) d
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 5400}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 300, 5500}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 5400}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 5500}
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeFast', 0, 5600}
 
 
@@ -340,15 +342,15 @@ for i, v in ipairs(spawn.centeredWall('NosedKamikazeWave4', 3, {0, 11700}, 200))
     level.spawnPoints[#level.spawnPoints + 1] = v 
 end
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 11800}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 300, 11850}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 11900}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 300, 11950}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 12000}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 300, 12050}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 12100}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 300, 12150}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -300, 12200}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 11800}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 11850}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 11900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 11950}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 12000}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 12050}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 12100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 12150}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 12200}
 
 
 -- Wave 5 --
@@ -437,24 +439,24 @@ for i, v in ipairs(spawn.centeredWall('NosedKamikazeWave4', 3, {0, 15600}, 200))
     elseif i == 3 then
         v[1] = 'NosedKamikazeWave4PatternLeft'
     end
-    level.spawnPoints[#level.spawnPoints + 1] = v 
+    --level.spawnPoints[#level.spawnPoints + 1] = v 
 end
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right', 400, 15700}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left', -400, 15800}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Right0P', 300, 15700}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave4Left0P', -300, 15800}
 
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -400, 15900}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 400, 15900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -300, 15900}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 300, 15900}
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeFast', 0, 15900}
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -400, 16100}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 400, 16100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -300, 16100}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 300, 16100}
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeFast', 0, 16100}
 
 
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -400, 16300}
-level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 400, 16300}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternLeft', -300, 16300}
+level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeWave2PatternRight', 300, 16300}
 level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeFast', 0, 16300}
 
 

@@ -6,11 +6,6 @@
 #include <Thor/Particles.hpp>
 
 
-struct ParticleSystemData
-{
-
-};
-
 
 class ParticleSystemObject :
 	public GameObject

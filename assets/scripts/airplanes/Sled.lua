@@ -1,7 +1,7 @@
 local Sled = {
 	name = 'Sled',
     texture = 'Airplanes',
-    hitpoints = 200,
+    hitpoints = 9999999,
     leftRect = {0, 158, 55, 48},
     idleRect = {55, 158, 64, 40},
     rightRect = {119, 158, 55, 48},
@@ -44,26 +44,6 @@ local Sled = {
     },
 
     start = function (this)
-        local snowflakes = engine.ParticleSystem.new()
-        snowflakes.system:setTexture(this:getLevel():getTexture('Snowflakes'))
-        local emitter = thor.UniversalEmitter.new()
-        emitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
-        emitter:setParticleScale(engine.UniformVector2fDistribution.create(1, 1.5))
-        emitter:setEmissionRate(40)
-        emitter:setParticleVelocity(thor.Distributions.deflect(sf.Vector2f.new(0, 200), 10))
-        emitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(1)))
-
-        for i = 0, 4 do 
-            snowflakes.system:addTextureRect(sf.IntRect.new(i * 15, 0, 15, 19))
-        end
-
-        local fade = thor.FadeAnimation.new(0, 0.5)
-        local fadeAffector = thor.AnimationAffector.new(fade)
-
-        snowflakes:addEmitter(emitter, sf.seconds(0), 0, 40)
-        snowflakes.system:addAffector(fadeAffector)
-        
-        this:addChild(snowflakes)
         return { } 
     end,
 
