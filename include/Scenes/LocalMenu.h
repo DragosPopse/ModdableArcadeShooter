@@ -100,6 +100,8 @@ class LocalMenu :
 	
 	sf::Sound _click;
 
+	bool _initialized;
+
 public:
 	LocalMenu(Context* context);
 

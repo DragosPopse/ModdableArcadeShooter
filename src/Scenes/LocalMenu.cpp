@@ -16,7 +16,8 @@ LocalMenu::LocalMenu(Context* context) :
 	_pop(this),
 	_idle(this),
 	_highestAlpha(100),
-	_level(nullptr)
+	_level(nullptr),
+	_initialized(false)
 {
 	_background.setPosition(0.f, 0.f);
 	_background.setSize(sf::Vector2f(static_cast<float>(_context->window->getSize().x), static_cast<float>(_context->window->getSize().y)));
@@ -71,7 +72,11 @@ bool LocalMenu::Render()
 
 void LocalMenu::Enable()
 {
-	_music.openFromFile(_level->_menuSoundtrack);
+	if (!_initialized)
+	{
+		_music.openFromFile(_level->_menuSoundtrack);
+		_initialized = true;
+	}
 	_music.setVolume(0.f);
 	_music.setPitch(_lowestPitch);
 	_music.setLoop(true);
@@ -84,7 +89,7 @@ void LocalMenu::Enable()
 void LocalMenu::Disable()
 {
 	_level->_timeScale = 1.f;
-	_music.stop();
+	_music.pause();
 	_context->music->setVolume(_context->player->GetMusicVolume());
 	_context->music->setPitch(1.f);
 	for (auto& sound : _level->_soundQueue)
