@@ -1,7 +1,7 @@
 local Sled = {
 	name = 'Sled',
     texture = 'Airplanes',
-    hitpoints = 9999999,
+    hitpoints = 200,
     leftRect = {0, 158, 55, 48},
     idleRect = {55, 158, 64, 40},
     rightRect = {119, 158, 55, 48},
