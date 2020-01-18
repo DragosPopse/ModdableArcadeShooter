@@ -218,6 +218,7 @@ Level::Level(Context* context, const std::string& path) :
 		sol::optional<sol::table> ammoTextColor = plane["ammoTextColor"];
 		sol::optional<sol::function> optionalOnDamage = plane["onDamage"];
 		sol::optional<sol::function> optionalOnHeal = plane["onHeal"];
+		sol::optional<sol::function> optionalClean = plane["clean"];
 		if (healthTextColor)
 		{
 			apdata.healthTextColor = TableToColor(healthTextColor.value());
@@ -238,7 +239,10 @@ Level::Level(Context* context, const std::string& path) :
 		{
 			apdata.onHeal = optionalOnHeal.value();
 		}
-
+		if (optionalClean)
+		{
+			apdata.clean = optionalClean.value();
+		}
 		sol::table explosionData = Protect<sol::table>(plane["explosionData"]);
 		sol::table explosionSizeTable = Protect<sol::table>(explosionData["frameSize"]);
 		int explosionSizeX = Protect<int>(explosionSizeTable[1]);

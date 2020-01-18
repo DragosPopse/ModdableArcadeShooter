@@ -1,4 +1,4 @@
-local Plane = dofile('assets/scripts/airplanes/NosedKamikazeFast.lua')
+local Plane = dofile('assets/scripts/airplanes/NosedKamikazeFast0P.lua')
 
 Plane.speed = 400
 Plane.hitpoints = 150

@@ -70,6 +70,7 @@ struct AirplaneData
 	sol::function start;
 	sol::optional<sol::function> onDamage;
 	sol::optional<sol::function> onHeal;
+	sol::optional<sol::function> clean;
 
 	int score = 0;
 };
