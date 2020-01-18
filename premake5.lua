@@ -78,6 +78,7 @@ project "ArcadeAirship"
 
     filter "configurations:Debug"
         symbols "On"
+        runtime "Debug"
         links 
         {
             "sfml-system-d",
@@ -90,6 +91,7 @@ project "ArcadeAirship"
 
     filter "configurations:Release"
         optimize "Full"
+        runtime "Release"
         links 
         {
             "sfml-system",
