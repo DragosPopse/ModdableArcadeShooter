@@ -1,12 +1,12 @@
 local pickup = {
     texture = 'Projectiles',
-    firstRect = {68, 94, 19, 19},
+    firstRect = {79, 56, 19, 19},
     frames = 7,
     frameDuration = 0.1,
     scale = 2,
 
     onPickupSound = {
-        sound = 'RocketPickup',
+        sound = 'GiftPickup',
         minPitch = 0.9,
         maxPitch = 1.12,
         minVolumeFactor = 1,
@@ -22,7 +22,7 @@ local pickup = {
     },
 
     onPickup = function (player)
-        player:addAmmo('HomingMissile', 2)
+        player:addAmmo('Gift', 2)
         player:getLevel():playVignetteAnimation(gl.Vec4.new(0.5, 0.3, 0, 1), 0.2, 0.8, 0.5, 0.5, 0.5, 0.5);
     end
 }

@@ -46,7 +46,14 @@ local NosedKamikaze = {
 
     start = function (this)
         return { }
-    end
+    end,
+
+    drops = {
+        {
+            pickup = 'SmallHealth',
+            dropRate = 30
+        }
+    }
 }
 
     

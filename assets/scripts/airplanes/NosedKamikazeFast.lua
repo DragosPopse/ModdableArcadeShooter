@@ -40,4 +40,15 @@ function Plane.clean(lthis, this)
     lthis.snowflakes:setRemoveAfterLifetime(2)
 end
 
+Plane.drops = {
+    {
+        pickup = 'SmallHealth',
+        dropRate = 40
+    },
+    {
+        pickup = 'GiftAmmo',
+        dropRate = 20
+    }
+}
+
 return Plane

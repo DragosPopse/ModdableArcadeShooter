@@ -1,14 +1,14 @@
 local pickup = {
     texture = 'Health',
-    firstRect = {0, 0, 19, 19},
+    firstRect = {0, 19, 19, 19},
     frames = 6,
     frameDuration = 0.1,
     scale = 2,
 
     onPickupSound = {
         sound = 'HealthPickup',
-        minPitch = 0.9,
-        maxPitch = 1.12,
+        minPitch = 0.8,
+        maxPitch = 0.9,
         minVolumeFactor = 1,
         maxVolumeFactor = 1,
     },
@@ -24,7 +24,7 @@ local pickup = {
 
 
     onPickup = function (player) 
-       player:addHealth(20)
+       player:addHealth(100)
        player:getLevel():playVignetteAnimation(gl.Vec4.new(0, 1, 0, 1), 0.2, 0.8, 0.5, 0.5, 0.5, 0.5);
     end
 }

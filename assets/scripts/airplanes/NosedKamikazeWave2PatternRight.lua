@@ -8,4 +8,11 @@ Plane.aiPattern = {
     {0, 20000}
 }
 
+Plane.drops = {
+    {
+        pickup = 'BigHealth',
+        dropRate = 90
+    }
+}
+
 return Plane
