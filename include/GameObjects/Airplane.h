@@ -120,6 +120,8 @@ class Airplane :
 	sol::table _actionParam;
 	sol::function _actionInit;
 
+	bool _canDrop;
+
 public:
 	Airplane(AirplaneData* data);
 
@@ -166,6 +168,8 @@ public:
 	void RemoveAction();
 	sol::function GetAction() const;
 	sol::function GetActionInit() const;
+
+	void BlockDropChance();
 
 private:
 	void UpdateHealthDisplay();

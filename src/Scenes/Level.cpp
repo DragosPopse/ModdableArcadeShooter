@@ -943,6 +943,7 @@ void Level::HandleCollisions(float dt)
 			sf::FloatRect enemyRect = obj.GetBoundingRect();
 			if (enemyRect.intersects(playerRect))
 			{
+				obj.BlockDropChance(); //blocks any drops if player collides with enemy
 				obj.Damage(99999);
 				_playerAirplane->Damage(obj.GetCollisionDamage());
 			}
