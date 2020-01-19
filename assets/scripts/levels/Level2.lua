@@ -29,6 +29,7 @@ level.usedTextures = {
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
     {'Ship', 'assets/textures/Ship.png'},
     {'Snowflakes', 'assets/textures/Snowflakes.png'},
+    {'Health', 'assets/textures/Health.png'}
 }
 
 level.usedFonts = {
@@ -41,7 +42,8 @@ level.usedSounds = {
     {'Hit', 'assets/audio/sfx/OnDamage.wav'},
     {'Exp1', 'assets/audio/sfx/Exp1.wav'},
     {'Switch', 'assets/audio/sfx/Switch.wav'},
-    {'Pickup', 'assets/audio/sfx/RocketPickup.wav'}
+    {'GiftPickup', 'assets/audio/sfx/GiftPickup.wav'},
+    {'Health', 'assets/audio/sfx/Health.wav'},
 }
 
 level.usedPickups = { }
