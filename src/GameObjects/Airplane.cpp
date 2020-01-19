@@ -73,7 +73,8 @@ Airplane::Airplane(AirplaneData* data) :
 	_shader(nullptr),
 	_healthText(nullptr),
 	_weaponVisibilityElapsedTime(0.f),
-	_fadingIn(true)
+	_fadingIn(true),
+	_canDrop(true)
 {
 	for (int i = 0; i < static_cast<int>(_data->ammo.size()); i++)
 	{
@@ -297,16 +298,19 @@ void Airplane::Damage(int hp)
 		explosion->setRotation(randomRotation);
 		_level->AddExplosion(explosion);
 
-		//Spawn pickup if RNG is in your favor
-		randN = RandInt(1, 100);
-		for (int i = 0; i < static_cast<int>(_data->drops.size()); i++)
+		if (_canDrop)
 		{
-			if (randN <= _data->drops[i].dropRate)
+			//Spawn pickup if RNG is in your favor
+			randN = RandInt(1, 100);
+			for (int i = 0; i < static_cast<int>(_data->drops.size()); i++)
 			{
-				Pickup* pickup = new Pickup(_data->drops[i].pickup);
-				pickup->setPosition(GetWorldPosition());
-				_level->AddPickup(pickup);
-				break;
+				if (randN <= _data->drops[i].dropRate)
+				{
+					Pickup* pickup = new Pickup(_data->drops[i].pickup);
+					pickup->setPosition(GetWorldPosition());
+					_level->AddPickup(pickup);
+					break;
+				}
 			}
 		}
 
@@ -676,4 +680,10 @@ sol::function Airplane::GetAction() const
 sol::function Airplane::GetActionInit() const
 {
 	return _actionInit;
+}
+
+
+void Airplane::BlockDropChance()
+{
+	_canDrop = false;
 }
