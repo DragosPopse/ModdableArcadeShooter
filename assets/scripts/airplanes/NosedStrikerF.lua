@@ -7,4 +7,11 @@ Plane.weapons = {
 	}
 }
 
+Plane.drops = {
+	{
+		pickup = 'GiftAmmo',
+		dropRate = 40
+	}
+}
+
 return Plane

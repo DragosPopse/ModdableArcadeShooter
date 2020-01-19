@@ -55,6 +55,12 @@ local NosedOverlord = {
             projectile = 'EnemyTargetedLollipop',
             ammo = 4
         }
+    },
+    drops = {
+        {
+            pickup = 'GiftAmmo',
+            dropRate = 100
+        }
     }
 }
 

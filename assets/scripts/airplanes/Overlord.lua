@@ -55,6 +55,13 @@ local Overlord = {
             projectile = 'EnemyMissile',
             ammo = 2
         }
+    },
+
+    drops = {
+        {
+            pickup = 'BigHealth',
+            dropRate = 100
+        }
     }
 }
 

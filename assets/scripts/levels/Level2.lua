@@ -43,10 +43,14 @@ level.usedSounds = {
     {'Exp1', 'assets/audio/sfx/Exp1.wav'},
     {'Switch', 'assets/audio/sfx/Switch.wav'},
     {'GiftPickup', 'assets/audio/sfx/GiftPickup.wav'},
-    {'Health', 'assets/audio/sfx/Health.wav'},
+    {'HealthPickup', 'assets/audio/sfx/HealthPickup.wav'},
 }
 
-level.usedPickups = { }
+level.usedPickups = {
+    'SmallHealth',
+    'BigHealth',
+    'GiftAmmo'
+ }
 
 level.player = {
     airplane = 'Sled'
@@ -75,7 +79,8 @@ level.usedAirplanes = {
     'NosedKamikazeWave4PatternRight',
     'NosedKamikazeWave2PatternLeft',
     'NosedKamikazeWave2PatternRight',
-    'NosedOverlordStar'
+    'NosedOverlordStar',
+    'NosedKamikazeTopTree'
 }
 
 function spawn.smallTree(baseX, baseY)
@@ -91,7 +96,7 @@ function spawn.smallTree(baseX, baseY)
         level.spawnPoints[#level.spawnPoints + 1] = v 
     end
     
-    for i, v in ipairs(spawn.centeredWall('NosedKamikaze', 1, {baseX, baseY + 90}, 90)) do
+    for i, v in ipairs(spawn.centeredWall('NosedKamikazeTopTree', 1, {baseX, baseY + 90}, 90)) do
         level.spawnPoints[#level.spawnPoints + 1] = v 
     end
 end
@@ -260,7 +265,7 @@ for i, v in ipairs(spawn.centeredWall('NosedStriker', 2, {0, 7300 + 50 * 5}, 120
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 
-for i, v in ipairs(spawn.centeredWall('NosedKamikaze', 1, {0, 7300 + 50 * 6}, 120)) do
+for i, v in ipairs(spawn.centeredWall('NosedKamikazeTopTree', 1, {0, 7300 + 50 * 6}, 120)) do
     level.spawnPoints[#level.spawnPoints + 1] = v
 end
 

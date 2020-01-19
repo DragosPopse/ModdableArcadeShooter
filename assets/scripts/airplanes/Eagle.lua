@@ -1,7 +1,7 @@
 local Eagle = {
 	name = 'Eagle',
     texture = 'Airplanes',
-    hitpoints = 300,
+    hitpoints = 200,
     leftRect = {0, 147, 27, 47},
     idleRect = {27, 147, 47, 47},
     rightRect = {74, 147, 27, 47},
@@ -112,18 +112,6 @@ local Eagle = {
         {
             projectile = 'HomingMissile',
             ammo = 5
-        }
-    },
-
-    drops = {
-        {
-            pickup = 'SmallHealth',
-            dropRate = 50
-        },
-
-        {
-            pickup = 'HomingMissileAmmo',
-            dropRate = 50
         }
     }
 }

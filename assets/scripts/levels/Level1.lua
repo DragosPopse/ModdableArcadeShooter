@@ -68,6 +68,7 @@ level.usedAirplanes = {
 
 level.usedPickups = {
     'SmallHealth',
+    'BigHealth',
     'HomingMissileAmmo'
 }
 

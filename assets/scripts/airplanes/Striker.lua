@@ -65,12 +65,12 @@ local Striker = {
     drops = {
         {
             pickup = 'SmallHealth',
-            dropRate = 50
+            dropRate = 40
         },
 
         {
             pickup = 'HomingMissileAmmo',
-            dropRate = 50
+            dropRate = 40
         }
     }
 }

@@ -51,7 +51,7 @@ local Kamikaze = {
     drops = {
         {
             pickup = 'SmallHealth',
-            dropRate = 100
+            dropRate = 30
         }
     }
 }
