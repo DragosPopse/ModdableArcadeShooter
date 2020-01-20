@@ -77,6 +77,13 @@ function EnemyMissile.onCollision(lthis, this, airplane)
         if params.elapsedTime > params.tickDuration then
             params.count = params.count + 1
             this:damage(params.tickDamage)
+            this:getLevel():playSound({
+                sound = 'HealthPickup',
+                minPitch = 0.5,
+                maxPitch = 1,
+                minVolumeFactor = 1,
+                maxVolumeFactor = 1
+            })
             params.elapsedTime = 0     
             if params.count == params.ticks then
                 lthis.fireSystem.system:clearEmitters()
