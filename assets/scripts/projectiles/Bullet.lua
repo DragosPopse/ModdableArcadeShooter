@@ -11,7 +11,7 @@ local Bullet = {
 
     muzzleSound = {
         sound = 'Bullet',
-        minPitch = 0.5,
+        minPitch = 0.7,
         maxPitch = 1.22,
         minVolumeFactor = 0.92,
         maxVolumeFactor = 1,
