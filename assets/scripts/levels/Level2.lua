@@ -23,12 +23,10 @@ level.usedTextures = {
     {'Map', 'assets/textures/ChristmasMap.png'}, 
     {'Projectiles', 'assets/textures/ChristmasProjectiles.png'},
     {'Explosions', 'assets/textures/Explosions.png'},
-    {'Fragments', 'assets/textures/Fragments.png'},
+    {'Particles', 'assets/textures/Particles.png'},
     {'Vortex', 'assets/textures/Vortex.png'},
-    {'Smoke', 'assets/textures/Smoke.png'},
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
     {'Ship', 'assets/textures/Ship.png'},
-    {'Snowflakes', 'assets/textures/Snowflakes.png'},
     {'Health', 'assets/textures/Health.png'},
     {'ChristmasTree', 'assets/textures/ChristmasTree.png'}
 }

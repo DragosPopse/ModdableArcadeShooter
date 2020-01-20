@@ -23,13 +23,11 @@ level.usedTextures = {
     {'Island', 'assets/textures/Island.png'}, 
     {'Projectiles', 'assets/textures/Projectiles.png'},
     {'Explosions', 'assets/textures/Explosions.png'},
-    {'Fragments', 'assets/textures/Fragments.png'},
     {'Vortex', 'assets/textures/Vortex.png'},
-    {'Smoke', 'assets/textures/Smoke.png'},
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
     {'Health', 'assets/textures/Health.png'},
     {'Ship', 'assets/textures/Ship.png'},
-    {'Fire', 'assets/textures/Particles.png'}
+    {'Particles', 'assets/textures/Particles.png'}
 }
 
 level.usedFonts = {

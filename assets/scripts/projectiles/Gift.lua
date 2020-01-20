@@ -76,11 +76,11 @@ local Gift = {
             em:setParticleScale(engine.UniformVector2fDistribution.create(1, 2))
             pso:addEmitter(em, sf.seconds(0.2), 0, 0)
             pso:setRemoveAfterLifetime(3)
-            pso.system:setTexture(this:getLevel():getTexture('Projectiles'))
+            pso.system:setTexture(this:getLevel():getTexture('Particles'))
     
-            pso.system:addTextureRect(sf.IntRect.new(13, 56, 10, 21))
-            pso.system:addTextureRect(sf.IntRect.new(23, 56, 8, 23))
-            pso.system:addTextureRect(sf.IntRect.new(31, 56, 8, 24))
+            pso.system:addTextureRect(sf.IntRect.new(50, 0, 10, 21))
+            pso.system:addTextureRect(sf.IntRect.new(60, 0, 8, 23))
+            pso.system:addTextureRect(sf.IntRect.new(68, 0, 10, 24))
     
             this:getLevel():addParticles(pso)
     
