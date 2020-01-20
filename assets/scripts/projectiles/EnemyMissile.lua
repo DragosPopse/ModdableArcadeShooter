@@ -17,9 +17,11 @@ EnemyMissile.start = function (this)
     smokeEmitter:setEmissionRate(40)
     smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(2)))
 
-    for i = 0, 4 do
-        lthis.smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
-    end
+    lthis.smoke.system:addTextureRect(sf.IntRect.new(0, 12, 10, 7))
+    lthis.smoke.system:addTextureRect(sf.IntRect.new(10, 12, 10, 7))
+    lthis.smoke.system:addTextureRect(sf.IntRect.new(20, 12, 10, 7))
+    lthis.smoke.system:addTextureRect(sf.IntRect.new(30, 12, 10, 7))
+    lthis.smoke.system:addTextureRect(sf.IntRect.new(40, 12, 8, 7))
 
     local fade = thor.FadeAnimation.new(0, 1)
     local fadeAffector = thor.AnimationAffector.new(fade)

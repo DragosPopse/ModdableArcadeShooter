@@ -53,19 +53,18 @@ local Bullet = {
         em:setParticleVelocity(thor.Distributions.circle(sf.Vector2f.new(0, 0), 20))
         em:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.1)))
         em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
-        em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 3))
+        em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 2))
         pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
-        pso.system:setTexture(this:getLevel():getTexture('Fragments'))
-        for i = 1, 4 do 
-            local rect = sf.IntRect.new()
-            rect.left = i * 5
-            rect.top = 0
-            rect.width = 5
-            rect.height = 5
-            pso.system:addTextureRect(rect)
-        end
+        pso.system:setTexture(this:getLevel():getTexture('Particles'))
+
+        pso.system:addTextureRect(sf.IntRect.new(0, 0, 4, 4))
+        pso.system:addTextureRect(sf.IntRect.new(4, 0, 4, 4))
+        pso.system:addTextureRect(sf.IntRect.new(8, 0, 4, 4))
+        pso.system:addTextureRect(sf.IntRect.new(12, 0, 4, 4))
+        pso.system:addTextureRect(sf.IntRect.new(16, 0, 4, 4))
+
         this:getLevel():addParticles(pso)
     end
 }

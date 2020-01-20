@@ -7,17 +7,18 @@ Plane.collisionDamage = 35
 function Plane.start(this)
     local lthis = { }
     lthis.snowflakes = engine.ParticleSystem.new()
-    lthis.snowflakes.system:setTexture(this:getLevel():getTexture('Snowflakes'))
+    lthis.snowflakes.system:setTexture(this:getLevel():getTexture('Particles'))
     local emitter = thor.UniversalEmitter.new()
-    emitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
+    emitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 3))
     emitter:setParticleScale(engine.UniformVector2fDistribution.create(1, 1.5))
     emitter:setEmissionRate(30)
     emitter:setParticleVelocity(thor.Distributions.deflect(sf.Vector2f.new(0, 200), 4))
     emitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(1)))
 
-    for i = 0, 4 do 
-        lthis.snowflakes.system:addTextureRect(sf.IntRect.new(i * 15, 0, 15, 19))
-    end
+    lthis.snowflakes.system:addTextureRect(sf.IntRect.new(0, 29, 19, 19))
+    lthis.snowflakes.system:addTextureRect(sf.IntRect.new(19, 32, 13, 13))
+    lthis.snowflakes.system:addTextureRect(sf.IntRect.new(32, 33, 13, 11))
+    lthis.snowflakes.system:addTextureRect(sf.IntRect.new(45, 29, 14, 17))
 
     local fade = thor.FadeAnimation.new(0, 0.5)
     local fadeAffector = thor.AnimationAffector.new(fade)

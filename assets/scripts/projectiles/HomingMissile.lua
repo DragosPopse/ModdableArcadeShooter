@@ -39,16 +39,18 @@ local HomingMissile = {
         local lthis = { }
         lthis.smoke = engine.ParticleSystem.new()
         
-        lthis.smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
+        lthis.smoke.system:setTexture(this:getLevel():getTexture('Particles'))
         local smokeEmitter = thor.UniversalEmitter.new()
         smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
         smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
         smokeEmitter:setEmissionRate(40)
         smokeEmitter:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.2)))
 
-        for i = 0, 4 do
-            lthis.smoke.system:addTextureRect(sf.IntRect.new(i * 10, 0, 10, 10))
-        end
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(0, 12, 10, 7))
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(10, 12, 10, 7))
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(20, 12, 10, 7))
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(30, 12, 10, 7))
+        lthis.smoke.system:addTextureRect(sf.IntRect.new(40, 12, 8, 7))
 
         local fade = thor.FadeAnimation.new(0, 0.5)
         local fadeAffector = thor.AnimationAffector.new(fade)
@@ -127,15 +129,13 @@ local HomingMissile = {
         em:setParticleScale(engine.UniformVector2fDistribution.create(1, 3))
         pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
-        pso.system:setTexture(this:getLevel():getTexture('Smoke'))
-        for i = 1, 4 do 
-            local rect = sf.IntRect.new()
-            rect.left = i * 5
-            rect.top = 0
-            rect.width = 5
-            rect.height = 5
-            pso.system:addTextureRect(rect)
-        end
+        pso.system:setTexture(this:getLevel():getTexture('Particles'))
+        pso.system:addTextureRect(sf.IntRect.new(0, 12, 10, 7))
+        pso.system:addTextureRect(sf.IntRect.new(10, 12, 10, 7))
+        pso.system:addTextureRect(sf.IntRect.new(20, 12, 10, 7))
+        pso.system:addTextureRect(sf.IntRect.new(30, 12, 10, 7))
+        pso.system:addTextureRect(sf.IntRect.new(40, 12, 8, 7))
+        
 
         local fade = thor.FadeAnimation.new(0.5, 0.5)
 
