@@ -10,7 +10,7 @@ EnemyMissile.start = function (this)
     lthis.timer = 0
     lthis.smoke = engine.ParticleSystem.new()
     
-    lthis.smoke.system:setTexture(this:getLevel():getTexture('Smoke'))
+    lthis.smoke.system:setTexture(this:getLevel():getTexture('Particles'))
     local smokeEmitter = thor.UniversalEmitter.new()
     smokeEmitter:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
     smokeEmitter:setParticleScale(engine.UniformVector2fDistribution.create(2, 5))
