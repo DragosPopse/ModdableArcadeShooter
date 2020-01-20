@@ -29,7 +29,8 @@ level.usedTextures = {
     {'SmokeExplosion', 'assets/textures/SmokeExplosion.png'},
     {'Ship', 'assets/textures/Ship.png'},
     {'Snowflakes', 'assets/textures/Snowflakes.png'},
-    {'Health', 'assets/textures/Health.png'}
+    {'Health', 'assets/textures/Health.png'},
+    {'ChristmasTree', 'assets/textures/ChristmasTree.png'}
 }
 
 level.usedFonts = {
@@ -472,20 +473,153 @@ level.spawnPoints[#level.spawnPoints + 1] = {'NosedKamikazeFast', 0, 16300}
 
 level.animations = {
     {
-        texture = 'Vortex',
-        frames = 8,
-        firstRect = {0, 0, 90, 90},
-        frameDuration = 0.1,
-        position = {-74 * level.scale, 615 * level.scale}
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-109 * level.scale, (388 + 800) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-135 * level.scale, 429 * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-82 * level.scale, (434 + 800 * 2) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-142 * level.scale, (129 + 800 * 3) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {92 * level.scale, (238 + 800 * 4) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {143 * level.scale, (320 + 800 * 3) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {65 * level.scale, (586 + 800 * 1) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {109 * level.scale, (611 + 800 * 0) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {39 * level.scale, (627 + 800 * 2) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {136 * level.scale, (693 + 800 * 4) * level.scale}
     },
 
     {
-        texture = 'Ship',
-        frames = 4,
-        firstRect = {0, 0, 161 / 4, 67},
-        frameDuration = 0.2,
-        position = {-33 * level.scale, 287 * level.scale}
-    }
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-109 * level.scale, (388 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-135 * level.scale, (429 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-82 * level.scale, (434 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {-142 * level.scale, (129 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {136 * level.scale, (208 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {92 * level.scale, (238 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {143 * level.scale, (320 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {65 * level.scale, (586 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {109 * level.scale, (611 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {39 * level.scale, (627 + 800 * 5) * level.scale}
+    },
+    {
+        texture = 'ChristmasTree',
+        frames = 2,
+        firstRect = {0, 0, 53, 82},
+        frameDuration = 0.8,
+        position = {136 * level.scale, (693 + 800 * 5) * level.scale}
+    },
 }
 
 level.texts = {
