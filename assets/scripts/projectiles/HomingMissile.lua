@@ -4,7 +4,7 @@ local HomingMissile = {
 
     muzzleSound = {
         sound = 'Bullet',
-        minPitch = 0.5,
+        minPitch = 0.8,
         maxPitch = 1.12,
         minVolumeFactor = 1,
         maxVolumeFactor = 1,
