@@ -374,6 +374,14 @@ level.animations = {
         firstRect = {0, 0, 161 / 4, 67},
         frameDuration = 0.2,
         position = {-33 * level.scale, 287 * level.scale}
+    },
+
+    {
+        texture = 'Ship',
+        frames = 4,
+        firstRect = {0, 0, 161 / 4, 67},
+        frameDuration = 0.2,
+        position = {-33 * level.scale, 287 * level.scale}
     }
 }
 
