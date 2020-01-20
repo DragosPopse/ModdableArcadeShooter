@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	GameObject representing a simple frame animation
+*/
+
 #include "GameObject.h"
 
 #include <SFML/Graphics.hpp>
@@ -30,7 +34,10 @@ public:
 	
 	void SetTimePerFrame(float time);
 	void SetNumberOfFrames(int n);
+	
+	//Mark for destroy when the animation finishes playing.
 	void SetDestroyOnFinish(bool b);
+
 	bool IsFinished() const;
 	void SetLoopable(bool b);
 
