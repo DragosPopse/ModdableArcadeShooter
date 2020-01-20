@@ -13,7 +13,38 @@ namespace sol
 	class state;
 }
 
-extern thread_local std::mt19937 RNG;
+/*
+	Implementation taken from https://en.wikipedia.org/wiki/Xorshift and adapted to be a C++ Generator
+	Since the RNG can be potentially called every frame, this should result in faster execution than the Mersenne Twister
+*/
+class Xorshift32
+{
+	uint32_t _state;
+
+public:
+	typedef uint32_t result_type;
+
+	Xorshift32(uint32_t s = 1);
+
+	uint32_t operator()();
+
+	void seed(uint32_t s);
+
+	static uint32_t min()
+	{
+		return 0;
+	}
+
+	static uint32_t max()
+	{
+		return 0xffffffff;
+	}
+};
+
+//Default RNG used by the game
+using DefaultGenerator = Xorshift32;
+
+extern thread_local DefaultGenerator RNG;
 
 template <class RealType, class GeneratorType = std::mt19937>
 RealType RandReal(RealType min, RealType max)
@@ -119,3 +150,4 @@ public:
 		return AnnulusDistribution(innerRadius, outerRadius);
 	}
 };
+
