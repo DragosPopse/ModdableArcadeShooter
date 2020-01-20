@@ -41,7 +41,8 @@ level.usedSounds = {
     {'Exp1', 'assets/audio/sfx/Exp1.wav'},
     {'Switch', 'assets/audio/sfx/Switch.wav'},
     {'RocketPickup', 'assets/audio/sfx/RocketPickup.wav'},
-    {'HealthPickup', 'assets/audio/sfx/HealthPickup.wav'}
+    {'HealthPickup', 'assets/audio/sfx/HealthPickup.wav'},
+    {'Fire', 'assets/audio/sfx/Fire.wav'}
 }
 
 level.player = {

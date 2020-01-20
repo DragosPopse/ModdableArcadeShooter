@@ -78,9 +78,9 @@ function EnemyMissile.onCollision(lthis, this, airplane)
             params.count = params.count + 1
             this:damage(params.tickDamage)
             this:getLevel():playSound({
-                sound = 'HealthPickup',
-                minPitch = 0.5,
-                maxPitch = 1,
+                sound = 'Fire',
+                minPitch = 0.6,
+                maxPitch = 0.9,
                 minVolumeFactor = 1,
                 maxVolumeFactor = 1
             })
