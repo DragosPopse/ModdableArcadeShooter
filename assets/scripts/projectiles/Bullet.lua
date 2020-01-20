@@ -54,7 +54,7 @@ local Bullet = {
         em:setParticleLifetime(thor.TimeDistribution.new(sf.seconds(0.1)))
         em:setParticleRotation(thor.Distributions.floatUniform(0, 360))
         em:setParticleTextureIndex(thor.Distributions.uintUniform(0, 4))
-        em:setParticleScale(engine.UniformVector2fDistribution.create(1, 2))
+        em:setParticleScale(engine.UniformVector2fDistribution.create(1.5, 2.2))
         pso:addEmitter(em, sf.seconds(0.2), 0, 0)
         pso:setRemoveAfterLifetime(3)
         pso.system:setTexture(this:getLevel():getTexture('Particles'))
