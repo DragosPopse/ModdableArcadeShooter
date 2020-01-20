@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Animation for the cooldown display
+*/
+
 #include "GameObject.h"
 
 #include <SFML/Graphics.hpp>

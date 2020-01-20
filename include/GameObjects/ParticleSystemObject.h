@@ -1,5 +1,8 @@
 #pragma once
 
+/*
+	Wrapper around thor::ParticleSystem to be used with GameObjects and Lua
+*/
 
 #include "GameObject.h"
 

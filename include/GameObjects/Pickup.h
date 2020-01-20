@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	Pickup represents anything collectible by the player
+	PickupData is constomized in Lua and contains shared data.
+*/
+
 #include "GameObject.h"
 
 #include <random>
@@ -16,7 +21,9 @@ class Animation;
 
 struct PickupData
 {
+	//Function that defines the behaviour of the pickup
 	sol::function onPickup;
+
 	sf::Texture* texture = nullptr;
 	sf::IntRect firstRect;
 	int frames = 0;
@@ -29,7 +36,6 @@ struct PickupData
 	float destroyFrameDuration = 0;
 	float destroyScale = 0;
 
-	std::mt19937 rng;
 	RandomizedSound onPickupSound;
 };
 

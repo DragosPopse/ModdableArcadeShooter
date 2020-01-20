@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	Airplane is the GameObject used to instantiate enemies and players.
+	AirplaneData represents the data shared between similar airplanes. (Something like a Flyweight design pattern)
+	AirplaneData is instantiated in the Level using Lua scripts andn stored in a dictionary.
+*/
+
 #include "GameObject.h"
 
 #include <string>
@@ -19,11 +25,15 @@ struct ProjectileData;
 class Pickup;
 struct PickupData;
 
+/*
+	Structure that helps to create the movement pattern of the enemy airplanes
+*/
 struct AiDirection
 {
 	float angle;
 	float distance;
 };
+
 
 struct DropData
 {

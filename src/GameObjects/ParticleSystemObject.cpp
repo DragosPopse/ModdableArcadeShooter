@@ -42,7 +42,6 @@ void ParticleSystemObject::Draw(sf::RenderTarget& target, sf::RenderStates state
 	states.transform *= getTransform();
 	
 	target.draw(system, sf::RenderStates::Default);
-	//target.draw(system, states);
 
 	GameObject::Draw(target, states);
 
