@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	Contains code for initializing the game, the Lua state and window.
+	Contains the game loop.
+*/
+
 #include <memory>
 
 #include <SFML/Graphics.hpp>

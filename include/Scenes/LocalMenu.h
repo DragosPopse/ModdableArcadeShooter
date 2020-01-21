@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	At the time I created this class, I wasn't aware that it is actually named a Pause Menu.
+	Can be pushed on top of the scene stack while playing the level to pause the game.
+	The menu slows the game to a halt with a slow motion effect.
+	The animation as a whole is achieved using a state machine.
+*/
 
 #include "Scene.h"
 #include "GuiMenu.h"

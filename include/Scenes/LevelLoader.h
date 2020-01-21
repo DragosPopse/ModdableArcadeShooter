@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Instantiates a Level object on a separate thread while playing a loading animation on the main thread.
+*/
+
 #include "Level.h"
 
 #include "ResourceHolder.h"

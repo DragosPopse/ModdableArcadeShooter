@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	Command design pattern. 
+	Can be used to pass an action of every GameObject that satisfies (object.GetCategory() & command.category != 0)
+	Learnt about it in the book mentioned at credits
+*/
+
 #include <functional>
 #include <cassert>
 
