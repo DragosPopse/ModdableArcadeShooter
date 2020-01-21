@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Scene pushed when completing the level. Same functionality as LoseState but with a vignette animation instead of fade-to-black
+*/
+
 #include "Scene.h"
 
 #include <memory>

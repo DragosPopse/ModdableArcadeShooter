@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Scene pushed when the player airplane is destroyed. 
+*/
+
 #include "Scene.h"
 
 #include <memory>

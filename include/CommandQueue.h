@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Queues commands to be executed in order
+*/
+
 #include "Command.h"
 
 #include <queue>

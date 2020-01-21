@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	String utilities
+*/
+
 #include <string>
 #include <sstream>
 #include <SFML/Window/Keyboard.hpp>

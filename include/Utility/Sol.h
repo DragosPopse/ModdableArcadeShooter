@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Some extensions for the sol library
+*/
+
 #include <sol/sol.hpp>
 
 template <class ReturnType, class ParamType>

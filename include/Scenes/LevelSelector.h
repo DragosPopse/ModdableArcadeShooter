@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Scene.h"
 
 #include <memory>
@@ -10,6 +11,9 @@
 
 class MainMenu;
 
+/*
+	Data used to display the level image and store the path of the level
+*/
 struct LevelData
 {
 	std::string file;
@@ -28,6 +32,9 @@ struct LevelData
 	}
 };
 
+/*
+	Loads the available levels and allows the player to select one.
+*/
 class LevelSelector :
 	public Scene
 {

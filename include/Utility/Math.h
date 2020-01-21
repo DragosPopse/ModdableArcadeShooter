@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	All mathematics the game requires
+*/
+
 #include <cmath>
 
 #include <SFML/System/Vector2.hpp>
