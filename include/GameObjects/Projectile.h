@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Implemented in the same style as Airplane and Pickup.
+*/
+
 #include "GameObject.h"
 
 #include <optional>

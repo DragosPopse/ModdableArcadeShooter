@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Typed text animation. Can be seen on the "Wave X" text at the beginning of every wave
+*/
+
 #include "GameObject.h"
 
 #include <string>

@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Screen shake to make it epic.
+*/
+
 #include <SFML/Graphics.hpp>
 
 #include "Random.h"

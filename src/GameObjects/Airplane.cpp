@@ -76,7 +76,7 @@ Airplane::Airplane(AirplaneData* data) :
 	_fadingIn(true),
 	_canDrop(true)
 {
-	for (int i = 0; i < static_cast<int>(_data->ammo.size()); i++)
+	for (size_t i = 0; i < _data->ammo.size(); i++)
 	{
 		_ammo.push_back(_data->ammo[i]);
 		_cooldowns.push_back(_data->weapons[i]->fireRate);
@@ -302,11 +302,11 @@ void Airplane::Damage(int hp)
 		{
 			//Spawn pickup if RNG is in your favor
 			randN = RandInt(1, 100);
-			for (int i = 0; i < static_cast<int>(_data->drops.size()); i++)
+			for (auto& drop : _data->drops)
 			{
-				if (randN <= _data->drops[i].dropRate)
+				if (randN <= drop.dropRate)
 				{
-					Pickup* pickup = new Pickup(_data->drops[i].pickup);
+					Pickup* pickup = new Pickup(drop.pickup);
 					pickup->setPosition(GetWorldPosition());
 					_level->AddPickup(pickup);
 					break;
@@ -568,7 +568,7 @@ void Airplane::AddHealth(int n)
 
 void Airplane::AddAmmo(const std::string& projectile, int n)
 {
-	for (int i = 0; i < static_cast<int>(_data->weapons.size()); i++)
+	for (size_t i = 0; i < _data->weapons.size(); i++)
 	{
 		if (projectile == _data->weapons[i]->name)
 		{

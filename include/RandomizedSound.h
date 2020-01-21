@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	Sound utility for randomizing the pitch and volume of SFX.
+	It adds variety to the same sound
+*/
+
 #include <SFML/Audio.hpp>
 
 struct RandomizedSoundResult

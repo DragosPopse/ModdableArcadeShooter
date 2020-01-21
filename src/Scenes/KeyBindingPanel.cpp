@@ -42,9 +42,9 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 		_buttonText = text;
 		_currentKeyButton->setText(BuildString(text, ": ..."));
 		_confirmButton->setEnabled(false);
-		for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
+		for (auto& button : _keyButtons)
 		{
-			_keyButtons[i]->setEnabled(false);
+			button->setEnabled(false);
 		}
 		_actionToBind = action;
 	};
@@ -71,11 +71,11 @@ KeyBindingPanel::KeyBindingPanel(Context* context, GuiMenu* settingsPanel, const
 
 	_panel->setSize("70%");
 	_panel->setPosition("(&.size - size) / 2");
-	for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
+	for (auto& button : _keyButtons)
 	{
-		_keyButtons[i]->setTextSize(_textSize);
-		_keyButtons[i]->setInheritedFont(font);
-		_panel->add(_keyButtons[i]);
+		button->setTextSize(_textSize);
+		button->setInheritedFont(font);
+		_panel->add(button);
 		_panel->addSpace(0.1f);
 	}
 	_confirmButton->setTextSize(_textSize);
@@ -98,9 +98,9 @@ bool KeyBindingPanel::HandleEvent(const sf::Event& ev)
 	if (_assigningKey && ev.type == sf::Event::KeyPressed)
 	{
 		_assigningKey = false;
-		for (int i = 0; i < static_cast<int>(_keyButtons.size()); i++)
+		for (auto& button : _keyButtons)
 		{
-			_keyButtons[i]->setEnabled(true);
+			button->setEnabled(true);
 		}
 		_confirmButton->setEnabled(true);
 		if (ev.key.code == _context->player->GetKey(_actionToBind))

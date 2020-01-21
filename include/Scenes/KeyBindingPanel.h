@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	Part of SettingsPanel.
+	Here the user can map the controls to other keys
+*/
+
 #include "Scene.h"
 #include "GuiMenu.h"
 
@@ -9,7 +14,6 @@
 #include <SFML/Audio.hpp>
 
 #include "Player.h"
-
 
 class KeyBindingPanel :
 	public Scene,

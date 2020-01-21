@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	This is the actual gameplay loop.	
+	The class loads the level and plays it.
+	The level acts as a huge container for all the resources and objects required.
+*/
+
 #include "Scene.h"
 
 #include <deque>
@@ -160,6 +166,9 @@ public:
 
 	const sf::Font& GetFont(const std::string& id) { return _fonts[id]; }
 
+	/*
+		Used by the Airplane objects to animate the damage taken.
+	*/
 	sf::Shader* GetFlashShader() { return &_flashShader; }
 
 	void DisplayText();
@@ -171,8 +180,15 @@ public:
 	
 	sf::Texture& GetTexture(const std::string& id) { return _textures[id]; }
 
+	/*
+		It contains too many parameters to be readable. 
+		It is only used by Lua to animate the pickups.
+	*/
 	void PlayVignetteAnimation(const sf::Glsl::Vec4& color, float inner, float outer, float intensity, float fadeInRatio, float fadeOutRatio, float duration);
 
+	/*
+		Used to keep track of destroyed airplanes for calculating the score
+	*/
 	void AddDownedEnemy(const std::string& name) { _enemiesDowned[name]++; }
 
 	sf::Font& GetDefaultFont() { return _fonts[_defaultFont]; }
@@ -192,10 +208,34 @@ public:
 	void PlaySoundFromLua(const sol::table& table);
 
 private:
+	/*
+		GameObjects are only spawned in the world when the view gets closer to their spawn position. 
+		This gives a performance boost since only required objects are updated.
+	*/
 	void SpawnObjects();
+
+	/*
+		Offscreen objects are no longer required so they can be deleted
+		Different offscreen rules apply for different kinds of objects
+		EnemyAirplanes and animations are offscreen when their Y is higher than view.y
+		Projectiles are offscreen when they are far enough from the view bounds.
+	*/
 	void RemoveOffScreenObjects(float dt);
+
+	/*
+		Collision detection.
+	*/
 	void HandleCollisions(float dt);
+
+	/*
+		Keep the player in the view bounds
+		Different results can be achieved depending if the function is called before or after reading the player input
+	*/
 	void CapPlayerPosition();
+
+	/*
+		Switch the 2 background sprites between each other so that they create a seemless impression
+	*/
 	void SwitchBackground();
 
 	sf::FloatRect GetViewBounds() const;

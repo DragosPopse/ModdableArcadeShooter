@@ -10,7 +10,9 @@
 
 Pickup::Pickup(PickupData* data) :
 	_data(data),
-	_playingDestroyAnimation(false)
+	_playingDestroyAnimation(false),
+	_animation(nullptr),
+	_level(nullptr)
 { 
 }
 

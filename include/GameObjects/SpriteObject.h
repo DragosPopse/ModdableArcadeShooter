@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Wrapper for sf::Sprite
+*/
+
 #include "GameObject.h"
 
 #include <SFML/Graphics.hpp>

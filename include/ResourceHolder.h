@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+	Container for storing any kind of SFML resource. This includes sf::SoundBuffer, sf::Texture, sf::Font
+	Many SFML tutorials give this implementation so I'm not sure who to credit here, it is pretty standard. 
+*/
+
 #include <map>
 #include <string>
 #include <memory>

@@ -15,6 +15,10 @@ namespace sf
 
 class Player;
 
+
+/*
+	A Context is an object shared across all scenes.
+*/
 struct Context
 {
 	sf::RenderWindow* window;

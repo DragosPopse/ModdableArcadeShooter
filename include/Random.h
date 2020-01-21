@@ -14,31 +14,31 @@ namespace sol
 }
 
 /*
-	Implementation taken from https://en.wikipedia.org/wiki/Xorshift and adapted to be a C++ Generator
-	Since the RNG can be potentially called every frame, this should result in faster execution than the Mersenne Twister
+	Implementation taken from https://en.wikipedia.org/wiki/Xorshift and adapted to be compliant with C++ Generators
+	Since the RNG can be potentially called every frame, this should result in faster execution than the Mersenne Twister while keeping
+a better statistical randomness than the Linear Congruential Generator. Pretty much a middle ground between the two that is simple enough to implement (or copy from wikipedia)
 */
 class Xorshift32
 {
 	uint32_t _state;
 
 public:
+	//C++ compliance
 	typedef uint32_t result_type;
 
 	Xorshift32(uint32_t s = 1);
 
+	//C++ compliance
 	uint32_t operator()();
 
+	//C++ compliance
 	void seed(uint32_t s);
 
-	static uint32_t min()
-	{
-		return 0;
-	}
+	//C++ compliance
+	static uint32_t min();
 
-	static uint32_t max()
-	{
-		return 0xffffffff;
-	}
+	//C++ compliance
+	static uint32_t max();
 };
 
 //Default RNG used by the game
@@ -74,6 +74,7 @@ public:
 
 	sf::Vector2f operator()();
 
+	//Used to create a directly converted distribution. This way it makes it behave nice with Lua
 	static thor::Distribution<sf::Vector2f> Create(float min, float max)
 	{
 		UniformVector2fDistribution distr(min, max);
@@ -140,11 +141,13 @@ public:
 		return { x, y };
 	}
 
+	//Compliance with thor::Distribution
 	sf::Vector2f operator()()
 	{
 		return operator()(RNG);
 	}
 
+	//Used to create a directly converted distribution. This way it makes it behave nice with Lua
 	static thor::Distribution<sf::Vector2f> Create(float innerRadius, float outerRadius)
 	{
 		return AnnulusDistribution(innerRadius, outerRadius);

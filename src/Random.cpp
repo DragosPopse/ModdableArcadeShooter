@@ -1,6 +1,7 @@
 #include "Random.h"
 
 #include <random>
+#include <limits>
 
 #include <sol/state.hpp>
 #include <SFML/Graphics.hpp>
@@ -52,4 +53,16 @@ void Xorshift32::seed(uint32_t s)
 		s = 1;
 	}
 	_state = s;
+}
+
+
+uint32_t Xorshift32::min()
+{
+	return std::numeric_limits<uint32_t>::min();
+}
+
+
+uint32_t Xorshift32::max()
+{
+	return std::numeric_limits<uint32_t>::max();
 }
