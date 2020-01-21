@@ -39,7 +39,6 @@ class MainMenu :
 
 	tgui::Button::Ptr _playButton;
 	tgui::Button::Ptr _settingsButton;
-	tgui::Button::Ptr _creditsButton;
 	tgui::Button::Ptr _exitButton;
 	tgui::VerticalLayout::Ptr _panel;
 

@@ -54,16 +54,13 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_panel = tgui::VerticalLayout::create();
 	_settingsButton = tgui::Button::create("Settings");
 	_playButton = tgui::Button::create("Play");
-	_creditsButton = tgui::Button::create("Credits");
 	_exitButton = tgui::Button::create("Exit");
 
 	_settingsButton->setTextSize(_textSize);
 	_playButton->setTextSize(_textSize);
-	_creditsButton->setTextSize(_textSize);
 	_exitButton->setTextSize(_textSize);
 
 	_playButton->setInheritedFont(_fonts["Menu"]);
-	_creditsButton->setInheritedFont(_fonts["Menu"]);
 	_exitButton->setInheritedFont(_fonts["Menu"]);
 	_settingsButton->setInheritedFont(_fonts["Menu"]);
 
@@ -72,8 +69,6 @@ MainMenu::MainMenu(Context* context, bool firstTime) :
 	_panel->add(_playButton);
 	_panel->addSpace(0.1f);
 	_panel->add(_settingsButton);
-	_panel->addSpace(0.1f);
-	_panel->add(_creditsButton);
 	_panel->addSpace(0.1f);
 	_panel->add(_exitButton);
 
