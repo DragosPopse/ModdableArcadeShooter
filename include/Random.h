@@ -46,7 +46,7 @@ using DefaultGenerator = Xorshift32;
 
 extern thread_local DefaultGenerator RNG;
 
-template <class RealType, class GeneratorType = std::mt19937>
+template <class RealType>
 RealType RandReal(RealType min, RealType max)
 {
 	static thread_local std::uniform_real_distribution<RealType> distribution;
@@ -54,7 +54,7 @@ RealType RandReal(RealType min, RealType max)
 }
 
 
-template <class IntegerType, class GeneratorType = std::mt19937>
+template <class IntegerType>
 IntegerType RandInt(IntegerType min, IntegerType max)
 {
 	static thread_local std::uniform_int_distribution<IntegerType> distribution;
