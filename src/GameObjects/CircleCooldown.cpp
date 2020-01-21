@@ -11,7 +11,8 @@ CircleCooldown::CircleCooldown() :
 	_duration(1),
 	_animationRunning(false),
 	_vertices(sf::TrianglesFan),
-	_color(0, 0, 0, 100)
+	_color(0, 0, 0, 100),
+	_progress(0.f)
 {
 }
 
@@ -70,7 +71,7 @@ void CircleCooldown::Update(float dt)
 
 		_vertices.append(sf::Vertex(sf::Vector2f(_center.x + x * (_bottomRight.x - _topLeft.x) / 2, _center.y + y * (_bottomRight.y - _topLeft.y) / 2)));
 
-		for (int i = 0; i < static_cast<int>(_vertices.getVertexCount()); i++)
+		for (size_t i = 0; i < _vertices.getVertexCount(); i++)
 		{
 			_vertices[i].color = _color;
 		}

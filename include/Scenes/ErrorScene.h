@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Scene.h"
 
 #include <string>
@@ -7,7 +8,10 @@
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 
-
+/*
+	Some errors should not crash the game, so an error panel is displayed using this scene
+	Even if for consistency sake it should implement GuiMenu interface, it doesn't require it's functionality.	
+*/
 class ErrorScene :
 	public Scene
 {

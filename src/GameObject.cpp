@@ -189,13 +189,13 @@ void GameObject::OnCommand(const Command& command, float dt)
 		command.action(*this, dt);
 	}
 
-	for (int i = 0; i < static_cast<int>(_children.size()); i++)
+	for (auto& child : _children)
 	{
-		_children[i]->OnCommand(command, dt);
+		child->OnCommand(command, dt);
 	}
-	for (int i = 0; i < static_cast<int>(_unownedChildren.size()); i++)
+	for (auto& child : _unownedChildren)
 	{
-		_unownedChildren[i].as<GameObject>().OnCommand(command, dt);
+		child.as<GameObject>().OnCommand(command, dt);
 	}
 }
 
@@ -218,13 +218,13 @@ void GameObject::OnLuaCommand(const LuaCommand& command, float dt)
 		}
 	}
 
-	for (int i = 0; i < static_cast<int>(_children.size()); i++)
+	for (auto& child : _children)
 	{
-		_children[i]->OnLuaCommand(command, dt);
+		child->OnLuaCommand(command, dt);
 	}
-	for (int i = 0; i < static_cast<int>(_unownedChildren.size()); i++)
+	for (auto& child : _unownedChildren)
 	{
-		_unownedChildren[i].as<GameObject>().OnLuaCommand(command, dt);
+		child.as<GameObject>().OnLuaCommand(command, dt);
 	}
 }
 

@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Wrapper for sf::Text
+*/
+
 #include "GameObject.h"
 
 #include <string>

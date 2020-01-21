@@ -4,7 +4,7 @@ sf::Sound objects in each GameObject
 	SoundQueue will always destroy the front element if it is not playing
 	Use case: Airplane instantiates an explosion and then destroys itself. Airplane can't store the sf::Sound and
 the explosion is a generic Animation that is not supposed to store an sf::Sound
-	Benchmarks should be made to see if std::list performs better than std::vector
+	Benchmarking should be done to see if std::list performs better than std::deque. Speaking of framerate there isn't any noticeable difference
 */
 
 #pragma once
@@ -18,7 +18,7 @@ class SoundQueue
 	std::list<sf::Sound> _queue;
 
 public:
-	using Iterator = std::list<sf::Sound>::iterator;
+	using Iterator = decltype(_queue)::iterator;
 
 	//Must start with lowercase for the class to support foreach loop
 	Iterator begin();

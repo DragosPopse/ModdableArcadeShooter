@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+	A Player object handles the player input and contains settings like volume and key mapping.
+	It also handles the loading and saving of settings.
+	This class is part of the book SFML Game Development
+*/
+
 #include <map>
 #include <string>
 
