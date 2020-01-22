@@ -3,7 +3,7 @@ local HomingMissile = {
     iconTexture = 'Projectiles',
 
     muzzleSound = {
-        sound = 'Bullet',
+        sound = 'Rocket',
         minPitch = 0.8,
         maxPitch = 1.12,
         minVolumeFactor = 1,
