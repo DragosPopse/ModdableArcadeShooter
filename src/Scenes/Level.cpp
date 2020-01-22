@@ -122,7 +122,6 @@ Level::Level(Context* context, const std::string& path) :
 		std::string id = Protect<std::string>(texture[1]);
 		std::string file = Protect<std::string>(texture[2]);
 		_textures.Load(id, file);
-		std::cout << id << " :: " << path << '\n';
 	}
 
 	//Load required fonts
@@ -146,18 +145,13 @@ Level::Level(Context* context, const std::string& path) :
 	}
 
 	std::string backgroundTexture = Protect<std::string>(level["backgroundTexture"]);
-	//bool repeatBackground = level["repeatBackground"];
-	//_textures[backgroundTexture].setRepeated(repeatBackground);
-	//std::unique_ptr<SpriteObject> backgroundPtr(new SpriteObject());
 	_background.push_back(new SpriteObject());
 	_background.push_back(new SpriteObject());
-	//backgroundPtr->SetTexture(_textures[backgroundTexture]);
 	
 	_scrollSpeed = Protect<float>(level["scrollSpeed"]);
 	_levelLength = Protect<float>(level["length"]);
 	_scale = Protect<float>(level["scale"]);
 	_borderSize = Protect<float>(level["borderSize"]);
-	//backgroundPtr->setScale(_scale, _scale);
 	_background[0]->setScale(_scale, _scale);
 	_background[1]->setScale(_scale, _scale);
 	_background[0]->SetTexture(_textures[backgroundTexture]);
@@ -194,7 +188,6 @@ Level::Level(Context* context, const std::string& path) :
 	{
 		std::string name = Protect<std::string>(planes[i]);
 		std::string planePath = BuildString("assets/scripts/airplanes/", name, ".lua");
-		std::cout << planePath << '\n';
 		sol::table plane = Protect<sol::table>(_context->lua->do_file(planePath));
 
 		AirplaneData apdata;
@@ -289,7 +282,6 @@ Level::Level(Context* context, const std::string& path) :
 				std::string projectileName = Protect<std::string>(weapon["projectile"]);
 				if (_projectileDataDict.find(projectileName) != _projectileDataDict.end())
 				{
-					std::cout << "AIRPLANE: " << name << ' ' << projectileName << '\n';
 					apdata.weapons.push_back(&_projectileDataDict[projectileName]);
 					int ammo = Protect<int>(weapon["ammo"]);
 					apdata.ammo.push_back(ammo);
@@ -299,7 +291,6 @@ Level::Level(Context* context, const std::string& path) :
 
 				std::string projectilePath = BuildString("assets/scripts/projectiles/", projectileName, ".lua");
 
-				std::cout << projectilePath << '\n';
 				sol::table projectile = Protect<sol::table>(_context->lua->do_file(projectilePath));
 	
 				ProjectileData projdata;
@@ -798,7 +789,6 @@ void Level::DisplayText()
 			_currentText->Start(this);
 			if (_texts[0].color)
 			{
-				std::cout << "COLOR\n";
 				_currentText->SetColor(_texts[0].color.value());
 			}
 			std::unique_ptr<TextAnimation> ptr(_currentText);

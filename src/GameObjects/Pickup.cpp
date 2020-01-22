@@ -30,9 +30,7 @@ void Pickup::Start(Scene* scene)
 	_animation->SetDestroyOnFinish(false);
 	_animation->SetLoopable(true);
 	_animation->setScale(_data->scale, _data->scale);
-	//_animation->Start(scene);		
 
-	//std::cout << getPosition().x << ' ' << getPosition().y << '\n';
 	AddChild(std::move(animation));
 	
 	GameObject::Start(scene);
