@@ -59,7 +59,6 @@ void ParticleSystemObject::AddEmitter(thor::UniversalEmitter& em, sf::Time time,
 {
 	auto positionFunctor = [this, x, y]()
 	{ 
-		//std::cout << this->GetWorldPosition().x << ' ' << this->GetWorldPosition().y << '\n';
 		return this->GetWorldTransform() * sf::Vector2f(x, y);
 	};
 	em.setParticlePosition(positionFunctor);
