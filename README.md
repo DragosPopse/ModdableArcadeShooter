@@ -59,4 +59,4 @@ I plan to create another level in space and release the game for free on itch.io
 * Textures: Ana Maria Dirica
   * Textures were created for this game. 
 * Fonts: Taken from the internet
- * Fonts have their lincenses in assets/fonts folder
+  * Fonts have their lincenses in assets/fonts folder
