@@ -96,8 +96,8 @@ local Eagle = {
     end,
 
     clean = function (lthis, this)
-        lthis.fireSystem:setDestroyAfterLifetime(3)
-        lthis.particleSystem:setDestroyAfterLifetime(3)
+        lthis.fireSystem:setRemoveAfterLifetime(3)
+        lthis.particleSystem:setRemoveAfterLifetime(3)
     end,
 
     onDamage = function (lthis, this)
