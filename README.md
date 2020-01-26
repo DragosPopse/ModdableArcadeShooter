@@ -2,7 +2,7 @@
 
 A moddable arcade-style airplane shooter. 
 
-This is my programming assignment for the Breda University Creative Media and Game Technologies 2020 programme. The theme is "Waves", so the enemies come into waves throughout the level. The music is also designed to facilitate that. I created 2 levels for this assignment.
+This is my programming assignment for the Breda University Creative Media and Game Technologies 2020 programme. The theme is "Waves", so the enemies come into waves throughout the level. The music is also designed to facilitate that. I created 2 levels for this assignment. The executables are in the bin folder.
 
 ## Purpose
 The main purpose of this project is to experiment with creating a Modding API in Lua for a C++ game. Another concept that I try to get familiar with while creating this game is makefiles and building from multiple PCs, thing that I do using Premake5.
@@ -11,12 +11,11 @@ The main purpose of this project is to experiment with creating a Modding API in
 I plan to create another level in space and release the game for free on itch.io and "market" it on different forums. My main goal is to get as much feedback as possible regarding the things I did (code, mechanics and level design).
 
 ## Build 
+*Note: If you are one of the teachers, the sln file and binaries will already be available and there is no need for setup.bat.*
 1) Click on one of the setup.bat's that matches your compiler (vs2019 or vs2017).
 2) Once the solution is created, select the architecture and configuration (x86/x64 and Debug/Release)
 3) Build 
 4) The binaries created will be available in the bin folder
-
-*Note: If you are one of the teachers, the sln file and binaries will already be available and there is no need for setup.bat.*
 
 ## Controls
 *Note: all controls can be customized in-game*
