@@ -10,7 +10,7 @@ int main()
 		Engine engine;
 		engine.Run();
 	}
-	catch (std::exception& e)
+	catch (std::exception& e) //catch any unhandled exception and display the message
 	{
 		std::cout << e.what();
 	}

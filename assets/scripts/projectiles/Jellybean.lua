@@ -15,9 +15,9 @@ local Jellybean = {
     iconRect = {147, 0, 56, 56},
 
     muzzleSound = {
-        sound = 'Bullet',
-        minPitch = 0.5,
-        maxPitch = 1.22,
+        sound = 'Jellybean',
+        minPitch = 0.7,
+        maxPitch = 1.1,
         minVolumeFactor = 0.92,
         maxVolumeFactor = 1,
     },

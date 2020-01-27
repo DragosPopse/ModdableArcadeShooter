@@ -43,6 +43,7 @@ level.usedSounds = {
     {'Switch', 'assets/audio/sfx/Switch.wav'},
     {'GiftPickup', 'assets/audio/sfx/GiftPickup.wav'},
     {'HealthPickup', 'assets/audio/sfx/HealthPickup.wav'},
+    {'Jellybean', 'assets/audio/sfx/Jellybean.wav'}
 }
 
 level.usedPickups = {
