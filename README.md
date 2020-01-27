@@ -2,7 +2,7 @@
 
 A moddable arcade-style airplane shooter. 
 
-This is my programming assignment for the Breda University Creative Media and Game Technologies 2020 programme. The theme is "Waves", so the enemies come into waves throughout the level. The music is also designed to facilitate that. I created 2 levels for this assignment. The executables are in the bin folder.
+This is my programming assignment for the Breda University Creative Media and Game Technologies 2020 programme. The theme is "Waves", so the enemies come into waves throughout the level. The music is also designed to facilitate that. I created 2 levels for this assignment. You can download the entire project with the executables in the releases. The executables are in the bin folder.
 
 ## Purpose
 The main purpose of this project is to experiment with creating a Modding API in Lua for a C++ game. Another concept that I try to get familiar with while creating this game is makefiles and building from multiple PCs, thing that I do using Premake5.
