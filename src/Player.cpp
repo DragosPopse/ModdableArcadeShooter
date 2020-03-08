@@ -106,8 +106,8 @@ void Player::HandleRealtimeInput(CommandQueue& commands)
 
 
 Player::Player() :
-	_musicVolume(100),
-	_sfxVolume(100)
+	_musicVolume(50),
+	_sfxVolume(50)
 {
 	_keyBinding[sf::Keyboard::A] = ActionType::MoveLeft;
 	_keyBinding[sf::Keyboard::D] = ActionType::MoveRight;
