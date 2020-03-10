@@ -131,7 +131,7 @@ public:
 	}
 
 	template <class Generator>
-	sf::Vector2f operator()(Generator generator)
+	sf::Vector2f operator()(Generator& generator)
 	{
 		float theta = 2.f * PIf * _distribution(generator);
 		float distance = sqrt(_distribution(generator) * (_innerRadius * _innerRadius - _outerRadius * _outerRadius) + _outerRadius * _outerRadius);
